@@ -1,0 +1,4 @@
+12. Laden Sie von der NCBI Genomes FTP Site das komplette Genom von Mycoplasma Genitalium G37 herunter, außerdem die Dateien mit den vorhergesagten und den übersetzten ORFs. (3P) (ftp://ftp.ncbi.nlm.nih.gov/genomes/Bacteria/) (RS)
+
+http://www.mmnt.net/db/0/0/ftp.ncbi.nlm.nih.gov/genomes/Bacteria/Mycoplasma_genitalium_G37_uid57707
+http://www.ncbi.nlm.nih.gov/nuccore/108885074?report=genbank

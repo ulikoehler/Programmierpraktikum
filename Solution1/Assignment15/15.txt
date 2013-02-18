@@ -1,0 +1,4 @@
+15. Gestalten Sie eine Praktikumswebseite. Diese Seite sollte grundlegende Informationen über das Praktikum und über Ihre Gruppe enthalten. Später sollen von dieser Seite dievon Ihnen im Praktikum entwickelten Tools abrufbar sein. Installieren Sie die Dateienim Verzeichnis ,/public_html/bioprakt' im CIP-Home-Verzeichnis einesGruppenmitglieds, damit die Webseite unter http://bioclient1.bio.ifi.lmu.de/~<name>/bioprakt/ abrufbar ist, und geben Sie eine Kopie im Verzeichnis <grouphome>/Solution1/Assignment1.15' ab. Eine Datei ,readme.txt' soll dort ebenfalls abgegeben werden, in der evtl. nötige Dokumentation
+enthalten ist, und der Login-Name des Gruppenmitglieds genannt wird, bei dem die Seite installiert ist. (4P)
+
+Die Webseite ist unter dem Nutzer koehleru abrufbar - Direktlink: http://bioclient1.bio.ifi.lmu.de/~koehleru/bioprakt/

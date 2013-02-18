@@ -1,0 +1,7 @@
+3. Wie viele Einträge gibt es in Swissprot, Genbank, der EMBL Datenbank und der Protein Databank (PDB) ? (2P) (UK)
+
+Eine leere Query bei Uniprot (http://www.uniprot.org/uniprot/) liefert 539165 reviewte Proteine (Stand: 18.2.2013, 14:26), daher enthält Swissprot (der reviewte Teil von Uniprot) 539165 Proteine
+Genbank: http://www.ncbi.nlm.nih.gov/genbank/statistics
+Als Datenbasis wurde Release 194 gewählt, das aktuellste Release zu diesem Zeitpunkt (Stand: 18.2.2013, 14:26), in diesem Release enthält Genbank: 150141354858 Basen in 162886727 Sequenzen.
+EMBL: 279.6 Millionen Sequenzen, darin 542.2 Milliarden Basen (http://www.ebi.ac.uk/ena/about/statistics, Diagramm "EMBL Bank Growth")
+Die PDB enthält lauf http://www.rcsb.org/pdb/statistics/holdings.do am 18.2.2013, 14:36 Uhr insgesamt 81607 Proteine.

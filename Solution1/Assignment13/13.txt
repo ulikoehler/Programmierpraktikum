@@ -1,0 +1,5 @@
+13. Wie viele Strukturen sind derzeit in der PDB (X-Ray/NMR) (Proteins/Nucleic Acids/Protein-NA Complexes)? (2P) (TH)
+
+X-ray: Proteins: 72486, Nucleic Acids: 1434 Protein-NA Complexes: 3716
+NMR: Proteins: 8587, Nucleic Acids: 1018, Protein-NA Complexes: 192
+(http://www.rcsb.org/pdb/statistics/holdings.do) 

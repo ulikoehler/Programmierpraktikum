@@ -1,0 +1,26 @@
+16. Richten Sie in ihrem Praktikums - Home - Verzeichnis für ihre Gruppe ein SVN System ein. Stellen Sie sicher, dass alle Mitglieder der Gruppe (und nur diese) in das SVN einchecken und aus dem SVN wieder auschecken können. Dokumentieren Siealle Ihre Schritte! (6P)
+
+Die RBG hat die zum Subversion-Setup notwendigen Schritte unter http://www.rz.ifi.lmu.de/Dienste/Subversion dokumentiert.
+Den CIP-Nutzern wird das Skript mk_svn_repo.sh zur Verfügung gestellt, das im Verzeichnis ~/public_svn/ des aktuellen Nutzers ein neues Subversion-Repository im FSFS-Format (im Gegensatz zum früher häufig benutzten BDB-Format) erzeugt. Allerdings ist bei diesem Skript nicht frei wählbar, in welchem Pfad das Repository erzeugt wird.
+Anleitung: 
+Der ausführende Nutzer muss sich zuerst per SSH auf dem Biocluster einloggen (z.B. ssh koehleru@bioclient1.bio.ifi.lmu.de)
+Das Verzeichnis unserer Gruppe befindet sich in /home/proj/biocluster/praktikum/bioprakt/progprakt4.
+Um den Verzeichnisbaum clean zu halten, haben wir für das Subversion-Repository ein Verzeichnis svn angelegt, um für die Zukunft die Möglichkeit offenzuhalten, mehrere getrennte Subversion-Repositories zu verwalten, ohne dass alle Subversion-Repository-Verzeichnisse im Gruppen-Hauptverzeichnis liegen.
+Der Pfad, in dem sich alle Subversion-Repositories befinden ist daher /home/proj/biocluster/praktikum/bioprakt/progprakt4/svn.
+In diesem Verzeichnis kann mit dem Kommando
+svnadmin create Code --fs-type fsfs --pre-1.6-compatible
+das SVN-Repository erstellt werden. Da eine Nutzung des SVN-Repositories nicht der Intention dieser Gruppe entspricht, die stattdessen ein Git-Repository benutzt (siehe http://github.com/ulikoehler/Programmierpraktikum), wurde als Name für das SVN-Repository beliebig "Code" gewählt.
+
+Nun müssen die passenden Zugriffsrechte gesetzt werden um zu gewährleisten dass nur die Gruppe 4 auf das Repository zugreifen kann.
+Obwohl ein Teil der dafür notwendigen Attribute bereits standardmäßig gesetzt ist, kann zur Sicherheit die komplette Rechtevergabe durchgeführt werden (im svn-Directory):
+chgrp -R bpw12_4 Code/
+chmod -R o-rwx Code
+chmod -R g+rw Code
+Das Subversion-Repository ist nun bereit und kann nun ausgeckeckt werden, z.B. mit:
+svn checkout file:///home/proj/biocluster/praktikum/bioprakt/progprakt4/svn/Code
+
+Zum Zeitpunkt der Bearbeitung dieser Aufgabe war der passwortlose SSH-Login bereits aufgesetzt.
+Exemplarisch werden hier dennoch die Schritte zum Setup aufgezeigt
+1. cd ~/.ssh/ && ssh-keygen -t dsa # SSH-Key erstellen, bei Eingabeaufforderung einfach Return drücken.
+2. Die Datei ~/.ssh/id_dsa.pub auf dem entfernten Host an die Datei ~/.ssh/authorized_keys anhängen
+Ein Passwortloser login ist nur möglich, außer in der Konfiguration des SSH-Daemons ist das Authorized-Keys-Feature deaktiviert.

@@ -1,0 +1,10 @@
+7. Wie viele und welche Sequenzen aus Escherichia coli K12/DH10B enthalten das Prosite Pattern ,,PS00045"? Was beschreibt dieses Pattern? (3P) (YS)
+
+Eine uniprot-Suche ( "Escherichia coli K12/DH10B PS00045") liefert die 4  Ergebnisse:
+ Entry            Entry-Name                Protein Name                                                                Gen Name                                                                                                        Länge
+ B1XG19    IHFA_ECODH                  Integration host factor subunit alpha                              ihfA himA ECDH10B_1848Escherichia coli (strain K12 / DH10B)            99
+ B1X852     IHFB_ECODH                  Integration host factor subunit beta                                ihfB himD ECDH10B_0982Escherichia coli (strain K12 / DH10B)           94
+ B1XFM8    B1XFM8_ECODH             HU, DNA-binding transcriptional regulator, be...           hupB ECDH10B_0396Escherichia coli (strain K12 / DH10B)                   90
+ B1XC03    B1XC03_ECODH             HU, DNA-binding transcriptional regulator, al...            hupA ECDH10B_4189Escherichia coli (strain K12 / DH10B)                   90
+
+Das Pattern PS00045 beschreibt eine 'Bacterial histone-like DNA-binding proteins signature'.

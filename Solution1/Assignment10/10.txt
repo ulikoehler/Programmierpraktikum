@@ -1,0 +1,9 @@
+10. Wie viele Basenpaare hat das menschliche Genom? Welches ist das längste Chromosom des menschlichen Genoms, wie viele bp hat es? Wie viele Gene wurden auf dem Chromosom bisher lokalisiert? (3P) (RS)
+
+http://www.ensembl.org/Homo_sapiens/Location/Genome?r=6:133017695-133161157
+ganzes Genom:             3,320,602,130 bp
+längstes Chromosom: 1     249,250,621 bp
+Gene auf Chromosom 1:   4,098 (ohne Pseudogene)
+Protein coding gene     2,080
+Non coding gene          2,018
+Pseudogene                 1,129

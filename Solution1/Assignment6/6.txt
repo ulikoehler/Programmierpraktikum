@@ -1,0 +1,6 @@
+6. Wie erhalten Sie zu einer AC-Nummer die Sequenz im Fasta-Format, ohne das Webformular zu benutzen? (2P) (UK)
+
+Die URL http://www.uniprot.org/uniprot/${acNum}.fasta
+wobei ${acNum} die AC-Nummer angibt, erlaubt einen direkten Download der FASTA-Daten.
+Beispielsweise kann man unter http://www.uniprot.org/uniprot/Q9Y2H6.fasta die FASTA-Daten des Proteins
+mit der AC Q9Y2H6 herunterladen.

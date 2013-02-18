@@ -1,0 +1,1 @@
+Bitte unbedingt auch das README auf http://bioclient1.bio.ifi.lmu.de/~koehleru/bioprakt/readme.txt lesen - hier befinden sich wichtige Hinweise zum Programm!

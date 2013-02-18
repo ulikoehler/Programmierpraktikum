@@ -1,0 +1,18 @@
+9. Wie viele komplett sequenzierte Genome (bacteria / archaea / viruses / eukaryota) finden Sie auf der NCBI Genomes Website? Wie viele bei EBI? Sind die Daten konsistent? (4P) (YS)
+
+NCBI:
+  bacteria: 4062
+  archaea: 286
+  viruses: 3344
+  eukaryota: 1986
+
+( Anleitung: http://www.ncbi.nlm.nih.gov/Sitemap/Summary/statistics.html#EntrezGenomeStats
+  Quelle: http://www.ncbi.nlm.nih.gov/genome/?term=All%5BFilter%5D )
+
+EBI:
+  bacteria: 2204 ( http://www.ebi.ac.uk/genomes/bacteria.html )
+  archaea: 146   ( http://www.ebi.ac.uk/genomes/archaea.html )
+  viruses: 3176  ( http://www.ebi.ac.uk/genomes/virus.html ) 
+  eukaryota: 166 ( http://www.ebi.ac.uk/genomes/eukaryota.html )
+
+Die Anzahl der Genome bei NCBI unterscheidet sich zu denen von EBI. Somit können die Daten auch nicht konsistent sein.

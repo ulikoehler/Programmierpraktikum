@@ -1,0 +1,11 @@
+11. Wie viele Gene hat man derzeit auf Chromosom 22 im menschlichen Genom gefunden? Wie viele contigs gibt es auf Chromosom 22? Auf welchem Chromosom gibt es derzeit die meisten/wenigsten Gene? Welches hat die meisten/wenigsten contigs? (4P) (TH)
+
+Protein coding gene count: 511
+Non coding gene count: 385
+(Pseudogene count: 307)
+-> "Echte" Gene: 511 + 385 = 896
+(http://www.ensembl.org/Homo_sapiens/Location/Chromosome?r=22)
+Contigs insgesamt auf Chromosom 22: 4 (http://www.ncbi.nlm.nih.gov/projects/mapview/maps.cgi?TAXID=9606&chr=22&maps=cntg-r)
+Die meisten Gene hat Chromosom 1 (2080 + 2018 = 4098), die wenigsten Chromosom Y(56 + 119 = 165), sofern man von protein-coding und non-coding Genen ausgeht, nicht aber von Pseudogenes.
+Die meisten Contigs hat Chromosom 9 (24 Contogs) (http://www.ncbi.nlm.nih.gov/projects/mapview/maps.cgi?TAXID=9606&chr=9&maps=cntg-r),
+die wenigsten hat Chromosom 14 mit einem einzigen Contig (http://www.ncbi.nlm.nih.gov/projects/mapview/maps.cgi?TAXID=9606&chr=14&maps=cntg-r).

@@ -1,0 +1,15 @@
+14. Fallbeispiel: 2001 erhielt das Büro eines US Senators einen Brief mit einer verdächtigen Substanz (siehe http://www.fbi.gov/about-us/history/famous-cases/anthrax-amerithrax/the-search-for-anthrax). Mithilfe von PCR wurde eine DNA Sequenz identifiziert (im Datenverzeichnis unter Genomes/misteriosa.fasta).
+Führen Sie eine BLAST Suche (http://www.ncbi.nlm.nih.gov/blast/) durch um zu bestimmen aus welchen Organismen die Sequenz stammen könnte. Wie viele Bytes/Sequenzen wurden durchsucht? Verwenden Sie NCBI Pubmed (http://www.ncbi.nlm.nih.gov/pubmed) um zu bestimmen, welche der gefundenen Organismen potentiell tödlich sein könnten. (4P) (TH)
+
+Bacillus anthracis str. H9401 plasmid BAP1
+Laut "Search Summary" der BLAST-Suche beinhaltet die Datenbank 17,305,009 Sequenzen, Number of letters (=bytes) 44,275,614,379
+
+Bacillus anthracis str. H9401 plasmid BAP1, complete sequence
+Bacillus anthracis str. A0248 plasmid pXO1, complete sequence
+Bacillus anthracis virulence plasmid PX01, complete sequence
+Bacillus anthracis str. A2012 plasmid pXO1, complete sequence 
+Bacillus cereus biovar anthracis str. CI plasmid pCI-XO1, complete sequence
+Bacillus anthracis str. CDC 684 plasmid pX01, complete sequence
+Bacillus cereus strain G9241 plasmid pBCXO1, complete sequence
+
+Sowohl Bacillus anthracis als auch Bacillus cereus können potentiell tödlich sein.

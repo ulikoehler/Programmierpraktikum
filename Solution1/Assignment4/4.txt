@@ -1,0 +1,5 @@
+4. Wie viele Einträge zum Menschen und zu Mycoplasma Genitalium gibt es in SwissProt? Wie viele gibt es in TrEMBL? (2P) (TH)
+
+Eine  UniProt-Query mit dem Querystring organism:"mycoplasma genitalium"  zeigt, dass in Uniprot 483 Reviewed- (->Swissprot) und 2274 unreviewed (TrEMBL) Einträge zu  Mycoplasma Genitalium vorhanden sind, also insgesamt 2757 Einträge
+Eine UniProt-Query mit dem Querystring "human" liefert:  reviewed: 45,810, unreviewed: 1,355,084, insgesamt 1,400,894  (http://www.uniprot.org/uniprot/?query=human&sort=score)
+Dabei kombiniert Uniprot die Inhalte von Swissprot und TrEMBL, allerdings stammen die Ergebnisse, die "reviewed" sind, aus SwissProt, diejenigen, die "unreviewed" sind, stammen aus TrEMBL. (http://en.wikipedia.org/wiki/UniProt)

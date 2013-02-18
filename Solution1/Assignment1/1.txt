@@ -1,0 +1,4 @@
+1. Suchen Sie eine ExPASy Mirror Site. (1P) (UK)
+
+ExPASy.org selbst ist streng genommen einer der ExPASy-Mirrors, siehe http://expasy.org/.
+Eine weitere Mirror-Site kann unter http://www.proteinscience.com/expasymirror.htm gefunden werden.

@@ -1,0 +1,16 @@
+2. Welche Informationen stehen in einem Swissprot-Eintrag? (3P) (RS)
+
+(SwissProt = UniProt - TrEMBL )
+Names and Origin: Proteinnamen, Gennamen, Organismus, Taxon omic identifier, Taxonomic Lineage
+Proteine Attributes: Sequence Length, Sequence Status, Sequence Processing, Protein Existence
+General  Annotation: Function, Subunit Structure, Subcellular location,  Post-translational modification, Sequence similiarities, Sequence Caution
+Ontologies: Keywords, Gene Ontology
+Binary interactions
+Alternative products
+Sequence Annotation
+Sequences
+References
+Web resources
+Cross-References
+Entry information
+Relevant documents
