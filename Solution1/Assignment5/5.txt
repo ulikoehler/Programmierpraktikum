@@ -1,5 +1,5 @@
 5. Erzeugen Sie eine Datei mit allen Sequenzen aus SwissProt zu Mycoplasma Genitalium im Flat Text- und Fasta-Format. (4P) (TH)
 
-Canonical and isoform sequence data in FASTA format. (http://www.uniprot.org/uniprot/?query=Mycoplasma+Genitalium&force=yes&format=fasta&include=yes&reviewed=true)
-Complete data in the original flat text format. (http://www.uniprot.org/uniprot/?query=Mycoplasma+Genitalium&force=yes&format=txt&reviewed=true)
+Canonical sequence data in FASTA format. (http://www.uniprot.org/uniprot/?query=(Mycoplasma+Genitalium)+AND+reviewed%3ayes&force=yes&format=fasta)
+Complete data in the original flat text format. (http://www.uniprot.org/uniprot/?query=(Mycoplasma+Genitalium)+AND+reviewed%3ayes&force=yes&format=txt)
 Die Datei im Plaintext-Format findet sich in A5flat_uniprot-Mycoplasma+Genitalium.txt, die Datei im FASTA-Format findet sich in A5_uniprot-Mycoplasma+Genitalium.fasta
