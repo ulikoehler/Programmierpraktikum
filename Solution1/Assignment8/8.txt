@@ -1,0 +1,6 @@
+8. Führen Sie eine Blast-Suche mit einer dieser Sequenzen durch. Welche Sequenzen aus E. coli finden Sie hier? Was bedeuten die E-values, welche Werte finden Sie? (3P) (YS)
+
+für die Sequenz 'B1XG19' gibt es folgende gefundenen Sequenzen (entries):
+Q1RB83, B1LE18, B6I8Q5, B7N550, P0A6X7, B1IPL5, P0A6X8, Q0THB6, B1XG19, C4ZYH4, B7M1C1, B7MVJ1, B7NT64, B5YQ00, P0A6X9, B7L6I5, B7MAS3, B7US95, A7ZMI0, G7RFZ0, G7R7G5, E8Y6R3, E4P7V7, E3PN97, E1S0F8, E1PC07
+alle Ergebnisse weisen einen E-value von: E=7.0E-65 auf.
+Der E-Value gibt den Erwartungswert an, dass eine zufällige Sequenz die selbe Sequenzübereinstimmung erreicht.
