@@ -1,0 +1,12 @@
+#!/bin/sh
+if [ -z "$1" ]
+then
+	echo "Usage: work_load_average <hostname> [<SSH user>]"
+else
+	if  [ $# -ge 2 ]
+	then
+		ssh "$2@$1" "cat /proc/loadavg"
+	else
+		ssh $1 "cat /proc/loadavg"
+	fi
+fi

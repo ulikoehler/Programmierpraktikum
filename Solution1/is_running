@@ -1,0 +1,14 @@
+#!/bin/sh
+if [ $# -lt 2 ]
+then
+	echo "Usage: is_running <process_name> <username>"
+else
+	#Get the number of running processes
+	procs=$(pgrep -U $2 $1 | wc -l)
+	if [ $procs -eq 0 ]
+	then
+		exit 1
+	else
+		exit 0
+	fi
+fi
