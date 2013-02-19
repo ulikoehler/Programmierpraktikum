@@ -1,10 +1,11 @@
-#! /usr/bin/perl5.14.2 -wl
+#! /usr/bin/perl -w
 #warnings, newlines
 use strict;
 use LWP::Simple;
 
-print "Enter query for uniprot, you will receive the number of results.";
+print "Enter query for uniprot, you will receive the number of results:";
 my $line = <STDIN>;
+chomp $line;
 
 my $html = get("http://www.uniprot.org/uniprot/?query=".$line);
 my @chars = split("", $html);
@@ -20,4 +21,7 @@ $html =~ m/of <strong>.+<\/strong> result/;
 #print $-[0]." bis ".$+[0];
 #print $subs;
 $subs =~ m/(\d+,?)+/;
-print "Suche nach ".$line."ergibt: ".substr($subs,$-[0],$-[0]+$+[0]-2)." Ergebnisse.";
+if(!$line) {
+	$line = "<no filter>";
+}
+print "Searching for $line yields ".substr($subs,$-[0],$-[0]+$+[0]-2)." results\n";
