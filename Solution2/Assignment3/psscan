@@ -73,11 +73,12 @@ if($options{e}) { #Scan using prosite website
 	#Iterate over matches
 	my $haveMatches = 0;
 	print "Matches in " . substr($fastaHeadline, 1) . "\n";
-	while ($fastaData =~ m/$prositePattern/g) {
+	while ($fastaData =~ m/($prositePattern)/g) {
 		my $endPosition = pos $fastaData;
 		my $startPosition = $endPosition - length($1);
 		print "\tFound match $1, positions $startPosition to $endPosition \n";
 		$haveMatches = 1;
+		pos($fastaData) = pos($fastaData) - length($1) + 1
 	}
 	if(!$haveMatches) { # Didnt find anything
 		print "\tNone\n"; 
