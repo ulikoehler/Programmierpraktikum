@@ -1,0 +1,18 @@
+#! /usr/bin/perl -wl
+#warnings, newlines
+use strict;
+
+my $RNA;
+print "Enter nucleotide sequence:\n";
+my $line = <STDIN>;
+my @chars = split("", $line);
+for(my $i=0;$i<length($line);$i++){
+	if($chars[$i] eq "T"){
+		$RNA.="U";
+	}
+	elsif($chars[$i] eq "t"){$RNA.="u";}
+	else{
+		$RNA.=$chars[$i];
+	}
+}
+print "mRNA: ".$RNA;
