@@ -1,0 +1,38 @@
+#!/usr/bin/perl -w
+my $argc = @ARGV;
+#Check if we have enough arguments
+die "Usage: $0 <Species>\n" unless $argc == 1;
+#Parse arguments
+my $species=$ARGV[0];
+chomp $species;
+#Build the query part
+use URI::Escape;
+my $queryPart=uri_escape("organism:\"$species\"");
+#Assemble the URI
+my $url="http://www.uniprot.org/uniprot/?query=".$queryPart;
+my $pageContent = get $url;
+#Check if there is a result
+die "Could not submit query for species $species !\n" unless defined $pageContent;
+
+for ($pageContent) {
+	#Extract the line content
+	my $line = $_;
+	chomp($line);
+	#Regex-check if the line is reviewed or not (--> swissprot or trembl)
+	#Group 1 matches the number of entries (with thousands delimiter commata)
+	if ( $line =~   />reviewed\s+\(([\d\,]+)\)<\/a>/ ) {
+		$swissprotEntries= $1;
+		#Remove thousands separator chars (',') to get a plain number
+		$swissprotEntries=~ tr/,//d;
+	}
+	if ( $line =~ />unreviewed\s+\(([\d\,]+)\)<\/a>/ ) {
+		$tremblEntries= $1;
+		#Remove thousands separator chars (',') to get a plain number
+		$tremblEntries=~ tr/,//d;
+		#We have anything we need, so there is no need to iterate over more line
+		last;
+	}
+}
+print "Entries for species \"" . $species . "\":\n" ;
+print "\tSwissProt: " . $swissprotEntries ."\n";
+print "\tTrEMBL: " . $tremblEntries ."\n";
