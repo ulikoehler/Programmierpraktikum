@@ -1,17 +1,50 @@
 #!/usr/bin/perl -w
+
 use strict;
+
+# parse param
 my $argc = @ARGV;
 die "Usage: $0 <Organism name>" unless $argc == 1;
 my $organismName = $ARGV[0];
-#Donwload the genome report
+
+# Donwload the genome report
 use LWP::Simple;
-my $genomeReport= get "ftp://ftp.ncbi.nlm.nih.gov/genomes/GENOME_REPORTS/prokaryotes.txt";
+use Net::FTP ();
+
+my $file = "ftp://ftp.ncbi.nlm.nih.gov/genomes/GENOME_REPORTS/prokaryotes.txt";
+die(get($file));
+
+my $ftp = Net::FTP->new("ftp.ncbi.nlm.nih.gov", Debug => 0) or die "Cannot connect to some.host.name: $@";
+$ftp->login("anonymous", "-anonymous@") or die 'Cannot login ', $ftp->message;
+$ftp->cwd("/genomes/GENOME_REPORTS/") or die 'Cannot change working directory ', $ftp->message;
+$ftp->get("prokaryotes.txt", "temp") or die "get failed ", $ftp->message;
+$ftp->quit;
+
+
+die("");
+
+
+use LWP::Simple;
+use Net::FTP;
+$ftp = Net::FTP->new("ftp.ncbi.nlm.nih.gov") or die "error connecting\n".$ftp->message;
+$ftp->login('anonymous');
+$ftp->cwd("/genomes/GENOME_REPORTS/");
+$ftp->get("prokaryotes.txt", "temp") or die "error downloading\n".$ftp->message;
+$ftp->quit();
+
+my $genomeReport = "test";
+die($genomeReport);
+
+
+$genomeReport= $ftp->get("/genomes/GENOME_REPORTS/prokaryotes.txt");
 if(!$genomeReport) {
-	die "Could not download NCBI genome report!\n";
+	die "downloaded file is empty!\n";
 }
+
 #Find the line(s) with the organism
 foreach my $line (split /\n/ ,$genomeReport) {
 	if($line =~ m/^\Q$organismName\E\t/) {
+print $line;
 		if($line =~ m/^([^\t]+\t){5}([\d.]+)/) {
 			print "Genome of '$organismName' has length $2 Mb\n";
 		}
