@@ -24,8 +24,8 @@ if(!defined $numberOf) {
   chop ($numberOf = <STDIN>);
 }
 if(!defined $startPos) {
-  print "Warning: The starting position was not specified!\nassume: -s 0\n";
-  $startPos = "0";
+  print "Warning: The starting position was not specified!\nassume: -s -1\n";
+  $startPos = "-1";
 }
 
 # }}}
@@ -72,8 +72,11 @@ if($currentBlock) {
 my $count = 0;
 foreach my $gen(@genes) {
   # foreach subsequence with length = n
-  foreach my $startPos ($startPos .. (length($gen) - $numberOf)) {
-    my $seq = substr($gen, $startPos, $numberOf);
+  foreach my $s (0 .. (length($gen) - $numberOf)) {
+    if($s ne "-1") {
+      $s = $startPos;
+    }
+    my $seq = substr($gen, $s, $numberOf);
     # no other $gen contains $seq ?
     my $found = "false";
     foreach my $genCmp(@genes) {
@@ -85,6 +88,9 @@ foreach my $gen(@genes) {
     if($found eq "false") {
       $count += 1;
       last; # gen has an unique seq, don't want to search for another unique sequence
+    }
+    if($s ne "-1") {
+      last;
     }
   }
 }
