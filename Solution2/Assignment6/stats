@@ -3,16 +3,35 @@
 use strict;
 use LWP::Simple;
 
-print "Enter query for uniprot, you will receive the number of results; no query will return the database's current size:";
+print "Enter query for UNIPROT, you will receive the number of results; no query will return the database's current size:\n";
 my $line = <STDIN>;
 chomp $line;
 
 my $html = get("http://www.uniprot.org/uniprot/?query=".$line);
 my @chars = split("", $html);
-my $subs;
 $html =~ m/of <strong>(.+)<\/strong> result/;
-$subs =~ m/(\d+,?)+/;
 if(!$line) {
 	$line = "<no filter>";
 }
-print "Searching for $line yields ".$1." results\n";
+my $results = $1;
+$html =~ m/>reviewed \(((\d+,?)+)\)</;
+my $reviewed = $1;
+$html =~ m/>unreviewed \(((\d+,?)+)\)</;
+my $unreviewed = $1;
+print "Searching for $line yields ".$results." results in UNIPROT, ".$reviewed." are reviewed, ".$unreviewed." are unreviewed.\n";
+
+############################  PDB:
+my $pdb = get("http://www.rcsb.org/pdb/home/home.do");
+$pdb =~ m/="Retrieve all structures in the PDB">(\d+)<\/a> Structures/;
+my $all = $1;
+$pdb = get("http://www.rcsb.org/pdb/statistics/holdings.do");
+$pdb =~ m/<b>(\d+)<\/b><\/a> structures in the PDB have a structure factor file. <br>/;
+my $structFactor = $1;
+$pdb =~ m/<b>(\d+)<\/b><\/a> structures in the PDB have an NMR restraint file. <br>/;
+my $nmr = $1;
+$pdb =~ m/<b>(\d+)<\/b><\/a> structures in the PDB have a chemical shifts file.<\/P>/;
+my $chem = $1;
+print $all." results are currently stored in the PDB, ".$structFactor." structures in the PDB have a structure factor file, ".$nmr." structures in the PDB have an NMR restraint file, ".$chem." structures in the PDB have a chemical shifts file.\n";
+
+
+
