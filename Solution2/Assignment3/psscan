@@ -1,12 +1,40 @@
 #!/usr/bin/perl -w
 use strict;
 use LWP::Simple;
+use Getopt::Std;
+#Parse CLI arguments
+my %options=();
+getopts("ew:",\%options);
 #Komandozeilenparameter
 my $argc = @ARGV;
 #Check if we have at least one argument
-die "Usage: $0 <Prosite pattern>" unless $argc == 1;
+unless ($argc == 1 or defined $options{w}) {
+	print STDERR "Usage: $0 <Prosite pattern>\n";
+	print STDERR "\t-e Use PrositeScan for matching\n";
+	die "\t-w <ID> Download pattern by prosite ID\n";
+}
 #The prosite pattern is supplied as CLI arg
-my $prositePattern = $ARGV[0];
+my $prositePattern;
+if(defined $options{w}) {
+	use LWP::Simple;
+	my $prositePatternId = $options{w};
+	my $url = "http://prosite.expasy.org/" . $prositePatternId . ".txt";
+	my $pageContent = get $url;
+	if(!defined $pageContent) {
+		die "Could not fetch prosite info for prosite pattern ID " . $options{w} . "\n";
+	} else {
+		if ($pageContent =~ m/PA\s+([^.]+)./g) {
+			$prositePattern = $1;
+		} else {
+			die "Could not find prosite pattern " . $options{w} . "\n";
+		}
+	}
+} else {
+	#Read pattern from ARGV
+	$prositePattern = $ARGV[0]; #The content of this variable is conv to regex later!
+}
+my $originalPrositePattern = $prositePattern;
+print "Matching sequence to pattern " . $prositePattern . "\n";
 #...whereas the FASTA input is read from stdin (--> assemble it)
 my $fastaHeadline = ""; # The first nonempty line from stdin.
 my $fastaData = ""; #Sequence data only
@@ -19,7 +47,7 @@ chomp ($fastaData);
 #Convert the prosite pattern to a regular expression
 $prositePattern =~ s/x/\./g; #Replace x by . (matches any character)
 #Process exclusion specifiers like {GA}
-$prositePattern =~ s/\{\w+\}/\[\^$1\]/g; #Replace (3) by {3}
+$prositePattern =~ s/\{(\w+)\}/\[\^$1\]/g; #Replace {3} by [^3]
 #Replace length specifiers. Split into two regexes to improve readability
 $prositePattern =~ s/\((\d+)\)/\{$1\}/g; #Replace (3) by {3}
 $prositePattern =~ s/\((\d+,\d+)\)/\{$1\}/g; #Replace (3,5) by {3,5}
@@ -31,18 +59,27 @@ $prositePattern = "(" . $prositePattern . ")";
 #
 # Matching
 #
-#Iterate over matches
-my $haveMatches = 0;
-print "Matches in " . substr($fastaHeadline, 1) . "\n";
-#my $startPosition = 0;
-#my $endPosition = 0;
-while ($fastaData =~ m/$prositePattern/g) {
-	my $endPosition = pos $fastaData;
-	my $startPosition = $endPosition - length($1);
-        print "\t Matched $1, positions $startPosition to $endPosition \n";
-	$haveMatches = 1;
+if($options{e}) { #Scan using prosite website
+	use LWP::UserAgent; 
+	use HTTP::Request::Common qw{ POST };
+	my $wsUrl = "http://prosite.expasy.org/cgi-bin/prosite/PSScan.cgi";
+	my $ua      = LWP::UserAgent->new();
+	my $fastaAll = $fastaHeadline . "\n" . $fastaData;
+	my $request = POST($wsUrl, [ 'seq' => $fastaAll , 'sig' => $originalPrositePattern, 'output'=>'txt'] );
+	my $content = $ua->request($request)->content;
+	chomp $content; # It contains an extra line at the end
+	print $content;
+} else { #Scan manually
+	#Iterate over matches
+	my $haveMatches = 0;
+	print "Matches in " . substr($fastaHeadline, 1) . "\n";
+	while ($fastaData =~ m/$prositePattern/g) {
+		my $endPosition = pos $fastaData;
+		my $startPosition = $endPosition - length($1);
+		print "\tFound match $1, positions $startPosition to $endPosition \n";
+		$haveMatches = 1;
+	}
+	if(!$haveMatches) { # Didnt find anything
+		print "\tNone\n"; 
+	}
 }
-if(!$haveMatches) { # Didnt find anything
-	print "\tNone\n"; 
-}
-print $prositePattern;
