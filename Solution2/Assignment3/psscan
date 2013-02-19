@@ -36,11 +36,18 @@ if(defined $options{w}) {
 my $originalPrositePattern = $prositePattern;
 print "Matching sequence to pattern " . $prositePattern . "\n";
 #...whereas the FASTA input is read from stdin (--> assemble it)
+my $alreadyReadFirstLine = 0;
 my $fastaHeadline = ""; # The first nonempty line from stdin.
 my $fastaData = ""; #Sequence data only
 while (<STDIN>) {
-	$fastaHeadline = $_ unless $fastaHeadline;
-        $fastaData = $fastaData . $_ if $fastaHeadline;
+	if($_ =~ m/^>/) {
+		$fastaHeadline = $_;
+		$alreadyReadFirstLine = 1 if length($fastaHeadline) > 0;
+	} else {
+		my $line = $_;
+		chomp $line;
+		$fastaData = $fastaData . $line
+	}
 }
 chomp($fastaHeadline);
 chomp ($fastaData);
@@ -74,8 +81,8 @@ if($options{e}) { #Scan using prosite website
 	my $haveMatches = 0;
 	print "Matches in " . substr($fastaHeadline, 1) . "\n";
 	while ($fastaData =~ m/($prositePattern)/g) {
-		my $endPosition = pos $fastaData;
-		my $startPosition = $endPosition - length($1);
+		my $endPosition = (pos $fastaData);
+		my $startPosition = $endPosition - length($1) + 1;
 		print "\tFound match $1, positions $startPosition to $endPosition \n";
 		$haveMatches = 1;
 		pos($fastaData) = pos($fastaData) - length($1) + 1
