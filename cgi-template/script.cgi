@@ -1,9 +1,6 @@
-#!/usr/bin/ruby
-require 'cgi'
-cgi = CGI.new
-#How to parse GET (URL) or POST(form) parameters
-#cgi['SomeGetParameter'] # =>  ["ValueOfTheParameter"]
-#List of all GET/POST parameter keys: cgi.keys
-#Write the response
-puts cgi.header
-puts "<html><body>This is a #{cgi["param"]}</body></html>"
+#!/usr/bin/perl -w
+#Initialize CGI parser
+use CGI qw(:standard);
+print header;
+#
+print "<html><body>This is a ",param('param'),"</body></html>"

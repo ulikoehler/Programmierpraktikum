@@ -1,0 +1,15 @@
+#!/usr/bin/perl
+my $argc = @ARGV;
+#Check if we have enough arguments
+die "Usage: $0 <AC number>\n" unless $argc == 1;
+#We have enough arguments, so parse them and start downloading
+my $acNum = $ARGV[0];
+chomp $acNum; #Strip the newline and whitespace from the argument
+my $url = 'http://www.uniprot.org/uniprot/' .  $acNum . '.fasta';
+#Use LWP to download and print on stdout
+use LWP::Simple;
+my $content = get $url;
+#Check if there is a valid results
+die "Protein with AC $acNum can't be downloaded!\n" unless defined $content;
+#Print the FASTA data to stdout
+print $content;
