@@ -1,226 +1,95 @@
 #! /usr/bin/perl -w
 
-# unique by Yann Spöri
-# 
-# read params
-#  -f genom-file
-#  -n number of bases
-#  -s startposition
-# output: see spec.
-# return: none
+use strict;
+use LWP::Simple;
+use Getopt::Std;
 
-# {{{ parseArguments
+# {{{ parse command line params
 
-sub parseArguments
-{
-  # fill out
-  $genomeFile = "";
-  $numberOf = "";
-  $startPos = "";
-  
-  # parse in args
-  $flag = 0;
-  foreach $argnum (0 .. $#ARGV) {
-    # beginning argument!
-    if($flag == 0) {
-      if($ARGV[$argnum] eq "-f") {
-        $flag = 1;
-      } elsif($ARGV[$argnum] eq "-n") {
-        $flag = 2;
-      } elsif($ARGV[$argnum] eq "-s") {
-        $flag = 3;
-      } else {
-        die "unknown argument: \"$ARGV[$argnum]\"!\n";
-      }
-    }
-    # file
-    elsif($flag == 1) {
-      $genomeFile = $ARGV[$argnum];
-      $flag = 0;
-    }
-    # number
-    elsif($flag == 2) {
-      $numberOf = $ARGV[$argnum];
-      $flag = 0;
-    }
-    # startPos
-    elsif($flag == 3) {
-      $startPos = $ARGV[$argnum];
-      $flag = 0;
-    }
-  }
-  
-  # unclosed param
-  if($flag != 0) {
-    die "missing argument!\n";
-  }
-  
-  # read in not specified arguments
-  if(!$genomeFile) {
-    print "Please enter file: ";
-    chop ($genomeFile = <STDIN>);
-  }
-  if(!$numberOf) {
-    print "Warning: The number of bases was not specified!\nassume: -n -1 = all\n";
-    $numberOf = "-1";
-  }
-  if(!$startPos) {
-    print "Warning: The starting position was not specified!\nassume: -s -1 = all\n";
-    $startPos = "-1";
-  }
-  
-  # return
-  return ($genomeFile, $numberOf, $startPos);
+my %options=();
+getopts("f:n:s",\%options);
+
+# variables for param args
+my $genomeFile = $options{f};
+my $numberOf = $options{n};
+my $startPos = $options{s};
+
+# fillout not defined args
+if(!defined $genomeFile) {
+  print "Please enter file: ";
+  chop ($genomeFile = <STDIN>);
+}
+if(!defined $numberOf) {
+  print "Please enter number of bases: ";
+  chop ($numberOf = <STDIN>);
+}
+if(!defined $startPos) {
+  print "Warning: The starting position was not specified!\nassume: -s 0\n";
+  $startPos = "0";
 }
 
 # }}}
-# {{{ fileToArray
+# {{{ read file
 
-sub fileToArray
-{
-  # get filename out of argument, open and return all lines in an array
-  ($filename) = @_;
-  open FILEHANDLE, "<".$filename or die("can't open file!");
-  return <FILEHANDLE>;
-}
+open FILEHANDLE, "<".$genomeFile or die("can't open file!");
+my @lines = <FILEHANDLE>;
+close(FILEHANDLE);
 
 # }}}
-# {{{ linesToGeneBlocks
+# {{{ parse fasta file
 
-sub linesToGeneBlocks
-{
-  # get gene block out of lines
-  (@lines) = @_;
-  
-  # all geneBlocks
-  @geneBlock = ();
-  
-  # parse all lines
+my @genes = ();
+
+# parse all lines
+my $currentBlock = "";
+foreach my $line (@lines) {
+  # line starts with '>'
+  if(substr($line, 0, 1) eq ">") {
+    # a new block starts
+    if($currentBlock) { # don't save any empty blocks
+      push(@genes, $currentBlock);
+      $currentBlock = "";
+    }
+  }
+  # line starts with ';' ?
+  elsif(substr($line, 0, 1) eq ";") { } # comment => do nothing!
+  # "Data" line
+  else {
+    # append to current block
+    $line =~ s/\s//g;
+    $currentBlock = $currentBlock.$line;
+  }
+}
+if($currentBlock) {
+  push(@genes, $currentBlock);
   $currentBlock = "";
-  foreach my $line (@lines) {
-    # line starts with '>'
-    # => new gene
-    if(substr($line, 0, 1) eq ">") {
-      # a new block starts
-      # save last one if not empty
-      if($currentBlock) {
-        push(@geneBlock, $currentBlock);
-        $currentBlock = "";
+}
+
+# }}}
+# {{{ calculate stuff
+
+# calc
+my $count = 0;
+foreach my $gen(@genes) {
+  # foreach subsequence with length = n
+  foreach my $startPos ($startPos .. (length($gen) - $numberOf)) {
+    my $seq = substr($gen, $startPos, $numberOf);
+    # no other $gen contains $seq ?
+    my $found = "false";
+    foreach my $genCmp(@genes) {
+      if(($gen ne $genCmp) && (index($genCmp, $seq) != -1)) {
+        $found = "true";
+        last; # found a sequence, don't have to find another one
       }
     }
-    # line starts with ';' ?
-    # => comment, do nothing
-    elsif(substr($line, 0, 1) eq ";") {
-      # comment
-    }
-    # line is an empty line
-    else {
-      # append to current block
-      $line =~ s/ //g;
-      chomp($line);
-      $currentBlock = $currentBlock.$line;
+    if($found eq "false") {
+      $count += 1;
+      last; # gen has an unique seq, don't want to search for another unique sequence
     }
   }
-  if($currentBlock) {
-    push(@geneBlock, $currentBlock);
-    $currentBlock = "";
-  }
-  
-  # return
-  return @geneBlock
 }
 
-# }}}
-# {{{ maxGenLength
-
-sub maxGenLength
-{
-  # get arguments
-  (@genes) = @_;
-  
-  # get longest
-  $longest = 0;
-  foreach my $gen (@genes)
-  {
-    $length = length($gen);
-    if($longest < $length)
-    {
-      $longest = $length;
-    }
-  }
-  
-  # return length
-  return $longest;
-}
-
-# }}}
-# {{{ initHashMap
-
-sub initHashMap
-{
-  # arguments
-  my (@genes, $length, $startPos) = @_;
-  
-  # map
-  my %map = ();
-  
-  # init map
-  foreach $key (@genes) {
-    $map {$key} = 1;
-  }
-  
-  # 
-  
-}
-
-# }}}
-# {{{ calcResult
-
-sub calcResult
-{
-  # arguments
-  my (@genes, $numberOf, $startPos) = @_;
-  
-  # generell data init
-  $maxLength = maxGenLength(@genes);
-  $cGenes = $#genes + 1;
-  
-  # init hash map
-  my(%map) = ();
-  if($startPos eq "-1") {
-    foreach $startPos (1 .. $maxLength) {
-      %map = (%map, initHashMap(@genes, $length, $startPos));
-    }
-  } else {
-    my(%map) = initHashMap(@genes, $length, $startPos);
-  }
-  
-  # count
-  $count = 0;
-  
-  
-  # calc result and return
-  
-}
-
-# }}}
-# {{{ main
-
-# parse all arguments
-my ($genomeFile, $numberOf, $startPos) = parseArguments();
-# read lines from file
-my (@lines) = fileToArray($genomeFile);
-# extract the genes from the line array
-my (@genes) = linesToGeneBlocks(@lines);
-
-# print table
-print "n\t\t%\n";
-if($numberOf eq "-1") {
-  foreach $length (1 .. $maxLength) {
-    print calcResult(@genes, $length, $startPos);
-  }
-} else {
-  print calcResult(@genes, $numberOf, $startPos);
-}
+# return number
+print "n: ".$numberOf." eq ".(($count) / ($#genes + 1) * 100)."%\n\n";
 
 # }}}
