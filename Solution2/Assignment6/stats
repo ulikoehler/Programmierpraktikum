@@ -3,25 +3,16 @@
 use strict;
 use LWP::Simple;
 
-print "Enter query for uniprot, you will receive the number of results:";
+print "Enter query for uniprot, you will receive the number of results; no query will return the database's current size:";
 my $line = <STDIN>;
 chomp $line;
 
 my $html = get("http://www.uniprot.org/uniprot/?query=".$line);
 my @chars = split("", $html);
 my $subs;
-if($html =~ m/of <strong>.+<\/strong> result/){
-	my $regexLocation = $-[0];
-	for(my $i=$regexLocation+10;$i<$regexLocation+30;$i++){
-		$subs.=$chars[$i];
-	}
-	
-}
-$html =~ m/of <strong>.+<\/strong> result/;
-#print $-[0]." bis ".$+[0];
-#print $subs;
+$html =~ m/of <strong>(.+)<\/strong> result/;
 $subs =~ m/(\d+,?)+/;
 if(!$line) {
 	$line = "<no filter>";
 }
-print "Searching for $line yields ".substr($subs,$-[0],$-[0]+$+[0]-2)." results\n";
+print "Searching for $line yields ".$1." results\n";
