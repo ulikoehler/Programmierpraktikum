@@ -1,0 +1,19 @@
+#!/usr/bin/perl -w
+use strict;
+my $argc = @ARGV;
+die "Usage: $0 <Organism name>" unless $argc == 1;
+my $organismName = $ARGV[0];
+#Donwload the genome report
+use LWP::Simple;
+my $genomeReport= get "ftp://ftp.ncbi.nlm.nih.gov/genomes/GENOME_REPORTS/prokaryotes.txt";
+if(!$genomeReport) {
+	die "Could not download NCBI genome report!\n";
+}
+#Find the line(s) with the organism
+foreach my $line (split /\n/ ,$genomeReport) {
+	if($line =~ m/^\Q$organismName\E\t/) {
+		if($line =~ m/^([^\t]+\t){5}([\d.]+)/) {
+			print "Genome of '$organismName' has length $2 Mb\n";
+		}
+	}
+}

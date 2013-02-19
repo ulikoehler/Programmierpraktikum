@@ -1,0 +1,31 @@
+#!/usr/bin/perl -w
+use strict;
+use Getopt::Std;
+#Parse CLI arguments
+my %options=();
+getopts("f:k:",\%options);
+my $keyword = $options{k};
+my $file = $options{f};
+if(not defined $options{k} or not defined $options{f}) {
+	die "Usage: $0 -k <keyword> -f <data file>\n";
+}
+#No positional arguments here
+open my $fileHandle, '<', $file or die "Could not open file $file for reading: $!\n";
+my $currentAC = "[No AC Found!]";
+my $alreadyPrintedCurrentAC = 1;
+while ( my $line = <$fileHandle> ) {
+	chomp $line;
+	if($line =~ m/^AC\s+([A-Z0-9]+);$/) {
+		$currentAC = $1;#qnd
+		$alreadyPrintedCurrentAC = 0; #Reset
+		chomp $currentAC;
+	}
+	if($line =~ m/^KW\s+(.+)$/) {
+		if(index($1, $keyword) != -1) {
+			if(!$alreadyPrintedCurrentAC) {
+				$alreadyPrintedCurrentAC = 1;
+				print $currentAC."\n";
+			}
+		}
+	}
+}
