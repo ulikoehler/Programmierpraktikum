@@ -70,37 +70,35 @@ my(%genetic_code) = (
 'GGU' => 'G'  # Glycine
 );
 
-my $protein;
+print "Enter nucleotide sequence (press Enter, then Ctrl+D when finished to close STDIN):";
+my @lines = <STDIN>;
+my $protein1 = $lines[0];#append the head of the fasta file
+my $protein2 = $lines[0];
+my $protein3 = $lines[0];
+my $protein4 = $lines[0];
+my $protein5 = $lines[0];
+my $protein6 = $lines[0];
 
-my $sequence;
-while (<STDIN>) {
-	if(not ($_ =~ m/^>/)) {
-		my $line = $_;
-		chomp $line;
-		$sequence.=$line;
+my $RNA;
+for(my $i=0;$i<scalar(@lines);$i++){
+	for(my $j=0;$j<length($lines[$i]);$j++){
+		$RNA.=substr($lines[$i],$j,1);
 	}
 }
-### Frame 1:
-for(my $i=0;$i<length($ARGV[0])-2;$i+=3){
-	$protein.=$genetic_code{substr($ARGV[0],$i,3)};
+my $reverseRNA = scalar reverse($RNA);
+
+for(my $i=0;$i<length($RNA);$i+=3){#...fasta head will be overridden
+	$protein1.=$genetic_code{substr($RNA,$i,3)};
+	$protein2.=$genetic_code{substr($RNA,$i+1,3)};
+	$protein3.=$genetic_code{substr($RNA,$i+2,3)};
+	$protein4.=$genetic_code{substr($reverseRNA,$i,3)};
+	$protein5.=$genetic_code{substr($reverseRNA,$i+1,3)};
+	$protein6.=$genetic_code{substr($reverseRNA,$i+2,3)};
 }
-print "Frame 1: ".$protein."\n";
-### Frame 2:
-$protein = "";
-for(my $i=1;$i<length($ARGV[0])-2;$i+=3){
-	$protein.=$genetic_code{substr($ARGV[0],$i,3)};
-}
-print "Frame 2: ".$protein."\n";
-### Frame 3:
-$protein = "";
-for(my $i=2;$i<length($ARGV[0])-2;$i+=3){
-	$protein.=$genetic_code{substr($ARGV[0],$i,3)};
-}
-print "Frame 3: ".$protein."\n";
-### Frame 4:
-$protein = "";
-for(my $i=2;$i<length($ARGV[0])-2;$i+=3){
-	$protein.=$genetic_code{substr($ARGV[0],$i,3)};
-}
-print "Frame 3: ".$protein."\n";
+print "Frame 1: ".$protein1."\n";
+print "Frame 2: ".$protein2."\n";
+print "Frame 3: ".$protein3."\n";
+print "Frame 4: ".$protein4."\n";
+print "Frame 5: ".$protein5."\n";
+print "Frame 6: ".$protein6."\n";
 
