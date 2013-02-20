@@ -11,9 +11,12 @@ my $organismName = $ARGV[0];
 use LWP::Simple;
 use Net::FTP ();
 
+my $genomeContent= `wget -qO- ftp://ftp.ncbi.nlm.nih.gov/genomes/GENOME_REPORTS/prokaryotes.txt`;
+die "Could not download prokaryote info URL from NCBI server!\n" unless $genomeContent;
+
+
 my $prokaryoteInfoUrl = "ftp://ftp.ncbi.nlm.nih.gov/genomes/GENOME_REPORTS/prokaryotes.txt";
 my $genomeContent = get $prokaryoteInfoUrl
-die "Could not download prokaryote info URL from NCBI server!\n" unless $genomeContent;
 
 use LWP::Simple;
 use Net::FTP;
