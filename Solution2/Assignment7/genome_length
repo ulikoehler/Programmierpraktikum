@@ -3,35 +3,20 @@ use strict;
 use Getopt::Std;
 my %options=();
 getopts("r",\%options);
+my $organismIsRegex = defined $options{r};
 
 my $argc = @ARGV;
 die "Usage: $0 <Organism name> [-r]\n\tIf -r is given the argument is interpreted as regex" unless $argc >= 1;
 my $organismName = $ARGV[0];
-my $organismIsRegex = defined $options{r};
+print "Interpreting organism '$organismName' as regular expression\n" if $organismIsRegex;
 
-sub downloadGenomeReport {
-	 use Net::FTP;
-	my $ftp = Net::FTP->new("ftp.ncbi.nlm.nih.gov", Debug => 0,  Passive => 1) or die "Cannot connect to ftp.ncbi.nlm.nih.gov: $@";
-	$ftp->login("anonymous",'-anonymous@') or die "Cannot login anonymously ", $ftp->message;
-	$ftp->cwd("/genomes") or die "Cannot CWD to genomes ", $ftp->message;
-	$ftp->cwd("GENOME_REPORTS") or die "Cannot CWD to genomes ", $ftp->message;
-	$ftp->get("prokaryotes.txt") or die "FTP download failed: ", $ftp->message; # Downloads the file to the current local CWD
-	$ftp->quit;
-	#Read the file
-	open FILE, "prokaryotes.txt" or die "Couldn't open prokaryotes.txt: $!";
-	my $genomeReportContent = <FILE>;
-	close FILE;
-	#Delete the file
-	unlink("prokaryotes.txt");
-	#Return it
-	print $genomeReportContent;
-	$genomeReportContent;
-}
+$ENV{'FTP_PASSIVE'} = "1";
+
 #Donwload the genome report
 use LWP::Simple;
-#my $genomeReport= get "ftp://ftp.ncbi.nlm.nih.gov/genomes/GENOME_REPORTS/prokaryotes.txt";
+my $genomeReport= get "ftp://ftp.ncbi.nlm.nih.gov/genomes/GENOME_REPORTS/prokaryotes.txt";
 #Alternate method that also works on CIP
-my $genomeReport= downloadGenomeReport();
+#my $genomeReport= downloadGenomeReport();
 print $genomeReport;
 if(!$genomeReport) {
 	die "Could not download NCBI genome report!\n";
