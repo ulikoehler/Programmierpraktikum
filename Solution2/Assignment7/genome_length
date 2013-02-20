@@ -16,7 +16,6 @@ use LWP::Simple;
 my $genomeReport= get "ftp://ftp.ncbi.nlm.nih.gov/genomes/GENOME_REPORTS/prokaryotes.txt";
 #Alternate method that also works on CIP
 #my $genomeReport= downloadGenomeReport();
-print $genomeReport;
 if(!$genomeReport) {
 	die "Could not download NCBI genome report!\n";
 }
