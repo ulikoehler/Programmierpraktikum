@@ -3,20 +3,18 @@
 use strict;
 use LWP::Simple;
 use Getopt::Std;
-
-# {{{ parse command line params
-
+#Parse CLI options
 my %options=();
 getopts("f:n:s",\%options);
-
-# variables for param args
+#die "Usage: $0 -f <Genome file> -n <number of> -s <Start position>" unless defined $options{f} and defined $options{n} defined $options{s};
+#Assign the variables
 my $genomeFile = $options{f};
 my $numberOf = $options{n};
 my $startPos = $options{s};
 
 # fillout not defined args
 if(!defined $genomeFile) {
-  print "Please enter file: ";
+  print "Please enter genome file: ";
   chop ($genomeFile = <STDIN>);
 }
 if(!defined $numberOf) {
@@ -24,23 +22,17 @@ if(!defined $numberOf) {
   chop ($numberOf = <STDIN>);
 }
 if(!defined $startPos) {
-  print "Warning: The starting position was not specified!\nassume: -s -1\n";
+  print "Warning: The starting position was not specified!\nAssuming standard value: -s -1\n";
   $startPos = "-1";
 }
-
-# }}}
-# {{{ read file
-
+#Check if the input files exist
+die "The genome file '$genomeFile' does not exist. Please use an existing file as filename\n" unless -e $genomeFile;
+#Read the file into a string
 open FILEHANDLE, "<".$genomeFile or die("can't open file!");
 my @lines = <FILEHANDLE>;
 close(FILEHANDLE);
-
-# }}}
-# {{{ parse fasta file
-
-my @genes = ();
-
-# parse all lines
+#Parse FASTA format
+my @genes = (); #A list of the individual FASTA blocks
 my $currentBlock = "";
 foreach my $line (@lines) {
   # line starts with '>'
@@ -52,7 +44,7 @@ foreach my $line (@lines) {
     }
   }
   # line starts with ';' ?
-  elsif(substr($line, 0, 1) eq ";") { } # comment => do nothing!
+  elsif(substr($line, 0, 1) eq ";") { } # FASTA comment => do nothing!
   # "Data" line
   else {
     # append to current block
@@ -64,11 +56,7 @@ if($currentBlock) {
   push(@genes, $currentBlock);
   $currentBlock = "";
 }
-
-# }}}
-# {{{ calculate stuff
-
-# calc
+#Do the main calculation
 my $count = 0;
 foreach my $gen(@genes) {
   # foreach subsequence with length = n
@@ -94,8 +82,5 @@ foreach my $gen(@genes) {
     }
   }
 }
-
 # return number
 print "n: ".$numberOf." eq ".(($count) / ($#genes + 1) * 100)."%\n\n";
-
-# }}}

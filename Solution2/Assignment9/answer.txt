@@ -1,0 +1,60 @@
+9.
+a) Nehmen Sie an, dass alle Nucleotide mit gleicher Wahrscheinlichkeit auftreten:
+Was ist die erwartete Anzahl von Vorkommnissen der Strings:
+- CTAG im Genom von Mycobacterium tuberculosis
+- CG im menschlichen Chromosom 8
+- AACCCTGTC im Genom von Mycobacterium tuberculosis und im menschlichen Chromosom 8 (2P)
+
+Mycobacterium tuberculosis: 4.421.197 Nucleotide im Genom:  (4.421.197 - 3) = 4.421.194 mögliche 4-Tupel. Bei gleicher Verteilung ist alle 4^4 = 256 4-Tupel ein CTAG, folglich ewartet man 4.421.194 / 256 = 17270, ... CTAG
+
+Chromosom 8: 146,364,022 Nukleotide auf Genom 8: (146.364.022-1) = 146.364.021 mögliche 2-Tupel. Bei gleicher Verteilung ist alle 4^2 = 16 2-Tupel  ein CG, also 146.364.021 / 16 = 9147751,... ewartete CG
+
+AACCCTGTC: bei gleicher Verteilung ist jedes 4^9 = 262.144te 9-Tupel ein AACCCTGTC
+In Mycobacterium tuberculosis: (4.421.197 - 8) / 262.144 = 16, ... ewartete Vorkommen
+Auf Chromosom 8: (146.364.022 - 8) / 262.144 = 558, .... ewartete Vorkommen
+
+
+b) Schreiben Sie ein Programm zum Zählen von Vorkommen von kurzen Sequenzstücken in einem Genom. Geben Sie außerdem eine Textdatei mit den Antworten auf die folgenden Fragen ab. Entfernen Sie hierbei aller auftretenden N's aus der Genom-Datei. (10P)
+
+done: incidence.pl im ordner
+
+c) Was ist die Verteilung von A, C, G, T im Mycobacterium tuberculosis Genom und im menschlichen Chromosom 8? (2P)
+
+Mycobacterium tuberculosis
+A: 759.882       Anteil = 17,19%
+C: 1.453.511    Anteil = 32,88%
+G: 1.447.879    Anteil = 32,75%
+T:  759.925       Anteil = 17,19%
+
+
+Chromosom 8
+A: 42.767.293  Anteil = 29,22%
+C: 28.703.983  Anteil = 19,61%
+G: 28.702.621  Anteil = 19.61%
+T:  42.715.025  Anteil = 29,18%
+
+
+d) Vergleichen Sie die erwartete Anzahl der Vorkommen folgender Sequenzstücke mit der tatsächlichen Anzahl, gegeben dass alle Nukleotide mit gleicher Wahrschein-lichkeit vorkommen:
+- CTAG im Genom von Mycobacterium tuberculosis
+- CG im menschlichen Chromosom 8
+- AACCCTGTC im Genom von Mycobacterium tuberculosis und im menschlichen Chromosom 8 (3P)
+Verwenden Sie für die Berechnung der tatsächlichen Vorkommen das Programm incidence (b)!
+
+Mycobacterium tuberculosis
+CTAG:                 gefunden : 3.962   ewartet:  17.270
+AACCCTGTC     gefunden : 6          erwartet: 16
+
+Chromosom 8
+CG                       gefunden : 1.309.137   ewartet:  9.147.751
+AACCCTGTC      gefunden : 3.420          erwartet: 558
+
+e) Wiederholen sie (d), berechnen nun allerdings nicht unter der Annahme der Gleichverteilung der Nukleotide. Verwenden sie stattdessen die in (c) berechneten relativen Häufigkeiten. (3P)
+
+Mycobacterium tuberculosis
+CTAG:                        0,1719 *  0,3288 * 0,1719 * 0,3275 = 3,17905  * 10^-3                  => alle 314           4-Tupel  =>  14.080 erwartet
+AACCCTGTC:            0,1719^2 * 0,3288^4 *  0,3275 * 0,1719^2 *    = 3,34227 * 10^-6   => alle 299.197    9-Tupel  =>  14        erwartet
+
+Chromosom 8
+CG:                           0.1961 * 0.1961 = 3.84552 * 10^-2                                                 => alle 26         2-Tupel      =>5,6 * 10^6 erwartet
+AACCCTGTC:           0,2922^2 * 0,1961^4 * 0,1961 * 0,2918^2  = 2,10823 * 10^-6          => alle 474.331 9-Tupel      =>308           erwartet
+

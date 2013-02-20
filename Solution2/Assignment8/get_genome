@@ -11,18 +11,12 @@ my $organismName = $ARGV[0];
 use LWP::Simple;
 use Net::FTP ();
 
-my $file = "ftp://ftp.ncbi.nlm.nih.gov/genomes/GENOME_REPORTS/prokaryotes.txt";
-die(get($file));
-
-my $ftp = Net::FTP->new("ftp.ncbi.nlm.nih.gov", Debug => 0) or die "Cannot connect to some.host.name: $@";
-$ftp->login("anonymous", "-anonymous@") or die 'Cannot login ', $ftp->message;
-$ftp->cwd("/genomes/GENOME_REPORTS/") or die 'Cannot change working directory ', $ftp->message;
-$ftp->get("prokaryotes.txt", "temp") or die "get failed ", $ftp->message;
-$ftp->quit;
+my $genomeContent= `wget -qO- ftp://ftp.ncbi.nlm.nih.gov/genomes/GENOME_REPORTS/prokaryotes.txt`;
+die "Could not download prokaryote info URL from NCBI server!\n" unless $genomeContent;
 
 
-die("");
-
+my $prokaryoteInfoUrl = "ftp://ftp.ncbi.nlm.nih.gov/genomes/GENOME_REPORTS/prokaryotes.txt";
+my $genomeContent = get $prokaryoteInfoUrl
 
 use LWP::Simple;
 use Net::FTP;
