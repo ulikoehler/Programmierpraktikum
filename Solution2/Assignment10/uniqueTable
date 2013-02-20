@@ -1,7 +1,7 @@
 #! /usr/bin/bash
 
 echo "n to %"
- for n in 100 110 120 130 140 150 160 170 180 190 200
+ for n in 1 2 3 4 5 6 7 8 9
   do
    perl unique -f U00096.ffn -n $n -s all
   done
