@@ -85,11 +85,13 @@ my $protein6 = $lines[0];
 
 my $RNA;
 for(my $i=1 ;$i<scalar(@lines);$i++){
-	for(my $j=0;$j<length($lines[$i]);$j++){
-		$RNA.=substr($lines[$i],$j,1);#build $RNA by concatenating all the input from STDIN
-	}
+	#for(my $j=0;$j<length($lines[$i]);$j++){
+	$RNA.=$lines[$i];#build $RNA by concatenating all the input from STDIN
+	chomp $RNA;
+	#}
 }
 chomp $RNA;
+print "RNA: ".$RNA;
 
 die "Your file does not contain a correct RNA sequence\n" unless $RNA !~ m/[^AUGCaugc]/;#checks if the input is actually a RNA sequence
 

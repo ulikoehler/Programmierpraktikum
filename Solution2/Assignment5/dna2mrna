@@ -12,7 +12,7 @@ for(my $i=1; $i<scalar(@lines);$i++){#convert @lines to a string $sequence, whic
 	chomp $currentLine;#remove the \n at the end of the line
 	$sequence .= $currentLine;
 }
-print "seq: ".$sequence;
+#print "seq: ".$sequence;
 die "Please supply a FASTA sequence on STDIN!\n" unless $RNA =~ m/^>/;#check if the first line is conform to the FASTA-format
 die "Your file does not contain a correct DNA sequence\n" unless $sequence !~ m/[^ATGCatgc]/;#checks if the input is actually a DNA sequence
 for(my $i=1;$i<scalar(@lines);$i++){#go to each entry of @lines
@@ -27,5 +27,5 @@ for(my $i=1;$i<scalar(@lines);$i++){#go to each entry of @lines
 	}
 }
 
-print "\nmRNA:\n".$RNA;#output of the transcribed sequence
+print $RNA;#output of the transcribed sequence
 
