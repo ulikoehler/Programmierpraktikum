@@ -13,9 +13,9 @@ if ($argc == 2) {
 }
 #Donwload the genome report
 use LWP::Simple;
-my $genomeReport= get "ftp://ftp.ncbi.nlm.nih.gov/genomes/GENOME_REPORTS/prokaryotes.txt";
-#Alternate method
-#my $genomeReport= `wget -qO- ftp://ftp.ncbi.nlm.nih.gov/genomes/GENOME_REPORTS/prokaryotes.txt`;
+#my $genomeReport= get "ftp://ftp.ncbi.nlm.nih.gov/genomes/GENOME_REPORTS/prokaryotes.txt";
+#Alternate method that also works on CIP
+my $genomeReport= `wget -qO- ftp://ftp.ncbi.nlm.nih.gov/genomes/GENOME_REPORTS/prokaryotes.txt`;
 if(!$genomeReport) {
 	die "Could not download NCBI genome report!\n";
 }
