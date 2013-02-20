@@ -1,4 +1,4 @@
-9.(RS)
+9.
 a) Nehmen Sie an, dass alle Nucleotide mit gleicher Wahrscheinlichkeit auftreten:
 Was ist die erwartete Anzahl von Vorkommnissen der Strings:
 - CTAG im Genom von Mycobacterium tuberculosis
