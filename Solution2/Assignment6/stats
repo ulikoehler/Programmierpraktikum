@@ -3,7 +3,7 @@
 use strict;
 use LWP::Simple;
 
-print "Enter query for UNIPROT, you will receive the number of results; no query will return the database's current size:\n";
+print "Enter query for UNIPROT, you will receive the number of results; an empty query will return the database's current size:\n";
 my $line = <STDIN>;
 chomp $line;
 
