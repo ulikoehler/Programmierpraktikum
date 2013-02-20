@@ -9,9 +9,8 @@ my $argc = @ARGV;
 die "Usage: $0 <Organism name> [-r]\n\tIf -r is given the argument is interpreted as regex" unless $argc >= 1;
 my $organismName = $ARGV[0];
 print "Interpreting organism '$organismName' as regular expression\n" if $organismIsRegex;
-
+#Set the default FTP transfer mode to passive
 $ENV{'FTP_PASSIVE'} = "1";
-
 #Donwload the genome report
 use LWP::Simple;
 my $genomeReport= get "ftp://ftp.ncbi.nlm.nih.gov/genomes/GENOME_REPORTS/prokaryotes.txt";
