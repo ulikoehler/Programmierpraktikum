@@ -3,5 +3,5 @@
 echo "n to %"
 for n in $(seq 1 100);
   do
-    unique -f U00096.ffn -n $n -s -1
+    perl unique -f U00096.ffn -n $n -s -1
   done
