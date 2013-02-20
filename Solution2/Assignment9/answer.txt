@@ -8,11 +8,9 @@ Chromosom 8: 146,364,022 Nukleotide auf Genom 8: (146.364.022-1) = 146.364.021 m
 AACCCTGTC: bei gleicher Verteilung ist jedes 4^9 = 262.144te 9-Tupel ein AACCCTGTC
 In Mycobacterium tuberculosis: (4.421.197 - 8) / 262.144 = 16, ... ewartete Vorkommen
 Auf Chromosom 8: (146.364.022 - 8) / 262.144 = 558, .... ewartete Vorkommen
-Verifiziert - RS
 
 b) Schreiben Sie ein Programm zum Zählen von Vorkommen von kurzen Sequenzstücken in einem Genom. Geben Sie außerdem eine Textdatei mit den Antworten auf die folgenden Fragen ab. Entfernen Sie hierbei aller auftretenden N's aus der Genom-Datei. (10P)
 done: incidence.pl im ordner
-Verifiziert - RS
 
 c) Was ist die Verteilung von A, C, G, T im Mycobacterium tuberculosis Genom und im menschlichen Chromosom 8? (2P)
 Mycobacterium tuberculosis
@@ -25,7 +23,6 @@ A: 42.767.293  Anteil = 29,22%
 C: 28.703.983  Anteil = 19,61%
 G: 28.702.621  Anteil = 19.61%
 T:  42.715.025  Anteil = 29,18%
-Verifiziert - RS
 
 d) Vergleichen Sie die erwartete Anzahl der Vorkommen folgender Sequenzstücke mit der tatsächlichen Anzahl, gegeben dass alle Nukleotide mit gleicher Wahrschein-lichkeit vorkommen:
 - CTAG im Genom von Mycobacterium tuberculosis
@@ -38,7 +35,6 @@ AACCCTGTC     gefunden : 6          erwartet : 16
 Chromosom 8
 CG                       gefunden : 1.309.137   ewartet :  9.147.751
 AACCCTGTC      gefunden : 3.420          erwartet : 558
-Verifiziert - RS
 
 e) Wiederholen sie (d), berechnen nun allerdings nicht unter der Annahme der Gleichverteilung der Nukleotide. Verwenden sie stattdessen die in (c) berechneten relativen Häufigkeiten. (3P)
 Mycobacterium tuberculosis
