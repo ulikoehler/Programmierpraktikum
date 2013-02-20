@@ -19,8 +19,12 @@ $html =~ m/>reviewed \(((\d+,?)+)\)</;#search pattern in source code, where no. 
 my $reviewed = $1;#save no. of reviewed results
 $html =~ m/>unreviewed \(((\d+,?)+)\)</;#as above
 my $unreviewed = $1;#save no. of unreviewed results
+if($html =~ m/>reviewed \(((\d+,?)+)\)</){
 print "Searching for $line yields ".$results." results in UNIPROT, ".$reviewed." are reviewed, ".$unreviewed." are unreviewed.\n";#print final result
-
+}
+else{
+	print "Searching for $line yields ".$results." results in UNIPROT.\n";
+}
 ############################  PDB:
 my $pdb = get("http://www.rcsb.org/pdb/home/home.do");#gets the html-file of the PDB homepage
 $pdb =~ m/="Retrieve all structures in the PDB">(\d+)<\/a> Structures/;#find and locate no. of total entries
