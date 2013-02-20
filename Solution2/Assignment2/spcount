@@ -9,6 +9,7 @@ chomp $species;
 use URI::Escape;
 my $queryPart=uri_escape("organism:\"$species\"");
 #Assemble the URI
+use LWP::Simple;
 my $url="http://www.uniprot.org/uniprot/?query=".$queryPart;
 my $pageContent = get $url;
 #Check if there is a result
