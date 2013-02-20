@@ -10,7 +10,7 @@ chomp $line;
 
 my $html = get("http://www.uniprot.org/uniprot/?query=".$line);#gets the html-file for the distinct uniprot site
 #my @chars = split("", $html);
-$html =~ m/of <strong>(.+)<\/strong> result/;#search for pattern in the source code, where the no. of results is located; loc. will be stored in $1
+$html =~ m/<strong>((\d+,?)+)<\/strong> result/;#search for pattern in the source code, where the no. of results is located; loc. will be stored in $1
 if(!$line) {
 	$line = "<no filter>";#in case no search criteria have been specified
 }
