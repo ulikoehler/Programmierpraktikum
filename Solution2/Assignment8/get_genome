@@ -9,31 +9,12 @@ my $organismName = $ARGV[0];
 
 # Donwload the genome report
 use LWP::Simple;
-use Net::FTP ();
-
 my $genomeContent= `wget -qO- ftp://ftp.ncbi.nlm.nih.gov/genomes/GENOME_REPORTS/prokaryotes.txt`;
 die "Could not download prokaryote info URL from NCBI server!\n" unless $genomeContent;
 
 
 my $prokaryoteInfoUrl = "ftp://ftp.ncbi.nlm.nih.gov/genomes/GENOME_REPORTS/prokaryotes.txt";
 my $genomeContent = get $prokaryoteInfoUrl
-
-use LWP::Simple;
-use Net::FTP;
-$ftp = Net::FTP->new("ftp.ncbi.nlm.nih.gov") or die "error connecting\n".$ftp->message;
-$ftp->login('anonymous');
-$ftp->cwd("/genomes/GENOME_REPORTS/");
-$ftp->get("prokaryotes.txt", "temp") or die "error downloading\n".$ftp->message;
-$ftp->quit();
-
-my $genomeReport = "test";
-die($genomeReport);
-
-
-$genomeReport= $ftp->get("/genomes/GENOME_REPORTS/prokaryotes.txt");
-if(!$genomeReport) {
-	die "downloaded file is empty!\n";
-}
 
 #Find the line(s) with the organism
 foreach my $line (split /\n/ ,$genomeReport) {
