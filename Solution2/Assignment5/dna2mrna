@@ -2,9 +2,11 @@
 #warnings, newlines
 use strict;
 
-print "Enter nucleotide sequence (press Enter, then Ctrl+D when finished to close STDIN):";
+print STDERR "Enter nucleotide sequence in FASTA-format:";
 my @lines = <STDIN>;
 my $RNA = $lines[0];#save the head of the fasta file
+
+die "Please supply a FASTA sequence on STDIN!\n" unless $RNA =~ m/^>/;
 
 for(my $i=1;$i<scalar(@lines);$i++){
 	for(my $j=0;$j<length($lines[$i]);$j++){
