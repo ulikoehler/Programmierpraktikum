@@ -7,8 +7,7 @@ chomp $motif;
 #Assemble the text from stdin
 my $text = "";
 while (<>) {
-chomp $_;
-	if(not ($_ =~ m/^>/)) {
+	if(not (($_ =~ m/^>/) or ($_ =~ m/^;/)) ) {
 		my $line = $_;
 		chomp $line;
 		$text = $text . uc($line);
