@@ -70,14 +70,13 @@ my(%genetic_code) = (
 'GGU' => 'G'  # Glycine
 );
 
-print STDERR "Enter nucleotide sequence in FASTA-format:";
+print "Enter nucleotide sequence in FASTA-format:";
 my @lines = <STDIN>;
-my $fastaHeader = $lines[0];
+my $fastaHeader = $lines[0];#get the first line of STDIN, which should be in FASTA-format
+#check if the first line is in fasta-format, "die" otherwise:
+die "Please supply a FASTA sequence on STDIN! (press Enter, then Ctrl+D when finished to close STDIN)\n" unless $fastaHeader =~ m/^>/;
 
-die "Please supply a FASTA sequence on STDIN!\n" unless $fastaHeader =~ m/^>/;
-#print "Enter nucleotide sequence (press Enter, then Ctrl+D when finished to close STDIN):";
-#my @lines = <STDIN>;
-my $protein1 = $lines[0];#append the head of the fasta file
+my $protein1 = $lines[0];#append the head of the fasta file to each of the output strings protein1..6
 my $protein2 = $lines[0];
 my $protein3 = $lines[0];
 my $protein4 = $lines[0];
@@ -87,29 +86,27 @@ my $protein6 = $lines[0];
 my $RNA;
 for(my $i=1 ;$i<scalar(@lines);$i++){
 	for(my $j=0;$j<length($lines[$i]);$j++){
-		$RNA.=substr($lines[$i],$j,1);
+		$RNA.=substr($lines[$i],$j,1);#build $RNA by concatenating all the input from STDIN
 	}
 }
 chomp $RNA;
-#print "RNA: $RNA\n";
-my $reverseRNA = reverse($RNA);
+my $reverseRNA = reverse($RNA);#3 of the 6 frames are read from 3' to 5' (reverse), therefore we need as well the reversed $RNA -> $reverseRNA
 chomp $reverseRNA;
-#print "RevRNA: $reverseRNA\n";
 
-for(my $i=0;$i<length($RNA)-3;$i+=3){#...fasta head will be overridden
+for(my $i=0;$i<length($RNA)-2;$i+=3){#translation takes place in this loop (fasta head will be overridden)
 
-	$protein1.=$genetic_code{substr($RNA,$i,3)};
+	$protein1.=$genetic_code{substr($RNA,$i,3)};#lookup codons in hash %genetic_code
 	$protein4.=$genetic_code{substr($reverseRNA,$i,3)};
-	if(length($RNA) - $i >= 4) {
+	if(length($RNA) - $i >= 4) {#checks if there are still enough nucleotides "ahead" to form a triplet
 		$protein2.=$genetic_code{substr($RNA,$i+1,3)};
 		$protein5.=$genetic_code{substr($reverseRNA,$i+1,3)};
 	}
-	if(length($RNA) - $i >= 5) {
+	if(length($RNA) - $i >= 5) {#same as above
 		$protein3.=$genetic_code{substr($RNA,$i+2,3)};
 		$protein6.=$genetic_code{substr($reverseRNA,$i+2,3)};
 	}
 }
-print "Frame 1:\n".$protein1."\n";
+print "Frame 1:\n".$protein1."\n";#print all 6 frames
 print "Frame 2:\n".$protein2."\n";
 print "Frame 3:\n".$protein3."\n";
 print "Frame 4:\n".$protein4."\n";

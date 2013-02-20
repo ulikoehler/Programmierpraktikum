@@ -3,27 +3,28 @@
 use strict;
 use LWP::Simple;
 
-print "Enter query for UNIPROT, you will receive the number of results; an empty query will return the database's current size:\n";
+################## UNIPROT:
+print "Enter query for UNIPROT, you will receive the number of results; no query will return the database's current size:\n";
 my $line = <STDIN>;
 chomp $line;
 
-my $html = get("http://www.uniprot.org/uniprot/?query=".$line);
-my @chars = split("", $html);
-$html =~ m/of <strong>(.+)<\/strong> result/;
+my $html = get("http://www.uniprot.org/uniprot/?query=".$line);#gets the html-file for the distinct uniprot site
+#my @chars = split("", $html);
+$html =~ m/of <strong>(.+)<\/strong> result/;#search for pattern in the source code, where the no. of results is located; loc. will be stored in $1
 if(!$line) {
-	$line = "<no filter>";
+	$line = "<no filter>";#in case no search criteria have been specified
 }
-my $results = $1;
-$html =~ m/>reviewed \(((\d+,?)+)\)</;
-my $reviewed = $1;
-$html =~ m/>unreviewed \(((\d+,?)+)\)</;
-my $unreviewed = $1;
-print "Searching for $line yields ".$results." results in UNIPROT, ".$reviewed." are reviewed, ".$unreviewed." are unreviewed.\n";
+my $results = $1;#save no. of results
+$html =~ m/>reviewed \(((\d+,?)+)\)</;#search pattern in source code, where no. of reviewed entries is located
+my $reviewed = $1;#save no. of reviewed results
+$html =~ m/>unreviewed \(((\d+,?)+)\)</;#as above
+my $unreviewed = $1;#save no. of unreviewed results
+print "Searching for $line yields ".$results." results in UNIPROT, ".$reviewed." are reviewed, ".$unreviewed." are unreviewed.\n";#print final result
 
 ############################  PDB:
-my $pdb = get("http://www.rcsb.org/pdb/home/home.do");
-$pdb =~ m/="Retrieve all structures in the PDB">(\d+)<\/a> Structures/;
-my $all = $1;
+my $pdb = get("http://www.rcsb.org/pdb/home/home.do");#gets the html-file of the PDB homepage
+$pdb =~ m/="Retrieve all structures in the PDB">(\d+)<\/a> Structures/;#find and locate no. of total entries
+my $all = $1;#save this number, look for and save other details in the very same way:
 $pdb = get("http://www.rcsb.org/pdb/statistics/holdings.do");
 $pdb =~ m/<b>(\d+)<\/b><\/a> structures in the PDB have a structure factor file. <br>/;
 my $structFactor = $1;
@@ -31,7 +32,7 @@ $pdb =~ m/<b>(\d+)<\/b><\/a> structures in the PDB have an NMR restraint file. <
 my $nmr = $1;
 $pdb =~ m/<b>(\d+)<\/b><\/a> structures in the PDB have a chemical shifts file.<\/P>/;
 my $chem = $1;
-print $all." results are currently stored in the PDB, ".$structFactor." structures in the PDB have a structure factor file, ".$nmr." structures in the PDB have an NMR restraint file, ".$chem." structures in the PDB have a chemical shifts file.\n";
+print $all." results are currently stored in the PDB, ".$structFactor." structures in the PDB have a structure factor file, ".$nmr." structures in the PDB have an NMR restraint file, ".$chem." structures in the PDB have a chemical shifts file.\n";#print the final result
 
 
 

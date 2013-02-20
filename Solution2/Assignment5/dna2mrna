@@ -6,19 +6,19 @@ print STDERR "Enter nucleotide sequence in FASTA-format:";
 my @lines = <STDIN>;
 my $RNA = $lines[0];#save the head of the fasta file
 
-die "Please supply a FASTA sequence on STDIN!\n" unless $RNA =~ m/^>/;
+die "Please supply a FASTA sequence on STDIN!\n" unless $RNA =~ m/^>/;#check if the first line is conform to the FASTA-format
 
-for(my $i=1;$i<scalar(@lines);$i++){
-	for(my $j=0;$j<length($lines[$i]);$j++){
-		if(substr($lines[$i],$j,1) eq "T"){
+for(my $i=1;$i<scalar(@lines);$i++){#go to each entry of @lines
+	for(my $j=0;$j<length($lines[$i]);$j++){#for each entry, look at each char
+		if(substr($lines[$i],$j,1) eq "T"){#replace capital T's with U
 			$RNA.="U";
 		}
-		elsif(substr($lines[$i],$j,1) eq "t"){$RNA.="u";}
+		elsif(substr($lines[$i],$j,1) eq "t"){$RNA.="u";}#in case small letters are used
 		else{
-			$RNA.=substr($lines[$i],$j,1);
+			$RNA.=substr($lines[$i],$j,1);#append the current char, unless it is T/t
 		}
 	}
 }
 
-print "\nmRNA:\n".$RNA;
+print "\nmRNA:\n".$RNA;#output of the transcribed sequence
 
