@@ -9,6 +9,8 @@ my $file = $options{f};
 if(not defined $options{k} or not defined $options{f}) {
 	die "Usage: $0 -k <keyword> -f <data file>\n";
 }
+#Check if the input file exists
+die "Input file '".$options{f}."' does not exist!\n" unless -e $options{f};
 #No positional arguments here
 open my $fileHandle, '<', $file or die "Could not open file $file for reading: $!\n";
 my $currentAC = "[No AC Found!]";
