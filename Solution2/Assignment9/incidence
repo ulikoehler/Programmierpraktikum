@@ -7,8 +7,11 @@ chomp $motif;
 #Assemble the text from stdin
 my $text = "";
 while (<>) {
+chomp $_;
 	if(not ($_ =~ m/^>/)) {
-		$text = $text . uc($_);
+		my $line = $_;
+		chomp $line;
+		$text = $text . uc($line);
 	}
 }
 #Remove N (not known) pseudobases from the text
