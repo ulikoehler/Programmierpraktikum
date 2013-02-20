@@ -26,7 +26,7 @@ if(!defined $startPos) {
   $startPos = "-1";
 }
 #Check if the input files exist
-die "The genome file '$genomeFile' does not exist. Please use an existing file as filename\n" unless -e $genomeFile
+die "The genome file '$genomeFile' does not exist. Please use an existing file as filename\n" unless -e $genomeFile;
 #Read the file into a string
 open FILEHANDLE, "<".$genomeFile or die("can't open file!");
 my @lines = <FILEHANDLE>;
