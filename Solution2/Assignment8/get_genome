@@ -7,21 +7,66 @@ my $argc = @ARGV;
 die "Usage: $0 <Organism name>" unless $argc == 1;
 my $organismName = $ARGV[0];
 
+$organismName =~ s/\s/_/g;;
+print "try downloading $organismName ...\n";
+
 # Donwload the genome report
+
+my $serverName = "ftp.ncbi.nlm.nih.gov";
+my $loginName = "anonymous";
+my $loginPassword = "";
+
 use LWP::Simple;
-my $genomeContent= `wget -qO- ftp://ftp.ncbi.nlm.nih.gov/genomes/GENOME_REPORTS/prokaryotes.txt`;
-die "Could not download prokaryote info URL from NCBI server!\n" unless $genomeContent;
-
-
-my $prokaryoteInfoUrl = "ftp://ftp.ncbi.nlm.nih.gov/genomes/GENOME_REPORTS/prokaryotes.txt";
-my $genomeContent = get $prokaryoteInfoUrl
-
-#Find the line(s) with the organism
-foreach my $line (split /\n/ ,$genomeReport) {
-	if($line =~ m/^\Q$organismName\E\t/) {
-print $line;
-		if($line =~ m/^([^\t]+\t){5}([\d.]+)/) {
-			print "Genome of '$organismName' has length $2 Mb\n";
-		}
-	}
+use Net::FTP;
+# open connection
+my $ftp = Net::FTP->new($serverName, Debug => 0, Passive => 1) or die "unable to connect ftp://$serverName/: $@\n";
+$ftp->login($loginName, $loginPassword);
+$ftp->cwd("/genomes/Bacteria") or die "FATAL ERROR: couldn't change directory ".$ftp->message."\n";
+# list all files
+my $taxaFound = "false";
+my @files = $ftp->ls;
+for my $file (@files) {
+  if ($file =~ m/($organismName)/i) { # eq organism
+    $taxaFound = "true";
+    # cwd to organismus dir
+    $ftp->cwd("./$file") or die "Couldn't open $organismName directory: ".$ftp->message."\n";
+    my @organismFiles = $ftp->ls;
+    # save Data
+    my $proteins = "false";
+    my $genomes = "false";
+    my $orfs = "false";
+    for (@organismFiles) {
+      if ($_ =~ m/\.faa/i) {
+        $ftp->get($_,"Proteins.txt") or die $ftp->message;
+        $proteins = "true";
+      }
+      elsif ($_ =~ m/\.fna/i) {
+        $ftp->get($_,"Genomes.txt") or die $ftp->message;
+        $genomes = "true";
+      }
+      elsif ($_ =~ m/\.Glimmer3/i) {
+        $ftp->get($_,"ORFs.txt") or die $ftp->message;
+        $orfs = "true";
+      }
+    }
+    # errors/warnings
+    if($proteins eq "false") {
+      print "failed to save Proteins.txt\n";
+    }
+    if($genomes eq "false") {
+      print "failed to save Genomes.txt\n";
+    }
+    if($orfs eq "false") {
+      print "failed to save ORFs.txt\n";
+    }
+  }
 }
+# quit
+$ftp->quit();
+# organismus not found
+if($taxaFound eq "false") {
+  print "Organism not found!\n"
+} else {
+  print "Organismdata successfully downloaded!\n";
+}
+
