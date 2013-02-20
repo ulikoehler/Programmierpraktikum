@@ -6,8 +6,15 @@ print STDERR "Enter nucleotide sequence in FASTA-format:";
 my @lines = <STDIN>;
 my $RNA = $lines[0];#save the head of the fasta file
 
+my $sequence;
+for(my $i=1; $i<scalar(@lines);$i++){#convert @lines to a string $sequence, which only contains the sequence, but not the fasta-head
+	my $currentLine = $lines[$i];
+	chomp $currentLine;#remove the \n at the end of the line
+	$sequence .= $currentLine;
+}
+print "seq: ".$sequence;
 die "Please supply a FASTA sequence on STDIN!\n" unless $RNA =~ m/^>/;#check if the first line is conform to the FASTA-format
-
+die "Your file does not contain a correct DNA sequence\n" unless $sequence !~ m/[^ATGCatgc]/;#checks if the input is actually a DNA sequence
 for(my $i=1;$i<scalar(@lines);$i++){#go to each entry of @lines
 	for(my $j=0;$j<length($lines[$i]);$j++){#for each entry, look at each char
 		if(substr($lines[$i],$j,1) eq "T"){#replace capital T's with U

@@ -90,6 +90,9 @@ for(my $i=1 ;$i<scalar(@lines);$i++){
 	}
 }
 chomp $RNA;
+
+die "Your file does not contain a correct RNA sequence\n" unless $RNA !~ m/[^AUGCaugc]/;#checks if the input is actually a RNA sequence
+
 my $reverseRNA = reverse($RNA);#3 of the 6 frames are read from 3' to 5' (reverse), therefore we need as well the reversed $RNA -> $reverseRNA
 chomp $reverseRNA;
 
