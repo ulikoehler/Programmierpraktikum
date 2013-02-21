@@ -1,0 +1,34 @@
+#!/usr/bin/perl -w
+use strict;
+use LWP::Simple;
+use Getopt::Std;
+#Parse CLI arguments
+#lmy %options=();
+#lgetopts("ew:",\%options);
+#Komandozeilenparameter
+my $argc = @ARGV;
+#Check if we have at least one argument
+die "Usage: $0 <SwissProt filename>\n" unless $argc == 1;
+#Open the file and iterate over the lines
+my $swissprotFile = $ARGV[0];
+open my $fileHandle, '<', $swissprotFile or die "Could not open file $swissprotFile for reading: $!\n";
+my $currentAC = "[No AC found]";
+my $currentId = "[No ID found]";
+my $currentKeyword = 
+while ( my $line = <$fileHandle> ) {
+        chomp $line;
+	#Parse the different lines
+        if($line =~ m/^ID\s+(.+).$/) {
+		$currentId = $1;
+		chomp $currentId;
+		print $currentId,"\n";
+	} elsif($line =~ m/^AC\s+([A-Z0-9]+);$/) {
+                $currentAC = $1; #qnd
+                chomp $currentAC;
+        }elsif($line =~ m/^KW\s+(.+)$/) {
+		$currentId = $1;
+		chomp $currentId;
+		print $currentId
+        }
+}
+close $fileHandle;
