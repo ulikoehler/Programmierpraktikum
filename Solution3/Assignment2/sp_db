@@ -15,25 +15,26 @@ sub trim {
 #Insert the information about a sequence file into the database
 #Automatically downloads the sequence by AC number
 # Arguments: processEntry(db, ID, AC, Definition, Array of Keywords)
-sub processEntry {
+sub processSwissprotEntry {
 	#Get the function arguments
 	my $db = $_[0];
 	my $id = $_[1];
-	my $ac = $_[2];
+	my @ACNumbers = @{$_[2]};
 	my $definition = $_[3];
-	my @keywords = $_[4];
-	#Download the sequence in FASTA format by AC number
+	my $organism = $_[4];
+	print $organism,"\n";
+	my @keywords = @{$_[5]};
+	#print "ACs:",join(",", @ACNumbers),"\n";
 	use LWP::Simple;
-	my $url = 'http://www.uniprot.org/uniprot/' .  $ac . '.fasta';
-	my $fastaSequence = get $url;
-	die "Protein sequence for AC $ac can't be downloaded!\n" unless defined $fastaSequence;
-	
+	#Download the sequence in FASTA format by AC number
+	#my $url = 'http://www.uniprot.org/uniprot/' .  $ac . '.fasta';
+	#my $fastaSequence = get $url;
+	#die "Protein sequence for AC $ac can't be downloaded!\n" unless defined $fastaSequence;
 	
 }
-
 #Parse CLI arguments
-#lmy %options=();
-#lgetopts("ew:",\%options);
+my %options=();
+getopts("t",\%options);
 #Komandozeilenparameter
 my $argc = @ARGV;
 #Check if we have at least one argument
@@ -42,15 +43,21 @@ die "Usage: $0 <SwissProt filename>\n" unless $argc == 1;
 #Setup the database connection
 #
 use DBI;
-my $db = DBI->connect('DBI:mysql:bioprakt4;host=mysql2-ext.bio.ifi.lmu.de', 'bioprakt4', 'vGI5GCMg0x') || die "Could not connect to database: $DBI::errstr";
+my $db = undef;
+my $testMode = defined $options{t};
+if($testMode) {
+} else {
+	$db = DBI->connect('DBI:mysql:bioprakt4;host=mysql2-ext.bio.ifi.lmu.de', 'bioprakt4', 'vGI5GCMg0x') || die "Could not connect to database: $DBI::errstr";	
+}
 print "Established database connection...";
 #Open the file and iterate over the lines
 my $swissprotFile = $ARGV[0];
 open my $fileHandle, '<', $swissprotFile or die "Could not open file $swissprotFile for reading: $!\n"; 
 #Variables in the current entity
-my $currentAC = undef;
-my $currentId = undef;
+my $currentId = "";
 my $currentDefinition = "";
+my $currentOrganism = "";
+my @currentACNumbers= ();
 my @currentKeywords =  ();
 while ( my $line = <$fileHandle> ) {
         chomp $line;
@@ -59,26 +66,31 @@ while ( my $line = <$fileHandle> ) {
 		#Process the old dataset
 		#print "Last KW: ",join(",",@currentKeywords), "\n";
 		#print $currentDefinition,"\n";
-		if(defined $currentAC) { #If it's not before the first entry
-			processEntry($db, $currentId, $currentAC, $currentDefinition, @currentKeywords);
+		if($currentId) { #If it's not before the first entry
+			processSwissprotEntry($db, $currentId, \@currentACNumbers, $currentDefinition, $currentOrganism, \@currentKeywords);
 		}
 		#Reset the variables. Some of the assignments are not really neccessary but they ease format debugging
-		$currentAC = "[No AC found]";
 		$currentId = "[No ID found]";
 		$currentDefinition = "";
+		$currentOrganism = "";
+		@currentACNumbers = ();
 		@currentKeywords = ();
 		#Process the new ID line, a new entry starts here
 		$currentId = $1;
 		chomp $currentId;
-	} elsif($line =~ m/^AC\s+([A-Z0-9]+);$/) {#AC Numbers
-                $currentAC = $1; #qnd
-                chomp $currentAC;
+	} elsif($line =~ m/^AC\s+([\s;\w]+);$/) {#AC Numbers
+		my $currentACEntries = $1;
+		my @rawAcNumbers = split(";",$currentACEntries);
+		foreach (@rawAcNumbers) {
+			push(@currentACNumbers, trim($_));
+		}
+		#print $1."\n";
         } elsif($line =~ m/^DE\s+(.+);$/) { #Defintions
                 $currentDefinition = $currentDefinition . $1; #qnd
         } elsif($line =~ m/^KW\s+(.+).$/) { #Keywords
 		my $currentKeywordLine = $1;
 		my @keywords = split(/;/,$currentKeywordLine);
-		#trim the KWs
+		#trim the KWsdefined $options{t}
 		my @processedKeywords  = ();
 		foreach(@keywords) {
 			my $processedKeyword = trim($_);
@@ -86,8 +98,10 @@ while ( my $line = <$fileHandle> ) {
 		}
 		@currentKeywords = (@currentKeywords, @processedKeywords);
 		chomp $currentId;
+        } elsif($line =~ m/^OS\s+(.+).$/) { #Organism
+                $currentOrganism = $currentOrganism . $1; #qnd
         }
 }
 #Do some cleanup
-$db->disconnect();
+$db->disconnect() unless defined $testMode;
 close $fileHandle;
