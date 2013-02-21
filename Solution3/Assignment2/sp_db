@@ -24,7 +24,7 @@ die "Usage: $0 <SwissProt filename>\n" unless $argc == 1;
 #
 use DBI;
 my $db = DBI->connect('DBI:mysql:bioprakt4;host=mysql2-ext.bio.ifi.lmu.de', 'bioprakt4', 'vGI5GCMg0x') || die "Could not connect to database: $DBI::errstr";
-my $dbh->do('INSERT INTO exmpl_tbl VALUES(1, ?)', undef, 'Hello');
+print "Established database connection...\n";
 #Open the file and iterate over the lines
 my $swissprotFile = $ARGV[0];
 open my $fileHandle, '<', $swissprotFile or die "Could not open file $swissprotFile for reading: $!\n"; 
