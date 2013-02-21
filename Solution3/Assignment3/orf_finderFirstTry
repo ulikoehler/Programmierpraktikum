@@ -1,0 +1,24 @@
+#!/usr/bin/perl -wl
+use strict;
+
+die "Enter the path to the file as parameter!" unless defined $ARGV[0];
+open FILE, $ARGV[0] or die "File does not exist / not a correct path!";
+
+my @seq = <FILE>;
+my $sequence;
+
+for(my $i=0;$i<scalar(@seq);$i++){
+	$sequence .= $seq[$i];
+	chomp $sequence;
+}
+
+my $ORFcount = 0;
+my @ORFlength;
+
+while($sequence =~ /(((ATG){1})([ATGC]{3})+(TAG|TAA|TGA))/g) {
+	pos $sequence = (pos $sequence) - length($1) + 1;
+	$ORFcount++;
+	push(@ORFlength, length($1));
+}
+print $ORFcount;
+#print join(" ",@ORFlength);
