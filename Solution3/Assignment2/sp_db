@@ -27,7 +27,7 @@ sub processSwissprotEntry {
 	#print "ACs:",join(",", @ACNumbers),"\n";
 	use LWP::Simple;
 	#Insert the database entry information
-	
+		
 	foreach(@ACNumbers) {
 		#Download the sequence in FASTA format by AC number
 		my $currentAC = $ACNumbers[0] ;
@@ -35,7 +35,6 @@ sub processSwissprotEntry {
 		my $fastaSequence = get $url;
 		die "Protein sequence for AC $currentAC can't be downloaded!\n" unless defined $fastaSequence;
 	}
-	
 }
 #Parse CLI arguments
 my %options=();
