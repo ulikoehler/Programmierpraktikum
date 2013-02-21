@@ -12,6 +12,25 @@ sub trim {
 	return $string;
 }
 
+#Insert the information about a sequence file into the database
+#Automatically downloads the sequence by AC number
+# Arguments: processEntry(db, ID, AC, Definition, Array of Keywords)
+sub processEntry {
+	#Get the function arguments
+	my $db = $_[0];
+	my $id = $_[1];
+	my $ac = $_[2];
+	my $definition = $_[3];
+	my @keywords = $_[4];
+	#Download the sequence in FASTA format by AC number
+	use LWP::Simple;
+	my $url = 'http://www.uniprot.org/uniprot/' .  $ac . '.fasta';
+	my $fastaSequence = get $url;
+	die "Protein sequence for AC $ac can't be downloaded!\n" unless defined $fastaSequence;
+	
+	
+}
+
 #Parse CLI arguments
 #lmy %options=();
 #lgetopts("ew:",\%options);
@@ -24,7 +43,7 @@ die "Usage: $0 <SwissProt filename>\n" unless $argc == 1;
 #
 use DBI;
 my $db = DBI->connect('DBI:mysql:bioprakt4;host=mysql2-ext.bio.ifi.lmu.de', 'bioprakt4', 'vGI5GCMg0x') || die "Could not connect to database: $DBI::errstr";
-print "Established database connection...\n";
+print "Established database connection..."
 #Open the file and iterate over the lines
 my $swissprotFile = $ARGV[0];
 open my $fileHandle, '<', $swissprotFile or die "Could not open file $swissprotFile for reading: $!\n"; 
@@ -40,12 +59,13 @@ while ( my $line = <$fileHandle> ) {
 		#Process the old dataset
 		#print "Last KW: ",join(",",@currentKeywords), "\n";
 		#print $currentDefinition,"\n";
+		processEntry($db, $currentId, $currentAC, $currentDefinition, @currentKeywords);
 		#Reset the variables. Some of the assignments are not really neccessary but they ease format debugging
 		$currentAC = "[No AC found]";
 		$currentId = "[No ID found]";
 		$currentDefinition = "";
 		@currentKeywords = ();
-		#Process the new ID line
+		#Process the new ID line, a new entry starts here
 		$currentId = $1;
 		chomp $currentId;
 	} elsif($line =~ m/^AC\s+([A-Z0-9]+);$/) {#AC Numbers
