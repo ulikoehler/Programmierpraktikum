@@ -2,6 +2,16 @@
 use strict;
 use LWP::Simple;
 use Getopt::Std;
+#Subs
+
+#Trim the whitespace from a string
+sub trim {
+	my $string = shift;
+	$string =~ s/^\s+//;
+	$string =~ s/\s+$//;
+	return $string;
+}
+
 #Parse CLI arguments
 #lmy %options=();
 #lgetopts("ew:",\%options);
@@ -9,26 +19,53 @@ use Getopt::Std;
 my $argc = @ARGV;
 #Check if we have at least one argument
 die "Usage: $0 <SwissProt filename>\n" unless $argc == 1;
+#
+#Setup the database connection
+#
+use DBI;
+$db = DBI->connect('DBI:mysql:bioprakt4;host=mysql2-ext.bio.ifi.lmu.de', 'bioprakt4', 'vGI5GCMg0x') || die "Could not connect to database: $DBI::errstr";
+$dbh->do('INSERT INTO exmpl_tbl VALUES(1, ?)', undef, 'Hello');
 #Open the file and iterate over the lines
 my $swissprotFile = $ARGV[0];
-open my $fileHandle, '<', $swissprotFile or die "Could not open file $swissprotFile for reading: $!\n";
+open my $fileHandle, '<', $swissprotFile or die "Could not open file $swissprotFile for reading: $!\n"; 
+#Variables in the current entity
 my $currentAC = "[No AC found]";
 my $currentId = "[No ID found]";
-my $currentKeyword = 
+my $currentDefinition = "";
+my @currentKeywords =  ();
 while ( my $line = <$fileHandle> ) {
         chomp $line;
 	#Parse the different lines
         if($line =~ m/^ID\s+(.+).$/) {
+		#Process the old dataset
+		#print "Last KW: ",join(",",@currentKeywords), "\n";
+		#print $currentDefinition,"\n";
+		#Reset the variables. Some of the assignments are not really neccessary but they ease format debugging
+		$currentAC = "[No AC found]";
+		$currentId = "[No ID found]";
+		$currentDefinition = "";
+		@currentKeywords = ();
+		#Process the new ID line
 		$currentId = $1;
 		chomp $currentId;
-		print $currentId,"\n";
-	} elsif($line =~ m/^AC\s+([A-Z0-9]+);$/) {
+	} elsif($line =~ m/^AC\s+([A-Z0-9]+);$/) {#AC Numbers
                 $currentAC = $1; #qnd
                 chomp $currentAC;
-        }elsif($line =~ m/^KW\s+(.+)$/) {
-		$currentId = $1;
+        } elsif($line =~ m/^DE\s+(.+);$/) { #Defintions
+                $currentDefinition = $currentDefinition . $1; #qnd
+        } elsif($line =~ m/^KW\s+(.+).$/) { #Keywords
+		my $currentKeywordLine = $1;
+		my @keywords = split(/;/,$currentKeywordLine);
+		#trim the KWs
+		my @processedKeywords  = ();
+		foreach(@keywords) {
+			my $processedKeyword = trim($_);
+			push(@processedKeywords, $processedKeyword);
+		}
+		@currentKeywords = (@currentKeywords, @processedKeywords);
 		chomp $currentId;
-		print $currentId
         }
 }
+#Do some cleanup
+$db->disconnect();
 close $fileHandle;
