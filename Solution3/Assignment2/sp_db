@@ -12,6 +12,18 @@ sub trim {
 	return $string;
 }
 
+#Get the organism ID, insert it if not existent
+sub getOrganismId {
+	my $db = $_[0];
+	my $organismName = $_[1];
+	#Try to fetch an existing organism
+	$db->do("SELECT Id from Organism WHERE Name = $organism;")
+	$result = $sth->fetchrow_hashref();
+	if(defined $result->{Id}) {
+		
+	}
+}
+
 #Insert the information about a sequence file into the database
 #Automatically downloads the sequence by AC number
 # Arguments: processEntry(db, ID, AC, Definition, Array of Keywords)
@@ -27,13 +39,16 @@ sub processSwissprotEntry {
 	#print "ACs:",join(",", @ACNumbers),"\n";
 	use LWP::Simple;
 	#Insert the database entry information
-		
+	my $primaryAC = $ACNumbers[0] ;
+	$db->do("INSERT INTO DatabaseEntry('Database', 'DatabaseId') VALUES ((SELECT FROM Database WHERE Name = 'SwissProt'), '$primaryAC');"
+	#Insert the sequence
+	my $url = 'http://www.uniprot.org/uniprot/' .$currentAC  . '.fasta';
+	my $fastaSequence = get $url;
+	die "Protein sequence for AC $currentAC can't be downloaded!\n" unless defined $fastaSequence;
+	
 	foreach(@ACNumbers) {
 		#Download the sequence in FASTA format by AC number
 		my $currentAC = $ACNumbers[0] ;
-		my $url = 'http://www.uniprot.org/uniprot/' .$currentAC  . '.fasta';
-		my $fastaSequence = get $url;
-		die "Protein sequence for AC $currentAC can't be downloaded!\n" unless defined $fastaSequence;
 	}
 }
 #Parse CLI arguments
