@@ -53,6 +53,8 @@ while (<STDIN>) {
 }
 chomp($fastaHeadline);
 chomp ($fastaData);
+#Check if we have FASTA data
+die "No FASTA input data found on STDIN\n" unless $fastaData;
 #Convert the prosite pattern to a regular expression
 $prositePattern =~ s/x/\./g; #Replace x by . (matches any character)
 #Process exclusion specifiers like {GA}
