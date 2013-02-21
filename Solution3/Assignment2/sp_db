@@ -48,8 +48,8 @@ print "Established database connection...";
 my $swissprotFile = $ARGV[0];
 open my $fileHandle, '<', $swissprotFile or die "Could not open file $swissprotFile for reading: $!\n"; 
 #Variables in the current entity
-my $currentAC = "[No AC found]";
-my $currentId = "[No ID found]";
+my $currentAC = undef;
+my $currentId = undef;
 my $currentDefinition = "";
 my @currentKeywords =  ();
 while ( my $line = <$fileHandle> ) {
@@ -59,7 +59,9 @@ while ( my $line = <$fileHandle> ) {
 		#Process the old dataset
 		#print "Last KW: ",join(",",@currentKeywords), "\n";
 		#print $currentDefinition,"\n";
-		processEntry($db, $currentId, $currentAC, $currentDefinition, @currentKeywords);
+		if(defined $currentAc) { #If it's not before the first entry
+			processEntry($db, $currentId, $currentAC, $currentDefinition, @currentKeywords);
+		}
 		#Reset the variables. Some of the assignments are not really neccessary but they ease format debugging
 		$currentAC = "[No AC found]";
 		$currentId = "[No ID found]";
