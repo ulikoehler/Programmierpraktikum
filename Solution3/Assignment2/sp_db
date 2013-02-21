@@ -26,10 +26,15 @@ sub processSwissprotEntry {
 	my @keywords = @{$_[5]};
 	#print "ACs:",join(",", @ACNumbers),"\n";
 	use LWP::Simple;
-	#Download the sequence in FASTA format by AC number
-	#my $url = 'http://www.uniprot.org/uniprot/' .  $ac . '.fasta';
-	#my $fastaSequence = get $url;
-	#die "Protein sequence for AC $ac can't be downloaded!\n" unless defined $fastaSequence;
+	#Insert the database entry information
+	
+	foreach(@ACNumbers) {
+		#Download the sequence in FASTA format by AC number
+		my $currentAC = $ACNumbers[0] ;
+		my $url = 'http://www.uniprot.org/uniprot/' .$currentAC  . '.fasta';
+		my $fastaSequence = get $url;
+		die "Protein sequence for AC $currentAC can't be downloaded!\n" unless defined $fastaSequence;
+	}
 	
 }
 #Parse CLI arguments
