@@ -17,7 +17,7 @@ for (my $i = 0; $i < 230203; $i += 1) {
 }
 
 open (MYFILE, '>random');
-print MYFILE $randomSequence;
+print MYFILE $string;
 close (MYFILE);
 
 my $randomSequenceGC39;
@@ -43,7 +43,7 @@ for (my $i = 0; $i < 230203; $i += 1) {
 }
 
 open (MYFILE, '>>random39');
-print MYFILE $randomSequenceGC39;
+print MYFILE $string;
 close (MYFILE);
 
 
