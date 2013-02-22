@@ -96,9 +96,9 @@ sub processSwissprotEntry {
 	my $definition = $_[3];
 	my $organism = $_[4];
 	my @keywords = @{$_[5]};
-	my $currentSeq = $_[5];
+	my $currentSeq = $_[6];
 	#Remove whitespace from the sequence
-	$currentSeq =~ s/\s//;
+	$currentSeq =~ s/\s+//g;
 	#print "ACs:",join(",", @ACNumbers),"\n";
 	my $primaryAC = $ACNumbers[0] ;
 	##
@@ -171,7 +171,6 @@ while ( my $line = <$fileHandle> ) {
 		if($currentId) { #If it's not before the first entry
 			processSwissprotEntry($db, $currentId, \@currentACNumbers, $currentDefinition, $currentOrganism, \@currentKeywords, $currentSeq);
 		}
-		print $currentSeq;
 		#Reset the variables. Some of the assignments are not really neccessary but they ease format debugging
 		$currentId = "[No ID found]";
 		$currentDefinition = "";
@@ -204,7 +203,7 @@ while ( my $line = <$fileHandle> ) {
 		chomp $currentId;
         } elsif($line =~ m/^OS\s+(.+).$/) { #Organism
                 $currentOrganism = $currentOrganism . $1; #qnd
-        } elsif($line =~ m/^\s+(\S+).$/) { #Sequence
+        } elsif($line =~ m/^\s+(\S.+).$/) { #Sequence
                 $currentSeq = $currentSeq . $1; #qnd
         }
 }
