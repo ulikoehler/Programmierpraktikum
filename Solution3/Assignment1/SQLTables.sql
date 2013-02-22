@@ -5,10 +5,10 @@ CREATE TABLE SeqDB (
 );
 CREATE TABLE Keywords (
   Id INT NOT NULL AUTO_INCREMENT,
-  Description TEXT NOT NULL,
+  Value TEXT NOT NULL,
   PRIMARY KEY(ID)
 );
-CREATE TABLE SecondStruct(
+CREATE TABLE SecondStruct (
     Id INT NOT NULL AUTO_INCREMENT,
     Struct TEXT NOT NULL,
     PRIMARY KEY(Id)
@@ -28,6 +28,7 @@ CREATE TABLE SeqDBEntry (
     Id INT NOT NULL AUTO_INCREMENT,
     SeqDBId INT,
     SeqDBIdentifier VARCHAR(50),
+    SuissprotEntryId TEXT,
     PRIMARY KEY(Id),
     FOREIGN KEY(SeqDBId) references SeqDB(Id)
 );
@@ -67,6 +68,17 @@ CREATE TABLE KeySeq (
     FOREIGN KEY(KeywordsId) references Keywords(Id),
     FOREIGN KEY(SeqId) references Seq(Id)
 );
+
+DROP TABLE KeySeq;
+DROP TABLE StructAlign;
+DROP TABLE Source;
+DROP TABLE Seq;
+DROP TABLE SeqDB;
+DROP TABLE Keywords;
+DROP TABLE SecondStruct;
+DROP TABLE Organism;
+DROP TABLE Type;
+DROP TABLE SeqDBEntry;
 
 INSERT INTO SeqDB (`Name`) VALUES('SwissProt');    
 INSERT INTO Type (`Name`) VALUES('DNA');
