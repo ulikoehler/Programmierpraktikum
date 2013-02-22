@@ -1,0 +1,22 @@
+#!/usr/bin/perl -w
+use strict;
+#Komandozeilenparameter
+my $argc = @ARGV;
+#Check if we have at least one argument
+die "Usage: $0 <Prosite Pattern>\n" unless ($argc == 1);
+#The prosite pattern is supplied as CLI arg
+my $prositePattern = $ARGV[0]; #The content of this variable is conv to regex later!
+my $originalPrositePattern = $prositePattern;
+#Convert the prosite pattern to a regular expression
+$prositePattern =~ s/x/\./g; #Replace x by . (matches any character)
+#Process exclusion specifiers like {GA}
+$prositePattern =~ s/\{(\w+)\}/\[\^$1\]/g; #Replace {3} by [^3]
+#Replace length specifiers. Split into two regexes to improve readability
+$prositePattern =~ s/\((\d+)\)/\{$1\}/g; #Replace (3) by {3}
+$prositePattern =~ s/\((\d+,\d+)\)/\{$1\}/g; #Replace (3,5) by {3,5}
+#We don't need to replace something like [NHG], it's already a regex
+#Finally, remove minuses
+$prositePattern =~ s/[-]//g;
+#Add a global group to be able to match it later
+#Print the SQL statement
+print "SELECT * FROM `Seq` WHERE Seq.Seq REGEXP '$prositePattern';\n";
