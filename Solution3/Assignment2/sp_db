@@ -26,9 +26,22 @@ sub getOrganismId {
 	#If that didn't return, we need to insert it
 	my $insertStmt = $db->prepare("INSERT INTO Organism(`Name`) VALUES (?)");
 	$insertStmt->execute($organism);
-	$autoIncrementId = $insertStmt->{mysql_insertid};
-	#Fetch it again (there may be a better way)
-	return $autoIncrementId;
+	return $insertStmt->{mysql_insertid};
+}
+
+#Download and insert a Uniprot sequence
+sub insertSequence {
+	my $db = $_[0];
+	my $primaryAC = $_[1];
+	my $definition = $_[2];
+	#Download the sequence
+	my $url = 'http://www.uniprot.org/uniprot/' . $primaryAC  . '.fasta';
+	my $fastaSequence = get $url;
+	die "Protein sequence for AC $primaryAC can't be downloaded!\n" unless defined $fastaSequence;
+	#Insert the sequence
+	my $insertSeqStmt = $db->prepare("INSERT INTO Seq(`Name`, `Definition`,`TypeId`) SELECT ?,?,`Id` FROM Type WHERE `Name`='Protein';");
+	$insertSeqStmt->execute($primaryAC,$definition);
+	return $insertSeqStmt->{mysql_insertid};
 }
 
 #Insert the information about a sequence file into the database
@@ -41,36 +54,38 @@ sub processSwissprotEntry {
 	my @ACNumbers = @{$_[2]};
 	my $definition = $_[3];
 	my $organism = $_[4];
-	print $organism,"\n";
+	print "Processing $ACNumbers[0]\n";
 	my @keywords = @{$_[5]};
 	#print "ACs:",join(",", @ACNumbers),"\n";
 	use LWP::Simple;
 	#Insert the database entry information
 	my $primaryAC = $ACNumbers[0] ;
-	$db->do("INSERT INTO SeqDBEntry(`SeqDB`, `SeqDBIdentifier`) SELECT `Id`,? FROM SeqDB WHERE `Name` = 'SwissProt';", undef,$primaryAC);
+	my $insertSeqDBEntryStmt = $db->prepare("INSERT INTO SeqDBEntry(`SeqDB`, `SeqDBIdentifier`) SELECT `Id`,? FROM SeqDB WHERE `Name` = 'SwissProt';");
+	$insertSeqDBEntryStmt->execute($primaryAC);
+	my $seqDBEntryId = $insertSeqDBEntryStmt->{mysql_insertid};
+	#Get the organism ID
+	my $organismId = getOrganismId($db, $organism);
 	#Insert the sequence
-	my $url = 'http://www.uniprot.org/uniprot/' .$primaryAC  . '.fasta';
-	my $fastaSequence = get $url;
-	die "Protein sequence for AC $primaryAC can't be downloaded!\n" unless defined $fastaSequence;
-	#Insert the sequence
-	$db->do("INSERT INTO Sequences(`SeqDB`, `SeqDBIdentifier`) SELECT `Id`,? FROM SeqDB WHERE `Name` = 'SwissProt';", undef,$primaryAC);
-	
+	my $seqId = insertSequence($db, $primaryAC, $definition);
+	#Insert the n:m relation (db Entry <--> sequence) info
+	my $insertSourceStmt = $db->prepare("INSERT INTO Source(`SeqId`, `EntryId`) VALUES (?,?);");
+	$insertSourceStmt->execute($seqId,$seqDBEntryId);
 }
 #Parse CLI arguments
 my %options=();
-getopts("ls",\%options);
+getopts("lu",\%options);
 #Komandozeilenparameter
 my $argc = @ARGV;
 #Check if we have the required number of arguments
 print STDERR "Usage: $0 <SwissProt filename>\n" unless $argc == 1;
 print STDERR "    Use -l to use SSH port-forwarded database (on localhost)\n" unless $argc == 1;
-die "	Use -s to use Non-LMU MySQL database (works from everywhere)\n" unless $argc == 1;
+die "	Use -u to use Uli's (Non-LMU) MySQL database (works from everywhere)\n" unless $argc == 1;
 #
 #Setup the database connection
 #
 use DBI;
 my $db = undef;
-if(defined $options{s}) {
+if(defined $options{u}) {
 	$db = DBI->connect('DBI:mysql:bioprakt4;host=localgrid.de', 'bioprakt4', 'vGI5GCMg0x') || die "Could not connect to database: $DBI::errstr";	
 } elsif(defined $options{l}) {
 	$db = DBI->connect('DBI:mysql:bioprakt4;host=127.0.0.1', 'bioprakt4', 'vGI5GCMg0x') || die "Could not connect to database: $DBI::errstr";	
