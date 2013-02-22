@@ -41,3 +41,11 @@ CREATE TABLE KeySeq (
     FOREIGN KEY(KeywordsId) references Keywords(Id),
     FOREIGN KEY(SeqId) references Seq(Id)
 );
+CREATE TABLE Orf (
+    Id INT NOT NULL AUTO_INCREMENT,
+    SeqId INT,
+    Begin INT,
+    END_ INT,
+    PRIMARY KEY(Id),
+    FOREIGN KEY(SeqId) references Seq(Id)
+);

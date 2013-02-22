@@ -47,3 +47,8 @@ KeywordsId:	(Link Keywords to Sequences)
  KeywordsId				INT				An Id to connect to the keywords													Key along with SeqId, Foreign Key Keywords:Id
  SeqId					INT				An Id to connect to the Sequences													Key along with KeywordsId, Foreign Key Seq:Id
 
+Orf:
+ Id						INT				Id of Orf																			Key
+ SeqId					INT				The Id of the Seq																	Foreign Key Seq:Id
+ begin					INT				The Startpoint (if endpoint < startpoint reverse strang)
+ end_					INT				The endpoint
