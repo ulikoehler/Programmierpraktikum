@@ -12,7 +12,7 @@ SecondStruct(Id, Struct)	The Structure of the Sequence
 Organism (Id, Name)	The Sequence comes form organism
           --
 
-Type (Id, Name, IntronExon, Description)	The Type of the Sequence for example RNA, DNA etc.
+Type (Id, Name, Description)	The Type of the Sequence for example RNA, DNA etc.
       --
 
                 -----
