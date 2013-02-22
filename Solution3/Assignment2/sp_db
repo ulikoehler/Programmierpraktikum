@@ -16,16 +16,16 @@ sub getKeywordId {
 	my $db = $_[0];
 	my $keyword = $_[1];
 	#Try to find existing keywordx
-	my $findKeywordIdStmt = $db->prepare("Select `Id` FROM Keywords WHERE `Description` = ?");
+	my $findKeywordIdStmt = $db->prepare("Select `Id` FROM Keywords WHERE `Value` = ?");
 	$findKeywordIdStmt->execute($keyword);
 	my $result = $findKeywordIdStmt->fetchrow_hashref();
 	if(defined $result->{Id}) {
 		return $result->{Id};
 	}
 	#If that didn't return, the keyword doesn't exist. insert it.
-	my $insertStmt = $db->prepare("INSERT INTO Keywords(`Description`) VALUES (?)");
+	my $insertStmt = $db->prepare("INSERT INTO Keywords(`Value`) VALUES (?)");
         $insertStmt->execute($keyword);
-        $autoIncrementId = $insertStmt->{mysql_insertid};
+        my $autoIncrementId = $insertStmt->{mysql_insertid};
         #Fetch it again (there may be a better way)
         return $autoIncrementId;
 }
@@ -49,7 +49,7 @@ sub getOrganismId {
 	$queryOrganismIdStmt->execute($organism);
 	my $result = $queryOrganismIdStmt->fetchrow_hashref();
 	if(defined $result->{Id}) {
-		return $result->{Id}
+		return $result->{Id};
 	}
 	#If that didn't return, we need to insert it
 	my $insertStmt = $db->prepare("INSERT INTO Organism(`Name`) VALUES (?)");
@@ -94,7 +94,7 @@ sub insertSequence {
 sub processSwissprotEntry {
 	#Get the function arguments
 	my $db = $_[0];
-	my $id = $_[1];
+	my $id = $_[1]; #The ID string from swissprot, NOT the AC identifier
 	my @ACNumbers = @{$_[2]};
 	my $definition = $_[3];
 	my $organism = $_[4];
@@ -114,8 +114,8 @@ sub processSwissprotEntry {
 	###
 	print "Processing $ACNumbers[0]\n";
 	#Insert the database entry information
-	my $insertSeqDBEntryStmt = $db->prepare("INSERT INTO SeqDBEntry(`SeqDBId`, `SeqDBIdentifier`) SELECT `Id`,? FROM SeqDB WHERE `Name` = 'SwissProt';");
-	$insertSeqDBEntryStmt->execute($primaryAC);
+	my $insertSeqDBEntryStmt = $db->prepare("INSERT INTO SeqDBEntry(`SeqDBId`, `SeqDBIdentifier`, `SwissprotEntryId`) SELECT `Id`,?,? FROM SeqDB WHERE `Name` = 'SwissProt';");
+	$insertSeqDBEntryStmt->execute($primaryAC, $id);
 	my $seqDBEntryId = $insertSeqDBEntryStmt->{mysql_insertid};
 	#Get the organism ID
 	my $organismId = getOrganismId($db, $organism);
@@ -125,7 +125,7 @@ sub processSwissprotEntry {
 	my $insertSourceStmt = $db->prepare("INSERT INTO Source(`SeqId`, `EntryId`) VALUES (?,?);");
 	$insertSourceStmt->execute($seqId,$seqDBEntryId);
 	#Inset the keywords
-	foreach(@keyword) {
+	foreach(@keywords) {
 		insertKeywordRelation($db, $_, $seqId);
 	}
 }
