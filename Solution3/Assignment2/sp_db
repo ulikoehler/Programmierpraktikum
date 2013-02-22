@@ -41,7 +41,7 @@ sub insertSequence {
 	my $fastaSequence = get $url;
 	die "Protein sequence for AC $primaryAC can't be downloaded!\n" unless defined $fastaSequence;
 	#Insert the sequence
-	my $insertSeqStmt = $db->prepare("INSERT INTO Seq(`Name`, `Definition`,`Organism`,`TypeId`,`Seq`) SELECT ?,?,?,`Id`,? FROM Type WHERE `Name`='Protein';");
+	my $insertSeqStmt = $db->prepare("INSERT INTO Seq(`Name`, `Definition`,`OrganismId`,`TypeId`,`Seq`) SELECT ?,?,?,`Id`,? FROM Type WHERE `Name`='Protein';");
 	$insertSeqStmt->execute($primaryAC,$definition,$organismId,$fastaSequence);
 	return $insertSeqStmt->{mysql_insertid};
 }
@@ -60,9 +60,18 @@ sub processSwissprotEntry {
 	my @keywords = @{$_[5]};
 	#print "ACs:",join(",", @ACNumbers),"\n";
 	use LWP::Simple;
+	##
+	#Check if the entry is already present in the database
+	##
+	#my $insertSeqDBEntryStmt = $db->prepare("Select `Id` from SeqDBEntry WHERE `SeqDBIdentifier` = ?");
+	#$insertSeqDBEntryStmt->execute($primaryAC);
+	#my $result = $sth->fetchrow_hashref();
+	###
+	#Insert the dataset into the database
+	###
 	#Insert the database entry information
 	my $primaryAC = $ACNumbers[0] ;
-	my $insertSeqDBEntryStmt = $db->prepare("INSERT INTO SeqDBEntry(`SeqDB`, `SeqDBIdentifier`) SELECT `Id`,? FROM SeqDB WHERE `Name` = 'SwissProt';");
+	my $insertSeqDBEntryStmt = $db->prepare("INSERT INTO SeqDBEntry(`SeqDBId`, `SeqDBIdentifier`) SELECT `Id`,? FROM SeqDB WHERE `Name` = 'SwissProt';");
 	$insertSeqDBEntryStmt->execute($primaryAC);
 	my $seqDBEntryId = $insertSeqDBEntryStmt->{mysql_insertid};
 	#Get the organism ID
