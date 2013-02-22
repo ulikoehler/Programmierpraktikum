@@ -38,7 +38,6 @@ CREATE TABLE Seq (
     Definition TEXT,
     Seq LONGTEXT,
     Organism INT,
-    SeqTyp INT,
     Typ INT,
     secStruct INT,
     PRIMARY KEY(Id),
