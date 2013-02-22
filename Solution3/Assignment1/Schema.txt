@@ -1,0 +1,24 @@
+
+TABLE(Id, Name)
+      --
+
+Organism (Id, Name)
+          --
+
+Keywords (Id, Value)
+          --
+                                ----------
+Seq (Id, Name, Definition, Seq, OrganismId, Type, Structure)
+     --
+         -----
+Orf (Id, SeqId, Start, Stop)
+     --
+             --
+StructAlign (Id, SeqId)
+             --  -----
+        ----------  -----
+KeySeq (KeywordsId, SeqId)
+        ----------  -----
+        ----  -----
+Source (DBId, SeqId, SeqDBIdentifier, SwissprotEntryId)
+        ----  -----
