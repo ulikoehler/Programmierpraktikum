@@ -1,7 +1,6 @@
 ? gibt im Folgenden Statement das Keyword an
 
-SELECT `SeqDBIdentifier` FROM SeqDBEntry
-INNER JOIN Source ON SeqDBEntry.Id = Source.EntryId
+SELECT 'SeqDBIdentifier' FROM Source
 INNER JOIN Seq ON Seq.Id = Source.SeqId
 INNER JOIN KeySeq ON KeySeq.SeqId = Seq.Id
 INNER JOIN Keywords ON Keywords.Id = KeySeq.KeywordsId
