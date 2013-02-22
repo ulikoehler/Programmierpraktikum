@@ -18,8 +18,8 @@ echo "ray 1000,1000;" >> $1.pml
 echo "png $1.png;" >> $1.pml
 #echo "quit;" >> $1.pml
 #Execute RASMOL
-pymol $1.pml
-
+wd=`pwd`
+sh -i ~/.ssh/id_dsa koehleru@remote.cip.ifi.lmu.de "cd $wd && pymol -qxci 1ULI.pml"
 convert $1.png $1.gif
 
 #Remove tmp files
