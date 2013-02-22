@@ -29,6 +29,20 @@ sub getOrganismId {
 	return $insertStmt->{mysql_insertid};
 }
 
+sub checkIfSwissprotEntryExists {
+	my $db = $_[0];
+	my $primaryAC = $_[1];
+	#Try to fetch an existing organism
+	my $insertSeqDBEntryStmt = $db->prepare("Select `Id` from SeqDBEntry WHERE `SeqDBIdentifier` = ? AND `SeqDBId` =  (SELECT `Id` FROM SeqDB WHERE `Name` = 'SwissProt');");
+	$insertSeqDBEntryStmt->execute($primaryAC);
+	my $result = $insertSeqDBEntryStmt->fetchrow_hashref();
+	if(defined $result->{Id}) {
+		return 1;
+	} else {
+		return 0;
+	}
+}
+
 #Download and insert a Uniprot sequence
 sub insertSequence {
 	my $db = $_[0];
@@ -56,21 +70,22 @@ sub processSwissprotEntry {
 	my @ACNumbers = @{$_[2]};
 	my $definition = $_[3];
 	my $organism = $_[4];
-	print "Processing $ACNumbers[0]\n";
 	my @keywords = @{$_[5]};
 	#print "ACs:",join(",", @ACNumbers),"\n";
-	use LWP::Simple;
+	my $primaryAC = $ACNumbers[0] ;
 	##
 	#Check if the entry is already present in the database
 	##
-	#my $insertSeqDBEntryStmt = $db->prepare("Select `Id` from SeqDBEntry WHERE `SeqDBIdentifier` = ?");
-	#$insertSeqDBEntryStmt->execute($primaryAC);
-	#my $result = $sth->fetchrow_hashref();
+	my $entryAlreadyExists = checkIfSwissprotEntryExists($db, $primaryAC);
+	if($entryAlreadyExists) {
+		print "Entry $primaryAC already exists\n";
+		return;
+	}
 	###
 	#Insert the dataset into the database
 	###
+	print "Processing $ACNumbers[0]\n";
 	#Insert the database entry information
-	my $primaryAC = $ACNumbers[0] ;
 	my $insertSeqDBEntryStmt = $db->prepare("INSERT INTO SeqDBEntry(`SeqDBId`, `SeqDBIdentifier`) SELECT `Id`,? FROM SeqDB WHERE `Name` = 'SwissProt';");
 	$insertSeqDBEntryStmt->execute($primaryAC);
 	my $seqDBEntryId = $insertSeqDBEntryStmt->{mysql_insertid};
