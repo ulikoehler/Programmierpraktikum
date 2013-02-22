@@ -35,6 +35,9 @@ if($lowerBound > $upperBound) {
 }
 # read where clausel from stdin
 my $where = <STDIN>; chomp($where);
+if(!$where) {     # if no $where is given
+  $where = "1=1";
+}
 # create SQL Statement
-print "$lowerBound $upperBound $cIntervall $where";
-
+$dif = ($upperBound - $lowerBound) / $cIntervall;
+print "SELECT COUNT(*) FROM (SELECT * FROM Seq S WHERE LENGTH(Seq) >= $lowerBound AND LENGTH(Seq) <= $upperBound AND $where) GROUP BY ROUND((LENGTH(S.Seq) - $lowerBound) / $dif, 0);";
