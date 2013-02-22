@@ -7,7 +7,7 @@ CREATE TABLE DB (
 );
 CREATE TABLE Organism (
     Id INT NOT NULL AUTO_INCREMENT,
-    Name VARCHAR(255),
+    Name VARCHAR(50),
     PRIMARY KEY(Id)
 );
 CREATE TABLE Keywords (
