@@ -60,6 +60,14 @@ CREATE TABLE StructAlign (
     FOREIGN KEY(Seq1Id) references Seq(Id),
     FOREIGN KEY(Seq2Id) references Seq(Id)
 );
+CREATE TABLE KeySeq (
+    KeywordsId INT,
+    SeqId INT,
+    PRIMARY KEY(KeywordsId, SeqId),
+    FOREIGN KEY(KeywordsId) references Keywords(Id),
+    FOREIGN KEY(SeqId) references Seq(Id)
+);
+
 INSERT INTO SeqDB (`Name`) VALUES('SwissProt');    
 INSERT INTO Type (`Name`) VALUES('DNA');
 INSERT INTO Type (`Name`) VALUES('RNA');

@@ -6,6 +6,10 @@ SeqDB (Id, Name)	Table for foreign Databases e.g. NCBI etc.
 Keywords (Id, Description)	Keywords for Sequence
           --
 
+       ----------  -----
+KeySeq(KeywordsId, SeqId)	Connection between Keywords and Sequence
+       ----------  -----
+
 SecondStruct(Id, Struct)	The Structure of the Sequence
              --
 
@@ -28,5 +32,5 @@ Source (SeqId, EntryId)		Connection between the Sequence and a DBEntry
         -----  -------
 
                                     ------  ------
-CREATE TABLE StructAlign (Id, Name, Seq1Id, Seq2Id)	A Structural Alignment above two Sequences
+StructAlign (Id, Name, Seq1Id, Seq2Id)	A Structural Alignment above two Sequences
                           --
