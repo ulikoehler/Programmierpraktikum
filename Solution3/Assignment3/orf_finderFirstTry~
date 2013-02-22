@@ -30,7 +30,6 @@ for(my $i=0;$i<length($reverseSequence);$i++){
 		$complementaryReverseSequence.="G";
 	}
 }
-
 $reverseSequence = "";
 my $maxORFlength = 0;
 my $ORFcountFwd = 0;	my $ORFcountRev = 0;	my $ORFcountAll = 0;
@@ -87,11 +86,26 @@ for(my $i=0;$i<$maxORFlength;$i++){
 my $string;
 
 while ( (my $k,my $v) = each %ORFlengthsAll ) {#you may print the bounds and lengths of the reading frames
-    $string .= "$k\t$v\n";
+    $string .= "$k,$v\n";
 }
 
-open (MYFILE, '>>dataRandom39');
+open (MYFILE, '>>/home/tobias/Desktop/out.txt');
 print MYFILE $string;
 close (MYFILE);
+
+########## Generate random sequence:
+my $randomSequence;
+for (my $i=0;$i<length($sequence);$i++) {
+  my $number=int(rand(4));
+  if($number == 0) {
+    $randomSequence.="A";
+  } elsif ($number == 1) {
+    $randomSequence.="C";
+  } elsif ($number == 2) {
+    $randomSequence.="T";
+  } else {
+    $randomSequence.="G";
+  }
+}
 
 ########## TODO: put results to database:

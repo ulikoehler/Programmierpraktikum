@@ -90,7 +90,7 @@ while ( (my $k,my $v) = each %ORFlengthsAll ) {#you may print the bounds and len
     $string .= "$k\t$v\n";
 }
 
-open (MYFILE, '>>dataRandom39');
+open (MYFILE, '>>dataRandom');
 print MYFILE $string;
 close (MYFILE);
 
