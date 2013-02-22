@@ -4,6 +4,10 @@ Database Docu (TABSIZE: 4)
 Table DB:
  Id						INT				Id of entry																			Key
  Name					VARCHAR(50)		Name of Database
+
+Table Source:
+ DBId					INT				Id of entry																			Key with SeqId, Foreign Key DB:Id
+ SeqId					INT				Id of Seq																			Key with DBId, Foreign Key Seq:Id
  SeqDBIdentifier		VARCHAR(50)		Identifer in DB
  SwissprotEntryId		TEXT			Id on swissprod
 
@@ -23,7 +27,6 @@ Table Seq:
  OrganismId				INT				The Sequence comes from .. organism													Foreign Key Organism:DB
  Type					ENUM			RNA/DNA/Protein Sequence
  Structure				TEXT			A Sequence that represents the Structure of the Sequence see Data/HOMSTRAD
- DBId					INT				The DB, the Seq. comes from															Foreign Key DB:Id
 
 StructAlign:
  Id						INT				The Id of a Structure Alignment														Key along with Seq
@@ -47,8 +50,12 @@ KeywordsId:	(Link Keywords to Sequences)
  KeywordsId				INT				An Id to connect to the keywords													Key along with SeqId, Foreign Key Keywords:Id
  SeqId					INT				An Id to connect to the Sequences													Key along with KeywordsId, Foreign Key Seq:Id
 
+Keywords:
+  Id					INT				An Keyword ID																		Key
+  Value					INT				Description
+
 Orf:
  Id						INT				Id of Orf																			Key
  SeqId					INT				The Id of the Seq																	Foreign Key Seq:Id
- begin					INT				The Startpoint (if endpoint < startpoint reverse strang)
- end_					INT				The endpoint
+ Start					INT				The Startpoint (if endpoint < startpoint reverse strang)
+ Stop					INT				The endpoint

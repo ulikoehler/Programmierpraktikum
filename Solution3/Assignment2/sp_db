@@ -16,14 +16,14 @@ sub getKeywordId {
 	my $db = $_[0];
 	my $keyword = $_[1];
 	#Try to find existing keywordx
-	my $findKeywordIdStmt = $db->prepare("Select `Id` FROM Keywords WHERE `Value` = ?");
+	my $findKeywordIdStmt = $db->prepare("Select `Id` FROM Keywords WHERE `Value` = ?;");
 	$findKeywordIdStmt->execute($keyword);
 	my $result = $findKeywordIdStmt->fetchrow_hashref();
 	if(defined $result->{Id}) {
 		return $result->{Id};
 	}
 	#If that didn't return, the keyword doesn't exist. insert it.
-	my $insertStmt = $db->prepare("INSERT INTO Keywords(`Value`) VALUES (?)");
+	my $insertStmt = $db->prepare("INSERT INTO Keywords(`Value`) VALUES (?);");
         $insertStmt->execute($keyword);
         my $autoIncrementId = $insertStmt->{mysql_insertid};
         #Fetch it again (there may be a better way)
@@ -36,7 +36,7 @@ sub insertKeywordRelation {
 	my $seqDBId = $_[2];
 	#Try to fetch an existing organism
 	my $keywordId = getKeywordId($db, $keyword);
-	my $insertStmt = $db->prepare("INSERT INTO KeySeq(`KeywordsId`,`SeqId`) VALUES (?,?)");
+	my $insertStmt = $db->prepare("INSERT INTO KeySeq(`KeywordsId`,`SeqId`) VALUES (?,?);");
         $insertStmt->execute($keywordId, $seqDBId);
 }
 
@@ -62,7 +62,7 @@ sub checkIfSwissprotEntryExists {
 	my $db = $_[0];
 	my $primaryAC = $_[1];
 	#Try to fetch an existing organism
-	my $insertSeqDBEntryStmt = $db->prepare("Select `Id` from SeqDBEntry WHERE `SeqDBIdentifier` = ? AND `SeqDBId` =  (SELECT `Id` FROM SeqDB WHERE `Name` = 'SwissProt');");
+	my $insertSeqDBEntryStmt = $db->prepare("Select `Id` from DB WHERE `SeqDBIdentifier` = ? AND `NAME` =  'SwissProd';");
 	$insertSeqDBEntryStmt->execute($primaryAC);
 	my $result = $insertSeqDBEntryStmt->fetchrow_hashref();
 	if(defined $result->{Id}) {
@@ -79,9 +79,10 @@ sub insertSequence {
 	my $definition = $_[2];
 	my $organismId = $_[3];
 	my $rawSequence = $_[4];
+        my $DBId = $_[5];
 	#Insert the sequence
-	my $insertSeqStmt = $db->prepare("INSERT INTO Seq(`Name`, `Definition`,`OrganismId`,`Seq`,`TypeId`) SELECT ?,?,?,?,`Id` FROM Type WHERE `Name`='Protein';");
-	$insertSeqStmt->execute($primaryAC,$definition,$organismId,$rawSequence);
+	my $insertSeqStmt = $db->prepare("INSERT INTO Seq(`Name`, `Definition`,`OrganismId`,`Seq`,`Type`, 'DBId', 'Structure') VALUES (?,?,?,?,'Protein',?,?);");
+	$insertSeqStmt->execute($primaryAC,$definition,$organismId,$rawSequence, $DBId, undef);
 	return $insertSeqStmt->{mysql_insertid};
 }
 
@@ -114,7 +115,7 @@ sub processSwissprotEntry {
 	###
 	print "Processing $ACNumbers[0]\n";
 	#Insert the database entry information
-	my $insertSeqDBEntryStmt = $db->prepare("INSERT INTO SeqDBEntry(`SeqDBId`, `SeqDBIdentifier`, `SwissprotEntryId`) SELECT `Id`,?,? FROM SeqDB WHERE `Name` = 'SwissProt';");
+	my $insertSeqDBEntryStmt = $db->prepare("INSERT INTO DB(`Name`, `SeqDBIdentifier`, `SwissprotEntryId`) VALUES ('SwissProt', ?, ?);");
 	$insertSeqDBEntryStmt->execute($primaryAC, $id);
 	my $seqDBEntryId = $insertSeqDBEntryStmt->{mysql_insertid};
 	#Get the organism ID
@@ -122,7 +123,7 @@ sub processSwissprotEntry {
 	#Insert the sequence
 	my $seqId = insertSequence($db, $primaryAC, $definition,$organismId,$currentSeq);
 	#Insert the n:m relation (db Entry <--> sequence) info
-	my $insertSourceStmt = $db->prepare("INSERT INTO Source(`SeqId`, `EntryId`) VALUES (?,?);");
+	my $insertSourceStmt = $db->prepare("INSERT INTO DB(`Name`, `SeqDBIdentifier`, `SwissprotEntryId`) VALUES ('SwissProt', ?, ?);");
 	$insertSourceStmt->execute($seqId,$seqDBEntryId);
 	#Inset the keywords
 	foreach(@keywords) {
