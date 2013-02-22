@@ -19,8 +19,8 @@ Type (Id, Name, IntronExon, Description)	The Type of the Sequence for example RN
 SeqDBEntry (Id, SeqDB, SeqDBIdentifier)		An Sequence Entry in a database
             --
 
-                                --------  ---  ---------
-Seq (Id, Name, Definition, Seq, Organism, Typ, secStruct)	The Seq. itself
+                                --------  ------  ---------
+Seq (Id, Name, Definition, Seq, Organism, TypeId, secStruct)	The Seq. itself
      --
 
         -----  -------
