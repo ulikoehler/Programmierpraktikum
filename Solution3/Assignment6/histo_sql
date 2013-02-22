@@ -1,19 +1,5 @@
 #! /usr/bin/perl -w
 
-#Schreiben Sie ein Programm, das ein SQL-Statement generiert, das ein Histogramm
-#der Sequenzlängen einer Teilmenge der Sequenzen in der Datenbank erzeugt. Die
-#Teilmenge wird durch eine untere und obere Grenze für die Sequenzlänge definiert
-#(durch eine WHERE-clause!). Tipp: Benutzen Sie die MySQL-Funktion INTERVAL. (10P)
-# Programmname histo_sql
-# Input Kommandozeilenparameter -m untere Längen-Grenze
-#  -M obere Längen-Grenze
-#  -c Anzahl der Intervalle
-# Stdin WHERE-clause
-# Output Stdout
-# MySQL-Statement
-# Erweiterungen: • Das Histogramm durch Gnuplot darstellen
-
-
 use strict;
 use LWP::Simple;
 use Getopt::Std;
@@ -47,6 +33,8 @@ if (($lowerBound <= 0) || ($upperBound <= 0) || ($cIntervall <= 0)) {
 if($lowerBound > $upperBound) {
   die("lower Bound > upper Bound");
 }
+# read where clausel from stdin
+my $where = <STDIN>; chomp($where);
 # create SQL Statement
-print "$lowerBound $upperBound $cIntervall";
+print "$lowerBound $upperBound $cIntervall $where";
 
