@@ -28,7 +28,7 @@ CREATE TABLE SeqDBEntry (
     Id INT NOT NULL AUTO_INCREMENT,
     SeqDBId INT,
     SeqDBIdentifier VARCHAR(50),
-    SuissprotEntryId TEXT,
+    SwissprotEntryId TEXT,
     PRIMARY KEY(Id),
     FOREIGN KEY(SeqDBId) references SeqDB(Id)
 );
