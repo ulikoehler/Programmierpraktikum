@@ -6,6 +6,7 @@ if [ $# -eq 0 ]
 fi
 #Download
 wget -qO $1.pdb http://www.rcsb.org/pdb/files/$1.pdb
+
 #Create the rasmol script
 echo "load $1.pdb;" > $1.pml
 echo "bg_color white;" >> $1.pml
@@ -16,10 +17,10 @@ echo "color yellow, ss s;" >> $1.pml
 echo "color gree, ss "";" >> $1.pml
 echo "ray 1000,1000;" >> $1.pml
 echo "png $1.png;" >> $1.pml
-#echo "quit;" >> $1.pml
+echo "quit;" >> $1.pml
+
 #Execute RASMOL
 pymol $1.pml
-
 convert $1.png $1.gif
 
 #Remove tmp files
