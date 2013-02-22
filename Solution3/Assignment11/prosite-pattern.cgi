@@ -21,5 +21,9 @@ my $db =  DBI->connect('DBI:mysql:bioprakt4;host=mysql2-ext.bio.ifi.lmu.de', 'bi
 my $query = $db->prepare("SELECT * FROM `Seq` WHERE Seq.Seq REGEXP ?;\n");
 $query->execute($prositePattern);
 print header();
-print "abc";
+print "<html><body><h1>Results for pattern $originalPrositePattern</h1><pre><ul>";
+while (my $hash_ref = $query->fetchrow_hashref) {
+	print "<li>".$hash_ref->{Id}."</li>";
+}
+print "</ul></pre></body></html>";
 $db->close();
