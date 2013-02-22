@@ -6,22 +6,19 @@ use strict;
 my $argc = @ARGV;
 die "Usage: $0 <Organism name>" unless $argc == 1;
 my $organismName = $ARGV[0];
-
+#Reformat the organism name in NCBI format
 $organismName =~ s/\s/_/g;;
 print "try downloading $organismName ...\n";
-
-# Donwload the genome report
-
+#Setup FTP vars
 my $serverName = "ftp.ncbi.nlm.nih.gov";
 my $loginName = "anonymous";
 my $loginPassword = "";
-
 use LWP::Simple;
 use Net::FTP;
 # open connection
 my $ftp = Net::FTP->new($serverName, Debug => 0, Passive => 1) or die "unable to connect ftp://$serverName/: $@\n";
 $ftp->login($loginName, $loginPassword);
-$ftp->cwd("/genomes/Bacteria") or die "FATAL ERROR: couldn't change directory ".$ftp->message."\n";
+$ftp->cwd("/genomes/$organismName") or die "Error: couldn't change directory to /genomes/$organismName - organism misspelled".$ftp->message."\n";
 # list all files
 my $taxaFound = "false";
 my @files = $ftp->ls;

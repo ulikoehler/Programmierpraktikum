@@ -1,0 +1,39 @@
+#!/usr/bin/perl -w
+use strict;
+use Net::FTP;
+
+# Variablen fue SQL-Statements:
+# @tables = Tabellen
+my @tables = ( "Organismen", "Sequenzen", "GehoertZu", "Namen", "ORFs");
+# @fields = Spaltennamen in den jeweiligen Tabellen
+my @fields = ( "Organismus", "Sequenz", "SequenzNr, OrganismusNr", "SequenzNr, Name", "SequenzNr, Start, Ende");
+# @idFields = Spaltennamen mit den IDs der jeweiligen Tabellen
+my @idFields = ("OrganismusID", "SequenzID", "", "ORF_ID");
+#Kommandozeilenparameter
+my $argc = @ARGV:
+die "Usage: $0 <Organism>\n" unless $argc == 1;
+my $organism = $ARGV[0];
+# NCBI uses a different naming scheme
+$organism =~ s/-/_/g;   # replace '-' by '_'
+$organism =~ s/\s+/_/g;   # replace Whitespace by '_' 
+#Download the genome report
+my $serverName = "ftp.ncbi.nlm.nih.gov";
+my $loginName = "anonymous";
+my $loginPassword = 'anonymous@example.org';
+
+use LWP::Simple;
+use Net::FTP;
+# open connection
+my $ftp = Net::FTP->new($serverName, Debug => 0, Passive => 1) or die "unable to connect ftp://$serverName/: $@\n";
+$ftp->login($loginName, $loginPassword);
+#Search for an organism in the main directory
+#Returns false on failure
+sub SearchInFTPDir {
+	$organismName = $_[0];
+	$ftp = $_[1];
+	$dir = $_[3];
+	return 0 unless $ftp->cwd($dir);
+}
+
+"/genomes/$organismName"
+
