@@ -1,6 +1,7 @@
 #!/usr/bin/perl -w
 use strict;
 use LWP::Simple;
+use HTML::Entities;
 use CGI qw(:standard);
 #Parse the CGI arg
 my $pdbId = param("pdbid");
@@ -12,5 +13,5 @@ print header(-status=>404) unless $pdbId;
 print"Can't fetch PDB data for PDB ID $pdbId\n" unless $pdbData;
 exit unless $pdbData;
 #Print the data (only executed if not error occured before
-print header('text/plain');
-print $pdbData;
+print header('text/html');
+print "<html><body><h1>PDB $pdbId</h1><pre>".encode_entities($pdbData)."</pre></body></html>";

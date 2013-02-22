@@ -5,7 +5,7 @@ if [ $# -eq 0 ]
     exit
 fi
 #Change working 
-cd /home/k/koehleru/public_html/bioprakt/cgi
+cd /home/k/koehleru/public_html/bioprakt/cgi/
 #Download
 wget -qO $1.pdb http://www.rcsb.org/pdb/files/$1.pdb
 #Create the rasmol script

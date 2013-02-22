@@ -20,6 +20,6 @@ $prositePattern =~ s/[-]//g;
 my $db =  DBI->connect('DBI:mysql:bioprakt4;host=mysql2-ext.bio.ifi.lmu.de', 'bioprakt4', 'vGI5GCMg0x') || die "Could not connect to database: $DBI::errstr";	
 my $query = $db->prepare("SELECT * FROM `Seq` WHERE Seq.Seq REGEXP ?;\n");
 $query->execute($prositePattern);
-print header('text/plain');
+print header();
 print "abc";
 $db->close();
