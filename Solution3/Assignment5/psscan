@@ -1,0 +1,101 @@
+#!/usr/bin/perl -w
+use strict;
+use LWP::Simple;
+use Getopt::Std;
+#Parse CLI arguments
+my %options=();
+getopts("ew:",\%options);
+#Komandozeilenparameter
+my $argc = @ARGV;
+
+sub processFASTA {
+	my $fastaData = $_[0];
+	my $fastaHeadline = $_[1];
+	my $prositePattern = $_[2];
+	#Sub to process a single FASTA/Prosite pair
+	#Convert the prosite pattern to a regular expression
+	$prositePattern =~ s/x/\./g; #Replace x by . (matches any character)
+	#Process exclusion specifiers like {GA}
+	$prositePattern =~ s/\{(\w+)\}/\[\^$1\]/g; #Replace {3} by [^3]
+	#Replace length specifiers. Split into two regexes to improve readability
+	$prositePattern =~ s/\((\d+)\)/\{$1\}/g; #Replace (3) by {3}
+	$prositePattern =~ s/\((\d+,\d+)\)/\{$1\}/g; #Replace (3,5) by {3,5}
+	#We don't need to replace something like [NHG], it's already a regex
+	#Finally, remove minuses
+	$prositePattern =~ s/[-]//g;
+	#Add a global group to be able to match it later
+	$prositePattern = "(" . $prositePattern . ")";
+	#
+	# Matching
+	#
+	#Iterate over matches
+	my $haveMatches = 0;
+	print "Matches in " . substr($fastaHeadline, 1) . "\n";
+	while ($fastaData =~ m/($prositePattern)/g) {
+		my $endPosition = (pos $fastaData);
+		my $startPosition = $endPosition - length($1) + 1;
+		print "\tFound match $1, positions $startPosition to $endPosition \n";
+		$haveMatches = 1;
+		pos($fastaData) = pos($fastaData) - length($1) + 1
+	}
+	if(!$haveMatches) { # Didnt find anything
+		print "\tNone\n"; 
+	}
+}
+
+#Check if we have at least one argument
+unless ($argc == 1 or defined $options{w}) {
+	print STDERR "Usage: $0 <Prosite pattern>\n";
+	print STDERR "\t-e Use PrositeScan for matching\n";
+	die "\t-w <ID> Download pattern by prosite ID\n";
+}
+#The prosite pattern is supplied as CLI arg
+my $prositePattern;
+if(defined $options{w}) {
+	use LWP::Simple;
+	my $prositePatternId = $options{w};
+	my $url = "http://prosite.expasy.org/" . $prositePatternId . ".txt";
+	my $pageContent = get $url;
+	if(!defined $pageContent) {
+		die "Could not fetch prosite info for prosite pattern ID " . $options{w} . "\n";
+	} else {
+		if ($pageContent =~ m/PA\s+([^.]+)./g) {
+			$prositePattern = $1;
+		} else {
+			die "Could not find prosite pattern " . $options{w} . "\n";
+		}
+	}
+} else {
+	#Read pattern from ARGV
+	$prositePattern = $ARGV[0]; #The content of this variable is conv to regex later!
+}
+my $originalPrositePattern = $prositePattern;
+print "Matching sequence to pattern " . $prositePattern . "\n";
+#...whereas the FASTA input is read from stdin (--> assemble it)
+my $alreadyReadFirstLine = 0;
+my $fastaHeadline = ""; # The first nonempty line from stdin.
+my $fastaData = ""; #Sequence data only
+while (<STDIN>) {
+	if($_ =~ m/^>/) {
+		#If we have data, process it
+		if($fastaData) {
+			processFASTA($fastaData, $fastaHeadline, $prositePattern);
+		}
+		#Reset
+		$fastaHeadline = "";
+		$fastaData = "";
+		#Set the new data
+		$fastaHeadline = $_;
+		$alreadyReadFirstLine = 1 if length($fastaHeadline) > 0;
+	} elsif($_ =~ m/^;/) {
+		#Do nothing, it's a comment
+	} else { #Data line
+		my $line = $_;
+		chomp $line;
+		$fastaData = $fastaData . $line
+	}
+}
+chomp($fastaHeadline);
+chomp ($fastaData);
+#Check if we have FASTA data
+die "No FASTA input data found on STDIN\n" unless $fastaData;
