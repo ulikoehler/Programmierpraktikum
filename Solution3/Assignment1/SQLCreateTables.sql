@@ -17,9 +17,9 @@ CREATE TABLE Keywords (
 );
 CREATE TABLE Seq (
     Id INT NOT NULL AUTO_INCREMENT,
-    Name VARCHAR(50),
+    Name VARCHAR(50) NOT NULL UNIQUE,
     Definition TEXT,
-    Seq LONGTEXT,
+    Seq LONGTEXT NOT NULL,
     OrganismId INT,
     Type ENUM('RNA', 'DNA', 'Protein'),
     Structure LONGTEXT,
