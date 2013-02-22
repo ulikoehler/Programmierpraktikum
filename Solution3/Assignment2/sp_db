@@ -35,7 +35,6 @@ sub insertSequence {
 	my $primaryAC = $_[1];
 	my $definition = $_[2];
 	my $organismId = $_[3];
-	print "Inserting sequence $primaryAC";
 	#Download the sequence
 	use LWP::Simple;
 	my $url = 'http://www.uniprot.org/uniprot/' . $primaryAC  . '.fasta';
@@ -70,7 +69,6 @@ sub processSwissprotEntry {
 	my $organismId = getOrganismId($db, $organism);
 	#Insert the sequence
 	my $seqId = insertSequence($db, $primaryAC, $definition,$organismId);
-	
 	#Insert the n:m relation (db Entry <--> sequence) info
 	my $insertSourceStmt = $db->prepare("INSERT INTO Source(`SeqId`, `EntryId`) VALUES (?,?);");
 	$insertSourceStmt->execute($seqId,$seqDBEntryId);
