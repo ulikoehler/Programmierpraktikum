@@ -27,7 +27,7 @@ if(!defined $cIntervall) {
 if((!looks_like_number($lowerBound)) || (!looks_like_number($upperBound)) || (!looks_like_number($cIntervall))) {
   die("args must be values");
 }
-if (($lowerBound <= 0) || ($upperBound <= 0) || ($cIntervall <= 0)) {
+if (($lowerBound < 0) || ($upperBound <= 0) || ($cIntervall <= 0)) {
   die("args must be positive values");
 }
 if($lowerBound > $upperBound) {
@@ -39,5 +39,5 @@ if(!$where) {     # if no $where is given
   $where = "1=1";
 }
 # create SQL Statement
-my $dif = int((($upperBound - $lowerBound) / ($cIntervall - 1)) + 0.5);
-print "SELECT COUNT(*) FROM (SELECT * FROM Seq WHERE LENGTH(Seq.Seq) >= $lowerBound AND LENGTH(Seq.Seq) <= $upperBound AND $where) AS S GROUP BY ROUND((LENGTH(S.Seq) - $lowerBound) / $dif, 0);\n";
+my $dif = int(($upperBound - $lowerBound) / $cIntervall + 0.5);
+print "SELECT COUNT(*) FROM (SELECT * FROM Seq WHERE LENGTH(Seq.Seq) >= $lowerBound AND LENGTH(Seq.Seq) <= $upperBound AND $where) AS S GROUP BY FLOOR((LENGTH(S.Seq) - $lowerBound) / $dif, 0);\n";
