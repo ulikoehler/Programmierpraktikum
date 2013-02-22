@@ -1,0 +1,16 @@
+#! /usr/bin/perl
+
+for (my $i = 0; $i < 230203; $i += 1) {
+  my $number=int(rand(4));
+  if($number == 0) {
+    print "A";
+  } elsif ($number == 1) {
+    print "C";
+  } elsif ($number == 2) {
+    print "T";
+  } else {
+    print "G";
+  }
+}
+
+
