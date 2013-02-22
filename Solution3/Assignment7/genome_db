@@ -1,0 +1,130 @@
+#!/usr/bin/perl -w
+use strict;
+use Net::FTP;
+
+#Subs
+sub getOrganismId {
+	my $db = $_[0];
+	my $organism = $_[1];
+	#Try to fetch an existing organism
+	my $queryOrganismIdStmt = $db->prepare("SELECT Id from Organism WHERE Name = ?;");
+	$queryOrganismIdStmt->execute($organism);
+	my $result = $queryOrganismIdStmt->fetchrow_hashref();
+	if(defined $result->{Id}) {
+		return $result->{Id};
+	}
+	#If that didn't return, we need to insert it
+	my $insertStmt = $db->prepare("INSERT INTO Organism(`Name`) VALUES (?)");
+	$insertStmt->execute($organism);
+	return $insertStmt->{mysql_insertid};
+}
+sub insertSequence {
+	my $db = $_[0];
+	my $primaryAC = $_[1];
+	my $definition = $_[2];
+	my $organismId = $_[3];
+	my $rawSequence = $_[4];
+        my $typ = $_[5];
+	#Insert the sequence
+        my $insertSeqStmt = "";
+        if($typ eq "Protein") {
+	  $insertSeqStmt = $db->prepare("INSERT INTO Seq(`Name`, `Definition`,`OrganismId`,`Seq`,`TypeId`) SELECT ?,?,?,?,`Id` FROM Type WHERE `Name`='Protein';");
+        } elsif($typ eq "Genome") {
+          $insertSeqStmt = $db->prepare("INSERT INTO Seq(`Name`, `Definition`,`OrganismId`,`Seq`,`TypeId`) SELECT ?,?,?,?,`Id` FROM Type WHERE `Name`='Genome';");
+        }
+	$insertSeqStmt->execute($primaryAC,$definition,$organismId,$rawSequence);
+	return $insertSeqStmt->{mysql_insertid};
+}
+
+# parse param
+my $argc = @ARGV;
+die "Usage: $0 <Organism name>" unless $argc == 1;
+my $organismName = $ARGV[0];
+# reformat the organism name in NCBI format
+$organismName =~ s/\s/_/g;
+print "try downloading $organismName ...\n";
+# Setup FTP vars
+my $serverName = "ftp.ncbi.nlm.nih.gov";
+my $loginName = "anonymous";
+my $loginPassword = "";
+use LWP::Simple;
+use Net::FTP;
+use DBI;
+my $db = DBI->connect('DBI:mysql:bioprakt4;host=mysql2-ext.bio.ifi.lmu.de', 'bioprakt4', 'vGI5GCMg0x') or die "Could not connect to database: $DBI::errstr";
+# open connection
+my $ftp = Net::FTP->new($serverName, Debug => 0, Passive => 1) or die "unable to connect ftp://$serverName/: $@\n";
+$ftp->login($loginName, $loginPassword);
+$ftp->cwd("/genomes/Bacteria") or die "Error: couldn't change directory to /genomes/Bacteria".$ftp->message."\n";
+# list all files
+my $taxaFound = "false";
+my @files = $ftp->ls;
+for my $file (@files) {
+  if ($file =~ m/($organismName)/i) { # eq organism
+    $taxaFound = "true";
+    # cwd to organismus dir
+    $ftp->cwd("./$file");
+    my @organismFiles = $ftp->ls;
+    # save Data in DB
+    for my $orgFile (@organismFiles) {
+      if (($orgFile =~ m/\.faa/i) || ($orgFile =~ m/\.fna/i)) {
+        #create tmp file
+        $ftp->get($orgFile,"tmp");
+        # readline and save to DB
+        open FILE, "<tmp";
+        my @lines = <FILE>;
+        # data to DB
+        # organism
+        my $orgName = $file; $orgName =~ s/_/ /g;
+        my $orgId = getOrganismId($db, $orgName);
+        # type
+        my $typ = 0;
+        if ($orgFile =~ m/\.faa/i) {
+          # Proteins
+          $typ = "Protein";
+        } else {
+          # Genomes
+          $typ = "Genome";
+        }
+        # parse input file and to DB
+        my $ac = "";
+        my $seq = ""; 
+        foreach my $line (@lines) {
+          # line starts with '>'
+          if(substr($line, 0, 1) eq ">") {
+            # a new block starts
+            if($seq) { # don't save any empty blocks
+              my $seqId = insertSequence($db, $ac, "NULL", $orgId, $seq, $typ);
+              $seq = "";
+            }
+            $ac = substr($line, 1, length($line) - 1);
+          }
+          # line starts with ';' ?
+          elsif(substr($line, 0, 1) eq ";") { } # FASTA comment => do nothing!
+          # "Data" line
+          else {
+            # append to current block
+            $line =~ s/\s//g;
+            $seq = $seq.$line;
+          }
+        }
+        if($seq) { # don't save any empty blocks
+          my $seqId = insertSequence($db, $ac, "NULL", $orgId, $seq, $typ);
+          $seq = "";
+        }
+        
+        # close and delete
+        close(FILE);
+        unlink("tmp")
+      }
+    }
+  }
+}
+# quit
+$ftp->quit();
+$db->disconnect();
+# organismus not found
+if($taxaFound eq "false") {
+  print "Organism not found!\n"
+} else {
+  print "Organismdata successfully written to DB!\n";
+}

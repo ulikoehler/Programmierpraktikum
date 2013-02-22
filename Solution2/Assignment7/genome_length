@@ -23,17 +23,20 @@ if(!$genomeReport) {
 foreach my $line (split /\n/ ,$genomeReport) {
 	chomp $line;
 	if($organismIsRegex) {
-		if($line =~ m/^($organismName)\t/g) {
+		if($line =~ m/^($organismName)\t/) {
 			my $currentOrganism = substr($line, 0, index($line, '	'));
 			if($line =~ m/^([^\t]+\t){5}([\d.]+)/) {
 				print "Genome of '$currentOrganism' has length $2 Mb\n";
 			}
 		}
 	} else {
-		if($line =~ m/^\Q$organismName)\E\t/g) {
+		if(index($line,$organismName) != -1) {
 			my $currentOrganism = substr($line, 0, index($line, '	'));
 			if($line =~ m/^([^\t]+\t){5}([\d.]+)/) {
 				print "Genome of '$currentOrganism' has length $2 Mb\n";
+				if($line =~ m/^\Q($organismName)\E\t/) {
+					print "x";
+				}
 			}
 		}
 	}
