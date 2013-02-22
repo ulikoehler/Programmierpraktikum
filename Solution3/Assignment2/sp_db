@@ -203,7 +203,7 @@ while ( my $line = <$fileHandle> ) {
 		chomp $currentId;
         } elsif($line =~ m/^OS\s+(.+).$/) { #Organism
                 $currentOrganism = $currentOrganism . $1; #qnd
-        } elsif($line =~ m/^\s+(\S.+).$/) { #Sequence
+        } elsif($line =~ m/^\s+(\S.+)$/) { #Sequence
                 $currentSeq = $currentSeq . $1; #qnd
         }
 }
