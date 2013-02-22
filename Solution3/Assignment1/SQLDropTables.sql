@@ -1,0 +1,10 @@
+DROP TABLE KeySeq;
+DROP TABLE StructAlign;
+DROP TABLE Source;
+DROP TABLE Seq;
+DROP TABLE SeqDB;
+DROP TABLE Keywords;
+DROP TABLE SecondStruct;
+DROP TABLE Organism;
+DROP TABLE Type;
+DROP TABLE SeqDBEntry;
