@@ -1,0 +1,32 @@
+Tables Overview:
+
+SeqDB (Id, Name)	Table for foreign Databases e.g. NCBI etc.
+       --
+
+Keywords (Id, Description)	Keywords for Sequence
+          --
+
+SecondStruct(Id, Struct)	The Structure of the Sequence
+             --
+
+Organism (Id, Name)	The Sequence comes form organism
+          --
+
+Type (Id, Name, IntronExon, Description)	The Type of the Sequence for example RNA, DNA etc.
+      --
+
+                -----
+SeqDBEntry (Id, SeqDB, SeqDBIdentifier)		An Sequence Entry in a database
+            --
+
+                                --------  ---  ---------
+Seq (Id, Name, Definition, Seq, Organism, Typ, secStruct)	The Seq. itself
+     --
+
+        -----  -------
+Source (SeqId, EntryId)		Connection between the Sequence and a DBEntry
+        -----  -------
+
+                                    ----  ----
+CREATE TABLE StructAlign (Id, Name, Seq1, Seq2)	A Structural Alignment above two Sequences
+                          --
