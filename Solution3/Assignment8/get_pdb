@@ -1,0 +1,11 @@
+#!/usr/bin/perl -w
+use strict;
+use LWP::Simple;
+my $argc = @ARGV;
+die "Usage: $0 <PDB ID>\n" unless $argc == 1;
+#Parse the args
+my $pdbId = $ARGV[0];
+my $url = "http://www.pdb.org/pdb/download/downloadFile.do?fileFormat=pdb&compression=NO&structureId=" . $pdbId;
+my $pdbData = get $url;
+die "Can't fetch PDB data for PDB ID $pdbId\n" unless $pdbData;
+print $pdbData;
