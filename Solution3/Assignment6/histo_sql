@@ -17,10 +17,36 @@
 use strict;
 use LWP::Simple;
 use Getopt::Std;
+use Scalar::Util qw(looks_like_number);
 
-#Parse CLI options
+# Parse CLI options
 my %options=();
 getopts("m:M:c:",\%options);
-
-
+# no CGI?
+die "Usage: $0 -m <lower bound> -M <upper bound> -c <count intervalls>" unless defined $options{M};
+# read CLI defined $options{n} defined $options{s};
+my $lowerBound = $options{m};
+my $upperBound = $options{M};
+my $cIntervall = $options{c};
+# not defined CLIs
+if(!defined $lowerBound) {
+  print "Warning: lower bound not spec!\nAssuming: -m 1\n";
+  $lowerBound = "all";
+}
+if(!defined $cIntervall) {
+  print "Warning: intervall size not spec!\nAssuming: -c 1\n";
+  $cIntervall = "1";
+}
+# check legality of input
+if((!looks_like_number($lowerBound)) || (!looks_like_number($upperBound)) || (!looks_like_number($cIntervall))) {
+  die("args must be values");
+}
+if (($lowerBound <= 0) || ($upperBound <= 0) || ($cIntervall <= 0)) {
+  die("args must be positive values");
+}
+if($lowerBound > $upperBound) {
+  die("lower Bound > upper Bound");
+}
+# create SQL Statement
+print "$lowerBound $upperBound $cIntervall";
 
