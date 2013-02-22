@@ -30,9 +30,9 @@ CREATE TABLE Seq (
 );
 CREATE TABLE StructAlign (
     Id INT NOT NULL AUTO_INCREMENT,
-    Seq INT,
-    PRIMARY KEY(Id, Seq),
-    FOREIGN KEY(Seq) references Seq(Id)
+    SeqId INT,
+    PRIMARY KEY(Id, SeqId),
+    FOREIGN KEY(SeqId) references Seq(Id)
 );
 CREATE TABLE KeySeq (
     KeywordsId INT,

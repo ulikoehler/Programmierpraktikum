@@ -1,0 +1,49 @@
+Database Docu (TABSIZE: 4)
+-------------
+
+Table DB:
+ Id						INT				Id of entry																			Key
+ Name					VARCHAR(50)		Name of Database
+ SeqDBIdentifier		VARCHAR(50)		Identifer in DB
+ SwissprotEntryId		TEXT			Id on swissprod
+
+INSERT INTO DB ('Name', 'SeqDBIdentifier', 'SwissprotEntryId') VALUES ('Swissprod', 'AC...', NULL);
+
+Table Organism:
+ Id						INT				Id of the Organism																	Key
+ Name					VARCHAR(50)		The Name of the Organism
+
+INSERT INTO Organism ('Name') VALUES ("Ecoli");
+
+Table Seq:
+ Id						INT				Id of the Sequence																	Key
+ Name					VARCHAR(50)		Sequencename
+ Definition				TEXT			Swissprod definition
+ Seq					TEXT			The Sequence
+ OrganismId				INT				The Sequence comes from .. organism													Foreign Key Organism:DB
+ Type					ENUM			RNA/DNA/Protein Sequence
+ Structure				TEXT			A Sequence that represents the Structure of the Sequence see Data/HOMSTRAD
+ DBId					INT				The DB, the Seq. comes from															Foreign Key DB:Id
+
+StructAlign:
+ Id						INT				The Id of a Structure Alignment														Key along with Seq
+ SeqId					INT				One Sequence in the Structure Alignment												Key along with Id, Foreign Key Seq:Id
+
+/----+-----\
+| Id | Seq |
++----+-----+
+| 1  |  1  |	There is an Alignment with the Sequences 1 and 2
+| 1  |  2  |
+| 2  |  2  |	And another alignment with the Sequences 2, 3, 4
+| 2  |  3  |
+| 2  |  4  |
+| 3  |  1  |	And another one with the Sequences 1, 2, 5 and 6
+| 3  |  2  |
+| 3  |  5  |
+| 3  |  6  |
+\----+-----/
+
+KeywordsId:	(Link Keywords to Sequences)
+ KeywordsId				INT				An Id to connect to the keywords													Key along with SeqId, Foreign Key Keywords:Id
+ SeqId					INT				An Id to connect to the Sequences													Key along with KeywordsId, Foreign Key Seq:Id
+
