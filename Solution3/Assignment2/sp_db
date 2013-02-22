@@ -42,8 +42,8 @@ sub insertSequence {
 	my $fastaSequence = get $url;
 	die "Protein sequence for AC $primaryAC can't be downloaded!\n" unless defined $fastaSequence;
 	#Insert the sequence
-	my $insertSeqStmt = $db->prepare("INSERT INTO Seq(`Name`, `Definition`,`Organism`,`TypeId`) SELECT ?,?,?`Id` FROM Type WHERE `Name`='Protein';");
-	$insertSeqStmt->execute($primaryAC,$definition,$organismId);
+	my $insertSeqStmt = $db->prepare("INSERT INTO Seq(`Name`, `Definition`,`Organism`,`TypeId`,`Seq`) SELECT ?,?,?,`Id`,? FROM Type WHERE `Name`='Protein';");
+	$insertSeqStmt->execute($primaryAC,$definition,$organismId,$fastaSequence);
 	return $insertSeqStmt->{mysql_insertid};
 }
 
@@ -70,6 +70,7 @@ sub processSwissprotEntry {
 	my $organismId = getOrganismId($db, $organism);
 	#Insert the sequence
 	my $seqId = insertSequence($db, $primaryAC, $definition,$organismId);
+	
 	#Insert the n:m relation (db Entry <--> sequence) info
 	my $insertSourceStmt = $db->prepare("INSERT INTO Source(`SeqId`, `EntryId`) VALUES (?,?);");
 	$insertSourceStmt->execute($seqId,$seqDBEntryId);

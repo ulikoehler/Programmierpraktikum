@@ -60,3 +60,7 @@ CREATE TABLE StructAlign (
     FOREIGN KEY(Seq1) references Seq(Id),
     FOREIGN KEY(Seq2) references Seq(Id)
 );
+INSERT INTO SeqDB (`Name`) VALUES('SwissProt');    
+INSERT INTO Type (`Name`) VALUES('DNA');
+INSERT INTO Type (`Name`) VALUES('RNA');
+INSERT INTO Type (`Name`) VALUES('Protein');
