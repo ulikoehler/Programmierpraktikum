@@ -1,6 +1,7 @@
-DROP TABLE Orf;
+DROP TABLE Source;
 DROP TABLE KeySeq;
 DROP TABLE StructAlign;
+DROP TABLE Orf;
 DROP TABLE Seq;
 DROP TABLE Keywords;
 DROP TABLE Organism;
