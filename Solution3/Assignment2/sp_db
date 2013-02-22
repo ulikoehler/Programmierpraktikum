@@ -57,6 +57,7 @@ sub getOrganismId {
 	return $insertStmt->{mysql_insertid};
 }
 
+
 sub checkIfSwissprotEntryExists {
 	my $db = $_[0];
 	my $primaryAC = $_[1];
@@ -82,9 +83,22 @@ sub insertSequence {
 	my $url = 'http://www.uniprot.org/uniprot/' . $primaryAC  . '.fasta';
 	my $fastaSequence = get $url;
 	die "Protein sequence for AC $primaryAC can't be downloaded!\n" unless defined $fastaSequence;
+	#Parse the FASTA sequence
+	my $rawSequence = "";
+	my $fastaHeadline = undef; #Extracted but currently unneeded
+	foreach my $line (split /\n/ ,$fastaSequence) {
+		if($line =~ m/^>/) {
+			$fastaHeadline = $line;
+		} elsif($line =~ m/^;/) {
+			#Do nothing, it's a comment
+		} else { #Data line
+			chomp $line;
+			$rawSequence = $rawSequence . $line
+		}
+	}
 	#Insert the sequence
-	my $insertSeqStmt = $db->prepare("INSERT INTO Seq(`Name`, `Definition`,`OrganismId`,`TypeId`,`Seq`) SELECT ?,?,?,`Id`,? FROM Type WHERE `Name`='Protein';");
-	$insertSeqStmt->execute($primaryAC,$definition,$organismId,$fastaSequence);
+	my $insertSeqStmt = $db->prepare("INSERT INTO Seq(`Name`, `Definition`,`OrganismId`,`Seq`,`TypeId`) SELECT ?,?,?,?,`Id` FROM Type WHERE `Name`='Protein';");
+	$insertSeqStmt->execute($primaryAC,$definition,$organismId,$rawSequence);
 	return $insertSeqStmt->{mysql_insertid};
 }
 
