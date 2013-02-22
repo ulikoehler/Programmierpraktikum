@@ -15,18 +15,18 @@ Organism (Id, Name)	The Sequence comes form organism
 Type (Id, Name, Description)	The Type of the Sequence for example RNA, DNA etc.
       --
 
-                -----
-SeqDBEntry (Id, SeqDB, SeqDBIdentifier)		An Sequence Entry in a database
+                -------
+SeqDBEntry (Id, SeqDBId, SeqDBIdentifier)		An Sequence Entry in a database
             --
 
-                                --------  ------  ---------
-Seq (Id, Name, Definition, Seq, Organism, TypeId, secStruct)	The Seq. itself
+                                ----------  ------  -----------
+Seq (Id, Name, Definition, Seq, OrganismId, TypeId, secStructId)	The Seq. itself
      --
 
         -----  -------
 Source (SeqId, EntryId)		Connection between the Sequence and a DBEntry
         -----  -------
 
-                                    ----  ----
-CREATE TABLE StructAlign (Id, Name, Seq1, Seq2)	A Structural Alignment above two Sequences
+                                    ------  ------
+CREATE TABLE StructAlign (Id, Name, Seq1Id, Seq2Id)	A Structural Alignment above two Sequences
                           --
