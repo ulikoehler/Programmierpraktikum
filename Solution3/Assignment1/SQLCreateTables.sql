@@ -30,14 +30,22 @@ CREATE TABLE Seq (
 );
 CREATE TABLE StructAlign (
     Id INT NOT NULL AUTO_INCREMENT,
-    Seq INT,
-    PRIMARY KEY(Id, Seq),
-    FOREIGN KEY(Seq) references Seq(Id)
+    SeqId INT,
+    PRIMARY KEY(Id, SeqId),
+    FOREIGN KEY(SeqId) references Seq(Id)
 );
 CREATE TABLE KeySeq (
     KeywordsId INT,
     SeqId INT,
     PRIMARY KEY(KeywordsId, SeqId),
     FOREIGN KEY(KeywordsId) references Keywords(Id),
+    FOREIGN KEY(SeqId) references Seq(Id)
+);
+CREATE TABLE Orf (
+    Id INT NOT NULL AUTO_INCREMENT,
+    SeqId INT,
+    Begin INT,
+    END_ INT,
+    PRIMARY KEY(Id),
     FOREIGN KEY(SeqId) references Seq(Id)
 );

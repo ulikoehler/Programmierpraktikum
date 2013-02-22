@@ -24,9 +24,18 @@ a:hover { text-decoration: none; color: #C00; background: #FC0; }
  </div>
  <div id="body">
   <h2>Bioinformatics tools</h2>
-  <h3>Download
+  <h3>Download</h3>
   <form method="get" action="get_pdb.cgi">
 	PDB ID: <input type="text" name="pdbid" cols="4" value="1ULI"/><input type="submit" value="Get PDB data"/>
+  </form>
+  <h3>RenderIT</h3>
+  The best quality PDB renderer webservice you can find in this /24 subnet!<br/>
+  <form method="get" action="get_pdb.cgi">
+	PDB ID: <input type="text" name="pdbid" cols="4" value="1ULI"/><input type="submit" value="Render"/>
+  </form>
+  <h3>Find prosite pattern in database (currently Arapidopsis Thaliana proteins from Swissprot)</h3>
+  <form method="get" action="prosite-pattern.cgi">
+	Pattern: <input type="text" name="pattern" cols="4" value="P-P-x-x"/><input type="submit" value="Find"/>
   </form>
 </body>
 </html>

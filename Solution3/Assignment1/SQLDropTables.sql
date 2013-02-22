@@ -1,3 +1,4 @@
+DROP TABLE Orf;
 DROP TABLE KeySeq;
 DROP TABLE StructAlign;
 DROP TABLE Seq;
