@@ -20,8 +20,7 @@ CREATE TABLE Organism (
 );
 CREATE TABLE Type (
   Id INT NOT NULL AUTO_INCREMENT,
-  Name ENUM('mRNA', 'tRNA', 'RNA', 'DNA', 'Peptid'),
-  IntronExon ENUM('Intron', 'Exon', 'not defined'),
+  Name VARCHAR(50),
   Description TEXT,
   PRIMARY KEY(Id)
 );
@@ -38,11 +37,11 @@ CREATE TABLE Seq (
     Definition TEXT,
     Seq LONGTEXT,
     Organism INT,
-    Typ INT,
+    TypeId INT,
     secStruct INT,
     PRIMARY KEY(Id),
     FOREIGN KEY(Organism) references Organism(Id),
-    FOREIGN KEY(Typ) references Type(Id),
+    FOREIGN KEY(TypeId) references Type(Id),
     FOREIGN KEY(secStruct) references SecondStruct(Id)
 );
 CREATE TABLE Source (
@@ -61,4 +60,3 @@ CREATE TABLE StructAlign (
     FOREIGN KEY(Seq1) references Seq(Id),
     FOREIGN KEY(Seq2) references Seq(Id)
 );
-
