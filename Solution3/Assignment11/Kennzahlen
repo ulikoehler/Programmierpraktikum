@@ -1,0 +1,76 @@
+#!/usr/bin/perl -w
+use strict;
+
+#TODO input check
+
+#counting helix and sheets
+my $helix = 0;
+my $sheet = 0;
+#count aminoacis and aminoacids in secondary structure
+my $amino = 0;
+my $secon = 0;
+#hashmap to keep track of the atoms that are part of secondary structures
+my %hash = ();
+#keeping track of extrem coordinates
+my $posx = 0;
+my $negx = 0;
+my $posy = 0;
+my $negy = 0;
+my $posz = 0;
+my $negz = 0;
+#TODO define CA-CB measure values
+
+#extracting information from input file
+while(<>){
+my $m = $_;
+    if( $m =~ m/^HELIX/ ){
+	$helix++;
+	#marking Atom numbers for counting amino acids in secondary structure
+	my $hestart = substr ($m,22,25);
+	my $hestop = substr ($m,34,37);
+	foreach ($hestart .. $hestop){
+	   $hash{ $_ } = '1';
+	}
+    }
+    if( $m =~ m/^SHEET/ ){
+	$sheet++;
+	#marking Atom numbers for counting amino acids in secondary structure
+	my $shstart = substr ($m,23,26);
+	my $shstop = substr ($m,34,37);
+	foreach ($shstart .. $shstop){
+	   $hash{ $_ } = '1';
+    }
+    if( $m =~ m/^ATOM/ ){
+	if( $m =~ m/^.{13}CA/ ){
+	    $amino++;
+	    if(exists $hash{substr($m,7,11)}){
+		$secon++;
+	    }
+        }
+	#TODO CA-CB distance measure
+	my $subx = substr($m,33,38);
+	    if($subx >= $posx){
+		$posx = $subx;
+	    }
+	    if($subx <= $negx){
+		$negx = $subx;
+	    }
+	my $suby = substr($m,41,46);
+	    if($suby >= $posy){
+		$posy = $suby;
+	    }
+	    if($suby <= $negy){
+		$negy = $suby;
+	    }
+	my $subz = substr($m,49,54);
+	    if($subz >= $posz){
+		$posz = $subz;
+	    }
+	    if($subz <= $negz){
+		$negz = $subz;
+	    }
+    }         
+}
+
+#TODO return result
+

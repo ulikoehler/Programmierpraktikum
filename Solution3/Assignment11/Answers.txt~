@@ -1,0 +1,37 @@
+Klassifizierung:
+
+1MBN: aplha (keine beta sheets)
+256B: aplha (keine beta sheets)
+1TIM: alpha + beta (getrennte Bereiche)
+1BAF: beta (wenig alpha helix, überwiegend beta sheets)
+
+SCOP (Fold):
+
+1MBN: globin-like (1 domain)
+256B: four-helicase up-and-down bundle (2 domains)
+1TIM: tim beta/alpha-barrel (2 domains)
+1BAF: immunoglobulin-like beta-sandwich (4 domains)
+
+CATH (Architecture):
+
+1MBN: Orthogonal Bundle
+256B: Up-down Bundle
+1TIM: Alpha-Beta Barrel
+1BAF: Sandwich
+
+Sekundärstrukturgehalt: (keine turns in diesen pdb files angegeben)
+
+1MBN: 8  helix 0  sheets
+256B: 10 helix 0  sheets
+1TIM: 24 helix 18 sheets
+1BAF: 5  helix 39 sheets
+
+#helix #sheets %AS in Sekundär 
+
+
+1MBN:
+256B:
+1TIM:
+1BAF:
+
+

@@ -1,16 +1,49 @@
-#! /usr/bin/perl
+#!/usr/bin/perl -wl
+use strict;
+
+my $randomSequence;
 
 for (my $i = 0; $i < 230203; $i += 1) {
   my $number=int(rand(4));
   if($number == 0) {
-    print "A";
+    $randomSequence.="A";
   } elsif ($number == 1) {
-    print "C";
+    $randomSequence.="C";
   } elsif ($number == 2) {
-    print "T";
+    $randomSequence.="T";
   } else {
-    print "G";
+    $randomSequence.="G";
   }
 }
+
+open (MYFILE, '>random');
+print MYFILE $randomSequence;
+close (MYFILE);
+
+my $randomSequenceGC39;
+
+for (my $i = 0; $i < 230203; $i += 1) {
+	my $number=int(rand(100));
+	if($number < 39) {
+		if(rand(1) < 0.5){
+			$randomSequenceGC39.="C";
+		}
+		else{
+			$randomSequenceGC39.="G";
+		}
+	} 
+	else{
+		if(rand(1) < 0.5){
+			$randomSequenceGC39.="T";
+		}
+		else{
+			$randomSequenceGC39.="A";
+		}
+	}
+}
+
+open (MYFILE, '>>random39');
+print MYFILE $randomSequenceGC39;
+close (MYFILE);
 
 
