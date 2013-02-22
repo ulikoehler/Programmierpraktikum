@@ -9,6 +9,9 @@ auf Kommandozeilen-IO verfälscht werden.
 Um die Aussagekraft der Ergebnisse zu optimieren, wurden diese Experimente
 während der Vormittagsvorlesung auf dem Bioclient1 durchgeführt.
 
+Als Datenbasis wurde ein Dump von Swissprot im FASTA-Format vom 22.2.2013
+sowie die swissprot45.dat für den MySQL-Import verwendet. Es ist zu erwarten,
+dass diese Datensätze nicht vollständig übereinstimmen, all
 
 Zur Bestimmung der Geschwindigkeit
 cat /home/proj/biocluster/praktikum/bioprakt/progprakt4/swissprot.fasta | time ./psscan "P-P-x-x" > /dev/null
@@ -24,3 +27,5 @@ Hier benötigt das Kommando:
 11.88s
 11.86s
 Das entsprechende SQL-Statement lautet:
+SELECT * FROM `Seq` WHERE Seq.Seq REGEXP '[LIVMF]HC.{2}G.{3}[^STC][STAGP].[LIVMFY]';
+
