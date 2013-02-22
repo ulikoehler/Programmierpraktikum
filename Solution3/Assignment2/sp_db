@@ -15,13 +15,20 @@ sub trim {
 #Get the organism ID, insert it if not existent
 sub getOrganismId {
 	my $db = $_[0];
-	my $organismName = $_[1];
+	my $organism = $_[1];
 	#Try to fetch an existing organism
-	$db->do("SELECT Id from Organism WHERE Name = $organism;")
-	$result = $sth->fetchrow_hashref();
+	my $queryOrganismIdStmt = $db->prepare("SELECT Id from Organism WHERE Name = ?;");
+	$queryOrganismIdStmt->execute($organism);
+	my $result = $queryOrganismIdStmt->fetchrow_hashref();
 	if(defined $result->{Id}) {
-		
+		return $result->{Id}
 	}
+	#If that didn't return, we need to insert it
+	my $insertStmt = $db->prepare("INSERT INTO Organism(`Name`) VALUES (?)");
+	$insertStmt->execute($organism);
+	$autoIncrementId = $insertStmt->{mysql_insertid};
+	#Fetch it again (there may be a better way)
+	return $autoIncrementId;
 }
 
 #Insert the information about a sequence file into the database
@@ -40,35 +47,37 @@ sub processSwissprotEntry {
 	use LWP::Simple;
 	#Insert the database entry information
 	my $primaryAC = $ACNumbers[0] ;
-	$db->do("INSERT INTO DatabaseEntry('Database', 'DatabaseId') VALUES ((SELECT FROM Database WHERE Name = 'SwissProt'), '$primaryAC');"
+	$db->do("INSERT INTO SeqDBEntry(`SeqDB`, `SeqDBIdentifier`) SELECT `Id`,? FROM SeqDB WHERE `Name` = 'SwissProt';", undef,$primaryAC);
 	#Insert the sequence
-	my $url = 'http://www.uniprot.org/uniprot/' .$currentAC  . '.fasta';
+	my $url = 'http://www.uniprot.org/uniprot/' .$primaryAC  . '.fasta';
 	my $fastaSequence = get $url;
-	die "Protein sequence for AC $currentAC can't be downloaded!\n" unless defined $fastaSequence;
+	die "Protein sequence for AC $primaryAC can't be downloaded!\n" unless defined $fastaSequence;
+	#Insert the sequence
+	$db->do("INSERT INTO Sequences(`SeqDB`, `SeqDBIdentifier`) SELECT `Id`,? FROM SeqDB WHERE `Name` = 'SwissProt';", undef,$primaryAC);
 	
-	foreach(@ACNumbers) {
-		#Download the sequence in FASTA format by AC number
-		my $currentAC = $ACNumbers[0] ;
-	}
 }
 #Parse CLI arguments
 my %options=();
-getopts("t",\%options);
+getopts("ls",\%options);
 #Komandozeilenparameter
 my $argc = @ARGV;
-#Check if we have at least one argument
-die "Usage: $0 <SwissProt filename>\n" unless $argc == 1;
+#Check if we have the required number of arguments
+print STDERR "Usage: $0 <SwissProt filename>\n" unless $argc == 1;
+print STDERR "    Use -l to use SSH port-forwarded database (on localhost)\n" unless $argc == 1;
+die "	Use -s to use Non-LMU MySQL database (works from everywhere)\n" unless $argc == 1;
 #
 #Setup the database connection
 #
 use DBI;
 my $db = undef;
-my $testMode = defined $options{t};
-if($testMode) {
+if(defined $options{s}) {
+	$db = DBI->connect('DBI:mysql:bioprakt4;host=localgrid.de', 'bioprakt4', 'vGI5GCMg0x') || die "Could not connect to database: $DBI::errstr";	
+} elsif(defined $options{l}) {
+	$db = DBI->connect('DBI:mysql:bioprakt4;host=127.0.0.1', 'bioprakt4', 'vGI5GCMg0x') || die "Could not connect to database: $DBI::errstr";	
 } else {
 	$db = DBI->connect('DBI:mysql:bioprakt4;host=mysql2-ext.bio.ifi.lmu.de', 'bioprakt4', 'vGI5GCMg0x') || die "Could not connect to database: $DBI::errstr";	
 }
-print "Established database connection...";
+print "Established database connection...\n";
 #Open the file and iterate over the lines
 my $swissprotFile = $ARGV[0];
 open my $fileHandle, '<', $swissprotFile or die "Could not open file $swissprotFile for reading: $!\n"; 
@@ -122,5 +131,5 @@ while ( my $line = <$fileHandle> ) {
         }
 }
 #Do some cleanup
-$db->disconnect() unless defined $testMode;
+$db->disconnect();
 close $fileHandle;
