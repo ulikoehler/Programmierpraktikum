@@ -9,23 +9,32 @@ auf Kommandozeilen-IO verfälscht werden.
 Um die Aussagekraft der Ergebnisse zu optimieren, wurden diese Experimente
 während der Vormittagsvorlesung auf dem Bioclient1 durchgeführt.
 
-Als Datenbasis wurde ein Dump von Swissprot im FASTA-Format vom 22.2.2013
-sowie die swissprot45.dat für den MySQL-Import verwendet. Es ist zu erwarten,
-dass diese Datensätze nicht vollständig übereinstimmen, all
+Alle Experimente wurden mit dem Datensatz aus der Uniprot-Query "reviewed:yes Arabidopsis" durchgeführt, da für swissprot45.dat kein entsprechender FASTA-Datensatz zur Verfügung stand.
+Dieser Datensatz enthält etwa 11000 Proteine.
 
 Zur Bestimmung der Geschwindigkeit
-cat /home/proj/biocluster/praktikum/bioprakt/progprakt4/swissprot.fasta | time ./psscan "P-P-x-x" > /dev/null
+cat /home/proj/biocluster/praktikum/bioprakt/progprakt4/Arabidopsis.fa | time ./psscan "P-P-x-x" > /dev/null
 Auf dem Bioclient1 benötigt  dieses Kommando bei 3 Stichproben:
-8.55s
-8.77s
-8.88s
+0.29s
+0.29s
+0.28s
+Das entsprechende SQL-Statement lautet:
+SELECT COUNT(*) FROM `Seq` WHERE Seq.Seq REGEXP 'PP..';
+MySQL benötigt dafür beim ersten Aufruf 0.14 Sekunden, bei weiteren Aufrufen weniger als 10 Millisekunden (--> Cachehit)
 Da dieses Pattern sehr einfach ist und diese Resultate daher wenig aussagekräftig erscheinen,
 wurde ein Experiment mit einem komplexeren Pattern (von Aufgabenblatt 2) durchgeführt.
-cat /home/proj/biocluster/praktikum/bioprakt/progprakt4/swissprot.fasta | time ./psscan "[LIVMF]-H-C-x(2)-G-x(3)-{STC}-[STAGP]-x-[LIVMFY]" > /dev/null
+cat /home/proj/biocluster/praktikum/bioprakt/progprakt4/Arabidopsis.fa | time ./psscan "[LIVMF]-H-C-x(2)-G-x(3)-{STC}-[STAGP]-x-[LIVMFY]" > /dev/null
 Hier benötigt das Kommando:
-11.68s
-11.88s
-11.86s
+0.34s
+0.34s
+0.34s
 Das entsprechende SQL-Statement lautet:
-SELECT * FROM `Seq` WHERE Seq.Seq REGEXP '[LIVMF]HC.{2}G.{3}[^STC][STAGP].[LIVMFY]';
+SELECT COUNT(*) FROM `Seq` WHERE Seq.Seq REGEXP '[LIVMF]HC.{2}G.{3}[^STC][STAGP].[LIVMFY]';
+Die Query benötigt beim ersten Aufruf 0.62 Sekunden, bei den weiteren Aufrufen weniger als 10 Millisekunden (--> Cachehit).
 
+Insbesondere fällt das Caching von MySQL auf, das die Zeit bei weiteren Aufrufen der identischen Query enorm reduziert.
+
+Aufgrund der Ergebnisse kann allerdings nicht entschieden werden, ob MySQL oder Perl grundsätzlich, d.h. ohne Miteinbeziehung von Cachehits, schneller ist.
+Aufgrund der komplexeren Strukturierung ist allerdings zu erwarten, dass MySQL insbesondere bei größeren Datensätzen deutlich performanter arbeitet.
+Bei vergleichsweise kleinen Datensätzen und wenig komplexen Queries spielt dagegen der Overhead über Netzwerk sowie das Verarbeiten der SQL-Query eine nicht zu vernachlässigende Rolle sodass
+bei der Query P-P-x-x das Perlscript aufgrund des deutlich geringeren Overheads insgesamt performanter ist.
