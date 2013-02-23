@@ -8,7 +8,7 @@ my $organism = param("organism");
 die "Please use organism GET parameter!\n" unless $organism;
 #Execute the shell script from assignment 10 if the file isnt cached
 my $scriptDir = "/home/k/koehleru/Programmierpraktikum/Solution3/Assignment7";
-my $output = `bash $scriptDir/genome_db '$organism'`;
+my $output = `perl $scriptDir/genome_db '$organism'`;
 #Print the data (only executed if not error occured before
 print header("text/html");
 print <<"EOHTML"
