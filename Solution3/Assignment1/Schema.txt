@@ -1,5 +1,5 @@
 
-TABLE(Id, Name)
+DB(Id, Name)
       --
 
 Organism (Id, Name)
