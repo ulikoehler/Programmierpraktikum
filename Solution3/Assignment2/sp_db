@@ -62,7 +62,7 @@ sub checkIfSwissprotEntryExists {
 	my $db = $_[0];
 	my $primaryAC = $_[1];
 	#Try to fetch an existing organism
-	my $insertSeqDBEntryStmt = $db->prepare("Select `Id` from DB WHERE `SeqDBIdentifier` = ? AND `NAME` =  'SwissProd';");
+	my $insertSeqDBEntryStmt = $db->prepare("Select `Id` from Source JOIN DB ON Source.DBId = DB.Id WHERE 'SeqDBIdentifier' = ? AND `NAME` =  'SwissProd';");
 	$insertSeqDBEntryStmt->execute($primaryAC);
 	my $result = $insertSeqDBEntryStmt->fetchrow_hashref();
 	if(defined $result->{Id}) {
@@ -79,11 +79,18 @@ sub insertSequence {
 	my $definition = $_[2];
 	my $organismId = $_[3];
 	my $rawSequence = $_[4];
-        my $DBId = $_[5];
 	#Insert the sequence
-	my $insertSeqStmt = $db->prepare("INSERT INTO Seq(`Name`, `Definition`,`OrganismId`,`Seq`,`Type`, 'DBId', 'Structure') VALUES (?,?,?,?,'Protein',?,?);");
+	my $insertSeqStmt = $db->prepare("INSERT INTO Seq(`Name`, `Definition`,`OrganismId`,`Seq`,`Type`, 'Structure') VALUES (?,?,?,?,'Protein',?);");
 	$insertSeqStmt->execute($primaryAC,$definition,$organismId,$rawSequence, $DBId, undef);
 	return $insertSeqStmt->{mysql_insertid};
+}
+
+#checks wheater Swissprod is already written in the DB Table
+sub checkSwissprotInDB {
+	#Get functions arguemnts
+	my $db = $_[0];
+	#Query
+	my $insertSeqStmt = $db->prepare("INSERT INTO Seq(`Name`, `Definition`,`OrganismId`,`Seq`,`Type`, 'Structure') VALUES (?,?,?,?,'Protein',?,?);");
 }
 
 #Insert the information about a sequence file into the database
