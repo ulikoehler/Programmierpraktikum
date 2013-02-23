@@ -63,7 +63,7 @@ sub checkIfSwissprotEntryExists {
 	my $db = $_[0];
 	my $primaryAC = $_[1];
 	#Try to fetch an existing organism
-	my $insertSeqDBEntryStmt = $db->prepare("Select `Id` from Source INNER JOIN DB ON Source.DBId = DB.Id WHERE `SeqDBIdentifier` = ? AND DB.Name = 'SwissProt';");
+	my $insertSeqDBEntryStmt = $db->prepare("Select `Id` from Source INNER JOIN DB ON Source.DBId = DB.Id WHERE Source.SeqDBIdentifier = ? AND DB.Name = 'SwissProt';");
 	$insertSeqDBEntryStmt->execute($primaryAC);
 	my $result = $insertSeqDBEntryStmt->fetchrow_hashref();
 	if(defined $result->{Id}) {
@@ -107,13 +107,12 @@ sub processSwissprotEntry {
 	##
 	my $entryAlreadyExists = checkIfSwissprotEntryExists($db, $primaryAC);
 	if($entryAlreadyExists) {
-		print "Entry $primaryAC already exists\n";
+		#print "Entry $primaryAC already exists\n";
 		return;
 	}
 	###
 	#Insert the dataset into the database
 	###
-	print "Processing $ACNumbers[0]\n";
 	#Get the organism ID
 	my $organismId = getOrganismId($db, $organism);
 	#Insert the sequence
@@ -125,6 +124,7 @@ sub processSwissprotEntry {
 	foreach(@keywords) {
 		insertKeywordRelation($db, $_, $seqId);
 	}
+	print "Added SwissProt sequence with AC number $primaryAC to database\n";
 }
 #Parse CLI arguments
 my %options=();
