@@ -1,0 +1,12 @@
+perl orf_finder <name of sequence file>
+creates a folder "Results", which contains:
+
+-> two histograms, one showing the cumulated absolute frequency of ORFs with a length between [1;200], where you can easily compare how many reading frames there are e.g. between [75;100]. A second histogram shows the frequency of all ORFs found.
+
+-> a file lengthDistribution_<> which shows the data supplied for the histograms.
+
+-> two files ORFpositionsForwardStrand_<> and ORFpositionsComplementaryStrand_<> which show the start and stop positions of the respective ORFs, and their length.
+
+-> ORFsequencesForwardStrand_<> and ORFsequencesReverse_<> contain all the ORFs of the respective strands
+
+-> Statistics_<> contains the statistics that are also printed to STDOUT.
