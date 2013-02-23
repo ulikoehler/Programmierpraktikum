@@ -37,5 +37,12 @@ a:hover { text-decoration: none; color: #C00; background: #FC0; }
   <form method="get" action="prosite-pattern.cgi">
 	Pattern: <input type="text" name="pattern" cols="4" value="P-P-x-x"/><input type="submit" value="Find"/>
   </form>
+  
+  <h3>BLAST a sequence in a self-supplied database</h3>
+  <form action="blastsearch.cgi" method="post" enctype="multipart/form-data">
+	Database in FASTA format: <input type="file" name="database" accept="text/*" maxlength="2097152"><br/>
+	Query sequence:<br/> <textarea name="query" cols="50" rows="20"></textarea><br/>
+	<input type="submit" value="Query">
+  </form>
 </body>
 </html>
