@@ -6,6 +6,8 @@ use CGI::Carp qw(fatalsToBrowser);
 #Parse the CGI arg
 my $pdbId = param("pdbid");
 die "Please use PDB ID GET parameter!\n" unless $pdbId;
+#Prevent security leaks
+die "PDB ID must consist of 4 alphanum chars" unless $pdbId =~ m/^[A-Z0-9]{4}$/;
 #Execute the shell script from assignment 10 if the file isnt cached
 my $cgiDir = "/home/k/koehleru/public_html/bioprakt/cgi";
 unless(-e "$cgiDir/pdbcache/$pdbId.png") {
@@ -39,8 +41,7 @@ a:hover { text-decoration: none; color: #C00; background: #FC0; }
  <h1>PDBRender</h1>
  </div>
  <div id="body">
-  <h2>PDBRender</h2>
-  <h4>... of <a href="http://www.rcsb.org/pdb/explore/explore.do?structureId=$pdbId">$pdbId</a></h4>
+  <h2>PDBRender of <a href="http://www.rcsb.org/pdb/explore/explore.do?structureId=$pdbId">$pdbId</a></h2>
   <a href="pdbcache/$pdbId.png"><img src="pdbcache/$pdbId.png" alt="PDB render of $pdbId" width="400" height="400"></img></a>
 </body>
 </html>
