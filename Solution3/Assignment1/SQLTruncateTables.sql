@@ -1,0 +1,8 @@
+TRUNCATE Source;
+TRUNCATE KeySeq;
+TRUNCATE StructAlign;
+TRUNCATE Orf;
+TRUNCATE Seq;
+TRUNCATE Keywords;
+TRUNCATE Organism;
+TRUNCATE DB;
