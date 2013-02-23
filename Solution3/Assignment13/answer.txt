@@ -1,0 +1,27 @@
+BLAST+ Installation:
+wget ftp://ftp.ncbi.nlm.nih.gov/blast/executables/blast+/LATEST/ncbi-blast-2.2.27+-x64-linux.tar.gz
+tar xzvf ncbi-blast-2.2.27+-x64-linux.tar.gz
+
+Download des kompletten Proteoms von M. Genitalium über Uniprot, Suchbegriff organism:243273 keyword:181 --> Download als FASTA (Complete proteome set
+
+Erstellen der BLAST-Protein-DB + Index:
+./makeblastdb -in ./makeblastdb -in /ram/mgenitalium.fa -dbtype prot -hash_index
+
+Output:
+Building a new DB, current time: 02/23/2013 16:01:14
+New DB name:   /ram/mgenitalium.fa
+New DB title:  /ram/mgenitalium.fa
+Sequence type: Protein
+Keep Linkouts: T
+Keep MBits: T
+Maximum file size: 1000000000B
+Adding sequences from FASTA; added 483 sequences in 0.024287 seconds.
+
+Suche einer Humanen Sequenz
+Auswahl: P00846: ATP synthase subunit a (H Sapiens)
+Kommando:
+blastp -db mgenitalium.fa -query P00846.fa
+
+------------------------
+Die Kommandos wurden in Bash-Skripte gefasst.
+BLAST+ wurde auf dem Bioclient1 (Account koehleru) installiert (--> PATH)
