@@ -52,13 +52,12 @@ foreach $directory (@homstrandFiles) {
   my $organismId="";
   my $type="Protein";
   my $structure="";
-  my $AlignId="";
   
   foreach my $line (@aliLines) {
     if(substr($line, 0, 2) eq "C;") {} # Comment => ignore
     elsif(substr($line, 0, 1) eq ">") { # Identifier => save last ali?
       if($seq) {
-        saveSequenceComplete ($db, $dbId, $SeqDBIdentifier, $name, $def, $seq, $organism, $type, $structure, $AlignId);
+        saveSequenceComplete ($db, $dbId, $SeqDBIdentifier, $name, $def, $organism, $type, $structure, $AlignId);
       }
     } 
     elsif(substr($line, 0, 10) eq "structureX") {

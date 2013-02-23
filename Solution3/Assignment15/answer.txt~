@@ -13,4 +13,4 @@ SELECT * FROM StructAlign JOIN Seq ON StructAlign.SeqId = Seq.Id GROUP BY Struct
 
 bzw. für paarweises Alignment mit SeqId1 und SeqId2:
 
-SELECT * FROM StructAlign a1, StructAlign a2 WHERE a1.SeqId = SeqId1 AND a2.SeqId = SeqId2 AND a1.Id = a2.Id;
+SELECT * FROM StructAlign a1, StructAlign a2 WHERE a1.SeqId = SeqId1 AND a2.SeqId = SeqId2 AND a1.Id = a2.id;

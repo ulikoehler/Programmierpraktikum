@@ -19,7 +19,7 @@ CREATE TABLE Seq (
   Definition TEXT,
   Seq LONGTEXT NOT NULL,
   OrganismId INT,
-  Type ENUM('RNA', 'DNA', 'Protein'),
+  Type ENUM('RNA', 'DNA', 'Protein', 'Genome'),
   Structure LONGTEXT,
   PRIMARY KEY(Id),
   FOREIGN KEY(OrganismId) references Organism(Id)
