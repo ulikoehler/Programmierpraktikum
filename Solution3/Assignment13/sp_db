@@ -1,0 +1,21 @@
+#!/usr/bin/perl -w
+use strict;
+use LWP::Simple;
+use Getopt::Std;
+use CGI qw(:standard);
+#Subs
+#Parse CLI arguments
+my %options=();
+getopts("lu",\%options);
+#
+#Setup the database connection
+#
+use DBI;
+my $db =  DBI->connect('DBI:mysql:bioprakt4;host=mysql2-ext.bio.ifi.lmu.de', 'bioprakt4', 'vGI5GCMg0x') || die "Could not connect to database: $DBI::errstr";	
+print "Established database connection...\n";
+#Try to fetch an existing organism
+my $insertSeqDBEntryStmt = $db->prepare("Select `Id` from SeqDBEntry WHERE `SeqDBIdentifier` = ? AND `SeqDBId` =  (SELECT `Id` FROM SeqDB WHERE `Name` = 'SwissProt');");
+$insertSeqDBEntryStmt->execute($primaryAC);
+while(my $result = $insertSeqDBEntryStmt->fetchrow_hashref()) {
+	print $insertSeqDBEntryStmt->{Id};
+}
