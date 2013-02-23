@@ -19,7 +19,7 @@ hist(x,width)=width*floor(x/width)+width/2.0
 plot \"lengthDistribution_${0}\" u (hist(\$1,width)):(\$2) smooth freq w boxes lc rgb\"green\" notitle
 quit"
 
-gnuplot < $data
+gnuplot < data
 
 
 

@@ -35,11 +35,10 @@ $reverseSequence = "";
 my $maxORFlength = 0;
 my $ORFcountFwd = 0;	my $ORFcountRev = 0;	my $ORFcountAll = 0;
 my %ORFlengthsFwd;	my %ORFlengthsRev;	my %ORFlengthsAll;
-my %ORFpositionsFwd;	my %ORFpositionsRev;	my %ORFpositionsAll;
+my %ORFpositionsFwd;	my %ORFpositionsRev;
 ##### check fwd. strand for ORFs:
 while($sequence =~ m/(ATG(.{3})*?(TAG|TGA|TAA))/g) {
 	$ORFpositionsFwd{$-[0]} = $+[0];#store the beginning and end of the ORF in a hash
-	$ORFpositionsAll{$-[0]} = $+[0];
 	$ORFlengthsFwd{length($1)} += 1;
 	$ORFlengthsAll{length($1)} += 1;
 	$ORFcountFwd++;
@@ -51,7 +50,6 @@ while($sequence =~ m/(ATG(.{3})*?(TAG|TGA|TAA))/g) {
 ##### check reverse comp. strand for ORFs:
 while($complementaryReverseSequence =~ m/(ATG(.{3})*?(TAG|TGA|TAA))/g) {
 	$ORFpositionsRev{$-[0]} = $+[0];#store the beginning and end of the ORF in a hash
-	$ORFpositionsAll{$-[0]} = $+[0];
 	$ORFlengthsRev{length($1)} += 1;
 	$ORFlengthsAll{length($1)} += 1;
 	$ORFcountRev++;
@@ -62,36 +60,50 @@ while($complementaryReverseSequence =~ m/(ATG(.{3})*?(TAG|TGA|TAA))/g) {
 }
 print "$ORFcountAll ORFs found, $ORFcountFwd on forward, $ORFcountRev on reverse, complementary strand";
 
-###### make histogram:
-my $sumOfORFlength;
-my $nonemptyORFs = 0;
-for(my $i=0;$i<$maxORFlength;$i++){
-	my $bar = "";
-	for(my $ii=0;$ii<$maxORFlength;$ii++){
-		$ORFlengthsAll{$ii} = 0 unless defined $ORFlengthsRev{$ii};
-	}
-	$sumOfORFlength += $ORFlengthsAll{$i};
-	for(my $j=0;$j<$ORFlengthsAll{$i};$j+=2){
-		$bar.="x";
-	}
-	#print "$i: $bar" unless $bar eq "";
-	$nonemptyORFs++ unless $bar eq "";
-}
-#print "$ORFcountAll occurences of an ORF, maxORFlength: $maxORFlength, average length: ".($sumOfORFlength/$nonemptyORFs)."\n";
-#print "1 x means there are 2 ORFs of the respective length, ORFs with lengt 0 are overridden by the histogram.\n";
-
+###### make statistics files:
 for(my $i=0;$i<$maxORFlength;$i++){
 	$ORFlengthsAll{$i} = 0 unless defined $ORFlengthsRev{$i};
 }
 
-my $string;
+my $lengthDistribution;
 
-while ( (my $k,my $v) = each %ORFlengthsAll ) {#you may print the bounds and lengths of the reading frames
-    $string .= "$k\t$v\n";
+while ( (my $k,my $v) = each %ORFlengthsAll ) {
+    $lengthDistribution .= "$k\t$v\n";
 }
 
-open (MYFILE, '>>dataRandom');
-print MYFILE $string;
+my $ORFpostionsFwd;
+
+while ( (my $k,my $v) = each %ORFpositionsFwd ) {
+    $ORFpostionsFwd .= "$k\t$v\n";
+}
+
+my $ORFpostionsRev;
+
+while ( (my $k,my $v) = each %ORFpositionsRev ) {
+    $ORFpostionsRev .= "$k\t$v\n";
+}
+
+my $gnuplot = `mkdir Results`;
+
+open (MYFILE, '>>lengthDistribution_'.($ARGV[0]));
+print MYFILE $lengthDistribution;
 close (MYFILE);
+
+open (MYFILE, '>>ORFpositionsForwardStrand_'.($ARGV[0]));
+print MYFILE $ORFpostionsFwd;
+close (MYFILE);
+
+open (MYFILE, '>>ORFpositionsComplementaryStrand_'.($ARGV[0]));
+print MYFILE $ORFpostionsRev;
+close (MYFILE);
+
+my $fileName = "lengthDistribution_".($ARGV[0]);
+$gnuplot = `./gnuplot $fileName $maxORFlength 1`;
+$gnuplot = `./gnuplot $fileName 200 25`;
+$gnuplot = `mv $fileName Results`;
+$fileName = "ORFpositionsForwardStrand_".($ARGV[0]);
+$gnuplot = `mv ORFpositions* Results`;
+$gnuplot = `mv Histo* Results`;
+
 
 ########## TODO: put results to database:

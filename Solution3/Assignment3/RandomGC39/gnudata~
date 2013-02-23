@@ -1,0 +1,19 @@
+reset
+n=10
+max=200
+min=1
+width=25
+set boxwidth width*0.9
+set term png
+set output "histogram.png"
+set title "length of sequences"
+set xlabel "length"
+set ylabel "count"
+set xrange [min:max]
+set yrange [0:]
+set style fill solid 0.5
+set offset graph 0.05,0.05,0.05,0.0
+hist(x,width)=width*floor(x/width)+width/2.0
+plot "data" u (hist($1,width)):($2) smooth freq w boxes lc rgb"green" notitle
+quit
+

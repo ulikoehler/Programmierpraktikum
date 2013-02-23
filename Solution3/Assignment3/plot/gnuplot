@@ -1,6 +1,0 @@
-#!/usr/bin/bash
-
-gnuplot < gnudata
-
-
-

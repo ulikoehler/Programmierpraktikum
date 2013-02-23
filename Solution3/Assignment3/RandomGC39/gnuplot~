@@ -1,13 +1,13 @@
 #!/bin/bash
-data =
-"reset
+
+echo -e "reset
 n=10
-max=${1}
+max=${2}
 min=1
-width=${2}
+width=${3}
 set boxwidth width*0.9
 set term png
-set output \"histogram\_${1}\_${1}\_${0}.png\"
+set output \"histogram\_${2}\_${3}\_${1}.png\"
 set title \"length of open reading frames\"
 set xlabel \"length\"
 set ylabel \"count\"
@@ -16,10 +16,11 @@ set yrange [0:]
 set style fill solid 0.5
 set offset graph 0.05,0.05,0.05,0.0
 hist(x,width)=width*floor(x/width)+width/2.0
-plot \"lengthDistribution_${0}\" u (hist(\$1,width)):(\$2) smooth freq w boxes lc rgb\"green\" notitle
-quit"
+plot \"${1}\" u (hist(\$1,width)):(\$2) smooth freq w boxes lc rgb\"green\" notitle
+quit" > data
 
-gnuplot < $data
+gnuplot < data
 
+rm data
 
 
