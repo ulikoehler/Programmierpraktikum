@@ -45,7 +45,7 @@ sub getOrganismId {
 	my $db = $_[0];
 	my $organism = $_[1];
 	#Try to fetch an existing organism
-	my $queryOrganismIdStmt = $db->prepare("SELECT Id from Organism WHERE Name = ?;");
+	my $queryOrganismIdStmt = $db->prepare("SELECT `Id` from Organism WHERE Name = ?;");
 	$queryOrganismIdStmt->execute($organism);
 	my $result = $queryOrganismIdStmt->fetchrow_hashref();
 	if(defined $result->{Id}) {
@@ -62,7 +62,7 @@ sub checkIfSwissprotEntryExists {
 	my $db = $_[0];
 	my $primaryAC = $_[1];
 	#Try to fetch an existing organism
-	my $insertSeqDBEntryStmt = $db->prepare("Select `Id` from Source JOIN DB ON Source.DBId = DB.Id WHERE 'SeqDBIdentifier' = ? AND `NAME` =  'SwissProd';");
+	my $insertSeqDBEntryStmt = $db->prepare("Select `Id` from Source JOIN DB ON Source.DBId = DB.Id WHERE 'SeqDBIdentifier' = ? AND DB.Name =  'SwissProt';");
 	$insertSeqDBEntryStmt->execute($primaryAC);
 	my $result = $insertSeqDBEntryStmt->fetchrow_hashref();
 	if(defined $result->{Id}) {
