@@ -1,8 +1,0 @@
-Die Datenbank enthält bereits die Möglichkeit strukturelle Alignments darzustellen. Ebenso wie Sekundärstrukturen. Hierzu siehe docu.
-
-Es fehlt ein kleines Programm, dass die Daten von Data/HOMSTRAD in die Datenbank einließt (?). Genauso wie eine Webinterface.
-
-Abfrage für die Sekundärstruktur:
-
-SELECT Structure FROM Seq WHERE Seq.Name = ?; wobei ? = PDB-Id, sofern dem Gen dieser Name gegeben wurde oder
-SELECT Structure FROM (Seq JOIN Source On Seq.Id = Source.SeqId) JOIN DB On DB.DBId = Source.DBId WHERE SeqDBIdentifier = ? AND DB.Name = 'PDB';
