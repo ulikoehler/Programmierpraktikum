@@ -1,0 +1,3 @@
+INSERT INTO DB (`Name`) VALUES("SwissProt");
+INSERT INTO DB (`Name`) VALUES("NCBI");
+INSERT INTO(`Name`) VALUES("SwissProt");

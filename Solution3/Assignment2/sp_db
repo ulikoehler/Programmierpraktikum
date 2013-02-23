@@ -62,7 +62,7 @@ sub checkIfSwissprotEntryExists {
 	my $db = $_[0];
 	my $primaryAC = $_[1];
 	#Try to fetch an existing organism
-	my $insertSeqDBEntryStmt = $db->prepare("Select `Id` from Source JOIN DB ON Source.DBId = DB.Id WHERE 'SeqDBIdentifier' = ? AND DB.Name =  'SwissProt';");
+	my $insertSeqDBEntryStmt = $db->prepare("Select `Id` from Source JOIN DB ON Source.DBId = DB.Id WHERE 'SeqDBIdentifier' = ? AND DB.Name = 'SwissProt';");
 	$insertSeqDBEntryStmt->execute($primaryAC);
 	my $result = $insertSeqDBEntryStmt->fetchrow_hashref();
 	if(defined $result->{Id}) {
