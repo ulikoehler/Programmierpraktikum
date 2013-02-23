@@ -40,4 +40,4 @@ if(!$where) {     # if no $where is given
 }
 # create SQL Statement
 my $dif = int(($upperBound - $lowerBound) / $cIntervall + 0.5);
-print "SELECT COUNT(*) FROM (SELECT * FROM Seq WHERE LENGTH(Seq.Seq) >= $lowerBound AND LENGTH(Seq.Seq) <= $upperBound AND $where) AS S GROUP BY FLOOR((LENGTH(S.Seq) - $lowerBound) / $dif, 0);\n";
+print "SELECT COUNT(*) FROM (SELECT * FROM Seq WHERE LENGTH(Seq.Seq) >= $lowerBound AND LENGTH(Seq.Seq) <= $upperBound AND $where) AS S GROUP BY FLOOR((LENGTH(S.Seq) - $lowerBound) / $dif);\n";
