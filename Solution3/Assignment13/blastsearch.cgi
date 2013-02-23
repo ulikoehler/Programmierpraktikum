@@ -1,32 +1,35 @@
 #!/usr/bin/perl
 use strict;
 use File::Temp qw/ tempfile tempdir /;
+use CGI::Carp qw(fatalsToBrowser);
 use CGI;
 use File::Copy;
 use HTML::Entities;
-my $cgi = new CGI;
+use CGI qw(:standard);
 #Create a temporary dir
-#my $tempdir = tempdir();
-print $cgi->header(-type => 'text/html');
-my $tempdir = "/tmp/ulix";
-`mkdir -p $tempdir`;
+my $tempdir = tempdir();
+carp "Tempdir: $tempdir";
+print header('text/html');
+#my $tempdir = "/tmp/ulix";
+#`mkdir -p $tempdir`;
 #We do generate HTML
 #Save the query sequence in a file
-my $query = $cgi->param("query");
+my $query = param("query") || ">sp|P00846|ATP6_HUMAN ATP synthase subunit a OS=Homo sapiens GN=MT-ATP6 PE=1 SV=1\nMNENLFASFIAPTILGLPAAVLIILFPPLLIPTSKYLINNRLITTQQWLIKLTSKQMMTM\nHNTKGRTWSLMLVSLIIFIATTNLLGLLPHSFTPTTQLSMNLAMAIPLWAGTVIMGFRSK\nIKNALAHFLPQGTPTPLIPMLVIIETISLLIQPMALAVRLTANITAGHLLMHLIGSATLA\nMSTINLPSTLIIFTILILLTILEIAVALIQAYVFTLLVSLYLHDNT";
 my $queryFilename = $tempdir."/query.fa";
 open(QUERYOUTFILE, ">".$queryFilename);
 print QUERYOUTFILE $query;
 close(QUERYOUTFILE);
 #Get the filename
-my $dbTempFilename = $cgi->param("database");
+my $dbTempFilename = param("database") || "../mgenitalium.fa";
 #Save the database query to the
 my $dbFilename = $tempdir."/database.fa";
 #Copy the temp file to the database filename
 copy($dbTempFilename,$dbFilename) or die "Copy failed: $!";
 #Create the BLAST DB + index
-`makeblastdb -in $dbFilename -hash_index -dbtype prot  2>>&1 >> makeblastdb.log`;
+my $bindir = "/home/proj/biocluster/praktikum/bioprakt/progprakt4/bin/";
+`bash -c '$bindir/makeblastdb -in $dbFilename -hash_index -dbtype prot  2>> makeblastdb.log >> makeblastdb.log'`;
 #Do the query
-my $queryOutput = `blastp -db $dbFilename -query $queryFilename`;
+my $queryOutput = `bash -c '$bindir/blastp -db $dbFilename -query $queryFilename'`;
 $queryOutput = encode_entities($queryOutput);
 #Print the HTML prototype
 print <<"HTML";
