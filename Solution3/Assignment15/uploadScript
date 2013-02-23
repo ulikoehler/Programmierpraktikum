@@ -19,7 +19,20 @@ use DBI;
 
 # subs
 sub getHomstradId {
-
+  # params
+  my $db = $_[0];
+  
+  # Try to fetch ncbi
+  my $querySelect = $db->prepare("SELECT Id from DB WHERE Name = 'HOMSTRAD';");
+  $querySelect->execute();
+  my $result = $querySelect->fetchrow_hashref();
+  if(defined $result->{Id}) {
+    return $result->{Id};
+  }
+  
+  # If that didn't return, we need to insert it
+  my $queryInsert = $db->prepare("INSERT INTO DB(`Name`) VALUES ('HOMSTRAD');");
+  $queryInsert->execute();
 }
 sub saveSequenceComplete {
   
