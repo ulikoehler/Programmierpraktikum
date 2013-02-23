@@ -1,3 +1,4 @@
+SET foreign_key_checks = 0;
 TRUNCATE Source;
 TRUNCATE KeySeq;
 TRUNCATE StructAlign;
@@ -6,3 +7,5 @@ TRUNCATE Seq;
 TRUNCATE Keywords;
 TRUNCATE Organism;
 TRUNCATE DB;
+INSERT INTO DB (`Name`) VALUES("SwissProt");
+INSERT INTO DB (`Name`) VALUES("NCBI");
