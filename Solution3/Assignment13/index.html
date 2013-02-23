@@ -34,6 +34,11 @@ a:hover { text-decoration: none; color: #C00; background: #FC0; }
   <form method="get" action="render_pymol.cgi">
 	PDB ID: <input type="text" name="pdbid" cols="4" value="1ULI"/><input type="submit" value="Render"/>
   </form>
+    
+  <h3>Import organism genome data into database </h3>
+  <form method="get" action="genome_db.cgi">
+	Organism (<b>only bacteria!</b>): <input type="text" name="organism" cols="4" value="Mycoplasma genitalium"/><input type="submit" value="Find"/>
+  </form>
   
   <h3>Find prosite pattern in database: </h3>
   <form method="get" action="prosite-pattern.cgi">
