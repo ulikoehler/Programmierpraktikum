@@ -1,127 +1,269 @@
 #!/usr/bin/perl -w
+
+# imports
 use strict;
 use Net::FTP;
+use LWP::Simple;
+use DBI;
 
 #Subs
+sub getSeqIdByName {
+  # params
+  my $db = $_[0];
+  my $name = $_[1];
+  
+  my $querySelect = $db->prepare("SELECT Id from Seq WHERE Name = ?;");
+  $querySelect->execute($name);
+  my $result = $querySelect->fetchrow_hashref();
+  return $result->{Id};
+}
+sub insertORF {
+  # params
+  my $db = $_[0];
+  my $SeqId = $_[1];
+  my $Start = $_[2];
+  my $Stop = $_[3];
+  
+  # write entry
+  my $querySelect = $db->prepare("SELECT Id from Orf WHERE SeqId = ? AND Start = ? AND Stop = ?;");
+  $querySelect->execute($SeqId, $Start, $Stop);
+  my $result = $querySelect->fetchrow_hashref();
+  if(defined $result->{Id}) {
+    return $result->{Id};
+  }
+  
+  my $queryInsert = $db->prepare("INSERT INTO Orf(SeqId, Start, Stop) VALUES (?,?,?);");
+  $queryInsert->execute($SeqId, $Start, $Stop);
+  
+  return $queryInsert->{mysql_insertid};
+}
+sub insertSource {
+  # params
+  my $db = $_[0];
+  my $dbId = $_[1];
+  my $seqId = $_[2];
+  my $ac = $_[3];
+  
+  # write entry
+  my $querySelect = $db->prepare("SELECT DBId, SeqId from Source WHERE DBId = ? AND SeqId = ?;");
+  $querySelect->execute($dbId, $seqId);
+  my $result = $querySelect->fetchrow_hashref();
+  if(defined $result->{DBId}) {
+    return $result->{DBId};
+  }
+  
+  my $queryInsert = $db->prepare("INSERT INTO Source(DBId, SeqId, SeqDBIdentifier, SwissprotEntryId) VALUES (?,?,?,?);");
+  $queryInsert->execute($dbId, $seqId, $ac, "n.d.");
+  
+  return $queryInsert->{mysql_insertid};
+}
+sub getNcbiId {
+  # params
+  my $db = $_[0];
+  
+  # Try to fetch ncbi
+  my $querySelect = $db->prepare("SELECT Id from DB WHERE Name = 'NCBI';");
+  $querySelect->execute();
+  my $result = $querySelect->fetchrow_hashref();
+  if(defined $result->{Id}) {
+    return $result->{Id};
+  }
+  
+  # If that didn't return, we need to insert it
+  my $queryInsert = $db->prepare("INSERT INTO DB(`Name`) VALUES ('NCBI');");
+  $queryInsert->execute();
+  
+  return $queryInsert->{mysql_insertid};
+}
 sub getOrganismId {
-	my $db = $_[0];
-	my $organism = $_[1];
-	#Try to fetch an existing organism
-	my $queryOrganismIdStmt = $db->prepare("SELECT Id from Organism WHERE Name = ?;");
-	$queryOrganismIdStmt->execute($organism);
-	my $result = $queryOrganismIdStmt->fetchrow_hashref();
-	if(defined $result->{Id}) {
-		return $result->{Id};
-	}
-	#If that didn't return, we need to insert it
-	my $insertStmt = $db->prepare("INSERT INTO Organism(`Name`) VALUES (?)");
-	$insertStmt->execute($organism);
-	return $insertStmt->{mysql_insertid};
+  # params
+  my $db = $_[0];
+  my $organism = $_[1];
+  
+  # Try to fetch an existing organism
+  my $querySelect = $db->prepare("SELECT Id from Organism WHERE Name = ?;");
+  $querySelect->execute($organism);
+  my $result = $querySelect->fetchrow_hashref();
+  if(defined $result->{Id}) {
+    return $result->{Id};
+  }
+  
+  # If that didn't return, we need to insert it
+  my $queryInsert = $db->prepare("INSERT INTO Organism(`Name`) VALUES (?);");
+  $queryInsert->execute($organism);
+  
+  return $queryInsert->{mysql_insertid};
 }
 sub insertSequence {
-	my $db = $_[0];
-	my $primaryAC = $_[1];
-	my $definition = $_[2];
-	my $organismId = $_[3];
-	my $rawSequence = $_[4];
-        my $typ = $_[5];
-	#Insert the sequence
-        my $insertSeqStmt = "";
-        if($typ eq "Protein") {
-	  $insertSeqStmt = $db->prepare("INSERT INTO Seq(`Name`, `Definition`,`OrganismId`,`Seq`,`TypeId`) SELECT ?,?,?,?,`Id` FROM Type WHERE `Name`='Protein';");
-        } elsif($typ eq "Genome") {
-          $insertSeqStmt = $db->prepare("INSERT INTO Seq(`Name`, `Definition`,`OrganismId`,`Seq`,`TypeId`) SELECT ?,?,?,?,`Id` FROM Type WHERE `Name`='Genome';");
-        }
-	$insertSeqStmt->execute($primaryAC,$definition,$organismId,$rawSequence);
-	return $insertSeqStmt->{mysql_insertid};
+  # params
+  my $db = $_[0];
+  my $seqName = $_[1];
+  my $definition = $_[2];
+  my $rawSequence = $_[3];
+  my $organismId = $_[4];
+  my $typ = $_[5];
+  
+  # Insert the sequence
+  my $querySelect = $db->prepare("SELECT Id from Seq WHERE Name = ?;");
+  $querySelect->execute($seqName);
+  my $result = $querySelect->fetchrow_hashref();
+  if(defined $result->{Id}) {
+    return $result->{Id};
+  }
+  
+  my $queryInsert = $db->prepare("INSERT INTO Seq(Name, Definition, Seq, OrganismId, Type, Structure) VALUES(?,?,?,?,?,?);");
+  $queryInsert->execute($seqName, $definition, $rawSequence, $organismId, $typ, undef);
+  
+  return $queryInsert->{mysql_insertid};
 }
 
 # parse param
 my $argc = @ARGV;
 die "Usage: $0 <Organism name>" unless $argc == 1;
-my $organismName = $ARGV[0];
+my $inputOrganismName = $ARGV[0];
+
 # reformat the organism name in NCBI format
+my $organismName = $inputOrganismName;
 $organismName =~ s/\s/_/g;
-print "try downloading $organismName ...\n";
-# Setup FTP vars
+print "try downloading $organismName ($inputOrganismName) ...\n";
+
+# open DB Connection
+my $db = DBI->connect('DBI:mysql:bioprakt4;host=mysql2-ext.bio.ifi.lmu.de', 'bioprakt4', 'vGI5GCMg0x') or die "Could not connect to database: $DBI::errstr";
+
+# get ncbi Id
+my $ncbiId = getNcbiId($db);
+
+# FTP
 my $serverName = "ftp.ncbi.nlm.nih.gov";
 my $loginName = "anonymous";
 my $loginPassword = "";
-use LWP::Simple;
-use Net::FTP;
-use DBI;
-my $db = DBI->connect('DBI:mysql:bioprakt4;host=mysql2-ext.bio.ifi.lmu.de', 'bioprakt4', 'vGI5GCMg0x') or die "Could not connect to database: $DBI::errstr";
+
 # open connection
-my $ftp = Net::FTP->new($serverName, Debug => 0, Passive => 1) or die "unable to connect ftp://$serverName/: $@\n";
+my $ftp = Net::FTP->new($serverName, Debug => 0, Passive => 1) or die "unable to connect to ftp://$serverName/: $@\n";
 $ftp->login($loginName, $loginPassword);
-$ftp->cwd("/genomes/Bacteria") or die "Error: couldn't change directory to /genomes/Bacteria".$ftp->message."\n";
-# list all files
+
+# change ftp directory
+$ftp->cwd("/genomes/Bacteria") or die "Error: couldn't change directory to /genomes/Bacteria ".$ftp->message."\n";
+
+# some usefull vars
 my $taxaFound = "false";
+
+# list all files in this directory
 my @files = $ftp->ls;
+
+# foreach file in /genomes/Bacteria
 for my $file (@files) {
-  if ($file =~ m/($organismName)/i) { # eq organism
+  
+  # check if files in this folder should be downloaded
+  if ($file =~ m/($organismName)/i) {
+    # at least one organism was detected
     $taxaFound = "true";
+    
+    # get DB Id for this organism
+    my $orgName = $file; $orgName =~ s/_/ /g;
+    my $orgId = getOrganismId($db, $orgName);
+    
     # cwd to organismus dir
     $ftp->cwd("./$file");
+
+    # for each Protein and Genome Data in this folder
     my @organismFiles = $ftp->ls;
-    # save Data in DB
     for my $orgFile (@organismFiles) {
+      # if it's an genome or protein file
       if (($orgFile =~ m/\.faa/i) || ($orgFile =~ m/\.fna/i)) {
-        #create tmp file
+        # read out file
         $ftp->get($orgFile,"tmp");
-        # readline and save to DB
         open FILE, "<tmp";
         my @lines = <FILE>;
-        # data to DB
-        # organism
-        my $orgName = $file; $orgName =~ s/_/ /g;
-        my $orgId = getOrganismId($db, $orgName);
-        # type
-        my $typ = 0;
+        close(FILE);
+        unlink("tmp");
+        
+        # read type
+        my $typ = "";
         if ($orgFile =~ m/\.faa/i) {
           # Proteins
           $typ = "Protein";
         } else {
-          # Genomes
+          # Genome
           $typ = "Genome";
         }
-        # parse input file and to DB
+        
+        # read raw Sequence
+        # some vars for parsing
         my $ac = "";
-        my $seq = ""; 
+        my $seq = "";
+        my $def = "";
+        
+        # for each sequence in file do an upload (Parsing)
         foreach my $line (@lines) {
-          # line starts with '>'
+          # line starts with '>' => read name of sequence and insert last Sequence
           if(substr($line, 0, 1) eq ">") {
-            # a new block starts
-            if($seq) { # don't save any empty blocks
-              my $seqId = insertSequence($db, $ac, "NULL", $orgId, $seq, $typ);
+            # prev seq => save seq
+            if($seq) {
+              my $retId = insertSequence($db, $ac, $def, $seq, $orgId, $typ);
+              $retId = insertSource($db, $ncbiId, $retId, $ac);
               $seq = "";
             }
+            # extract 3. && 4. row (e.g NC_009925.1)
             $ac = substr($line, 1, length($line) - 1);
+            my @pices = split(/\|/, $ac);
+            $def = $pices[4];
+            $ac = $pices[3];
           }
-          # line starts with ';' ?
+          # don't do anything with comments
           elsif(substr($line, 0, 1) eq ";") { } # FASTA comment => do nothing!
-          # "Data" line
           else {
-            # append to current block
+            # Sequence Data => append
             $line =~ s/\s//g;
             $seq = $seq.$line;
           }
         }
-        if($seq) { # don't save any empty blocks
-          my $seqId = insertSequence($db, $ac, "NULL", $orgId, $seq, $typ);
+        # also save last seq
+        if($seq) {
+          my $retId = insertSequence($db, $ac, $def, $seq, $orgId, $typ);
+          $retId = insertSource($db, $ncbiId, $retId, $ac);
           $seq = "";
         }
-        
-        # close and delete
+      }
+    }
+    
+    # for each ORF-File in this folder
+    for my $orgFile (@organismFiles) {
+      if ($orgFile =~ m/\.Glimmer3/i) {
+        # read out file
+        $ftp->get($orgFile,"tmp");
+        open FILE, "<tmp";
+        my @lines = <FILE>;
         close(FILE);
-        unlink("tmp")
+        unlink("tmp");
+        
+        # get Name
+        my $ac = substr($lines[0], 1, length($lines[0]) - 1);
+        my @pices = split(/\|/, $ac);
+        $ac = $pices[3];
+        
+        # forall lines in File
+        foreach my $line (@lines) {
+          # if $line doesn't start with orf skip line
+          if(substr($line, 0, 3) eq "orf") {
+            $line =~ m/\S*\s*(\S*)\s*(\S*)/;
+            my $start = $1;
+            my $stop = $2;
+            my $seqId = getSeqIdByName($db, $ac);
+            print "\'$seqId\' \'$ac\' \'$start\' \'$stop\'\n";
+            my $ret = insertORF($db, $seqId, $start, $stop);
+          }
+        }
       }
     }
   }
+  
 }
-# quit
+
+# close ftp and DB connection
 $ftp->quit();
 $db->disconnect();
+
 # organismus not found
 if($taxaFound eq "false") {
   print "Organism not found!\n"
