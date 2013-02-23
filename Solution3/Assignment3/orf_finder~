@@ -72,15 +72,17 @@ while ( (my $k,my $v) = each %ORFlengthsAll ) {
 }
 
 my $ORFpostionsFwd;
-
+my $ORFsFwd;
 while ( (my $k,my $v) = each %ORFpositionsFwd ) {
-    $ORFpostionsFwd .= "$k\t$v\n";
+	$ORFpostionsFwd .= "$k\t$v\n";
+	$ORFsFwd .= (substr($sequence,$k,($v-$k))."\n");
 }
 
 my $ORFpostionsRev;
-
+my $ORFsRev;
 while ( (my $k,my $v) = each %ORFpositionsRev ) {
-    $ORFpostionsRev .= "$k\t$v\n";
+	$ORFpostionsRev .= "$k\t$v\n";
+	$ORFsRev .= (substr($complementaryReverseSequence,$k,($v-$k))."\n");
 }
 
 my $gnuplot = `mkdir Results`;
@@ -97,13 +99,21 @@ open (MYFILE, '>>ORFpositionsComplementaryStrand_'.($ARGV[0]));
 print MYFILE $ORFpostionsRev;
 close (MYFILE);
 
+open (MYFILE, '>>ORFsequencesForward_'.($ARGV[0]));
+print MYFILE $ORFsFwd;
+close (MYFILE);
+
+open (MYFILE, '>>ORFsequencesReverse_'.($ARGV[0]));
+print MYFILE my $ORFsRev;;
+close (MYFILE);
+
 my $fileName = "lengthDistribution_".($ARGV[0]);
 $gnuplot = `./gnuplot $fileName $maxORFlength 1`;
 $gnuplot = `./gnuplot $fileName 200 25`;
 $gnuplot = `mv $fileName Results`;
-$fileName = "ORFpositionsForwardStrand_".($ARGV[0]);
-$gnuplot = `mv ORFpositions* Results`;
-$gnuplot = `mv Histo* Results`;
+$gnuplot = `mv ORF* Results`;
+$gnuplot = `mv histo* Results`;
 
 
 ########## TODO: put results to database:
+
