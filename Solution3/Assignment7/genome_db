@@ -250,7 +250,6 @@ for my $file (@files) {
             my $start = $1;
             my $stop = $2;
             my $seqId = getSeqIdByName($db, $ac);
-            print "\'$seqId\' \'$ac\' \'$start\' \'$stop\'\n";
             my $ret = insertORF($db, $seqId, $start, $stop);
           }
         }
