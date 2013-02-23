@@ -15,22 +15,28 @@ for(my $i=0;$i<scalar(@seq);$i++){
 ######### generate complementary reverse sequence:
 my $reverseSequence = reverse($sequence);
 my $complementaryReverseSequence;
-
+my $CapitalSequence;
 for(my $i=0;$i<length($reverseSequence);$i++){
-	if((substr($reverseSequence, $i,1)) eq "A"){
+	my $currentBase = (substr($reverseSequence, $i,1));
+	if($currentBase eq "A" || $currentBase eq "a"){
 		$complementaryReverseSequence.="T";
+		$CapitalSequence.="A";
 	}
-	elsif(substr($reverseSequence, $i,1) eq "T"){
+	elsif($currentBase eq "T" || $currentBase eq "t"){
 		$complementaryReverseSequence.="A";
+		$CapitalSequence.="T";
 	}
-	elsif(substr($reverseSequence, $i,1) eq "G"){
+	elsif($currentBase eq "G" || $currentBase eq "g"){
 		$complementaryReverseSequence.="C";
+		$CapitalSequence.="G";
 	}
-	elsif(substr($reverseSequence, $i,1) eq "C"){
+	elsif($currentBase eq "C" || $currentBase eq "c"){
 		$complementaryReverseSequence.="G";
+		$CapitalSequence.="C";
 	}
 }
 
+$sequence = $CapitalSequence;
 $reverseSequence = "";
 my $maxORFlength = 0;
 my $ORFcountFwd = 0;	my $ORFcountRev = 0;	my $ORFcountAll = 0;
@@ -60,7 +66,7 @@ while($complementaryReverseSequence =~ m/(ATG(.{3})*?(TAG|TGA|TAA))/g) {
 ###### make statistics files:
 
 my $lengthDistribution = "ORFlength\t absolute_frequency\n";
-my $sumOfORFlengths;
+my $sumOfORFlengths = 0;
 my $sumLength75to100 = 0;
 while ( (my $k,my $v) = each %ORFlengthsAll ) {######length distribution
 	if($v!=0){
@@ -90,7 +96,7 @@ my $statistics = "$ORFcountAll ORFs found, $ORFcountFwd on forward, $ORFcountRev
 
 print $statistics;
 
-my $gnuplot = `mkdir Results`;
+my $gnuplot = `mkdir Results_$ARGV[0]`;
 #### make result files:
 open (MYFILE, '>>Statistics_'.($ARGV[0]));
 print MYFILE $statistics;
@@ -119,10 +125,10 @@ close (MYFILE);
 my $fileName = "lengthDistribution_".($ARGV[0]);
 $gnuplot = `./gnuplot $fileName $maxORFlength 1`;
 $gnuplot = `./gnuplot $fileName 200 25`;
-$gnuplot = `mv $fileName Results`;
-$gnuplot = `mv ORF* Results`;
-$gnuplot = `mv histo* Results`;
-$gnuplot = `mv Stat* Results`;
+$gnuplot = `mv $fileName Results_$ARGV[0]`;
+$gnuplot = `mv ORF* Results_$ARGV[0]`;
+$gnuplot = `mv histo* Results_$ARGV[0]`;
+$gnuplot = `mv Stat* Results_$ARGV[0]`;
 
 
 ########## TODO: put results to database:
