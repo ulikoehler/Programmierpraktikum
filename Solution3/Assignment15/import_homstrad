@@ -13,7 +13,12 @@
 use strict;
 use LWP::Simple;
 use DBI;
-
+sub trim {
+	my $string = shift;
+	$string =~ s/^\s+//;
+	$string =~ s/\s+$//;
+	return $string;
+}
 #
 #Get the organism ID, insert it if not existent
 sub getOrganismId {
@@ -137,8 +142,8 @@ foreach my $directory (@homstradFiles) {
         elsif ( substr( $line, 0, 1 ) eq ">" )
         {    # Identifier => save last ali if there is onex
             if ($pdbId) {
-                insertAlignment( $db, $homstradDBId, $pdbId, $otherProteinPDBId,
-                    $name, $def, $organism, $alignment );
+                insertAlignment( $db, trim($homstradDBId), trim($pdbId), trim($otherProteinPDBId),
+                    trim($name), trim($def), trim($organism), trim($alignment));
                 $alignment = "";
                 $def       = "";
             }
@@ -174,14 +179,14 @@ foreach my $directory (@homstradFiles) {
     foreach my $line (@temLines) {
         if ($nextLineIsType) {
             chomp $line;
-            $type = $line;
+            $type = trim($line);
 	    $nextLineIsType = 0;
         }
         else {
             if ( substr( $line, 0, 1 ) eq ">" ) {    # Protein identifier
                 $nextLineIsType = 1;
                 if ($pdbId) {
-                    insertStructure( $db, $homstradDBId, $pdbId, $type, $content );
+                    insertStructure( $db, trim($homstradDBId), trim($pdbId), trim($type), trim($content));
                     $content = "";
                 }
 
