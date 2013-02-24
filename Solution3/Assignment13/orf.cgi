@@ -2,7 +2,7 @@
 use strict;
 use File::Temp qw/ tempfile tempdir /;
 use CGI::Carp qw(fatalsToBrowser);
-use CGI;
+use DBI;
 use File::Basename;
 use File::Copy;
 use HTML::Entities;
@@ -14,15 +14,8 @@ print header('text/html');
 #my $tempdir = "/tmp/ulix";
 #`mkdir -p $tempdir`;
 #We do generate HTML
-#Save the query sequence in a file
-my $query = param("query");
-die "No query specified\n" unless $query;
-my $queryFilename = $tempdir."/query.fa";
-open(QUERYOUTFILE, ">".$queryFilename);
-print QUERYOUTFILE $query;
-close(QUERYOUTFILE);
 #Get the filename
-my $dbTempFilename = param("database");
+my $dbTempFilename = param("sequence");
 #Save the database query to the temporary file
 my $dbFilename = $tempdir.basename($dbTempFilename);
 carp "Writing to temp dir $tempdir \n";
@@ -45,7 +38,7 @@ if($output =~ m/rev:\s+(\d+)/) {
 	die "Can't find revId in output $output\n";
 }
 #Setup db conn
-my $db =  DBI->connect('DBI:mysql:bioprakt4;host=mysql2-ext.bio.ifi.lmu.de', 'bioprakt4', 'vGI5GCMg0x') || die "Could not connect to database: $DBI::errstr";	
+my $db = DBI->connect('DBI:mysql:bioprakt4;host=mysql2-ext.bio.ifi.lmu.de', 'bioprakt4', 'vGI5GCMg0x') || die "Could not connect to database: $DBI::errstr";	
 #Find fwd ORFs
 my $fwdQuery = $db->prepare("SELECT Orf.Start, Orf.Stop, Orf.Strand WHERE Orf.SeqId = ?");
 my $revQuery = $db->prepare("SELECT Orf.Start, Orf.Stop, Orf.Strand WHERE Orf.SeqId = ?");
@@ -79,7 +72,7 @@ a:hover { text-decoration: none; color: #C00; background: #FC0; }
  </div>
  <div id="body">
   <h2>orf_finder Output:</2>
-  <pre>
+  <pre style="font-weight:normal;">
   $output
   </pre>
   <h2>Histogram</h2>
