@@ -99,6 +99,7 @@ my $path = "/home/proj/biocluster/praktikum/bioprakt/Data/HOMSTRAD/";
 my $db = DBI->connect( 'DBI:mysql:bioprakt4;host=mysql2-ext.bio.ifi.lmu.de',
     'bioprakt4', 'vGI5GCMg0x' )
   or die "Could not connect to database: $DBI::errstr";
+print "Established database connection...\n";
 my $homstradDBId = getHomstradId($db);
 
 # loop over all files
