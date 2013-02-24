@@ -5,17 +5,8 @@ use DBI;
 use CGI qw(:standard);
 use CGI::Carp qw(fatalsToBrowser);
 
-# The search pdb id is supplied as CLI arg
-my $m = param("m");
-my $M = param("M");
-my $c = param("c");
-
-# get SQL statement
-@stmt = system("echo \"\" | /usr/bin/perl histo_sql -m $m -M $M -c $c");
-
-# print result
 print header("text/html");
-print <<"EOHTML"
+carp <<"EOHTML"
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
@@ -41,14 +32,23 @@ a:hover { text-decoration: none; color: #C00; background: #FC0; }
  <h1><a href="http://tardis.nibio.go.jp/homstrad/">HOMSTRAD</a> search</h1>
  </div>
  <div id="body">
-  <h2>Resulting SQL:</2>
+  <h2>Resulting SQL:</h2>
 
 EOHTML
 ;
 
-print @stmt[0];
+# The search pdb id is supplied as CLI arg
+my $m = param("m");
+my $M = param("M");
+my $c = param("c");
 
-print <<"EOHTML"
+# get SQL statement
+@stmt = system("echo \"\" | /usr/bin/perl histo_sql -m $m -M $M -c $c");
+
+# print result
+carp @stmt[0];
+
+carp <<"EOHTML"
 </table>
 </body>
 </html>
