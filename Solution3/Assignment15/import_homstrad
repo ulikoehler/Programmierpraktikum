@@ -108,6 +108,7 @@ opendir my($dh), $path or die "Couldn't open dir '$path': $!";
 my @homstradFiles = readdir $dh; #The individual directories
 closedir $dh;
 foreach my $directory (@homstradFiles) {
+	next if $directory eq "." or $directory eq "..";
     print "Processing $path$directory/$directory(.ali|.tem)\n";
 
     # read
