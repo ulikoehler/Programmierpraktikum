@@ -45,7 +45,7 @@ my $M = param("M");
 my $c = param("c");
 
 # get SQL statement
-@stmt = system("echo \"\" | /usr/bin/perl histo_sql -m $m -M $M -c $c");
+my @stmt = system("echo \"\" | /usr/bin/perl histo_sql -m $m -M $M -c $c");
 
 # print result
 carp @stmt[0];
