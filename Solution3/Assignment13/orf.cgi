@@ -29,7 +29,7 @@ my $dbFilename = $tempdir.basename($dbTempFilename);
 copy($dbTempFilename,$dbFilename) or die "Copy failed: $!";
 #Create the BLAST DB + index
 my $bindir = "/home/k/koehleru/Programmierpraktikum/Solution3/Assignment3/";
-my $output = `bash -c '$bindir/orf_finder $dbFilename'`;
+my $output = `bash -c '$bindir/orf_finder \"$dbFilename\"'`;
 #Print the HTML prototype
 print <<"EOHTML"
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
