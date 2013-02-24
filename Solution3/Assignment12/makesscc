@@ -9,5 +9,10 @@ die "Usage: -f PDB-ID\n-d Kontaktdistanz\n-t Atomart, die für die Berechnung de
 
 my $pdbFile = get ("http://www.rcsb.org/pdb/download/downloadFile.do?fileFormat=pdb&compression=NO&structureId=".$ARGV[0]) or die "Enter a correct PDB-ID!\n";
 
-if(defined $pdbFile){print substr($pdbFile,2045,230);}
-else{print "pdb file not defined";}
+my $ATOMcounter = 0;
+
+while($pdbFile =~ m/ATOM\s+\d+/g){
+	$ATOMcounter++;
+}
+
+print $ATOMcounter;
