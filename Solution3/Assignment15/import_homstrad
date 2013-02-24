@@ -83,7 +83,6 @@ sub insertStructure {
     my $pdbId        = $_[2];
     my $type         = $_[3];
     my $content      = $_[4];
-
     #Insert the sequence
     my $insertStmt = $db->prepare("INSERT DELAYED IGNORE INTO SecStructAlign(`DBId`, `FromDBId`, `Content`, `Type`, `EntryType`) VALUES (?,?,?,?,'Secondary Structure');"
     );
@@ -174,7 +173,6 @@ foreach my $directory (@homstradFiles) {
     foreach my $line (@temLines) {
         if ($nextLineIsType) {
             chomp $line;
-		print "Type: $line\n";
             $type = $line;
 	    $nextLineIsType = 0;
         }
