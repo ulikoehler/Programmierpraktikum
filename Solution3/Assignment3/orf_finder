@@ -137,7 +137,7 @@ use DBI;
 my $dbh = DBI->connect('DBI:mysql:bioprakt4;host=mysql2-ext.bio.ifi.lmu.de', 'bioprakt4', 'vGI5GCMg0x') or die "Could not connect to database: $DBI::\
 errstr";
 
-my $queryInsert = $dbh->prepare("INSERT INTO ORFs_A3_Fwd(id, startPos, stopPos, length) VALUES (?,?,?,?);");
+my $queryInsert = $dbh->prepare("INSERT INTO Orf(Id, Start, Stop, length, Strand) VALUES (?,?,?,?,?);");
 
 # params
 
@@ -149,14 +149,12 @@ my $stop = $v;
 my $length = ($v-$k);
 $c++;
 # write entry
-$queryInsert->execute($id, $start, $stop, $length);
+$queryInsert->execute($id, $start, $stop, $length, "Forward");
 }
 
 
 #####################################
-$queryInsert = $dbh->prepare("INSERT INTO ORFs_A3_Rev(id, startPos, stopPos, length) VALUES (?,?,?,?);");
 
-$c=1;
 while ( (my $k,my $v) = each %ORFpositionsRev ) {
     my $id = $c;
     my $start = $k;
@@ -164,7 +162,7 @@ while ( (my $k,my $v) = each %ORFpositionsRev ) {
     my $length = ($v-$k);
     $c++;
 # write entry
-    $queryInsert->execute($id, $start, $stop, $length);
+    $queryInsert->execute($id, $start, $stop, $length, "Reverse");
 }
 
 
