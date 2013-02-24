@@ -10,6 +10,10 @@ use CGI qw(:standard);
 my $tempdir = tempdir();
 carp "Tempdir: $tempdir";
 print header('text/html');
+my $type = param("type");
+unless ($type eq "prot" or $type eq "nucl") {
+	die "BLAST type must be either prot or nucl!\n";
+}
 #my $tempdir = "/tmp/ulix";
 #`mkdir -p $tempdir`;
 #We do generate HTML

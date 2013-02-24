@@ -45,7 +45,7 @@ a:hover { text-decoration: none; color: #C00; background: #FC0; }
 	Pattern: <input type="text" name="pattern" cols="4" value="P-P-x-x"/><input type="submit" value="Find"/>
   </form>
   
-    <h3>Find AC numbers containing a keyword:</h3>
+  <h3>Find AC numbers containing a keyword:</h3>
   <form method="get" action="search_keyword.cgi">
 	Keyword: <input type="text" name="keyword" cols="4" value="Antigen"/><input type="submit" value="Find"/>
   </form>
@@ -63,9 +63,10 @@ a:hover { text-decoration: none; color: #C00; background: #FC0; }
 	Show alignment of: <input type="text" name="pdbid1" cols="4" value="1BGXT"/> and <input type="text" name="pdbid2" cols="4" value="1BGX"/> <input type="submit" value="Find"/>
   </form>
   
-  
   <h3>BLAST a sequence in a self-supplied database</h3>
   <form action="blastsearch.cgi" method="post" enctype="multipart/form-data">
+       <input type="radio" name="type" value="prot" checked> Protein
+        <input type="radio" name="type" value="nucl"> Nucleotide<br/>
 	Database in FASTA format: <input type="file" name="database"><br/>
 	Query sequence:<br/> <textarea name="query" cols="50" rows="20"></textarea><br/>
 	<input type="submit" value="Query">
