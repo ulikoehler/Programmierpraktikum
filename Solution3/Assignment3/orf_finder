@@ -123,6 +123,7 @@ print MYFILE $ORFsRev;
 close (MYFILE);
 #####organize results into "Results" folder
 my $fileName = "lengthDistribution_".($ARGV[0]);
+print "Executing gnuplot like gnuplot $fileName 200 25\n";
 $gnuplot = `./gnuplot $fileName $maxORFlength 1`;
 $gnuplot = `./gnuplot $fileName 200 25`;
 $gnuplot = `mv $fileName Results_$ARGV[0]`;
@@ -148,8 +149,8 @@ my $seqIdFwd = $queryInsert->{mysql_insertid};
 $queryInsert->execute($seqNameRev, $complementaryReverseSequence, "DNA");
 my $seqIdRev =  $queryInsert->{mysql_insertid};
 ####get Id
-print "fwd: $seqIdFwd\n";
-print "rev: $seqIdRev\n";
+print "Forward sequence ID: $seqIdFwd\n";
+print "Reverse sequence ID: $seqIdRev\n";
 
 ###insert positions AND SeqId int Orf:
 $queryInsert = $dbh->prepare("INSERT INTO Orf(SeqId, Start, Stop, Strand) VALUES (?,?,?,?);");
