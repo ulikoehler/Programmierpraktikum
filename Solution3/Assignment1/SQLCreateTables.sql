@@ -20,7 +20,6 @@ CREATE TABLE Seq (
   Seq LONGTEXT NOT NULL,
   OrganismId INT,
   Type ENUM('RNA', 'DNA', 'Protein', 'Genome'),
-  Structure LONGTEXT,
   PRIMARY KEY(Id),
   FOREIGN KEY(OrganismId) references Organism(Id)
 );
@@ -29,6 +28,7 @@ CREATE TABLE Orf (
   SeqId INT,
   Start INT,
   Stop INT,
+  Strand ENUM('Forward', 'Reverse'),
   PRIMARY KEY(Id),
   FOREIGN KEY(SeqId) references Seq(Id)
 );
