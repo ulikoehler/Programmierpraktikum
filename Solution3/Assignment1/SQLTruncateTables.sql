@@ -1,7 +1,7 @@
 SET foreign_key_checks = 0;
 TRUNCATE Source;
 TRUNCATE KeySeq;
-TRUNCATE StructAlign;
+TRUNCATE SecStructAlign;
 TRUNCATE Orf;
 TRUNCATE Seq;
 TRUNCATE Keywords;
