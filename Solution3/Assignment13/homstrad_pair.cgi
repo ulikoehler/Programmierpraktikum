@@ -2,24 +2,23 @@
 use strict;
 use DBI;
 use CGI qw(:standard);
+use CGI::Carp qw(fatalsToBrowser);
 #The search pdb id is supplied as CLI arg
-my $pdbId = param("pdbid");
-die "PDB ID must consist of 4+ alphanum chars" unless $pdbId =~ m/^[A-Z0-9]{4,}$/;
+my $pdbId1 = param("pdbid1");
+die "PDB ID 1 must consist of 4+ alphanum chars" unless $pdbId1 =~ m/^[A-Z0-9]{4,}$/;
+my $pdbId2 = param("pdbid2");
+die "PDB ID 2 must consist of 4+ alphanum chars" unless $pdbId2 =~ m/^[A-Z0-9]{4,}$/;
 #Print the SQL statement
 my $db =  DBI->connect('DBI:mysql:bioprakt4;host=mysql2-ext.bio.ifi.lmu.de', 'bioprakt4', 'vGI5GCMg0x') || die "Could not connect to database: $DBI::errstr";	
 ##
 #Alignment queries
 ##
 #Query 1: Where the pdbid is the 'main' protein
-my $aquery = $db->prepare("SELECT DISTINCT * FROM SecStructAlign WHERE (FromDBId LIKE ? OR ToDBId LIKE ?) AND EntryType = 'Alignment'");
-my $dbIdQuery = lc($pdbId)."%";
-$aquery->execute($dbIdQuery, $dbIdQuery);
+my $aquery = $db->prepare("SELECT DISTINCT * FROM SecStructAlign WHERE FromDBId LIKE ? AND ToDBId LIKE ? AND EntryType = 'Alignment'");
+$aquery->execute(lc($pdbId1)."%", lc($pdbId2)."%");
 ##
 #Structure queries
 ##
-#Query 1: Where the pdbid is the 'main' protein
-my $squery = $db->prepare("SELECT * FROM SecStructAlign WHERE FromDBId LIKE ? AND EntryType = 'Secondary Structure'");
-$squery->execute(lc($pdbId)."%");
 print header("text/html");
 print <<"EOHTML"
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
@@ -47,31 +46,24 @@ a:hover { text-decoration: none; color: #C00; background: #FC0; }
  <h1><a href="http://tardis.nibio.go.jp/homstrad/">HOMSTRAD</a> search</h1>
  </div>
  <div id="body">
-  <h2>Results of search for PDB ID $pdbId</2>
+  <h2>Results of search for alignment of PDB ID $pdbId1 and $pdbId2</2>
   <h4>Alignments</h4>
-  <table border="1"><tr><td><b>Protein1</b></td><td><b>Protein2</b></td><td><b>Alignment</b></td></tr>
+  <table border="1" ><tr><td><b>Protein1</b></td><td><b>Protein2</b></td><td><b>Alignment</b></td></tr>
 EOHTML
 ;
 #Print the alignments
 my $result = undef;
+my $foundAnything = 0;
 while ($result = $aquery->fetchrow_hashref() ) {
+	$foundAnything = 1;
 	my $prot1 = uc($result->{FromDBId});
 	my $prot2 = uc($result->{ToDBId});
 	my $alignment = uc($result->{Content});
 	print "<tr><td>$prot1</td><td>$prot2</td><td>$alignment</td></tr>";
 }
-print <<"EOHTML"
-</table><br/>
-<h4>Secondary structure information:</h4>
-<table border="1"><tr><td><b>Information Type</b></td><b>Content</b></td></tr>
-EOHTML
-;
-while ($result = $squery->fetchrow_hashref() ) {
-	my $what = $result->{Type};
-	my $info = $result->{Content};
-	print "<tr><td>$what</td><td>$info</td></tr>";
+unless($foundAnything) {
+	print "<tr><td colspan=\"3\">Can't find anything</td></tr>";
 }
-
 print <<"EOHTML"
 </table>
 </body>
