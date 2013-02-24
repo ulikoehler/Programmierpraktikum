@@ -70,7 +70,7 @@ sub insertAlignment {
 
     #Insert the sequence
     my $insertStmt = $db->prepare(
-"INSERT INTO SecStructAlign(`DBId`, `FromDBId`, `ToDBId`, `Content`, `EntryType`) VALUES (?,?,?,?,'Alignment');"
+"INSERT INTO SecStructAlign(`DBId`, `FromDBId`, `ToDBId`, `Content`, `EntryType`) VALUES (?,?,?,?,'Alignment') ON DUPLICATE KEY UPDATE;"
     );
     $insertStmt->execute( $homstradDBId, $pdbId, $otherProteinPDBId,
         $alignment );
@@ -86,7 +86,7 @@ sub insertStructure {
 
     #Insert the sequence
     my $insertStmt = $db->prepare(
-"INSERT INTO SecStructAlign(`DBId`, `FromDBId`, `Content`, `Type`, `EntryType`) VALUES (?,?,?,?,'Alignment');"
+"INSERT INTO SecStructAlign(`DBId`, `FromDBId`, `Content`, `Type`, `EntryType`) VALUES (?,?,?,?,'Secondary Structure') ON DUPLICATE KEY UPDATE;"
     );
     $insertStmt->execute( $homstradDBId, $pdbId, $type, $content );
     return $insertStmt->{mysql_insertid};
