@@ -1,13 +1,34 @@
-#!/usr/bin/perl -w
-
+#!/usr/bin/perl
 use strict;
-use DBI;
-use CGI qw(:standard);
+use File::Temp qw/ tempfile tempdir /;
 use CGI::Carp qw(fatalsToBrowser);
-
-# print html
-
-print header("text/html");
+use DBI;
+use File::Basename;
+use File::Copy;
+use HTML::Entities;
+use CGI qw(:standard);
+#Create a temporary dir
+my $tempdir = tempdir();
+carp "Tempdir: $tempdir";
+print header('text/html');
+#my $tempdir = "/tmp/ulix";
+#`mkdir -p $tempdir`;
+#We do generate HTML
+#Get the filename
+my $pdbid= param("pdbid");
+die "No pdbid given!\n" unless $pdbid;
+my $contactDistance= param("contactdistance");
+die "No contactdistance given!\n" unless $contactDistance;
+my $atomType= param("atomtype");
+die "No atomtype given!\n" unless $atomType;
+my $localContactSequenceDist= param("localcontactsequencedistance");
+die "No localcontactsequencedistance given!\n" unless $localContactSequenceDist;
+#Execute the ORF script
+my $bindir = "/home/k/koehleru/Programmierpraktikum/Solution3/Assignment12/";
+#orf_finder needs gnuplot script
+my $output = `$bindir/makesscc -f `;
+#Find the sequence IDs of the forward and reverse sequences
+#Print the HTML prototype
 print <<"EOHTML"
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
@@ -31,28 +52,14 @@ a:hover { text-decoration: none; color: #C00; background: #FC0; }
 <body>
 <div id="page">
  <div id="header">
- <h1>Histo SQL</h1>
+ <h1>makesscc</h1>
  </div>
  <div id="body">
-  <h2>Resulting SQL:</h2>
-EOHTML
-;
-
-# The search pdb id is supplied as CLI arg
-my $m = param("m");
-my $M = param("M");
-my $c = param("c");
-
-# get SQL statement
-my $output = `echo \"\" | /usr/bin/perl histo_sql -m $m -M $M -c $c`;
-
-# print result
-print $output;
-
-print <<"EOHTML"
-</table>
+  <h2>makesscc Output:</2>
+  <pre style="font-weight:normal;">
+  $output
+  </pre>
 </body>
 </html>
 EOHTML
-
-
+;

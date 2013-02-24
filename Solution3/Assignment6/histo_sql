@@ -39,5 +39,5 @@ if(!$where) {     # if no $where is given
   $where = "1=1";
 }
 # create SQL Statement
-my $dif = int(($upperBound - $lowerBound) / $cIntervall + 0.5);
-print "SELECT COUNT(*) FROM (SELECT * FROM Seq WHERE LENGTH(Seq.Seq) >= $lowerBound AND LENGTH(Seq.Seq) <= $upperBound AND $where) AS S GROUP BY FLOOR((LENGTH(S.Seq) - $lowerBound) / $dif);\n";
+my $dif = int((($upperBound - $lowerBound + 1) / $cIntervall) + 0.5);
+print "SELECT COUNT(*) FROM (SELECT * FROM Seq WHERE LENGTH(Seq.Seq) >= $lowerBound AND LENGTH(Seq.Seq) < $upperBound AND $where) AS S GROUP BY FLOOR((LENGTH(S.Seq) - $lowerBound) / $dif);\n";

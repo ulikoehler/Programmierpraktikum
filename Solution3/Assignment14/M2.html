@@ -1,8 +1,172 @@
-<h1>Software error:</h1>
-<pre>BLAST type must be either prot or nucl!
-</pre>
-<p>
-For help, please send mail to the webmaster (<a href="mailto:http://www.bio.ifi.lmu.de/webmaster/">http://www.bio.ifi.lmu.de/webmaster/</a>), giving this error message 
-and the time and date of the error.
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<title>Propra G4</title>
+<style type="text/css" media="screen">
+body { background: #e7e7e7; font-family: Verdana, sans-serif; font-size: 11pt; }
+#page { background: #ffffff; margin: 50px; border: 2px solid #c0c0c0; padding: 10px; }
+#header { background: #4b6983; border: 2px solid #7590ae; text-align: center; padding: 10px; color: #ffffff; }
+#header h1 { color: #ffffff; }
+#body { padding: 10px; }
+span.tt { font-family: monospace; }
+span.bold { font-weight: bold; }
+a:link { text-decoration: none; font-weight: bold; color: #C00; background: #ffc; }
+a:visited { text-decoration: none; font-weight: bold; color: #999; background: #ffc; }
+a:active { text-decoration: none; font-weight: bold; color: #F00; background: #FC0; }
+a:hover { text-decoration: none; color: #C00; background: #FC0; }
+</style>
+</head>
+<body>
+<div id="page">
+ <div id="header">
+ <h1>Custom BLAST</h1>
+ </div>
+ <div id="body">
+  <h2>Your custom BLAST search yielded:</2>
+  <pre style="font-weight:normal;">
+  BLASTX 2.2.27+
 
-</p>
+
+Reference: Stephen F. Altschul, Thomas L. Madden, Alejandro A.
+Schaffer, Jinghui Zhang, Zheng Zhang, Webb Miller, and David J.
+Lipman (1997), &quot;Gapped BLAST and PSI-BLAST: a new generation of
+protein database search programs&quot;, Nucleic Acids Res. 25:3389-3402.
+
+
+
+Database: /tmp/wnUgU3ipCp/database.fa
+           483 sequences; 176,594 total letters
+
+
+
+Query= lcl|NG_008806.1_cdsid_NP_000044.2 [gene=ATP7B]
+[protein=copper-transporting ATPase 2 isoform a]
+[protein_id=NP_000044.2]
+[location=join(5158..5208,41327..42560,45746..46003,47888..48051,
+51462..51623,54582..54658,56173..56347,57951..58184,58888..58979,
+66096..66223,66334..66488,66699..66833,70017..70211,72204..72386,
+73941..74109,75271..75414,77302..77444,78816..79019,79102..79219,
+80800..80902,81466..81739)]
+
+Length=4398
+                                                                      Score     E
+Sequences producing significant alignments:                          (Bits)  Value
+
+  sp|P47317|ATCL_MYCGE Probable cation-transporting P-type ATPase...   113    6e-27
+  sp|P47397|RL3_MYCGE 50S ribosomal protein L3 OS=Mycoplasma geni...  31.6    0.046
+  sp|P47446|PARC_MYCGE DNA topoisomerase 4 subunit A OS=Mycoplasm...  28.1    0.77 
+
+
+&gt; sp|P47317|ATCL_MYCGE Probable cation-transporting P-type ATPase 
+OS=Mycoplasma genitalium (strain ATCC 33530 / G-37 / NCTC 
+10195) GN=pacL PE=3 SV=1
+Length=874
+
+ Score =  113 bits (282),  Expect = 6e-27, Method: Compositional matrix adjust.
+ Identities = 140/575 (24%), Positives = 245/575 (43%), Gaps = 96/575 (17%)
+ Frame = +1
+
+Query  2482  GDIVKVVPGGKFPVDGKVLEGNTM-ADESLITGEAMPVTKKPGST-----------VIAG  2625
+             GDI+ V  G   P DGK+L+ N +   ES +TGE+ PV K   S            V +G
+Sbjct  136   GDIIFVDAGDIIPADGKLLQVNNLRCLESFLTGESTPVDKTIDSNEKATILEQTNLVFSG  195
+
+Query  2626  SINAHGSVLIKATHVGNDTTLAQIVKLVEEAQMSKAPIQQLADRFSGYFVPFII-IMSTL  2802
+             +   +GS + +   VG  T + +I K V+++    +P+QQ  ++   +F  F + + + +
+Sbjct  196   AQVVYGSGVFQVEAVGIKTQVGKIAKTVDDSVTKLSPLQQKLEKIGKWFSWFGLGLFAVV  255
+
+Query  2803  TLVVWIVIGFIDFGVVQRYFPNPNKHISQTEVIIRFAFQTSITVLCIACPCSLGLATPTA  2982
+              LV   ++GF +F          N  I         A   +I ++    P   GL T   
+Sbjct  256   FLVQTALLGFDNF--------TNNWSI---------ALIGAIALVVAIIPE--GLVTFIN  296
+
+Query  2983  VMVGTGVA--AQNGILIKGGKPLEMAHKIKTVMFDKTGTITHGVPRVMRVLLLGDVATLP  3156
+             V+    V    +   +IK    +E    ++ +  DKTGT+T    +V+            
+Sbjct  297   VIFALSVQKLTKQKAIIKYLSVIETLGSVQIICTDKTGTLTQNQMKVVDHFCFNSTTQTD  356
+
+Query  3157  LRKVLAVVGTAEASSE-----HPLGVAVTKY---CKEELGTETLGYCTDFQAVPGCGIGC  3312
+             L + L +   A  S +      P  +A+ ++    + +L T    Y   F ++       
+Sbjct  357   LARALCLCNNASISKDANKTGDPTEIALLEWKDRSQLDLKTYYRVYEKAFDSIR------  410
+
+Query  3313  KVSNVEGILAHSERPL----SAPASHLNEAGSLPAEKDAVPQTFSVLIGNREWLRRNGLT  3480
+             K+  V  ++    R +     AP   L    ++  E   +        G  + LR   + 
+Sbjct  411   KLMTV--VVQKDNRFIVIVKGAPDVLLPLCNNVQNEVKNIENLLDQSAG--QGLRTLAVA  466
+
+Query  3481  IS----SDVSDAMTDHEMKGQTAILVAIDGVLCGMIAIADAVKQEAALAVHTLQSMGVDV  3648
+             +      D +D     E++     L        G +++ D  ++E+  A+   +   +  
+Sbjct  467   LKVLYKFDQNDQKQIDELENNLEFL--------GFVSLQDPPRKESKEAILACKKANITP  518
+
+Query  3649  VLITGDNRKTARAIATQVGI--------------------NKVFAEVLPSHKVAKVQELQ  3768
+             ++ITGD+ KTA  IA ++GI                     +VFA V P  K+A V   +
+Sbjct  519   IMITGDHLKTATVIAKELGILTLDNQAVLGSELDEKKILDYRVFARVTPQQKLAIVSAWK  578
+
+Query  3769  NKGKKVAMVGDGVNDSPALAQADMGVAIG-TGTDVAIEAADVVLIRNDLLDVVASIHLSK  3945
+               G  V++ GDGVND+PAL ++D+G  +G TG D+A +A+D+++  ++   +V  I   +
+Sbjct  579   EAGFTVSVTGDGVNDAPALIKSDVGCCMGITGVDIAKDASDLIISDDNFATIVNGIEEGR  638
+
+Query  3946  RTV---RRIRINLVLALIYN----LVGIPIAAGVF  4029
+             +T    +R+ +NL L  I      L+G+ I   VF
+Sbjct  639   KTFLTCKRVLLNLFLTSIAGTVVVLLGLFILGQVF  673
+
+
+&gt; sp|P47397|RL3_MYCGE 50S ribosomal protein L3 OS=Mycoplasma genitalium 
+(strain ATCC 33530 / G-37 / NCTC 10195) GN=rplC PE=3 
+SV=1
+Length=257
+
+ Score = 31.6 bits (70),  Expect = 0.046, Method: Compositional matrix adjust.
+ Identities = 24/69 (35%), Positives = 29/69 (42%), Gaps = 4/69 (6%)
+ Frame = +1
+
+Query  586  DLRDHVNDMGFEAAIKS---KVAPLSLGPIDIERLQ-STNPKRPLSSANQNFNNSETLGH  753
+            D+       GF  AIK    K+ PL  G     R Q S    R  SSA + F   +  GH
+Sbjct  109  DVTSLTKGRGFTGAIKRWNFKIGPLGHGAGYPHRFQGSVQAGRGGSSAQRVFKGKKMSGH  168
+
+Query  754  QGSHVVTLQ  780
+             G   VT+Q
+Sbjct  169  YGHEQVTIQ  177
+
+
+&gt; sp|P47446|PARC_MYCGE DNA topoisomerase 4 subunit A OS=Mycoplasma 
+genitalium (strain ATCC 33530 / G-37 / NCTC 10195) GN=parC 
+PE=3 SV=1
+Length=781
+
+ Score = 28.1 bits (61),  Expect = 0.77, Method: Compositional matrix adjust.
+ Identities = 27/96 (28%), Positives = 43/96 (45%), Gaps = 13/96 (14%)
+ Frame = +1
+
+Query  2431  DNLIIREEQVPMELVQRGDIVKVVPGGKFPVDGKVLEGNTMADESLITGEAMPVTKKPGS  2610
+             D+L +R +Q   EL Q   I+K+V G  FP  G V    +++D               G 
+Sbjct  192   DSLCLRIDQPNCELKQ---ILKIVKGPDFPTGGNVYFEKSLSD---------IYQAGKGK  239
+
+Query  2611  TVIAGSINAHGSV-LIKATHVGNDTTLAQIVKLVEE  2715
+              +I      + ++  I+ T +  +T  A IVK +EE
+Sbjct  240   FIIQAKYEVNKNLNQIEITQIPYETLKANIVKQIEE  275
+
+
+
+Lambda      K        H        a         alpha
+   0.318    0.134    0.401    0.792     4.96 
+
+Gapped
+Lambda      K        H        a         alpha    sigma
+   0.267   0.0410    0.140     1.90     42.6     43.6 
+
+Effective search space used: 189591392
+
+
+  Database: /tmp/wnUgU3ipCp/database.fa
+    Posted date:  Feb 24, 2013  9:58 PM
+  Number of letters in database: 176,594
+  Number of sequences in database:  483
+
+
+
+Matrix: BLOSUM62
+Gap Penalties: Existence: 11, Extension: 1
+Neighboring words threshold: 12
+Window for multiple hits: 40
+
+  </pre>
+</body>
+</html>
