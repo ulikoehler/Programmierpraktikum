@@ -53,7 +53,7 @@ sub insertSource {
   }
   
   my $queryInsert = $db->prepare("INSERT INTO Source(DBId, SeqId, SeqDBIdentifier, SwissprotEntryId) VALUES (?,?,?,?);");
-  $queryInsert->execute($dbId, $seqId, $ac, "n.d.");
+  $queryInsert->execute($dbId, $seqId, $ac, undef);
   
   return $queryInsert->{mysql_insertid};
 }
@@ -111,6 +111,7 @@ sub insertSequence {
     return $result->{Id};
   }
   
+  print "INSERT INTO Seq(Name, Definition, Seq, OrganismId, Type) VALUES($seqName, $definition, ..., $organismId, $typ);\n";
   my $queryInsert = $db->prepare("INSERT INTO Seq(Name, Definition, Seq, OrganismId, Type) VALUES(?,?,?,?,?);");
   $queryInsert->execute($seqName, $definition, $rawSequence, $organismId, $typ);
   
@@ -200,6 +201,7 @@ for my $file (@files) {
           if(substr($line, 0, 1) eq ">") {
             # prev seq => save seq
             if($seq) {
+              chomp($ac); chomp($def); chomp($seq); chomp($orgId); chomp($typ); chomp($ncbiId);
               my $retId = insertSequence($db, $ac, $def, $seq, $orgId, $typ);
               $retId = insertSource($db, $ncbiId, $retId, $ac);
               $seq = "";
@@ -220,6 +222,7 @@ for my $file (@files) {
         }
         # also save last seq
         if($seq) {
+          chomp($ac); chomp($def); chomp($seq); chomp($orgId); chomp($typ); chomp($ncbiId);
           my $retId = insertSequence($db, $ac, $def, $seq, $orgId, $typ);
           $retId = insertSource($db, $ncbiId, $retId, $ac);
           $seq = "";
@@ -249,6 +252,7 @@ for my $file (@files) {
             $line =~ m/\S*\s*(\S*)\s*(\S*)/;
             my $start = $1;
             my $stop = $2;
+            chomp($ac); chomp($start); chomp($stop);
             my $seqId = getSeqIdByName($db, $ac);
             my $ret = insertORF($db, $seqId, $start, $stop);
           }
