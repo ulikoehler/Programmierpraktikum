@@ -27,12 +27,12 @@ my $output = `bash -c '$bindir/orf_finder \"$dbFilename\"'`;
 #Find the sequence IDs of the forward and reverse sequences
 my $fwdId = undef;
 my $revId = undef;
-if($output =~ m/fwd:\s+(\d+)/) {
+if($output =~ m/Forward sequence ID:\s+(\d+)/) {
 	$fwdId = $1;
 } else {
 	die "Can't find fwdId in output $output\n";
 }
-if($output =~ m/rev:\s+(\d+)/) {
+if($output =~ m/Reverse sequence ID:\s+(\d+)/) {
 	$revId = $1;
 } else {
 	die "Can't find revId in output $output\n";
