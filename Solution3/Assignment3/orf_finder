@@ -123,6 +123,7 @@ print MYFILE $ORFsRev;
 close (MYFILE);
 #####organize results into "Results" folder
 my $fileName = "lengthDistribution_".($ARGV[0]);
+print "Executing gnuplot like gnuplot $fileName 200 25\n";
 $gnuplot = `gnuplot $fileName $maxORFlength 1`;
 $gnuplot = `gnuplot $fileName 200 25`;
 $gnuplot = `mv $fileName Results_$ARGV[0]`;
