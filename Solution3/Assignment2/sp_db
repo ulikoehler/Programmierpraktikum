@@ -118,7 +118,7 @@ sub processSwissprotEntry {
 	#Insert the sequence
 	my $seqId = insertSequence($db, $primaryAC, $definition,$organismId,$currentSeq);
 	#Insert the n:m relation (db Entry <--> sequence) info
-	my $insertSourceStmt = $db->prepare("INSERT INTO Source(`DBId`, `SeqId`, `SeqDBIdentifier`, `SwissprotEntryId`) SELECT `Id`,?, ?, ? FROM DB WHERE DB.Name = 'SwissProt';");
+	my $insertSourceStmt = $db->prepare("INSERT DELAYED INTO Source(`DBId`, `SeqId`, `SeqDBIdentifier`, `SwissprotEntryId`) SELECT `Id`,?, ?, ? FROM DB WHERE DB.Name = 'SwissProt';");
 	$insertSourceStmt->execute($seqId,$primaryAC,$id);
 	#Inset the keywords
 	foreach(@keywords) {
