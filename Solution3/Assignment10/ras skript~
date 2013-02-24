@@ -1,0 +1,16 @@
+#!/bin/bash
+if [ $# -eq 0 ]
+  then
+    echo "Usage: call_rasmol <PDB ID>"
+    exit
+fi
+#Download
+wget -qO $1.pdb http://www.rcsb.org/pdb/files/$1.pdb
+
+#Create the rasmol script
+echo "load $1.pdb;" > $1.spt
+echo "write gif $1.gif" >>$1.spt
+
+
+#Execute RASMOL
+rasmol -nodiplay $1.pdb -script

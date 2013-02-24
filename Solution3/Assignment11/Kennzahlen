@@ -12,13 +12,33 @@ my $secon = 0;
 #hashmap to keep track of the atoms that are part of secondary structures
 my %hash = ();
 #keeping track of extrem coordinates
-my $posx = 0;
-my $negx = 0;
-my $posy = 0;
-my $negy = 0;
-my $posz = 0;
-my $negz = 0;
-#TODO define CA-CB measure values
+my $posx = '-inf';
+my $negx = '+inf';
+my $posy = '-inf';
+my $negy = '+inf';
+my $posz = '-inf';
+my $negz = '+inf';
+#keeping track of first CA-CB pair
+my $firstCAx;
+my $firstCAy;
+my $firstCAz;
+my $firstCBx;
+my $firstCBy;
+my $firstCBz;
+my $firstupdatea = 0;
+my $firstupdateb = 0;
+#keeping track of last CA-CB pair
+my $lastCAx;
+my $lastCAy;
+my $lastCAz;
+my $lastCBx;
+my $lastCBy;
+my $lastCBz;
+my $lastupdatea = 0;
+my $lastupdateb = 0;
+
+
+
 
 #extracting information from input file
 while(<>){
@@ -26,8 +46,8 @@ my $m = $_;
     if( $m =~ m/^HELIX/ ){
 	$helix++;
 	#marking Atom numbers for counting amino acids in secondary structure
-	my $hestart = substr ($m,22,25);
-	my $hestop = substr ($m,34,37);
+	my $hestart = substr ($m,20,5);
+	my $hestop = substr ($m,32,5);
 	foreach ($hestart .. $hestop){
 	   $hash{ $_ } = '1';
 	}
@@ -35,42 +55,83 @@ my $m = $_;
     if( $m =~ m/^SHEET/ ){
 	$sheet++;
 	#marking Atom numbers for counting amino acids in secondary structure
-	my $shstart = substr ($m,23,26);
-	my $shstop = substr ($m,34,37);
+	my $shstart = substr ($m,22,4);
+	my $shstop = substr ($m,33,4);
 	foreach ($shstart .. $shstop){
 	   $hash{ $_ } = '1';
+	}
     }
     if( $m =~ m/^ATOM/ ){
-	if( $m =~ m/^.{13}CA/ ){
+	if( $m =~ /^.{13}CA/ ){
 	    $amino++;
-	    if(exists $hash{substr($m,7,11)}){
+	    if(exists $hash{substr($m,22,4)*1.0}){
 		$secon++;
 	    }
+	    #first CA
+	    if (!defined $firstCAx){
+		$firstCAx = substr($m,32,6);
+		$firstCAy = substr($m,40,6);
+		$firstCAz = substr($m,48,6);
+		$lastCAx = substr($m,32,6);
+		$lastCAy = substr($m,40,6);
+		$lastCAz = substr($m,48,6);
+	    }
+	    #case GLY (no CB)
+	    if (defined $firstCAx && !defined $firstCBx){ 
+		$firstCAx = substr($m,32,6);
+		$firstCAy = substr($m,40,6);
+		$firstCAz = substr($m,48,6);
+	    }
         }
-	#TODO CA-CB distance measure
-	my $subx = substr($m,33,38);
+	if( $m =~ /^.{13}CA/ ){
+	    if(!defined $firstCBx){
+		$firstCAx = substr($m,32,6);
+		$firstCBy = substr($m,40,6);
+		$firstCBz = substr($m,48,6);
+	    }
+	    $lastCAx = substr($m,32,6);
+	    $lastCBy = substr($m,40,6);
+	    $lastCBz = substr($m,48,6);
+	}
+	#check for new extreme coordinates
+	my $subx = substr($m,32,6);
 	    if($subx >= $posx){
 		$posx = $subx;
 	    }
 	    if($subx <= $negx){
 		$negx = $subx;
 	    }
-	my $suby = substr($m,41,46);
+	my $suby = substr($m,40,6);
 	    if($suby >= $posy){
 		$posy = $suby;
 	    }
 	    if($suby <= $negy){
 		$negy = $suby;
 	    }
-	my $subz = substr($m,49,54);
+	my $subz = substr($m,48,6);
 	    if($subz >= $posz){
 		$posz = $subz;
 	    }
 	    if($subz <= $negz){
 		$negz = $subz;
-	    }
+	    } 
     }         
 }
+
+#HETAM
+
+print $helix," helix found \n";
+print $sheet," sheets found \n";
+
+print $amino," amino acis found \n";
+print $secon," amino acis in secondary structure \n";
+if ($amino != 0){
+my $percentage = ($secon / $amino) * 100;
+print $percentage, "% of the amino acids are part of secondary structures\n";
+}
+
+print $posx," pos x \n";
+print $negx," nos x \n";
 
 #TODO return result
 
