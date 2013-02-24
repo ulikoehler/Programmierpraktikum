@@ -24,6 +24,8 @@ carp "Writing to temp dir $tempdir \n";
 copy($dbTempFilename,$dbFilename) or die "Copy failed: $!";
 #Execute the ORF script
 my $bindir = "/home/k/koehleru/Programmierpraktikum/Solution3/Assignment3/";
+#orf_finder needs gnuplot script
+`cp $bindir/gnuplot $tempdir/`;
 my $output = `bash -c 'cd $tempdir && $bindir/orf_finder \"$dbBasename\"'`;
 
 #Find the sequence IDs of the forward and reverse sequences
