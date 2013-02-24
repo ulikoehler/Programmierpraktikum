@@ -1,6 +1,6 @@
 #!/usr/bin/perl -w
 use strict;
-#Komandozeilenparameter
+#CLI params
 my $argc = @ARGV;
 #Check if we have at least one argument
 die "Usage: $0 <Prosite Pattern>\n" unless ($argc == 1);

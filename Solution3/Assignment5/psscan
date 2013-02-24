@@ -5,7 +5,7 @@ use Getopt::Std;
 #Parse CLI arguments
 my %options=();
 getopts("ew:",\%options);
-#Komandozeilenparameter
+#CLI params
 my $argc = @ARGV;
 
 sub processFASTA {
