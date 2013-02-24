@@ -17,13 +17,15 @@ print header('text/html');
 #Get the filename
 my $dbTempFilename = param("sequence");
 #Save the database query to the temporary file
-my $dbFilename = $tempdir.basename($dbTempFilename);
+my $dbFilename = $tempdir."/".basename($dbTempFilename);
+my $dbBasename = basename($dbTempFilename);
 carp "Writing to temp dir $tempdir \n";
 #Copy the temp file to the database filename
 copy($dbTempFilename,$dbFilename) or die "Copy failed: $!";
-#Create the BLAST DB + index
+#Execute the ORF script
 my $bindir = "/home/k/koehleru/Programmierpraktikum/Solution3/Assignment3/";
-my $output = `bash -c '$bindir/orf_finder \"$dbFilename\"'`;
+my $output = `bash -c 'cd $tempdir && $bindir/orf_finder \"$dbBasename\"'`;
+
 #Find the sequence IDs of the forward and reverse sequences
 my $fwdId = undef;
 my $revId = undef;
