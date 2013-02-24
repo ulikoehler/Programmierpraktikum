@@ -4,23 +4,11 @@ use strict;
 use DBI;
 use CGI qw(:standard);
 use CGI::Carp qw(fatalsToBrowser);
-print header("text/html");
 
-<<<<<<< HEAD
+# print html
+
 print header("text/html");
 carp <<"EOHTML"
-=======
-# The search pdb id is supplied as CLI arg
-my $m = param("m");
-my $M = param("M");
-my $c = param("c");
-
-# get SQL statement
-@stmt = system("echo \"\" | /usr/bin/perl histo_sql -m $m -M $M -c $c");
-
-# print result
-print <<"EOHTML"
->>>>>>> fc82861e57b01b7dc7dcad4581eb79b530712985
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
