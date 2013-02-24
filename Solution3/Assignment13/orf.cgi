@@ -27,7 +27,15 @@ my $bindir = "/home/k/koehleru/Programmierpraktikum/Solution3/Assignment3/";
 #orf_finder needs gnuplot script
 `cp $bindir/gnuplot $tempdir/`;
 my $output = `bash -c 'cd $tempdir && $bindir/orf_finder \"$dbBasename\"'`;
-
+#Copy the graphics to a local dir in order to serve it)
+#We deliberately chose bash syntax here because it's
+#   1) shorter --> DRY
+#   2) more portable, e.g. to shell scripts
+#   3) language-agnostic
+my $histoDirName = "histograms/".(time())."/";
+mkdir($histoDirName);
+`bash -c 'mv $tempdir/Res*/*.png $histoDirName'`;
+#Rename them to 1.png, 2.pn g
 #Find the sequence IDs of the forward and reverse sequences
 my $fwdId = undef;
 my $revId = undef;
@@ -80,6 +88,21 @@ a:hover { text-decoration: none; color: #C00; background: #FC0; }
   $output
   </pre>
   <h2>Histogram</h2>
+EOHTML
+;
+#Show the histograms
+opendir my($dh), $histoDirName or die "Couldn't open dir '$histoDirName': $!";
+my @histoFiles = readdir $dh;
+closedir $dh;
+
+foreach my $histoFile (@histoFiles) {
+	if($histoFile eq "." or $histoFile eq "..") {
+		next;
+	}
+	print "<img src=\"$histoDirName$histoFile\" width=\"800\"></img><br/>\n";
+}
+
+print <<"EOHTML"
   <h2>Statistics</h2>
   <h2>ORFs</h2>
   <table border="1" style="font-weight:normal;"><tr><td><b>Strand</b></td><td><b>Start</b></td><td><b>Stop</b></td></tr>
