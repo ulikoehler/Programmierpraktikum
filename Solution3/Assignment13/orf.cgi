@@ -3,6 +3,7 @@ use strict;
 use File::Temp qw/ tempfile tempdir /;
 use CGI::Carp qw(fatalsToBrowser);
 use CGI;
+use File::Basename;
 use File::Copy;
 use HTML::Entities;
 use CGI qw(:standard);
@@ -23,17 +24,12 @@ close(QUERYOUTFILE);
 #Get the filename
 my $dbTempFilename = param("database");
 #Save the database query to the temporary file
-my $dbFilename = $tempdir."/database.fa";
+my $dbFilename = $tempdir.basename($dbTempFilename);
 #Copy the temp file to the database filename
 copy($dbTempFilename,$dbFilename) or die "Copy failed: $!";
 #Create the BLAST DB + index
-my $bindir = "/home/proj/biocluster/praktikum/bioprakt/progprakt4/bin/";
-`bash -c '$bindir/makeblastdb -in $dbFilename -hash_index -dbtype $type  2>> makeblastdb.log >> makeblastdb.log'`;
-#Do the query
-my $queryOutput = `bash -c '$bindir/blastp -db $dbFilename -query $queryFilename'`;
-$queryOutput = encode_entities($queryOutput);
-#Remove the temporary stuff
-`rm -rf $tempdir`;
+my $bindir = "/home/k/koehleru/Programmierpraktikum/Solution3/Assignment3/";
+my $output = `bash -c '$bindir/orf_finder $dbFilename'`;
 #Print the HTML prototype
 print <<"EOHTML"
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
@@ -58,14 +54,18 @@ a:hover { text-decoration: none; color: #C00; background: #FC0; }
 <body>
 <div id="page">
  <div id="header">
- <h1>Custom BLAST</h1>
+ <h1>ORF Finder</h1>
  </div>
  <div id="body">
-  <h2>Your custom BLAST search yielded:</2>
+  <h2>orf_finder Output:</2>
   <pre>
-  $queryOutput
+  $output
   </pre>
+  <h2>Histogram</h2>
 </body>
 </html>
 EOHTML
 ;
+
+#Remove the temporary files
+`rm -rf $tempdir`;

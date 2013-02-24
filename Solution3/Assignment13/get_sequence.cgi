@@ -36,10 +36,10 @@ a:hover { text-decoration: none; color: #C00; background: #FC0; }
 <body>
 <div id="page">
  <div id="header">
- <h1>Keyword search</h1>
+ <h1>Sequence retrieval</h1>
  </div>
  <div id="body">
-  <h2>Results of search for keyword sequence ID $id</2>
+  <h2>Results for sequence name $id</h2>
   <table border="1"><tr><td><b>Database</b></td><td><b>Organism</b></td><td><b>Sequence</b></td></tr>
 EOHTML
 ;
