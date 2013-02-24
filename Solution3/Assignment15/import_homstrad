@@ -175,6 +175,7 @@ foreach my $directory (@homstradFiles) {
         if ($nextLineIsType) {
             chomp $line;
             $type = $line;
+	    $nextLineIsType = 0;
         }
         else {
             if ( substr( $line, 0, 1 ) eq ">" ) {    # Protein identifier
