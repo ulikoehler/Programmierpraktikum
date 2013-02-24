@@ -111,8 +111,8 @@ sub insertSequence {
     return $result->{Id};
   }
   
-  my $queryInsert = $db->prepare("INSERT INTO Seq(Name, Definition, Seq, OrganismId, Type, Structure) VALUES(?,?,?,?,?,?);");
-  $queryInsert->execute($seqName, $definition, $rawSequence, $organismId, $typ, undef);
+  my $queryInsert = $db->prepare("INSERT INTO Seq(Name, Definition, Seq, OrganismId, Type) VALUES(?,?,?,?,?);");
+  $queryInsert->execute($seqName, $definition, $rawSequence, $organismId, $typ);
   
   return $queryInsert->{mysql_insertid};
 }
