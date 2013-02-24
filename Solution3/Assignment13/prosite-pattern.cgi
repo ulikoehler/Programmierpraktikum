@@ -50,7 +50,7 @@ a:hover { text-decoration: none; color: #C00; background: #FC0; }
  <h1>Keyword search</h1>
  </div>
  <div id="body">
-  <h2>Results of search for keyword $originalPrositePattern</2>
+  <h2>Results of search for Prosite Pattern $originalPrositePattern</2>
   <table><tr><td><b>Name</b></td><td><b>Organism</b></td></tr>
 EOHTML
 ;

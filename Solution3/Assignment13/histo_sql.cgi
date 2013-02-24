@@ -8,7 +8,7 @@ use CGI::Carp qw(fatalsToBrowser);
 # print html
 
 print header("text/html");
-carp <<"EOHTML"
+print <<"EOHTML"
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
@@ -31,11 +31,10 @@ a:hover { text-decoration: none; color: #C00; background: #FC0; }
 <body>
 <div id="page">
  <div id="header">
- <h1><a href="http://tardis.nibio.go.jp/homstrad/">HOMSTRAD</a> search</h1>
+ <h1>Histo SQL</h1>
  </div>
  <div id="body">
   <h2>Resulting SQL:</h2>
-
 EOHTML
 ;
 
@@ -45,12 +44,12 @@ my $M = param("M");
 my $c = param("c");
 
 # get SQL statement
-my @stmt = system("echo \"\" | /usr/bin/perl histo_sql -m $m -M $M -c $c");
+my $output = `echo \"\" | /usr/bin/perl histo_sql -m $m -M $M -c $c`;
 
 # print result
-carp @stmt[0];
+print $output;
 
-carp <<"EOHTML"
+print <<"EOHTML"
 </table>
 </body>
 </html>
