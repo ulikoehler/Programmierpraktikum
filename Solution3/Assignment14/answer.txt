@@ -2,25 +2,35 @@ BLAST+ Installation:
 wget ftp://ftp.ncbi.nlm.nih.gov/blast/executables/blast+/LATEST/ncbi-blast-2.2.27+-x64-linux.tar.gz
 tar xzvf ncbi-blast-2.2.27+-x64-linux.tar.gz
 
-Download des kompletten Proteoms von M. Genitalium über Uniprot, Suchbegriff organism:243273 keyword:181 --> Download als FASTA (Complete proteome set
+Download des kompletten Proteoms von M. Genitalium über Uniprot, Suchbegriff organism:243273 keyword:181 --> Download als FASTA (Complete proteome set)
+Das Genom kann unter ftp://ftp.ncbi.nih.gov/genomes/Bacteria/Mycoplasma_genitalium_G37_uid57707/NC_000908.ffn heruntergeladen werden.
 
 Erstellen der BLAST-Protein-DB + Index:
-./makeblastdb -in ./makeblastdb -in /ram/mgenitalium.fa -dbtype prot -hash_index
+makeblastdb -in /ram/mgenitalium.fa -dbtype prot -hash_index
 
 Output:
-Building a new DB, current time: 02/23/2013 16:01:14
-New DB name:   /ram/mgenitalium.fa
-New DB title:  /ram/mgenitalium.fa
+Building a new DB, current time: 02/24/2013 17:17:26
+New DB name:   mgenitalium.fa
+New DB title:  mgenitalium.fa
 Sequence type: Protein
 Keep Linkouts: T
 Keep MBits: T
 Maximum file size: 1000000000B
-Adding sequences from FASTA; added 483 sequences in 0.024287 seconds.
+Adding sequences from FASTA; added 483 sequences in 0.0305011 seconds.
 
-Suche einer Humanen Sequenz
-Auswahl: P00846: ATP synthase subunit a (H Sapiens)
-Kommando:
-blastp -db mgenitalium.fa -query P00846.fa
+Suche einer Humanen Sequenz:
+Möglichkeit 1: Query ist Proteinsequenz --> blastp
+	Auswahl: P00846: ATP synthase subunit a (H Sapiens): Sequenz http://www.uniprot.org/uniprot/P00846.fasta
+	Kommando:
+	blastp -db mgenitalium.fa -query P00846.fasta
+	--> M1.html
+Möglichkeit 2: Query ist Nucleotidsequenz --> blastx
+	FASTA  Homo sapiens ATPase, Cu++ transporting, beta polypeptide (ATP7B) : http://www.ncbi.nlm.nih.gov/nuccore/NG_008806.1?from=5001&to=83826&report=fasta
+	blastx -db mgenitalium.fa -query human-atp7b-coding-seq.fa
+	--> M2.html
+	
+Eine programmatische HTMLisierung wurde in Assignment13 als CGI gelöst.
+	
 
 ------------------------
 Die Kommandos wurden in Bash-Skripte gefasst.

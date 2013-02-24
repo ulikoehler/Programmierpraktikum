@@ -3,6 +3,7 @@ use strict;
 use File::Temp qw/ tempfile tempdir /;
 use CGI::Carp qw(fatalsToBrowser);
 use CGI;
+use File::Basename;
 use File::Copy;
 use HTML::Entities;
 use CGI qw(:standard);
@@ -10,10 +11,6 @@ use CGI qw(:standard);
 my $tempdir = tempdir();
 carp "Tempdir: $tempdir";
 print header('text/html');
-my $type = param("type");
-unless ($type eq "prot" or $type eq "nucl") {
-	die "BLAST type must be either prot or nucl!\n";
-}
 #my $tempdir = "/tmp/ulix";
 #`mkdir -p $tempdir`;
 #We do generate HTML
@@ -25,24 +22,14 @@ open(QUERYOUTFILE, ">".$queryFilename);
 print QUERYOUTFILE $query;
 close(QUERYOUTFILE);
 #Get the filename
-my $dbTempFilename = param("database") || "../mgenitalium.fa";
-#Save the database query to the
-my $dbFilename = $tempdir."/database.fa";
+my $dbTempFilename = param("database");
+#Save the database query to the temporary file
+my $dbFilename = $tempdir.basename($dbTempFilename);
 #Copy the temp file to the database filename
 copy($dbTempFilename,$dbFilename) or die "Copy failed: $!";
 #Create the BLAST DB + index
-my $bindir = "/home/proj/biocluster/praktikum/bioprakt/progprakt4/bin/";
-`bash -c '$bindir/makeblastdb -in $dbFilename -hash_index -dbtype prot  2>> makeblastdb.log >> makeblastdb.log'`;
-#Do the query
-my $queryOutput = undef;
-if($type eq "nucl") {
-	$queryOutput = `bash -c '$bindir/blastx -db $dbFilename -query $queryFilename'`;
-} else {#$type eq "prot"
-	$queryOutput = `bash -c '$bindir/blastp -db $dbFilename -query $queryFilename'`;
-}
-$queryOutput = encode_entities($queryOutput);
-#Remove the temporary stuff
-`rm -rf $tempdir`;
+my $bindir = "/home/k/koehleru/Programmierpraktikum/Solution3/Assignment3/";
+my $output = `bash -c '$bindir/orf_finder \"$dbFilename\"'`;
 #Print the HTML prototype
 print <<"EOHTML"
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
@@ -67,14 +54,18 @@ a:hover { text-decoration: none; color: #C00; background: #FC0; }
 <body>
 <div id="page">
  <div id="header">
- <h1>Custom BLAST</h1>
+ <h1>ORF Finder</h1>
  </div>
  <div id="body">
-  <h2>Your custom BLAST search yielded:</2>
-  <pre style="font-weight:normal;">
-  $queryOutput
+  <h2>orf_finder Output:</2>
+  <pre>
+  $output
   </pre>
+  <h2>Histogram</h2>
 </body>
 </html>
 EOHTML
 ;
+
+#Remove the temporary files
+`rm -rf $tempdir`;

@@ -1,6 +1,7 @@
 #!/usr/bin/perl -wl
 use strict;
 
+print "Enter d as second parameter to put results into the database.";
 die "Enter the path to the file as parameter!" unless defined $ARGV[0];
 open FILE, $ARGV[0] or die "File does not exist / not a correct path!";
 
@@ -130,49 +131,38 @@ $gnuplot = `mv ORF* Results_$ARGV[0]`;
 $gnuplot = `mv histo* Results_$ARGV[0]`;
 $gnuplot = `mv Stat* Results_$ARGV[0]`;
 
-
+if(defined $ARGV[1] && $ARGV[1] eq "d"){
 ########## TODO: put results to database:
-use DBI;
+	use DBI;
 
-my $seqNameFwd = $ARGV[0]."_".time();#names in the Seq table
-my $seqNameRev = $ARGV[0]."_reverseComplementary_".time();
+	my $dbh = DBI->connect('DBI:mysql:bioprakt4;host=mysql2-ext.bio.ifi.lmu.de', 'bioprakt4', 'vGI5GCMg0x') or die "Could not connect 		to database: $DBI::\errstr";
 
-my $dbh = DBI->connect('DBI:mysql:bioprakt4;host=mysql2-ext.bio.ifi.lmu.de', 'bioprakt4', 'vGI5GCMg0x') or die "Could not connect to database: $DBI::\errstr";
-###insert sequences into Seq table:
-my $queryInsert = $dbh->prepare("INSERT INTO Seq(Name, Seq, Type) VALUES (?,?,?);");
+	my $queryInsert = $dbh->prepare("INSERT INTO Orf(Id, Start, Stop, Strand) VALUES (?,?,?,?);");
 
-#Insert fwd
-$queryInsert->execute($seqNameFwd, $sequence, "DNA");
-my $seqIdFwd = $queryInsert->{mysql_insertid};
-#Insert bwd
-$queryInsert->execute($seqNameRev, $complementaryReverseSequence, "DNA");
-my $seqIdRev =  $queryInsert->{mysql_insertid};
-####get Id
-print "fwd: $seqIdFwd\n";
-print "rev: $seqIdRev\n";
+	# params
 
-###insert positions AND SeqId int Orf:
-$queryInsert = $dbh->prepare("INSERT INTO Orf(SeqId, Start, Stop, Strand) VALUES (?,?,?,?);");
+	my $c=1;
+	while ( (my $k,my $v) = each %ORFpositionsFwd ) {
+	my $id = $c;
+	my $start = $k;
+	my $stop = $v;
+	$c++;
+	# write entry
+	$queryInsert->execute($id, $start, $stop, "Forward");
+	}
 
-# params
 
-while ( (my $k,my $v) = each %ORFpositionsFwd ) {
-my $start = $k;
-my $stop = $v;
+	#####################################
 
-# write entry
-$queryInsert->execute($seqIdFwd, $start, $stop, "Forward");
+	while ( (my $k,my $v) = each %ORFpositionsRev ) {
+	    my $id = $c;
+	    my $start = $k;
+	    my $stop = $v;
+	    $c++;
+	# write entry
+	    $queryInsert->execute($id, $start, $stop, "Reverse");
+	}
+
+
+	$dbh->disconnect;
 }
-
-
-#####################################
-
-while ( (my $k,my $v) = each %ORFpositionsRev ) {
-    my $start = $k;
-    my $stop = $v;
-
-# write entry
-    $queryInsert->execute($seqIdRev, $start, $stop, "Reverse");
-}
-
-$dbh->disconnect;
