@@ -170,6 +170,7 @@ foreach my $directory (@homstradFiles) {
     ##
     #Parse SecStructs
     ##
+    $pdbId = "";
     foreach my $line (@temLines) {
         if ($nextLineIsType) {
             chomp $line;
