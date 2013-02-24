@@ -63,10 +63,19 @@ a:hover { text-decoration: none; color: #C00; background: #FC0; }
   </form>
   
     <h3>Find ORFs in sequence</h3>
-    <a href="chrI.txt">Test data - chrI of S. cerevisiae w</a><br/>
+    <a href="chrI.txt">Test data - chrI of S. cerevisiae</a><br/>
   <form action="orf.cgi" method="post" enctype="multipart/form-data">
 	<b>Plaintext</b> sequence file (<b>NOT FASTA!</b>):<input type="file" name="sequence"><br/>
 	<input type="submit" value="Find ORFs"/>
+  </form>
+  
+<h3>Find atom contacts in proteins</h3>
+  <form action="sscc.cgi" method="get">
+	PDBID: <input type="text" name="pdbid"><br/>
+	Contact distance: <input type="text" name="contactdistance"><br/>
+	Atom type: <input type="text" name="atomtype"><br/>
+	Local contact sequence distance: <input type="text" name="localcontactsequencedistance"><br/>
+	<input type="submit" value="Find"/>
   </form>
   
   <h3>Find <a href="http://tardis.nibio.go.jp/homstrad/">HOMSTRAD</a> info</h3>
