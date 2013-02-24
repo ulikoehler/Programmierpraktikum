@@ -8,8 +8,8 @@ my @seq = <FILE>;
 my $sequence;
 
 for(my $i=0;$i<scalar(@seq);$i++){
-	$sequence .= $seq[$i];
-	chomp $sequence;
+       $sequence .= $seq[$i];
+       chomp $sequence;
 }
 
 ######### generate complementary reverse sequence:
@@ -17,50 +17,50 @@ my $reverseSequence = reverse($sequence);
 my $complementaryReverseSequence;
 my $CapitalSequence;
 for(my $i=0;$i<length($reverseSequence);$i++){
-	my $currentBase = (substr($reverseSequence, $i,1));
-	if($currentBase eq "A" || $currentBase eq "a"){
-		$complementaryReverseSequence.="T";
-		$CapitalSequence.="A";
-	}
-	elsif($currentBase eq "T" || $currentBase eq "t"){
-		$complementaryReverseSequence.="A";
-		$CapitalSequence.="T";
-	}
-	elsif($currentBase eq "G" || $currentBase eq "g"){
-		$complementaryReverseSequence.="C";
-		$CapitalSequence.="G";
-	}
-	elsif($currentBase eq "C" || $currentBase eq "c"){
-		$complementaryReverseSequence.="G";
-		$CapitalSequence.="C";
-	}
+       my $currentBase = (substr($reverseSequence, $i,1));
+       if($currentBase eq "A" || $currentBase eq "a"){
+        $complementaryReverseSequence.="T";
+$CapitalSequence.="A";
+}
+elsif($currentBase eq "T" || $currentBase eq "t"){
+$complementaryReverseSequence.="A";
+$CapitalSequence.="T";
+}
+elsif($currentBase eq "G" || $currentBase eq "g"){
+$complementaryReverseSequence.="C";
+$CapitalSequence.="G";
+}
+elsif($currentBase eq "C" || $currentBase eq "c"){
+$complementaryReverseSequence.="G";
+$CapitalSequence.="C";
+}
 }
 
 $sequence = $CapitalSequence;
 $reverseSequence = "";
 my $maxORFlength = 0;
-my $ORFcountFwd = 0;	my $ORFcountRev = 0;	my $ORFcountAll = 0;
+my $ORFcountFwd = 0; my $ORFcountRev = 0; my $ORFcountAll = 0;
 my %ORFlengthsAll;
-my %ORFpositionsFwd;	my %ORFpositionsRev;
+my %ORFpositionsFwd; my %ORFpositionsRev;
 ##### check fwd. strand for ORFs:
 while($sequence =~ m/(ATG(.{3})*?(TAG|TGA|TAA))/g) {
-	$ORFpositionsFwd{$-[0]} = $+[0];#store the beginning and end of the ORF in a hash
-	$ORFlengthsAll{length($1)} += 1;
-	$ORFcountFwd++;
-	$ORFcountAll++;
-	if($maxORFlength<(length($1))){#evaluate the longest ORF, which is neccessary for the histogram
-		$maxORFlength = length($1);
-	}
+$ORFpositionsFwd{$-[0]} = $+[0];#store the beginning and end of the ORF in a hash
+$ORFlengthsAll{length($1)} += 1;
+$ORFcountFwd++;
+$ORFcountAll++;
+if($maxORFlength<(length($1))){#evaluate the longest ORF, which is neccessary for the histogram
+$maxORFlength = length($1);
+}
 }
 ##### check reverse comp. strand for ORFs:
 while($complementaryReverseSequence =~ m/(ATG(.{3})*?(TAG|TGA|TAA))/g) {
-	$ORFpositionsRev{$-[0]} = $+[0];#store the beginning and end of the ORF in a hash
-	$ORFlengthsAll{length($1)} += 1;
-	$ORFcountRev++;
-	$ORFcountAll++;
-	if($maxORFlength<(length($1))){#evaluate the longest ORF, which is neccessary for the histogram
-		$maxORFlength = length($1);
-	}
+$ORFpositionsRev{$-[0]} = $+[0];#store the beginning and end of the ORF in a hash
+$ORFlengthsAll{length($1)} += 1;
+$ORFcountRev++;
+$ORFcountAll++;
+if($maxORFlength<(length($1))){#evaluate the longest ORF, which is neccessary for the histogram
+$maxORFlength = length($1);
+}
 }
 
 ###### make statistics files:
@@ -69,27 +69,27 @@ my $lengthDistribution = "ORFlength\t absolute_frequency\n";
 my $sumOfORFlengths = 0;
 my $sumLength75to100 = 0;
 while ( (my $k,my $v) = each %ORFlengthsAll ) {######length distribution
-	if($v!=0){
-		$lengthDistribution .= "$k\t$v\n";
-		$sumOfORFlengths += ($k*$v);
-		if($k>=75 and $k<=100){
-			$sumLength75to100+=$v;
-		}
-	}
+      if($v!=0){
+$lengthDistribution .= "$k\t$v\n";
+$sumOfORFlengths += ($k*$v);
+if($k>=75 and $k<=100){
+$sumLength75to100+=$v;
+}
+}
 }
 
 my $ORFpostionsFwd = "start pos\tend pos\tlength\n";
 my $ORFsFwd;
 while ( (my $k,my $v) = each %ORFpositionsFwd ) {######ORF positions of fwd strand
-	$ORFpostionsFwd .= "$k\t$v\t".($v-$k)."\n";
-	$ORFsFwd .= (substr($sequence,$k,($v-$k))."\n");
+      $ORFpostionsFwd .= "$k\t$v\t".($v-$k)."\n";
+      $ORFsFwd .= (substr($sequence,$k,($v-$k))."\n");
 }
 
 my $ORFpostionsRev = "startPos\tendPos\tlength\n";
 my $ORFsRev;
 while ( (my $k,my $v) = each %ORFpositionsRev ) {######ORF positions of reverse strand
-	$ORFpostionsRev .= "$k\t$v\t".($v-$k)."\n";
-	$ORFsRev .= (substr($complementaryReverseSequence,$k,($v-$k))."\n");
+      $ORFpostionsRev .= "$k\t$v\t".($v-$k)."\n";
+      $ORFsRev .= (substr($complementaryReverseSequence,$k,($v-$k))."\n");
 }
 
 my $statistics = "$ORFcountAll ORFs found, $ORFcountFwd on forward, $ORFcountRev on reverse complementary strand, average length: ".($sumOfORFlengths/$ORFcountAll)."; ORFs with length [75,100]: $sumLength75to100";
@@ -132,4 +132,40 @@ $gnuplot = `mv Stat* Results_$ARGV[0]`;
 
 
 ########## TODO: put results to database:
+use DBI;
 
+my $dbh = DBI->connect('DBI:mysql:bioprakt4;host=mysql2-ext.bio.ifi.lmu.de', 'bioprakt4', 'vGI5GCMg0x') or die "Could not connect to database: $DBI::\
+errstr";
+
+my $queryInsert = $dbh->prepare("INSERT INTO ORFs_A3_Fwd(id, startPos, stopPos, length) VALUES (?,?,?,?);");
+
+# params
+
+my $c=1;
+while ( (my $k,my $v) = each %ORFpositionsFwd ) {
+my $id = $c;
+my $start = $k;
+my $stop = $v;
+my $length = ($v-$k);
+$c++;
+# write entry
+$queryInsert->execute($id, $start, $stop, $length);
+}
+
+
+#####################################
+$queryInsert = $dbh->prepare("INSERT INTO ORFs_A3_Rev(id, startPos, stopPos, length) VALUES (?,?,?,?);");
+
+$c=1;
+while ( (my $k,my $v) = each %ORFpositionsRev ) {
+    my $id = $c;
+    my $start = $k;
+    my $stop = $v;
+    my $length = ($v-$k);
+    $c++;
+# write entry
+    $queryInsert->execute($id, $start, $stop, $length);
+}
+
+
+$dbh->disconnect;
