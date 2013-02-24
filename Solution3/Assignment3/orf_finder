@@ -134,8 +134,7 @@ $gnuplot = `mv Stat* Results_$ARGV[0]`;
 ########## TODO: put results to database:
 use DBI;
 
-my $dbh = DBI->connect('DBI:mysql:bioprakt4;host=mysql2-ext.bio.ifi.lmu.de', 'bioprakt4', 'vGI5GCMg0x') or die "Could not connect to database: $DBI::\
-errstr";
+my $dbh = DBI->connect('DBI:mysql:bioprakt4;host=mysql2-ext.bio.ifi.lmu.de', 'bioprakt4', 'vGI5GCMg0x') or die "Could not connect to database: $DBI::\errstr";
 
 my $queryInsert = $dbh->prepare("INSERT INTO Orf(Id, Start, Stop, Strand) VALUES (?,?,?,?);");
 
