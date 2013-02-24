@@ -10,10 +10,6 @@ use CGI qw(:standard);
 my $tempdir = tempdir();
 carp "Tempdir: $tempdir";
 print header('text/html');
-my $type = param("type");
-unless ($type eq "prot" or $type eq "nucl") {
-	die "BLAST type must be either prot or nucl!\n";
-}
 #my $tempdir = "/tmp/ulix";
 #`mkdir -p $tempdir`;
 #We do generate HTML
@@ -25,8 +21,8 @@ open(QUERYOUTFILE, ">".$queryFilename);
 print QUERYOUTFILE $query;
 close(QUERYOUTFILE);
 #Get the filename
-my $dbTempFilename = param("database") || "../mgenitalium.fa";
-#Save the database query to the
+my $dbTempFilename = param("database");
+#Save the database query to the temporary file
 my $dbFilename = $tempdir."/database.fa";
 #Copy the temp file to the database filename
 copy($dbTempFilename,$dbFilename) or die "Copy failed: $!";

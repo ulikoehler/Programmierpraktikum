@@ -50,9 +50,15 @@ a:hover { text-decoration: none; color: #C00; background: #FC0; }
 	Keyword: <input type="text" name="keyword" cols="4" value="Antigen"/><input type="submit" value="Find"/>
   </form>
 
-  <h3>Get sequence by ID (e.g. AC Number:</h3>
+  <h3>Get sequence by ID (e.g. AC Number)	:</h3>
   <form method="get" action="get_sequence.cgi">
 	ID: <input type="text" name="id" cols="4" value="Q9Y2H6"/><input type="submit" value="Find"/>
+  </form>
+  
+    <h3>Find ORFs in sequence</h3>
+  <form method="get" action="orf.cgi">
+	<b>Plaintext</b> sequence file (<b>NOT FASTA!</b>): 
+	Database in FASTA format: <input type="file" name="database"><br/><input type="submit" value="Find ORFs"/>
   </form>
   
   <h3>Find <a href="http://tardis.nibio.go.jp/homstrad/">HOMSTRAD</a> info</h3>
@@ -64,6 +70,7 @@ a:hover { text-decoration: none; color: #C00; background: #FC0; }
   </form>
   
   <h3>BLAST a sequence in a self-supplied database</h3>
+  <b>Test data:</b>&nbsp;<a href="mgenitalium-proteome.fa">FASTA M. Genitalium complete proteome</a>&nbsp;<a href="mgenitalium-genome.fa">FASTA M. Genitalium complete genome</a><br/>
   <form action="blastsearch.cgi" method="post" enctype="multipart/form-data">
        <input type="radio" name="type" value="prot" checked> Protein
         <input type="radio" name="type" value="nucl"> Nucleotide<br/>

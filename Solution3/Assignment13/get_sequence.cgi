@@ -7,7 +7,7 @@ use CGI::Carp qw(fatalsToBrowser);
 my $id = param("id"); #The content of this variable is conv to regex later!
 #Print the SQL statement
 my $db =  DBI->connect('DBI:mysql:bioprakt4;host=mysql2-ext.bio.ifi.lmu.de', 'bioprakt4', 'vGI5GCMg0x') || die "Could not connect to database: $DBI::errstr";	
-my $query = $db->prepare("SELECT Seq.Name, DB.Name AS DBName, Organism.Name AS OName FROM Seq
+my $query = $db->prepare("SELECT Seq.Name, Seq.Seq, DB.Name AS DBName, Organism.Name AS OName FROM Seq
 INNER JOIN Organism ON Organism.Id = Seq.OrganismId
 INNER JOIN Source ON Source.SeqId = Seq.Id
 INNER JOIN DB ON DB.Id = Source.DBId WHERE Seq.Name = ?;");
@@ -40,17 +40,17 @@ a:hover { text-decoration: none; color: #C00; background: #FC0; }
  </div>
  <div id="body">
   <h2>Results of search for keyword sequence ID $id</2>
-  <table border="1"><tr><td><b>Database</b></td><td><b>Organism</b></td><td>Sequence</td></tr>
+  <table border="1"><tr><td><b>Database</b></td><td><b>Organism</b></td><td><b>Sequence</b></td></tr>
 EOHTML
 ;
 #Print the results
 my $result = undef;
 while ($result = $query->fetchrow_hashref() ) {
 	#Create a link only if it's in Swissprot
-	my $dbname = $result->{OName};
+	my $dbname = $result->{DBName};
 	my $oname = $result->{OName};
 	my $seq= $result->{Seq};
-	print "<tr><td>$dbname</td><td>$oname</td><td>$seq</td></tr>";
+	print "<tr style=\"font-weight:normal;\"><td>$dbname</td><td>$oname</td><td>$seq</td></tr>";
 }
 print <<"EOHTML"
   </table>

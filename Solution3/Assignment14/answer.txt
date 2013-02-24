@@ -2,7 +2,8 @@ BLAST+ Installation:
 wget ftp://ftp.ncbi.nlm.nih.gov/blast/executables/blast+/LATEST/ncbi-blast-2.2.27+-x64-linux.tar.gz
 tar xzvf ncbi-blast-2.2.27+-x64-linux.tar.gz
 
-Download des kompletten Proteoms von M. Genitalium über Uniprot, Suchbegriff organism:243273 keyword:181 --> Download als FASTA (Complete proteome set
+Download des kompletten Proteoms von M. Genitalium über Uniprot, Suchbegriff organism:243273 keyword:181 --> Download als FASTA (Complete proteome set)
+Das Genom kann unter ftp://ftp.ncbi.nih.gov/genomes/Bacteria/Mycoplasma_genitalium_G37_uid57707/NC_000908.ffn heruntergeladen werden.
 
 Erstellen der BLAST-Protein-DB + Index:
 ./makeblastdb -in ./makeblastdb -in /ram/mgenitalium.fa -dbtype prot -hash_index
