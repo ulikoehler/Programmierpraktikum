@@ -1,0 +1,13 @@
+#!/usr/bin/perl -wl
+use strict;
+use LWP::Simple;
+
+my $argc = @ARGV;
+#Check if we have enough arguments
+die "Usage: -f PDB-ID\n-d Kontaktdistanz\n-t Atomart, die für die Berechnung der Distanzen verwendet wird\n-l Sequenzdistanz für lokale Kontakte" unless $argc == 4;
+#We have enough arguments, so parse them and start downloading
+
+my $pdbFile = get ("http://www.rcsb.org/pdb/download/downloadFile.do?fileFormat=pdb&compression=NO&structureId=".$ARGV[0]) or die "Enter a correct PDB-ID!\n";
+
+if(defined $pdbFile){print substr($pdbFile,245,130);}
+else{print "pdb file not defined";}
