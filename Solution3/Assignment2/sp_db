@@ -36,7 +36,7 @@ sub insertKeywordRelation {
 	my $seqDBId = $_[2];
 	#Try to fetch an existing organism
 	my $keywordId = getKeywordId($db, $keyword);
-	my $insertStmt = $db->prepare("INSERT DELAYED INTO KeySeq(`KeywordsId`,`SeqId`) VALUES (?,?);");
+	my $insertStmt = $db->prepare("INSERT INTO KeySeq(`KeywordsId`,`SeqId`) VALUES (?,?);");
         $insertStmt->execute($keywordId, $seqDBId);
 }
 
@@ -81,7 +81,7 @@ sub insertSequence {
 	my $organismId = $_[3];
 	my $rawSequence = $_[4];
 	#Insert the sequence
-	my $insertSeqStmt = $db->prepare("INSERT DELAYED INTO Seq(`Name`, `Definition`,`OrganismId`,`Seq`,`Type`) VALUES (?,?,?,?,'Protein');");
+	my $insertSeqStmt = $db->prepare("INSERT INTO Seq(`Name`, `Definition`,`OrganismId`,`Seq`,`Type`) VALUES (?,?,?,?,'Protein');");
 	$insertSeqStmt->execute($primaryAC,$definition,$organismId,$rawSequence);
 	return $insertSeqStmt->{mysql_insertid};
 }
@@ -118,7 +118,7 @@ sub processSwissprotEntry {
 	#Insert the sequence
 	my $seqId = insertSequence($db, $primaryAC, $definition,$organismId,$currentSeq);
 	#Insert the n:m relation (db Entry <--> sequence) info
-	my $insertSourceStmt = $db->prepare("INSERT DELAYED INTO Source(`DBId`, `SeqId`, `SeqDBIdentifier`, `SwissprotEntryId`) SELECT `Id`,?, ?, ? FROM DB WHERE DB.Name = 'SwissProt';");
+	my $insertSourceStmt = $db->prepare("INSERT INTO Source(`DBId`, `SeqId`, `SeqDBIdentifier`, `SwissprotEntryId`) SELECT `Id`,?, ?, ? FROM DB WHERE DB.Name = 'SwissProt';");
 	$insertSourceStmt->execute($seqId,$primaryAC,$id);
 	#Inset the keywords
 	foreach(@keywords) {
