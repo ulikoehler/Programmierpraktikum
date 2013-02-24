@@ -1,24 +1,25 @@
 
-DB(Id, Name)
-   --
+DB (Id, Name);
+    --
 
-Organism (Id, Name)
+Organism (Id, Name);
           --
 
-Keywords (Id, Value)
+Keywords (Id, Value);
           --
-                                ----------
-Seq (Id, Name, Definition, Seq, OrganismId, Type, Structure)
+                                 ----------
+Seq (Id, Name , Definition, Seq, OrganismId, Type);
      --
          -----
-Orf (Id, SeqId, Start, Stop)
+Orf (Id, SeqId, Start, Stop, Strand);
      --
-             --
-StructAlign (Id, SeqId)
-             --  -----
+                    ----
+SecStructAlign (Id, DBId, FromDBId, ToDBId, EntryType, Type, Content);
+                --
         ----------  -----
-KeySeq (KeywordsId, SeqId)
+KeySeq (KeywordsId, SeqId);
         ----------  -----
         ----  -----
-Source (DBId, SeqId, SeqDBIdentifier, SwissprotEntryId)
+Source (DBId, SeqId, SeqDBIdentifier, SwissprotEntryId);
         ----  -----
+
