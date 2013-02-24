@@ -84,7 +84,7 @@ sub insertStructure {
     my $type         = $_[3];
     my $content      = $_[4];
     #Insert the sequence
-    my $insertStmt = $db->prepare("INSERT DELAYED IGNORE INTO SecStructAlign(`DBId`, `FromDBId`, `Content`, `Type`, `EntryType`) VALUES (?,?,?,?,'Secondary Structure');"
+    my $insertStmt = $db->prepare("INSERT DELAYED IGNORE INTO SecStructAlign(`DBId`, `FromDBId`, `Type`, `Content`, `EntryType`) VALUES (?,?,?,?,'Secondary Structure');"
     );
     $insertStmt->execute( $homstradDBId, $pdbId, $type, $content );
     return $insertStmt->{mysql_insertid};
