@@ -27,12 +27,12 @@ my $output = `bash -c '$bindir/orf_finder \"$dbFilename\"'`;
 #Find the sequence IDs of the forward and reverse sequences
 my $fwdId = undef;
 my $revId = undef;
-if($output =~ m/Forward sequence ID:\s+(\d+)/) {
+if($output =~ m/Forward sequence ID:\s*(\d+)/) {
 	$fwdId = $1;
 } else {
 	die "Can't find fwdId in output $output\n";
 }
-if($output =~ m/Reverse sequence ID:\s+(\d+)/) {
+if($output =~ m/Reverse sequence ID:\s*(\d+)/) {
 	$revId = $1;
 } else {
 	die "Can't find revId in output $output\n";
@@ -40,8 +40,8 @@ if($output =~ m/Reverse sequence ID:\s+(\d+)/) {
 #Setup db conn
 my $db = DBI->connect('DBI:mysql:bioprakt4;host=mysql2-ext.bio.ifi.lmu.de', 'bioprakt4', 'vGI5GCMg0x') || die "Could not connect to database: $DBI::errstr";	
 #Find fwd ORFs
-my $fwdQuery = $db->prepare("SELECT Orf.Start, Orf.Stop, Orf.Strand WHERE Orf.SeqId = ?");
-my $revQuery = $db->prepare("SELECT Orf.Start, Orf.Stop, Orf.Strand WHERE Orf.SeqId = ?");
+my $fwdQuery = $db->prepare("SELECT Orf.Start, Orf.Stop, Orf.Strand FROM Orf WHERE Orf.SeqId = ?");
+my $revQuery = $db->prepare("SELECT Orf.Start, Orf.Stop, Orf.Strand FROM Orf WHERE Orf.SeqId = ?");
 $fwdQuery->execute($fwdId);
 $revQuery->execute($revId);
 #Print the HTML prototype

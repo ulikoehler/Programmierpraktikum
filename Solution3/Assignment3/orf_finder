@@ -123,8 +123,8 @@ print MYFILE $ORFsRev;
 close (MYFILE);
 #####organize results into "Results" folder
 my $fileName = "lengthDistribution_".($ARGV[0]);
-$gnuplot = `./gnuplot $fileName $maxORFlength 1`;
-$gnuplot = `./gnuplot $fileName 200 25`;
+$gnuplot = `gnuplot $fileName $maxORFlength 1`;
+$gnuplot = `gnuplot $fileName 200 25`;
 $gnuplot = `mv $fileName Results_$ARGV[0]`;
 $gnuplot = `mv ORF* Results_$ARGV[0]`;
 $gnuplot = `mv histo* Results_$ARGV[0]`;
