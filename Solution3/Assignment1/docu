@@ -28,10 +28,15 @@ Table Seq:
  Type					ENUM			RNA/DNA/Protein Sequence
  Structure				TEXT			A Sequence that represents the Structure of the Sequence see Data/HOMSTRAD
 
-StructAlign:
- Id						INT				The Id of a Structure Alignment														Key along with Seq
- SeqId					INT				One Sequence in the Structure Alignment												Key along with Id, Foreign Key Seq:Id
-
+SecStructAlign:
+DBId INT Datenbank-ID aus der der Eintrag stammt --> Fremdschlüssel DB Tabelle
+  FromDBId VARCHAR(50) Primäres Protein auf das sich der Eintrag  bezieht
+  ToDBId VARCHAR(50) Weiteres Protein auf das sich der Eintrag bezieht, oder NULL für SecStruct-Einträge
+  EntryType ENUM('Alignment', 'Secondary Structure'), Typ des Eintrags
+  Type TEXT, Genauere Spezifikation des Eintragtyps, NULL für Alignments, String für secstruct
+  Content LONGTEXT, Inhalt des aktuellen Eintrags
+  
+  
 /----+-----\
 | Id | Seq |
 +----+-----+
