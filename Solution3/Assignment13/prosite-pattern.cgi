@@ -50,7 +50,7 @@ a:hover { text-decoration: none; color: #C00; background: #FC0; }
  <h1>Keyword search</h1>
  </div>
  <div id="body">
-  <h2>Results of search for keyword $keyword</2>
+  <h2>Results of search for keyword $originalPrositePattern</2>
   <table><tr><td><b>Name</b></td><td><b>Organism</b></td></tr>
 EOHTML
 ;
@@ -58,11 +58,11 @@ EOHTML
 my $result = undef;
 while ($result = $query->fetchrow_hashref() ) {
 	#Create a link only if it's in Swissprot
+	my $id = $result->{Name};
 	if($result->{DBName} eq "SwissProt") {
-		my $id = $result->{Name};
-		print "<tr><td><a href=\"http://www.uniprot.org/uniprot/$id\">$id</a></td><td>".$result->{OName}"</td></tr>";
+		print "<tr><td><a href=\"http://www.uniprot.org/uniprot/$id\">$id</a></td><td>".$result->{OName}."</td></tr>";
 	} else {
-		print "<tr><td>$id</td><td>".$result->{OName}"</td></tr>";
+		print "<tr><td>$id</td><td>".$result->{OName}."</td></tr>";
 	}
 }
 print <<"EOHTML"
