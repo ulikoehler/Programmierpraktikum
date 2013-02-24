@@ -21,21 +21,11 @@ CATH (Architecture):
 
 Sekundärstrukturgehalt: (keine turns in diesen pdb files angegeben)
 
-1MBN: 8  helix 0  sheets
-256B: 10 helix 0  sheets
-1TIM: 24 helix 18 sheets
-1BAF: 5  helix 39 sheets
-
-#helix 
-#sheets 
-%AS in Sekundär 
-erster/letzter CA-CB-Abstand
-Box
+1MBN: 8  helix 0  sheets 77% amino in sekundär erstes paar 1.55 letztes paar 1,45 Box: X: 42,7 Y: 38,9 Z: 37,1
+256B: 10 helix 0  sheets 80% amino in sekundär erstes paar 1.52 letztes paar 1,51 Box: X: 33,2 Y: 42,2 Z: 41,3
+1TIM: 24 helix 18 sheets 76% amino in sekundär erstes paar 1.54 letztes paar 1,55 Box: X: 53,7 Y: 76,8 Z: 34,1
+1BAF: 5  helix 40 sheets 80% amino in sekundär erstes paar 1.55 letztes paar 1,50 Box: X: 47,3 Y: 73,3 Z: 52,5
 
 
-1MBN:
-256B:
-1TIM:
-1BAF:
 
 

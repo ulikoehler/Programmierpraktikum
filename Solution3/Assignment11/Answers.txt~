@@ -26,7 +26,11 @@ Sekundärstrukturgehalt: (keine turns in diesen pdb files angegeben)
 1TIM: 24 helix 18 sheets
 1BAF: 5  helix 39 sheets
 
-#helix #sheets %AS in Sekundär 
+#helix 
+#sheets 
+%AS in Sekundär 
+erster/letzter CA-CB-Abstand
+Box
 
 
 1MBN:

@@ -1,7 +1,7 @@
 #!/usr/bin/perl -w
 use strict;
 
-#TODO input check
+
 
 #counting helix and sheets
 my $helix = 0;
@@ -25,8 +25,6 @@ my $firstCAz;
 my $firstCBx;
 my $firstCBy;
 my $firstCBz;
-my $firstupdatea = 0;
-my $firstupdateb = 0;
 #keeping track of last CA-CB pair
 my $lastCAx;
 my $lastCAy;
@@ -34,11 +32,9 @@ my $lastCAz;
 my $lastCBx;
 my $lastCBy;
 my $lastCBz;
-my $lastupdatea = 0;
-my $lastupdateb = 0;
-
-
-
+my $trueAx;
+my $trueAy;
+my $trueAz;
 
 #extracting information from input file
 while(<>){
@@ -63,19 +59,62 @@ my $m = $_;
     }
     if( $m =~ m/^ATOM/ ){
 	if( $m =~ /^.{13}CA/ ){
+	    #counting aminoacis
 	    $amino++;
+	    #amino acis in secondary structure
 	    if(exists $hash{substr($m,22,4)*1.0}){
 		$secon++;
 	    }
-	    if (!defined $firstCAx){
+	    #first CA
+	    if (!defined $firstCAx || !defined $firstCBx){
 		$firstCAx = substr($m,32,6);
 		$firstCAy = substr($m,40,6);
 		$firstCAz = substr($m,48,6);
-		$lastCAx = substr($m,32,6);
-		$lastCAy = substr($m,40,6);
-		$lastCAz = substr($m,48,6);
 	    }
+	    #possible last CA value
+	    $lastCAx = substr($m,32,6);
+	    $lastCAy = substr($m,40,6);
+	    $lastCAz = substr($m,48,6);
         }
+	if( $m =~ /^.{13}CB/ ){
+	    #first CB
+	    if(!defined $firstCBx){
+		$firstCBx = substr($m,32,6);
+		$firstCBy = substr($m,40,6);
+		$firstCBz = substr($m,48,6);
+	    }
+	    #last CB and last CA update
+	    $lastCBx = substr($m,32,6);
+	    $lastCBy = substr($m,40,6);
+	    $lastCBz = substr($m,48,6);
+	    $trueAx = $lastCAx;
+	    $trueAy = $lastCAy;
+	    $trueAz = $lastCAz;
+	}
+	#check for new extreme coordinates
+	my $subx = substr($m,32,6);
+	    if($subx >= $posx){
+		$posx = $subx;
+	    }
+	    if($subx <= $negx){
+		$negx = $subx;
+	    }
+	my $suby = substr($m,40,6);
+	    if($suby >= $posy){
+		$posy = $suby;
+	    }
+	    if($suby <= $negy){
+		$negy = $suby;
+	    }
+	my $subz = substr($m,48,6);
+	    if($subz >= $posz){
+		$posz = $subz;
+	    }
+	    if($subz <= $negz){
+		$negz = $subz;
+	    } 
+    }
+    if( $m =~ m/^HETATM/ ){
 	#check for new extreme coordinates
 	my $subx = substr($m,32,6);
 	    if($subx >= $posx){
@@ -111,8 +150,84 @@ my $percentage = ($secon / $amino) * 100;
 print $percentage, "% of the amino acids are part of secondary structures\n";
 }
 
-print $posx," pos x \n";
-print $negx," nos x \n";
+print "first CA-CB pair distance: \n";
+if(!defined $firstCBx){
+   print "no pairs found \n";
+#calculating distance for CA-CB
+}else{
+   my $dis1 = 0;
+   if(($firstCAx * $firstCBx) <= 0 ){
+	$dis1 = $dis1 + ($firstCAx + $firstCBx)*($firstCAx + $firstCBx);
+   }else{
+  	$dis1 = $dis1 + abs($firstCAx - $firstCBx)*abs($firstCAx - $firstCBx);
+   }
+   if(($firstCAy * $firstCBy) <= 0 ){
+	$dis1 = $dis1 + ($firstCAy + $firstCBy)*($firstCAy + $firstCBy);
+   }else{
+  	$dis1 = $dis1 + abs($firstCAy - $firstCBy)*abs($firstCAy - $firstCBy);
+   }
+   if(($firstCAz * $firstCBz) <= 0 ){
+	$dis1 = $dis1 + ($firstCAz + $firstCBz)*($firstCAx + $firstCBz);
+   }else{
+  	$dis1 = $dis1 + abs($firstCAz - $firstCBz)*abs($firstCAz - $firstCBz);
+   }
+   print sqrt($dis1),"\n";
+}
 
-#TODO return result
+print "last CA-CB pair distance: \n";
+if(!defined $firstCBx){
+   print "no pairs found \n";
+#calculating distance for CA-CB
+}else{
+   my $dis2 = 0;
+   if(($trueAx * $lastCBx) <= 0 ){
+	$dis2 = $dis2 + ($trueAx + $lastCBx)*($trueAx + $lastCBx);
+   }else{
+  	$dis2 = $dis2 + abs($trueAx - $lastCBx)*abs($trueAx - $lastCBx);
+   }
+   if(($trueAy * $lastCBy) <= 0 ){
+	$dis2 = $dis2 + ($trueAy + $lastCBy)*($trueAy + $lastCBy);
+   }else{
+  	$dis2 = $dis2 + abs($trueAy - $lastCBy)*abs($trueAy - $lastCBy);
+   }
+   if(($trueAz * $lastCBz) <= 0 ){
+	$dis2 = $dis2 + ($trueAz + $lastCBz)*($trueAx + $lastCBz);
+   }else{
+  	$dis2 = $dis2 + abs($trueAz - $lastCBz)*abs($trueAz - $lastCBz);
+   }
+   print sqrt($dis2),"\n";
+}
+
+
+print "Minimal Box dimensions: \n";
+if ($posx == '-inf'){
+    print "X: 0 \n Y: 0 \n Z: 0 \n ";
+}else{
+    my $res = 0;	
+    print "X: \t";	
+    if(($posx * $negx) <= 0 ){
+	$res = abs($posx) + abs($negx);
+	print $res,"\n";
+    }else{
+	$res = abs($posx - $negx);
+        print $res,"\n";
+    }
+    print "Y: \t";	
+    if(($posy * $negy) <= 0 ){
+	$res = abs($posy) + abs($negy);
+	print $res,"\n";
+    }else{
+	$res = abs($posy - $negy);
+        print $res,"\n";
+    }
+    print "Z: \t";	
+    if(($posz * $negz) <= 0 ){
+	$res = abs($posz) + abs($negz);
+	print $res,"\n";
+    }else{
+	$res = abs($posz - $negz);
+        print $res,"\n";
+    }		
+}
+
 
