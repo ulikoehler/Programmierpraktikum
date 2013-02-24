@@ -134,17 +134,25 @@ $gnuplot = `mv Stat* Results_$ARGV[0]`;
 ########## TODO: put results to database:
 use DBI;
 
-my $seqIdFwd = $ARGV[0]."_".time();
-my $seqIdRev = $ARGV[0]."_reverseComplementary_".time();
+my $seqNameFwd = $ARGV[0]."_".time();#names in the Seq table
+my $seqNameRev = $ARGV[0]."_reverseComplementary_".time();
 
 my $dbh = DBI->connect('DBI:mysql:bioprakt4;host=mysql2-ext.bio.ifi.lmu.de', 'bioprakt4', 'vGI5GCMg0x') or die "Could not connect to database: $DBI::\errstr";
-
+###insert sequences into Seq table:
 my $queryInsert = $dbh->prepare("INSERT INTO Seq(Name, Seq, Type) VALUES (?,?,?);");
 
-$queryInsert->execute($seqIdFwd, $sequence, "DNA");
-$queryInsert->execute($seqIdFwRev, $complementaryReverseSequence, $stop, "DNA");
+$queryInsert->execute($seqNameFwd, $sequence, "DNA");
+$queryInsert->execute($seqNameRev, $complementaryReverseSequence, "DNA");
+####get Id 								############################### PROBLEM!!
+my $seqIdFwd = $dbh->prepare("SELECT `Id` FROM Seq WHERE `Name` = ?;");
+$seqIdFwd->execute($seqNameFwd);
+print "fwd: $seqIdFwd\n";
 
+my $seqIdRev = $dbh->prepare("SELECT `Id` FROM Seq WHERE `Name` = ?;");
+$seqIdRev->execute($seqNameRev);
+print "rev: $seqIdRev\n";
 
+###insert positions AND SeqId int Orf:
 $queryInsert = $dbh->prepare("INSERT INTO Orf(SeqId, Start, Stop, Strand) VALUES (?,?,?,?);");
 
 # params
@@ -165,7 +173,7 @@ while ( (my $k,my $v) = each %ORFpositionsRev ) {
     my $stop = $v;
 
 # write entry
-    $queryInsert->execute($SeqIdRev, $start, $stop, "Reverse");
+    $queryInsert->execute($seqIdRev, $start, $stop, "Reverse");
 }
 
 $dbh->disconnect;

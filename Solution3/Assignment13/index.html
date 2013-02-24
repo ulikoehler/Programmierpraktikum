@@ -73,10 +73,10 @@ a:hover { text-decoration: none; color: #C00; background: #FC0; }
   <h3>BLAST a sequence in a self-supplied database</h3>
   <b>Test data:</b>&nbsp;<a href="mgenitalium-proteome.fa">FASTA M. Genitalium complete proteome</a>&nbsp;<a href="mgenitalium-genome.fa">FASTA M. Genitalium complete genome</a><br/>
   <form action="blastsearch.cgi" method="post" enctype="multipart/form-data">
-       <input type="radio" name="type" value="prot" checked> Protein
-        <input type="radio" name="type" value="nucl"> Nucleotide<br/>
-	Database in FASTA format: <input type="file" name="database"><br/>
-	Query sequence:<br/> <textarea name="query" cols="50" rows="20"></textarea><br/>
+	<b>Query</b> is a: <input type="radio" name="type" value="prot" checked> Protein sequence<br/>
+        <input type="radio" name="type" value="nucl"> Nucleotide sequence<br/>
+	Protein Database in FASTA format: <input type="file" name="database"><br/>
+	Query sequence (FASTA):<br/> <textarea name="query" cols="50" rows="20"></textarea><br/>
 	<input type="submit" value="Query">
   </form>
 </body>
