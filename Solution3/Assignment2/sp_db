@@ -45,16 +45,17 @@ sub getOrganismId {
 	my $db = $_[0];
 	my $organism = $_[1];
 	#Try to fetch an existing organism
-	my $queryOrganismIdStmt = $db->prepare("SELECT Id from Organism WHERE Name = ?;");
+	my $queryOrganismIdStmt = $db->prepare("SELECT `Id` from Organism WHERE `Name` = ?;");
 	$queryOrganismIdStmt->execute($organism);
 	my $result = $queryOrganismIdStmt->fetchrow_hashref();
 	if(defined $result->{Id}) {
 		return $result->{Id};
+	} else  {
+		#If that didn't work, we need to insert it
+		my $insertStmt = $db->prepare("INSERT INTO Organism(`Name`) VALUES (?);");
+		$insertStmt->execute($organism);
+		return $insertStmt->{mysql_insertid};
 	}
-	#If that didn't return, we need to insert it
-	my $insertStmt = $db->prepare("INSERT INTO Organism(`Name`) VALUES (?)");
-	$insertStmt->execute($organism);
-	return $insertStmt->{mysql_insertid};
 }
 
 
@@ -62,7 +63,7 @@ sub checkIfSwissprotEntryExists {
 	my $db = $_[0];
 	my $primaryAC = $_[1];
 	#Try to fetch an existing organism
-	my $insertSeqDBEntryStmt = $db->prepare("Select `Id` from Source JOIN DB ON Source.DBId = DB.Id WHERE 'SeqDBIdentifier' = ? AND `NAME` =  'SwissProd';");
+	my $insertSeqDBEntryStmt = $db->prepare("Select `Id` from Source INNER JOIN DB ON Source.DBId = DB.Id WHERE Source.SeqDBIdentifier = ? AND DB.Name = 'SwissProt';");
 	$insertSeqDBEntryStmt->execute($primaryAC);
 	my $result = $insertSeqDBEntryStmt->fetchrow_hashref();
 	if(defined $result->{Id}) {
@@ -80,17 +81,9 @@ sub insertSequence {
 	my $organismId = $_[3];
 	my $rawSequence = $_[4];
 	#Insert the sequence
-	my $insertSeqStmt = $db->prepare("INSERT INTO Seq(`Name`, `Definition`,`OrganismId`,`Seq`,`Type`, 'Structure') VALUES (?,?,?,?,'Protein',?);");
-	$insertSeqStmt->execute($primaryAC,$definition,$organismId,$rawSequence, $DBId, undef);
+	my $insertSeqStmt = $db->prepare("INSERT INTO Seq(`Name`, `Definition`,`OrganismId`,`Seq`,`Type`) VALUES (?,?,?,?,'Protein');");
+	$insertSeqStmt->execute($primaryAC,$definition,$organismId,$rawSequence);
 	return $insertSeqStmt->{mysql_insertid};
-}
-
-#checks wheater Swissprod is already written in the DB Table
-sub checkSwissprotInDB {
-	#Get functions arguemnts
-	my $db = $_[0];
-	#Query
-	my $insertSeqStmt = $db->prepare("INSERT INTO Seq(`Name`, `Definition`,`OrganismId`,`Seq`,`Type`, 'Structure') VALUES (?,?,?,?,'Protein',?,?);");
 }
 
 #Insert the information about a sequence file into the database
@@ -114,28 +107,24 @@ sub processSwissprotEntry {
 	##
 	my $entryAlreadyExists = checkIfSwissprotEntryExists($db, $primaryAC);
 	if($entryAlreadyExists) {
-		print "Entry $primaryAC already exists\n";
+		#print "Entry $primaryAC already exists\n";
 		return;
 	}
 	###
 	#Insert the dataset into the database
 	###
-	print "Processing $ACNumbers[0]\n";
-	#Insert the database entry information
-	my $insertSeqDBEntryStmt = $db->prepare("INSERT INTO DB(`Name`, `SeqDBIdentifier`, `SwissprotEntryId`) VALUES ('SwissProt', ?, ?);");
-	$insertSeqDBEntryStmt->execute($primaryAC, $id);
-	my $seqDBEntryId = $insertSeqDBEntryStmt->{mysql_insertid};
 	#Get the organism ID
 	my $organismId = getOrganismId($db, $organism);
 	#Insert the sequence
 	my $seqId = insertSequence($db, $primaryAC, $definition,$organismId,$currentSeq);
 	#Insert the n:m relation (db Entry <--> sequence) info
-	my $insertSourceStmt = $db->prepare("INSERT INTO DB(`Name`, `SeqDBIdentifier`, `SwissprotEntryId`) VALUES ('SwissProt', ?, ?);");
-	$insertSourceStmt->execute($seqId,$seqDBEntryId);
+	my $insertSourceStmt = $db->prepare("INSERT INTO Source(`DBId`, `SeqId`, `SeqDBIdentifier`, `SwissprotEntryId`) SELECT `Id`,?, ?, ? FROM DB WHERE DB.Name = 'SwissProt';");
+	$insertSourceStmt->execute($seqId,$primaryAC,$id);
 	#Inset the keywords
 	foreach(@keywords) {
 		insertKeywordRelation($db, $_, $seqId);
 	}
+	print "Added SwissProt sequence with AC number $primaryAC to database\n";
 }
 #Parse CLI arguments
 my %options=();
@@ -146,6 +135,7 @@ my $argc = @ARGV;
 print STDERR "Usage: $0 <SwissProt filename>\n" unless $argc == 1;
 print STDERR "    Use -l to use SSH port-forwarded database (on localhost)\n" unless $argc == 1;
 die "	Use -u to use Uli's (Non-LMU) MySQL database (works from everywhere)\n" unless $argc == 1;
+#Check if the
 #
 #Setup the database connection
 #
@@ -177,6 +167,10 @@ while ( my $line = <$fileHandle> ) {
 		#print "Last KW: ",join(",",@currentKeywords), "\n";
 		#print $currentDefinition,"\n";
 		if($currentId) { #If it's not before the first entry
+			#Remove the trailing . from the organism
+			if($currentOrganism =~ m/^(.+)\.$/) {
+				$currentOrganism = $1;
+			}
 			processSwissprotEntry($db, $currentId, \@currentACNumbers, $currentDefinition, $currentOrganism, \@currentKeywords, $currentSeq);
 		}
 		#Reset the variables. Some of the assignments are not really neccessary but they ease format debugging
@@ -209,7 +203,7 @@ while ( my $line = <$fileHandle> ) {
 		}
 		@currentKeywords = (@currentKeywords, @processedKeywords);
 		chomp $currentId;
-        } elsif($line =~ m/^OS\s+(.+).$/) { #Organism
+        } elsif($line =~ m/^OS\s+(.+)$/) { #Organism
                 $currentOrganism = $currentOrganism . $1; #qnd
         } elsif($line =~ m/^\s+(\S.+)$/) { #Sequence
                 $currentSeq = $currentSeq . $1; #qnd

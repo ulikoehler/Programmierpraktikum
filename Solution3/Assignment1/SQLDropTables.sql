@@ -1,6 +1,6 @@
 DROP TABLE Source;
 DROP TABLE KeySeq;
-DROP TABLE StructAlign;
+DROP TABLE SecStructAlign;
 DROP TABLE Orf;
 DROP TABLE Seq;
 DROP TABLE Keywords;

@@ -2,27 +2,20 @@
 use strict;
 use DBI;
 use CGI qw(:standard);
-#The prosite pattern is supplied as CLI arg
-my $prositePattern = param("pattern"); #The content of this variable is conv to regex later!
-my $originalPrositePattern = $prositePattern;
-#Convert the prosite pattern to a regular expression
-$prositePattern =~ s/x/\./g; #Replace x by . (matches any character)
-#Process exclusion specifiers like {GA}
-$prositePattern =~ s/\{(\w+)\}/\[\^$1\]/g; #Replace {3} by [^3]
-#Replace length specifiers. Split into two regexes to improve readability
-$prositePattern =~ s/\((\d+)\)/\{$1\}/g; #Replace (3) by {3}
-$prositePattern =~ s/\((\d+,\d+)\)/\{$1\}/g; #Replace (3,5) by {3,5}
-#We don't need to replace something like [NHG], it's already a regex
-#Finally, remove minuses
-$prositePattern =~ s/[-]//g;
-#Add a global group to be able to match it later
-#Print the SQL statement
+use CGI::Carp qw(fatalsToBrowser);
+#The keyword is supplied as CLI arg
+my $keyword = param("keyword");
+#Connect
 my $db =  DBI->connect('DBI:mysql:bioprakt4;host=mysql2-ext.bio.ifi.lmu.de', 'bioprakt4', 'vGI5GCMg0x') || die "Could not connect to database: $DBI::errstr";	
-my $query = $db->prepare("SELECT Seq.Name, DB.Name AS DBName, Organism.Name AS OName FROM Seq
-INNER JOIN Organism ON Organism.Id = Seq.OrganismId
-INNER JOIN Source ON Source.SeqId = Seq.Id
-INNER JOIN DB ON DB.Id = Source.DBId WHERE Seq.Seq REGEXP ?;");
-$query->execute($prositePattern);
+#Query
+my $query = $db->prepare("SELECT `SeqDBIdentifier` FROM Source
+INNER JOIN Seq ON Seq.Id = Source.SeqId
+INNER JOIN DB ON DB.Id = Source.DBId
+INNER JOIN KeySeq ON KeySeq.SeqId = Seq.Id
+INNER JOIN Keywords ON Keywords.Id = KeySeq.KeywordsId
+WHERE Keywords.Value = ? AND DB.Name = 'SwissProt';
+");
+$query->execute($keyword);
 print header("text/html");
 print <<"EOHTML"
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
@@ -50,23 +43,18 @@ a:hover { text-decoration: none; color: #C00; background: #FC0; }
  <h1>Keyword search</h1>
  </div>
  <div id="body">
-  <h2>Results of search for keyword $keyword</2>
-  <table><tr><td><b>Name</b></td><td><b>Organism</b></td></tr>
+  <h2>Results of search for keyword $keyword</h2>
+  <ul style="font-weight: normal;">
 EOHTML
 ;
 #Print the results
 my $result = undef;
 while ($result = $query->fetchrow_hashref() ) {
-	#Create a link only if it's in Swissprot
-	if($result->{DBName} eq "SwissProt") {
-		my $id = $result->{Name};
-		print "<tr><td><a href=\"http://www.uniprot.org/uniprot/$id\">$id</a></td><td>".$result->{OName}"</td></tr>";
-	} else {
-		print "<tr><td>$id</td><td>".$result->{OName}"</td></tr>";
-	}
+	my $ac = $result->{SeqDBIdentifier};
+	print "<li><a href=\"http://www.uniprot.org/uniprot/$ac\">$ac</a></li>";
 }
 print <<"EOHTML"
-  </table>
+  </ul>
 </body>
 </html>
 EOHTML

@@ -267,5 +267,5 @@ $db->disconnect();
 if($taxaFound eq "false") {
   print "Organism not found!\n"
 } else {
-  print "Organismdata successfully written to DB!\n";
+  print "Organism data successfully written to Database!\n";
 }

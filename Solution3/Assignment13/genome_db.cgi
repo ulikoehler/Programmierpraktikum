@@ -1,21 +1,16 @@
 #!/usr/bin/perl -w
 use strict;
 use LWP::Simple;
-use HTML::Entities;
 use CGI qw(:standard);
 use CGI::Carp qw(fatalsToBrowser);
-print header('text/html');
 #Parse the CGI arg
-my $pdbId = param("pdbid");
-#Download it
-my $url = "http://www.pdb.org/pdb/download/downloadFile.do?fileFormat=pdb&compression=NO&structureId=" . $pdbId;
-my $pdbData = get $url;
-#Handle errors
-print header(-status=>404) unless $pdbId;
-die"Can't fetch PDB data for PDB ID $pdbId\n" unless $pdbData;
-exit unless $pdbData;
+my $organism = param("organism");
+die "Please use organism GET parameter!\n" unless $organism;
+#Execute the shell script from assignment 10 if the file isnt cached
+my $scriptDir = "/home/k/koehleru/Programmierpraktikum/Solution3/Assignment7";
+my $output = `perl $scriptDir/genome_db '$organism'`;
 #Print the data (only executed if not error occured before
-$pdbData = encode_entities($pdbData);
+print header("text/html");
 print <<"EOHTML"
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
@@ -39,13 +34,12 @@ a:hover { text-decoration: none; color: #C00; background: #FC0; }
 <body>
 <div id="page">
  <div id="header">
- <h1>PDB Data retrieval (PDB format)</h1>
+ <h1>genome_db</h1>
  </div>
  <div id="body">
-  <h2>Your request for <a href="http://www.rcsb.org/pdb/explore/explore.do?structureId=$pdbId">$pdbId</a> yielded:</2>
-  <pre style="font-size: 50%; text-decoration: none;font-weight:normal;color:#333;">
-  $pdbData
-  </pre>
+  <h3>Importer Output:</h3>
+  <pre style="font-weight:normal;">$output</pre>
 </body>
 </html>
 EOHTML
+;

@@ -5,7 +5,7 @@ CREATE TABLE DB (
 );
 CREATE TABLE Organism (
   Id INT NOT NULL AUTO_INCREMENT,
-  Name VARCHAR(50) NOT NULL UNIQUE,
+  Name TEXT NOT NULL,
   PRIMARY KEY(Id)
 );
 CREATE TABLE Keywords (
@@ -32,11 +32,18 @@ CREATE TABLE Orf (
   PRIMARY KEY(Id),
   FOREIGN KEY(SeqId) references Seq(Id)
 );
-CREATE TABLE StructAlign (
-  Id INT NOT NULL AUTO_INCREMENT,
-  SeqId INT,
-  PRIMARY KEY(Id, SeqId),
-  FOREIGN KEY(SeqId) references Seq(Id)
+CREATE TABLE SecStructAlign (
+  Id INT NOT NULL PRIMARY KEY AUTO_INCREMENT,
+  DBId INT NOT NULL,
+  FromDBId VARCHAR(50) NOT NULL,
+  ToDBId VARCHAR(50) ,
+  EntryType ENUM('Alignment', 'Secondary Structure'),
+  Type TEXT,
+  Content LONGTEXT,
+  INDEX(FromDBId),
+  INDEX(EntryType),
+  FULLTEXT(Type),
+  FOREIGN KEY(DBId) references DB(Id)
 );
 CREATE TABLE KeySeq (
   KeywordsId INT,

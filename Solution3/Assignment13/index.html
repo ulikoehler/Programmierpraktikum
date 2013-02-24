@@ -20,7 +20,7 @@ a:hover { text-decoration: none; color: #C00; background: #FC0; }
 <body>
 <div id="page">
  <div id="header">
- <h1>Willkommen auf unserer Seite zum Programmierpraktikum (Gr. 4)</h1>
+ <h1>Group 4 CGI tools</h1>
  </div>
  <div id="body">
   <h2>Bioinformatics tools</h2>
@@ -28,14 +28,26 @@ a:hover { text-decoration: none; color: #C00; background: #FC0; }
   <form method="get" action="get_pdb.cgi">
 	PDB ID: <input type="text" name="pdbid" cols="4" value="1ULI"/><input type="submit" value="Get PDB data"/>
   </form>
+  
   <h3>RenderIT</h3>
-  The best quality PDB renderer webservice you can find in this /24 subnet!<br/>
-  <form method="get" action="get_pdb.cgi">
+  <b style="color: #CCC;'">&bdquo;At least the best quality PDB renderer webservice you can find in this /24 subnet!&rdquo;</b><br/>
+  <form method="get" action="render_pymol.cgi">
 	PDB ID: <input type="text" name="pdbid" cols="4" value="1ULI"/><input type="submit" value="Render"/>
   </form>
-  <h3>Find prosite pattern in database (currently Arapidopsis Thaliana proteins from Swissprot)</h3>
+    
+  <h3>Import organism genome data into database </h3>
+  <form method="get" action="genome_db.cgi">
+	Organism (<b>only bacteria!</b>): <input type="text" name="organism" cols="4" value="Mycoplasma genitalium"/><input type="submit" value="Find"/>
+  </form>
+  
+  <h3>Find prosite pattern in database: </h3>
   <form method="get" action="prosite-pattern.cgi">
 	Pattern: <input type="text" name="pattern" cols="4" value="P-P-x-x"/><input type="submit" value="Find"/>
+  </form>
+  
+    <h3>Find AC numbers containing a keyword:</h3>
+  <form method="get" action="search_keyword.cgi">
+	Keyword: <input type="text" name="keyword" cols="4" value="Antigen"/><input type="submit" value="Find"/>
   </form>
   
   <h3>BLAST a sequence in a self-supplied database</h3>
