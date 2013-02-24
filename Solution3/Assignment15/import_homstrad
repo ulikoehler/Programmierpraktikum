@@ -104,7 +104,9 @@ my $homstradDBId = getHomstradId($db);
 
 # loop over all files
 # in each directory theres a ali and a tem file (ali = Sequence-Alignment, tem = secondary structure)
-my @homstradFiles = <$path."*">;
+opendir my($dh), $path or die "Couldn't open dir '$path': $!";
+my @homstradFiles = readdir $dh; #The individual directories
+closedir $dh;
 foreach my $directory (@homstradFiles) {
     print "Processing $path$directory/$directory(.ali|.tem)\n";
 
