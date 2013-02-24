@@ -32,9 +32,14 @@ my $dbFilename = $tempdir."/database.fa";
 copy($dbTempFilename,$dbFilename) or die "Copy failed: $!";
 #Create the BLAST DB + index
 my $bindir = "/home/proj/biocluster/praktikum/bioprakt/progprakt4/bin/";
-`bash -c '$bindir/makeblastdb -in $dbFilename -hash_index -dbtype $type  2>> makeblastdb.log >> makeblastdb.log'`;
+`bash -c '$bindir/makeblastdb -in $dbFilename -hash_index -dbtype prot  2>> makeblastdb.log >> makeblastdb.log'`;
 #Do the query
-my $queryOutput = `bash -c '$bindir/blastp -db $dbFilename -query $queryFilename'`;
+my $queryOutput = undef;
+if($type eq "nucl") {
+	$queryOutput = `bash -c '$bindir/blastx -db $dbFilename -query $queryFilename'`;
+} else {#$type eq "prot"
+	$queryOutput = `bash -c '$bindir/blastp -db $dbFilename -query $queryFilename'`;
+}
 $queryOutput = encode_entities($queryOutput);
 #Remove the temporary stuff
 `rm -rf $tempdir`;
@@ -66,7 +71,7 @@ a:hover { text-decoration: none; color: #C00; background: #FC0; }
  </div>
  <div id="body">
   <h2>Your custom BLAST search yielded:</2>
-  <pre>
+  <pre style="font-weight:normal;">
   $queryOutput
   </pre>
 </body>
