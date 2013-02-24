@@ -69,8 +69,8 @@ sub insertAlignment {
     my $alignment         = $_[7];
 
     #Insert the sequence
-    my $insertStmt = $db->prepare(#Replace instead of insert to allow easy updating
-"REPLACE INTO SecStructAlign(`DBId`, `FromDBId`, `ToDBId`, `Content`, `EntryType`) VALUES (?,?,?,?,'Alignment');"
+    my $insertStmt = $db->prepare(
+"INSERT DELAYED IGNORE INTO SecStructAlign(`DBId`, `FromDBId`, `ToDBId`, `Content`, `EntryType`) VALUES (?,?,?,?,'Alignment');"
     );
     $insertStmt->execute( $homstradDBId, $pdbId, $otherProteinPDBId,
         $alignment );
@@ -85,8 +85,7 @@ sub insertStructure {
     my $content      = $_[4];
 
     #Insert the sequence
-    my $insertStmt = $db->prepare(#Replace instead of insert to allow easy updating
-"REPLACE INTO SecStructAlign(`DBId`, `FromDBId`, `Content`, `Type`, `EntryType`) VALUES (?,?,?,?,'Secondary Structure');"
+    my $insertStmt = $db->prepare("INSERT DELAYED IGNORE  INTO SecStructAlign(`DBId`, `FromDBId`, `Content`, `Type`, `EntryType`) VALUES (?,?,?,?,'Secondary Structure');"
     );
     $insertStmt->execute( $homstradDBId, $pdbId, $type, $content );
     return $insertStmt->{mysql_insertid};
