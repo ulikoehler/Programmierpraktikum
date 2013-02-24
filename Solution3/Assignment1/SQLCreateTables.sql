@@ -28,6 +28,7 @@ CREATE TABLE Orf (
   SeqId INT,
   Start INT,
   Stop INT,
+  Strand ENUM('Forward', 'Reverse'),
   PRIMARY KEY(Id),
   FOREIGN KEY(SeqId) references Seq(Id)
 );
