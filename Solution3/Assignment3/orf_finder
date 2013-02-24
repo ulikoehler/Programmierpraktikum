@@ -141,15 +141,14 @@ my $dbh = DBI->connect('DBI:mysql:bioprakt4;host=mysql2-ext.bio.ifi.lmu.de', 'bi
 ###insert sequences into Seq table:
 my $queryInsert = $dbh->prepare("INSERT INTO Seq(Name, Seq, Type) VALUES (?,?,?);");
 
+#Insert fwd
 $queryInsert->execute($seqNameFwd, $sequence, "DNA");
+my $seqIdFwd = $queryInsert->{mysql_insertid};
+#Insert bwd
 $queryInsert->execute($seqNameRev, $complementaryReverseSequence, "DNA");
-####get Id 								############################### PROBLEM!!
-my $seqIdFwd = $dbh->prepare("SELECT `Id` FROM Seq WHERE `Name` = ?;");
-$seqIdFwd->execute($seqNameFwd);
+my $seqIdRev =  $queryInsert->{mysql_insertid};
+####get Id
 print "fwd: $seqIdFwd\n";
-
-my $seqIdRev = $dbh->prepare("SELECT `Id` FROM Seq WHERE `Name` = ?;");
-$seqIdRev->execute($seqNameRev);
 print "rev: $seqIdRev\n";
 
 ###insert positions AND SeqId int Orf:
