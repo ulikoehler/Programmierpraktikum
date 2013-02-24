@@ -22,7 +22,7 @@ echo "png $1.png;" >> $workdir/$1.pml
 #echo "quit;" >> $1.pml
 #Execute RASMOL
 ssh -i ~/.ssh/id_dsa koehleru@remote.cip.ifi.lmu.de "cd $workdir && pymol -qxci $1.pml"
-sleep 0.2 #OH DUDE WE RLY HAVE TO WAIT FOR THE 
+sleep 0.2 #OH DUDE WE RLY HAVE TO WAIT FOR THE FILE TO SHOW UP ON NFS
 #Move the file
 mv $workdir/$1.png pdbcache/
 #Remove tmp files
