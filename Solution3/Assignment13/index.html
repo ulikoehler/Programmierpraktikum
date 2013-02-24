@@ -30,7 +30,7 @@ a:hover { text-decoration: none; color: #C00; background: #FC0; }
   </form>
   
   <h3>RenderIT</h3>
-  <b style="color: #CCC;'">&bdquo;At least the best quality PDB renderer webservice you can find in this /24 subnet!&rdquo;</b><br/>
+  <b style="color: #AAF;'">&bdquo;The best quality PDB renderer webservice you can possibly find in this /24 subnet!&rdquo;</b><br/><br/>
   <form method="get" action="render_pymol.cgi">
 	PDB ID: <input type="text" name="pdbid" cols="4" value="1ULI"/><input type="submit" value="Render"/>
   </form>
@@ -48,6 +48,11 @@ a:hover { text-decoration: none; color: #C00; background: #FC0; }
     <h3>Find AC numbers containing a keyword:</h3>
   <form method="get" action="search_keyword.cgi">
 	Keyword: <input type="text" name="keyword" cols="4" value="Antigen"/><input type="submit" value="Find"/>
+  </form>
+  
+  <h3>Find <a href="http://tardis.nibio.go.jp/homstrad/">HOMSTRAD</a> info</h3>
+  <form method="get" action="homstrad.cgi">
+	Keyword: <input type="text" name="pdbid" cols="4" value="1BGX"/><input type="submit" value="Find"/>
   </form>
   
   <h3>BLAST a sequence in a self-supplied database</h3>
