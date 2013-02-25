@@ -3,5 +3,6 @@ CREATE TABLE IDAutocomplete (
   DBId INTEGER NOT NULL,
   Name VARCHAR(50) NOT NULL,
   PRIMARY KEY(Id),
+  INDEX(Name),
   FOREIGN KEY(DBId) references DB(Id)
 );
