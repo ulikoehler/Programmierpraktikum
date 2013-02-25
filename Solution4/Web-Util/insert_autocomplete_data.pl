@@ -12,6 +12,7 @@ while (<PDBIDS>) {
 	#Print i
 	chomp $_;
 	$insert->execute($_, "PDB");
+	print "Inserted $_\n";
 }
 close PDBIDS;
 #Swissprot
@@ -20,6 +21,7 @@ while (<PDBIDS>) {
 	#Print i
 	chomp $_;
 	$insert->execute($_, "SwissProt");
+	print "Inserted $_\n";
 }
 close PDBIDS;
 $db->disconnect();
