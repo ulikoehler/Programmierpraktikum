@@ -5,12 +5,13 @@ use LWP::Simple;
 #Parse CLI arguments
 use Getopt::Std;
 my %options=();
-getopts("f:d:t:l:o:",\%options);
+getopts("f:d:t:l:o:p:",\%options);
 my $pdbId = $options{f};
 my $contactDistance = $options{d};
 my $atomType = $options{t};
 my $localContactSequenceDist = $options{l};
 my $outputFile = $options{o} || "$pdbId"; #Only prefix
+my $path = $options{p} || "."; 
 die "No pdb id\n" unless $pdbId;
 die "No contact distance\n" unless $contactDistance;
 die "No atom type\n" unless $atomType;
@@ -143,7 +144,7 @@ open (MYFILE, '>>'.$pdbId.'.sscc');
 print MYFILE $ssccOut;
 close (MYFILE);
 #Visualize
-my $plot = `./plotMatrix $outputFile $ATOMcounter`;
+my $plot = `$path/plotMatrix $outputFile $ATOMcounter`;
 
 
 print $ssccOut;

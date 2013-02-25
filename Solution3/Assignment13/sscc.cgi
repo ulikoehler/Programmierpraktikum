@@ -26,8 +26,8 @@ die "No localcontactsequencedistance given!\n" unless $localContactSequenceDist;
 #Execute the ORF script
 my $bindir = "/home/k/koehleru/Programmierpraktikum/Solution3/Assignment12/";
 #orf_finder needs gnuplot script
-my $imageFilename = "images/".(time()).".jpg";
-my $output = `$bindir/makesscc -o $imageFilename -f $pdbid -d $contactDistance -t $atomType -l $localContactSequenceDist`;
+my $imageFilename = "images/".(time());
+my $output = `$bindir/makesscc -p -o $imageFilename -f $pdbid -d $contactDistance -t $atomType -l $localContactSequenceDist`;
 #Find the sequence IDs of the forward and reverse sequences
 #Print the HTML prototype
 print <<"EOHTML"
@@ -57,7 +57,7 @@ a:hover { text-decoration: none; color: #C00; background: #FC0; }
  </div>
  <div id="body">
   <h2>makesscc Output for PDB $pdbid:</2>
-  <img src="$imageFilename"></img>
+  <img src="$imageFilename.png" width="400"></img>
   <pre style="font-weight:normal;">
   $output
   </pre>
@@ -65,3 +65,5 @@ a:hover { text-decoration: none; color: #C00; background: #FC0; }
 </html>
 EOHTML
 ;
+#Delete temp files
+`rm $pdbId.sscc DistanceMatrix_$pdbId ContactMatrix_$pdbId`;
