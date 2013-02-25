@@ -26,11 +26,13 @@ a:hover { text-decoration: none; color: #C00; background: #FC0; }
 <script type='text/javascript' src='js/jquery-ui.js'></script>
 <script type='text/javascript'>
 $(function() {
+$( ".accordion" ).accordion();
     $( "#proteinId" ).autocomplete({
 	source: function( request, response ) {
           $.getJSON( "get_autocomplete_ids.cgi", {
             limit:10,
-	     prefix: request.term
+	     prefix: request.term,
+	     db: $("#dbselect").val()
           }, response);
         },
       select: function( event, ui ) {
@@ -48,8 +50,17 @@ $(function() {
  </div>
  <div id="body">
   <h2>Bioinformatics tools</h2>
+  <div class="accordion">
+  <h3>Select protein ID</h3>
+  <div>
   <form method="get" action="get_pdb.cgi">
-	ID: <input id="proteinId" /><input type="submit" value="Info"/>
+      <select id="dbselect" name="db">
+	<option>PDB</option>
+	<option>SwissProt</option>
+	</select>
+	<input id="proteinId" /><input type="submit" value="Info"/>
   </form>
+  </div>
+  </div>
 </body>
 </html>
