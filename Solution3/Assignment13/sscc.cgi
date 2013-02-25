@@ -57,7 +57,7 @@ a:hover { text-decoration: none; color: #C00; background: #FC0; }
  </div>
  <div id="body">
   <h2>makesscc Output for PDB $pdbid:</h2>
-  <img src="$imageFilename.jpeg" alt="This protein does not support this operation" width="400"></img>
+  <img src="$imageFilename.png" alt="This protein does not support this operation" width="400"></img>
   <pre style="font-weight:normal;">
   $output
   </pre>
