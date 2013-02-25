@@ -57,7 +57,7 @@ a:hover { text-decoration: none; color: #C00; background: #FC0; }
  </div>
  <div id="body">
   <h2>makesscc Output for PDB $pdbid:</h2>
-  <img src="$imageFilename.png" width="400"></img>
+  <img src="$imageFilename.jpeg" width="400"></img>
   <pre style="font-weight:normal;">
   $output
   </pre>
@@ -66,4 +66,4 @@ a:hover { text-decoration: none; color: #C00; background: #FC0; }
 EOHTML
 ;
 #Delete temp files
-`rm $pdbid.sscc DistanceMatrix_$pdbid ContactMatrix_$pdbid`;
+#`rm $pdbid.sscc DistanceMatrix_$pdbid ContactMatrix_$pdbid`;

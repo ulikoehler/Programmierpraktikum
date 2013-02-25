@@ -1,7 +1,7 @@
 #!/bin/bash
 
 echo -e "reset
-set terminal pngcairo  transparent enhanced font \"arial,10\" fontscale 1.0 size 500, 350 
+set terminal jpeg transparent enhanced font \"arial,10\" fontscale 1.0 size 500, 350 
 set output '$3.png'
 unset key
 set view map
