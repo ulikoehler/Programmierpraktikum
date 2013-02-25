@@ -14,7 +14,7 @@ my $db =  DBI->connect('DBI:mysql:bioprakt4;host=mysql2-ext.bio.ifi.lmu.de', 'bi
 #Alignment queries
 ##
 #Query 1: Where the pdbid is the 'main' protein
-my $aquery = $db->prepare("SELECT DISTINCT * FROM SecStructAlign WHERE FromDBId LIKE ? AND ToDBId LIKE ? AND EntryType = 'Alignment'");
+my $aquery = $db->prepare("SELECT DISTINCT * FROM SecStructAlign S1, SecStructAlign S2 WHERE S1.SeqIdentifier = ? AND S2.SeqIdentifier = ? AND S1.AlignmentIdentifier = S2.AlignmentIdenfier;");
 $aquery->execute(lc($pdbId1)."%", lc($pdbId2)."%");
 ##
 #Structure queries

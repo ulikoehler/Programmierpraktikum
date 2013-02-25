@@ -11,14 +11,14 @@ my $db =  DBI->connect('DBI:mysql:bioprakt4;host=mysql2-ext.bio.ifi.lmu.de', 'bi
 #Alignment queries
 ##
 #Query 1: Where the pdbid is the 'main' protein
-my $aquery = $db->prepare("SELECT DISTINCT * FROM SecStructAlign WHERE (FromDBId LIKE ? OR ToDBId LIKE ?) AND EntryType = 'Alignment'");
+my $aquery = $db->prepare("SELECT DISTINCT * FROM SecStructAlign WHERE SeqIdentifier LIKE ? AND Type = 'Alignment'");
 my $dbIdQuery = lc($pdbId)."%";
 $aquery->execute($dbIdQuery, $dbIdQuery);
 ##
 #Structure queries
 ##
 #Query 1: Where the pdbid is the 'main' protein
-my $squery = $db->prepare("SELECT * FROM SecStructAlign WHERE FromDBId LIKE ? AND EntryType = 'Secondary Structure'");
+my $squery = $db->prepare("SELECT * FROM SecStructAlign WHERE SeqIdentifier LIKE ? AND Type = 'Secondary Structure'");
 $squery->execute(lc($pdbId)."%");
 print header("text/html");
 print <<"EOHTML"
