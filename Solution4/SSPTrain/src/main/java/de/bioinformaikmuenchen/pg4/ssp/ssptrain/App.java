@@ -1,5 +1,5 @@
 /**
- * Implement  * the GOR secondary structure prediction method as discussed in the
+ * Implement the GOR secondary structure prediction method as discussed in the
  * papers/slides on the homepage. Start with GOR I and advance to GOR III&IV, finally
  * implement GOR V. The secondary structure elements must be predicted in three states
  * H=Helix, E=Sheet and C=Coil. For every sequence position, you should also:
@@ -25,29 +25,21 @@
  *  --db <dssp-file>                        path to training file
  *  --method <gor1|gor3|gor4>              method
  *  --model <model-file>                    model file output
- * java -jar predict.jar
- *  --probabilities
- *  --model <model file>                    trained model file
- *  --format <txt|html>                     txt: output of sequence,secondary structure as plaintext
- *                                           html: html output --probabilities include the probabilities in the output (0-9, coloring in html)
- *  --seq <fasta file>                      input file in Fasta format (GOR I-IV)
- *  --maf <multiple-alignment-folder>     path to directory with .aln files (GOR V)
  * 
  * For GORV, a multiple alignment must be given by the parameter --maf. If called with
  * no (or wrong) parameters, your command line tools must output these help texts.
  * The output of predict.jar must be written to stdout in all cases.
  */
-
-package de.bioinformatikmuenchen.pg4.ssp;
+package de.bioinformaikmuenchen.pg4.ssp.ssptrain;
 
 /**
- * SSP
+ * SSP Train
  *
  */
 public class App 
 {
     public static void main( String[] args )
     {
-        System.out.println(de.bioinformaikmuenchen.pg4.common.AminoAcid.AS.length);
+        
     }
 }
