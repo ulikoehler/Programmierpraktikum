@@ -2,8 +2,11 @@ package de.bioinformatikmuenchen.pg4.alignment;
 
 import java.io.OutputStream;
 import java.io.PrintWriter;
+import org.apache.commons.cli.CommandLine;
 import org.apache.commons.cli.CommandLineParser;
+import org.apache.commons.cli.HelpFormatter;
 import org.apache.commons.cli.Options;
+import org.apache.commons.cli.ParseException;
 import org.apache.commons.cli.PosixParser;
 
 /**
@@ -14,20 +17,19 @@ public class AlignmentMain {
 
     public static void main(String[] args) {
         //Which opts are available
-        final Options gnuOptions = new Options();
-        gnuOptions.addOption("p", "print", false, "Option for printing")
+        final Options options = new Options();
+        options.addOption("p", "print", false, "Option for printing")
                 .addOption("g", "gui", false, "HMI option")
                 .addOption("n", true, "Number of copies");
         //Parse the opts
         final CommandLineParser cmdLinePosixParser = new PosixParser();
         CommandLine commandLine;
         try {
-            commandLine = cmdLinePosixParser.parse(posixOptions, commandLineArguments);
+            commandLine = cmdLinePosixParser.parse(options, args);
             if (commandLine.hasOption("display")) {
                 System.out.println("You want a display!");
             }
-        } catch (ParseException parseException) // checked exception  
-        {
+        } catch (ParseException parseException) {
             System.err.println(
                     "Encountered exception while parsing using PosixParser:\n"
                     + parseException.getMessage());
