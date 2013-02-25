@@ -144,7 +144,7 @@ open (MYFILE, '>>'.$pdbId.'.sscc');
 print MYFILE $ssccOut;
 close (MYFILE);
 #Visualize
-my $plot = `$path/plotMatrix $outputFile $ATOMcounter`;
+my $plot = `$path/plotMatrix DistanceMatrix_$pdbId $ATOMcounter $outputFile`;
 
 
 print $ssccOut;
