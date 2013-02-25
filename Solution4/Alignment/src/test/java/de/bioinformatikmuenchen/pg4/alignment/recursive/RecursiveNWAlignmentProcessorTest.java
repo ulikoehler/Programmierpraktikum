@@ -35,19 +35,18 @@ public class RecursiveNWAlignmentProcessorTest extends TestCase {
     }
 
     //Wikipedia does not provide the correct alignment
-//    /**
-//     * Test of align method, of class RecursiveNWAlignmentProcessor.
-//     */
-//    public void testAlignWikiepdia() {
-//        Sequence seq1Obj = new Sequence("AGACTAGTTAC");
-//        Sequence seq2Obj = new Sequence("CGAGACGT");
-//        IDistanceMatrix matrix = new WikipediaAlignmentMatrix1();
-//        IGapCost gapCost = new ConstantGapCost(-5);
-//        RecursiveNWAlignmentProcessor instance = new RecursiveNWAlignmentProcessor(AlignmentMode.GLOBAL, AlignmentAlgorithm.NEEDLEMAN_WUNSCH, matrix, gapCost);
-//        AlignmentResult result = instance.align(seq1Obj, seq2Obj);
-//        assertEquals(16.0, result.getScore()); //Assuming this is correct
-//
-//    }
+    /**
+     * Test of align method, of class RecursiveNWAlignmentProcessor.
+     */
+    public void testAlignWikiepdia() {
+        Sequence seq1Obj = new Sequence("AGACTAGTTAC");
+        Sequence seq2Obj = new Sequence("CGAGACGT");
+        IDistanceMatrix matrix = new WikipediaAlignmentMatrix1();
+        IGapCost gapCost = new ConstantGapCost(-5);
+        RecursiveNWAlignmentProcessor instance = new RecursiveNWAlignmentProcessor(AlignmentMode.GLOBAL, AlignmentAlgorithm.NEEDLEMAN_WUNSCH, matrix, gapCost);
+        AlignmentResult result = instance.align(seq1Obj, seq2Obj);
+        assertEquals(16.0, result.getScore()); //Assuming this is correct
+    }
 
     /**
      * Test of align method, of class RecursiveNWAlignmentProcessor.
@@ -63,9 +62,9 @@ public class RecursiveNWAlignmentProcessorTest extends TestCase {
         assertEquals(6.0, result.getScore());
     }
     
-        /**
+    /**
      * Test of align method, of class RecursiveNWAlignmentProcessor.
-     * http://www.avatar.se/molbioinfo2001/dynprog/dynamic.html
+     * Just something with high match rate.
      */
     public void testAlignSimple() {
         Sequence seq1Obj = new Sequence("GAATT");
