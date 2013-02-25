@@ -8,6 +8,7 @@ package de.bioinformatikmuenchen.pg4.alignment;
  *
  * @author koehleru
  */
-public class AlignmentProcessor {
-    
+public abstract class AlignmentProcessor {
+    private AlignmentMode mode;
+    private AlignmentAlgorithm algorithm;
 }
