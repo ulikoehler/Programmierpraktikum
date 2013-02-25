@@ -29,8 +29,8 @@ public class AlignmentMain {
             if (commandLine.hasOption("display")) {
                 System.out.println("You want a display!");
             }
-        } catch (ParseException parseException) // checked exception  
-        {
+        } catch (ParseException parseException) { // checked exception  
+        
             System.err.println(
                     "Encountered exception while parsing using PosixParser:\n"
                     + parseException.getMessage());
