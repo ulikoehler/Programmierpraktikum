@@ -17,19 +17,20 @@ public class AlignmentMain {
 
     public static void main(String[] args) {
         //Which opts are available
-        final Options options = new Options();
-        options.addOption("p", "print", false, "Option for printing")
+        final Options opts = new Options();
+        opts.addOption("p", "print", false, "Option for printing")
                 .addOption("g", "gui", false, "HMI option")
                 .addOption("n", true, "Number of copies");
         //Parse the opts
         final CommandLineParser cmdLinePosixParser = new PosixParser();
         CommandLine commandLine;
         try {
-            commandLine = cmdLinePosixParser.parse(options, args);
+            commandLine = cmdLinePosixParser.parse(opts, args);
             if (commandLine.hasOption("display")) {
                 System.out.println("You want a display!");
             }
-        } catch (ParseException parseException) {
+        } catch (ParseException parseException) // checked exception  
+        {
             System.err.println(
                     "Encountered exception while parsing using PosixParser:\n"
                     + parseException.getMessage());
