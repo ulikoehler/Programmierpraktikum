@@ -35,4 +35,5 @@ public class AminoAcid {
         "leucine", "lysine", "methionine", "phenylalanine", "proline", "serine",
         "threonine", "tryptophan", "tyrosine", "valine"
     };
+    
 }
