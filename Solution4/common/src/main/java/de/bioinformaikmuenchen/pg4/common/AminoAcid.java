@@ -22,8 +22,8 @@ public class AminoAcid {
     public static String[] AC3 = {
         "ala", "arg", "asn", "asp", "asx", "cys",
         "glu", "gln", "glx", "gly", "his", "ile",
-        "leu", "lys", "met", "phe", "pro", 'ser',
-        "thr", 'trp', "tyr", "val"
+        "leu", "lys", "met", "phe", "pro", "ser",
+        "thr", "trp", "tyr", "val"
     };
     
     /**
