@@ -1,0 +1,14 @@
+#! /bin/bash
+
+url=http://www.bio.ifi.lmu.de/webfm_send/3308
+
+while true; do
+  wget -q -S --spider $url -o tmp
+  grep -q -e "HTTP/1.1 404 Not Found" < tmp
+  if [ $? != 0 ]
+  then
+    zenity --info --text "$url available!"
+    exit
+  fi
+  sleep 1m
+done
