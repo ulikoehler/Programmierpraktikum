@@ -16,10 +16,10 @@ die "No contact distance\n" unless $contactDistance;
 die "No atom type\n" unless $atomType;
 die "No local contact dist\n" unless $localContactSequenceDist;
 #We have enough arguments, so parse them and start downloading
-my $pdbFile = get ("http://www.rcsb.org/pdb/download/downloadFile.do?fileFormat=pdb&compression=NO&structureId=".$ARGV[0]) or die "Enter a correct PDB-ID!\n";
+my $pdbFile = get ("http://www.rcsb.org/pdb/download/downloadFile.do?fileFormat=pdb&compression=NO&structureId=".$pdbId) or die "Enter a correct PDB-ID!\n";
 
 #get the AA sequence as fasta in 1letter code:
-my $oneLetterAASequenceRaw = get ("http://www.rcsb.org/pdb/files/fasta.txt?structureIdList=".$ARGV[0]);
+my $oneLetterAASequenceRaw = get ("http://www.rcsb.org/pdb/files/fasta.txt?structureIdList=".$pdbId);
 my %fastaHeaders;
 my $fastaHeadersCount = 0;
 while($oneLetterAASequenceRaw =~ m/(>.+)/g){
@@ -48,7 +48,7 @@ while($pdbFile =~ m/ATOM\s+\d+\s+(\w+)\s+(\w{3}).+?(\d+).+?(-*\d+\.\d+)\s+(-*\d+
 		$aaCounter++;
 		$lastAAchange = $3;
 	}
-	if($1 eq $ARGV[2]){
+	if($1 eq $atomType){
 		$ATOMcounter++;
 		push(@coordinates, [$2, $4, $5, $6]);#$1 = 3letter AA code, $2 = AA counter,  $4-6 = x,y,z
 	}
@@ -91,9 +91,9 @@ for(my $i=0;$i<$ATOMcounter;$i++){
 		my $z2 = ${coordinates[$j]}[3];
 		my $distance = sqrt((($x2-$x1)*($x2-$x1))+(($y2-$y1)*($y2-$y1))+(($z2-$z1)*($z2-$z1)));
 		${distanceMatrix[$i]}[$j] = $distance;
-		if($distance<=$ARGV[1]){
+		if($distance<=$contactDistance){
 			${$contactMatrix[$i]}[$j] = 1;
-			if(abs($i-$j)<=$ARGV[3]){
+			if(abs($i-$j)<=$localContactSequenceDist){
 				$localContacts++;
 			}
 			else{
@@ -131,19 +131,19 @@ for(my $k=0;$k<$ATOMcounter;$k++){
 }
 #####put data to files:
 
-open (MYFILE, '>>ContactMatrix_'.($ARGV[0]));
+open (MYFILE, '>>ContactMatrix_'.($pdbId));
 print MYFILE $contMatrix;
 close (MYFILE);
 
-open (MYFILE, '>>DistanceMatrix_'.($ARGV[0]));
+open (MYFILE, '>>DistanceMatrix_'.($pdbId));
 print MYFILE $distMatrix;
 close (MYFILE);
 
-open (MYFILE, '>>'.$ARGV[0].'.sscc');
+open (MYFILE, '>>'.$pdbId.'.sscc');
 print MYFILE $ssccOut;
 close (MYFILE);
 
-my $plot = `./plotMatrix 'DistanceMatrix_'.$ARGV[0] $ATOMcounter`;
+my $plot = `./plotMatrix $outputFile $ATOMcounter`;
 
 print $ssccOut;
 
