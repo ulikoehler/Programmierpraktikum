@@ -1,6 +1,7 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
+/**
+ * As specificated we should implement an alignment
+ * 
+ * 
  */
 package alignments;
 
