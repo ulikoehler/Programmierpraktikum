@@ -1,7 +1,7 @@
 #!/usr/bin/perl -w
 #Initialize CGI parser
 use CGI qw(:standard);
-print header;
+print header("application/json");
 use DBI;
 #print header("text/plain");
 #
@@ -14,7 +14,7 @@ my $query = $db->prepare("SELECT IDAutocomplete.Name FROM IDAutocomplete INNER J
 print "[";
 if ($db eq "pdb") {
 	my $isFirstLine = 1;
-	my $result = $query->execute($prefix."%",$database,$limit)
+	my $result = $query->execute($prefix."%",$database,$limit);
 	while (my $row = $result->fetchrow_hashref()) {
 		print "," unless $isFirstLine;
 		$isFirstLine = 0;
