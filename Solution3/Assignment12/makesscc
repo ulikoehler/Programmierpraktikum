@@ -2,17 +2,148 @@
 use strict;
 use LWP::Simple;
 
-my $argc = @ARGV;
-#Check if we have enough arguments
-die "Usage: -f PDB-ID\n-d Kontaktdistanz\n-t Atomart, die für die Berechnung der Distanzen verwendet wird\n-l Sequenzdistanz für lokale Kontakte" unless $argc == 4;
+#Parse CLI arguments
+use Getopt::Std;
+my %options=();
+getopts("f:d:t:l:o:",\%options);
+my $pdbId = $options{f};
+my $contactDistance = $options{d};
+my $atomType = $options{t};
+my $localContactSequenceDist = $options{l};
+my $outputFile = $options{o} || "sscc.jpg";
+die "No pdb id\n" unless $pdbId;
+die "No contact distance\n" unless $contactDistance;
+die "No atom type\n" unless $atomType;
+die "No local contact dist\n" unless $localContactSequenceDist;
 #We have enough arguments, so parse them and start downloading
-
 my $pdbFile = get ("http://www.rcsb.org/pdb/download/downloadFile.do?fileFormat=pdb&compression=NO&structureId=".$ARGV[0]) or die "Enter a correct PDB-ID!\n";
 
-my $ATOMcounter = 0;
-
-while($pdbFile =~ m/ATOM\s+\d+/g){
-	$ATOMcounter++;
+#get the AA sequence as fasta in 1letter code:
+my $oneLetterAASequenceRaw = get ("http://www.rcsb.org/pdb/files/fasta.txt?structureIdList=".$ARGV[0]);
+my %fastaHeaders;
+my $fastaHeadersCount = 0;
+while($oneLetterAASequenceRaw =~ m/(>.+)/g){
+	$fastaHeaders{$-[0]} .= $+[0];
+	$fastaHeadersCount++;
 }
 
-print $ATOMcounter;
+##remove fasta-headers:
+my $oneLetterAASequence;
+for(my $i=0;$i<length($oneLetterAASequenceRaw);$i++){
+	if(defined $fastaHeaders{$i}){$i = ($fastaHeaders{$i}+1);}
+	$oneLetterAASequence .= substr($oneLetterAASequenceRaw, $i, 1);
+	chomp $oneLetterAASequence;
+}
+
+my $ATOMcounter;#counts occurences of ATOM lines
+my @coordinates;#stores atom coordinates
+my $aaCounter = 0;
+my $lastAAchange = -1;
+my %startPosOfNewAA;#stores start positions of new aa
+
+#run the regex over $pdbFile to get coordinates of the ATOMs
+while($pdbFile =~ m/ATOM\s+\d+\s+(\w+)\s+(\w{3}).+?(\d+).+?(-*\d+\.\d+)\s+(-*\d+\.\d+)\s+(-*\d+\.\d+)/g){
+	if($lastAAchange != $3){
+		$startPosOfNewAA{$3} .= substr($oneLetterAASequence, $aaCounter, 1);
+		$aaCounter++;
+		$lastAAchange = $3;
+	}
+	if($1 eq $ARGV[2]){
+		$ATOMcounter++;
+		push(@coordinates, [$2, $4, $5, $6]);#$1 = 3letter AA code, $2 = AA counter,  $4-6 = x,y,z
+	}
+}
+
+my @helixStart;
+my @helixStop;
+my $helixCounter = 0;
+##get HELIX positions:
+while ($pdbFile =~ m/HELIX\s+\d+\s+\d+\s+.+?(\d+).+?(\d+)/g){
+	push(@helixStart, $1);
+	push(@helixStop, $2);
+	$helixCounter++;	
+}
+
+my @sheetStart;
+my @sheetStop;
+my $sheetCounter = 0;
+##get SHEET positions:	#SHEET    2   A 8 VAL A  96  ALA A  98  1  O  VAL A  96   N  LYS A   5 
+while ($pdbFile =~ m/SHEET\s+\d+\s+.+?\w{3}.+?(\d+)\s+\w{3}.+?(\d+).+/g){
+	push(@sheetStart, $1);
+	push(@sheetStop, $2);
+	$sheetCounter++;	
+}
+
+my $ssccOut = "AA\tH/S\tloc.\tglob.\n";
+
+###make contact matrix:
+my @contactMatrix = ([(1) x $ATOMcounter], [(1) x $ATOMcounter]);
+my @distanceMatrix = ([(1) x $ATOMcounter], [(1) x $ATOMcounter]);
+for(my $i=0;$i<$ATOMcounter;$i++){
+	my $x1 = ${coordinates[$i]}[1];
+	my $y1 = ${coordinates[$i]}[2];
+	my $z1 = ${coordinates[$i]}[3];
+	my $localContacts = 0;
+	my $globalContacts = 0;
+	for(my $j=0; $j<$ATOMcounter;$j++){
+		my $x2 = ${coordinates[$j]}[1];
+		my $y2 = ${coordinates[$j]}[2];
+		my $z2 = ${coordinates[$j]}[3];
+		my $distance = sqrt((($x2-$x1)*($x2-$x1))+(($y2-$y1)*($y2-$y1))+(($z2-$z1)*($z2-$z1)));
+		${distanceMatrix[$i]}[$j] = $distance;
+		if($distance<=$ARGV[1]){
+			${$contactMatrix[$i]}[$j] = 1;
+			if(abs($i-$j)<=$ARGV[3]){
+				$localContacts++;
+			}
+			else{
+				$globalContacts++;
+			}
+		}
+		else{
+			${$contactMatrix[$i]}[$j] = 0;
+		}
+	}
+	my $secStrutProperty = "-----";
+	for(my $k=0;$k<$helixCounter;$k++){
+		if($i>=$helixStart[$k] && $i<=$helixStop[$k]){
+			$secStrutProperty = "HELIX";
+			last;
+		}
+	}
+	for(my $k=0;$k<$sheetCounter;$k++){
+		if($i>=$sheetStart[$k] && $i<=$sheetStop[$k]){
+			$secStrutProperty = "SHEET";
+			last;
+		}
+	}
+	$ssccOut .= (substr($oneLetterAASequence, $i, 1)."\t".$secStrutProperty."\t".$localContacts."\t".$globalContacts)."\n";
+}
+my $distMatrix;
+my $contMatrix;
+for(my $k=0;$k<$ATOMcounter;$k++){
+	for(my $l=0;$l<$ATOMcounter;$l++){
+		$distMatrix .= (${distanceMatrix[$k]}[$l])." ";
+		$contMatrix .= (${$contactMatrix[$k]}[$l])." ";
+	}
+	$distMatrix .= "\n";
+	$contMatrix .= "\n";
+}
+#####put data to files:
+
+open (MYFILE, '>>ContactMatrix_'.($ARGV[0]));
+print MYFILE $contMatrix;
+close (MYFILE);
+
+open (MYFILE, '>>DistanceMatrix_'.($ARGV[0]));
+print MYFILE $distMatrix;
+close (MYFILE);
+
+open (MYFILE, '>>'.$ARGV[0].'.sscc');
+print MYFILE $ssccOut;
+close (MYFILE);
+
+my $plot = `./plotMatrix 'DistanceMatrix_'.$ARGV[0] $ATOMcounter`;
+
+print $ssccOut;
+
