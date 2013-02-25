@@ -13,11 +13,19 @@ public class Sequence {
     private String id;
     private String sequence;
 
+    public Sequence(String sequence) {
+        this.id = id;
+        this.sequence = sequence;
+    }
+
     public Sequence(String id, String sequence) {
         this.id = id;
         this.sequence = sequence;
     }
 
+    /**
+     * @return The id, may be null
+     */
     public String getId() {
         return id;
     }
