@@ -10,7 +10,7 @@ my $pdbId = $options{f};
 my $contactDistance = $options{d};
 my $atomType = $options{t};
 my $localContactSequenceDist = $options{l};
-my $outputFile = $options{o} || "sscc.jpg";
+my $outputFile = $options{o} || "$pdbId"; #Only prefix
 die "No pdb id\n" unless $pdbId;
 die "No contact distance\n" unless $contactDistance;
 die "No atom type\n" unless $atomType;
@@ -142,8 +142,9 @@ close (MYFILE);
 open (MYFILE, '>>'.$pdbId.'.sscc');
 print MYFILE $ssccOut;
 close (MYFILE);
-
+#Visualize
 my $plot = `./plotMatrix $outputFile $ATOMcounter`;
+
 
 print $ssccOut;
 
