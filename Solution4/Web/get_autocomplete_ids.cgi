@@ -1,10 +1,9 @@
 #!/usr/bin/perl -w
-use strict;
-use CGI::Carp qw(fatalsToBrowser);
+#Initialize CGI parser
 use CGI qw(:standard);
-print header("application/json");
-die "adb";
-#Parse params
+print header;
+#print header("text/plain");
+#
 my $limit = param("limit") || 100;
 my $db = "pdb";
 #Write header
