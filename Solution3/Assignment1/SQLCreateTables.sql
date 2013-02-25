@@ -33,17 +33,16 @@ CREATE TABLE Orf (
   FOREIGN KEY(SeqId) references Seq(Id)
 );
 CREATE TABLE SecStructAlign (
-  Id INT NOT NULL PRIMARY KEY AUTO_INCREMENT,
-  DBId INT NOT NULL,
-  FromDBId VARCHAR(50) NOT NULL,
-  ToDBId VARCHAR(50) ,
-  EntryType ENUM('Alignment', 'Secondary Structure'),
-  Type TEXT,
-  Content LONGTEXT,
-  INDEX(FromDBId),
-  INDEX(EntryType),
-  FULLTEXT(Type),
-  FOREIGN KEY(DBId) references DB(Id)
+  Id INT NOT NULL AUTO_INCREMENT,
+  AlignmentIdentifier INT NOT NULL,
+  SeqIdentifier INT NOT NULL,
+  OrganismId INT NOT NULL,
+  Content TEXT,
+  DBId INT,
+  Type VARCHAR(50),
+  PRIMARY KEY(Id),
+  FOREIGN KEY(DBId) references DB(Id),
+  FOREIGN KEY(OrganismId) references Organism(Id)
 );
 CREATE TABLE KeySeq (
   KeywordsId INT,
