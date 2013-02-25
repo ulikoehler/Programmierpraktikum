@@ -1,6 +1,7 @@
 #!/usr/bin/perl -w
 #Import stuff into autocomplete database
 use strict;
+use DBI;
 use Getopt::Std;
 #Subs
 my $db = DBI->connect('DBI:mysql:bioprakt4;host=mysql2-ext.bio.ifi.lmu.de', 'bioprakt4', 'vGI5GCMg0x') || die "Could not connect to database: $DBI::errstr";

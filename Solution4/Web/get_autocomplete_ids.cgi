@@ -2,6 +2,7 @@
 #Initialize CGI parser
 use CGI qw(:standard);
 print header;
+use DBI;
 #print header("text/plain");
 #
 my $limit = param("limit") || 100;
