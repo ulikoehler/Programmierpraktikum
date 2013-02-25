@@ -24,8 +24,17 @@ public class RecursiveNWAlignmentProcessor extends AlignmentProcessor {
     private String seq1;
     private String seq2;
 
+    /**
+     * Checks if the mode and algorithm is correct
+     */
+    private void checkModeAndAlgorithm() {
+        assert mode == AlignmentMode.GLOBAL : "Illegal alignment mode: " + mode;
+        assert algorithm == AlignmentAlgorithm.NEEDLEMAN_WUNSCH : "Illegal alignment mode: " + mode;
+    }
+
     public RecursiveNWAlignmentProcessor(AlignmentMode mode, AlignmentAlgorithm algorithm, IDistanceMatrix distanceMatrix, IGapCost gapCost, IAlignmentOutputFormatter outputFormatter) {
         super(mode, algorithm, distanceMatrix, gapCost, outputFormatter);
+        checkModeAndAlgorithm();
     }
 
     /**
@@ -36,6 +45,7 @@ public class RecursiveNWAlignmentProcessor extends AlignmentProcessor {
      */
     public RecursiveNWAlignmentProcessor(AlignmentMode mode, AlignmentAlgorithm algorithm, IDistanceMatrix distanceMatrix, IGapCost gapCost) {
         super(mode, algorithm, distanceMatrix, gapCost);
+        checkModeAndAlgorithm();
     }
 
     private double calculateScoreRecursive(int x, int y) {
