@@ -16,7 +16,7 @@ set yrange [ 0.0 : 300.0 ] noreverse nowriteback
 set cblabel \"Score\" 
 set cbrange [ 0.00000 : 10.00000 ] noreverse nowriteback
 set palette rgbformulae -8, 2, -8
-splot 'DistanceMatrix_3H9U' matrix with image" > data
+splot '$1' matrix with image" > data
 
 gnuplot < data
 
