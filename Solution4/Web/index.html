@@ -16,10 +16,29 @@ a:link { text-decoration: none; font-weight: bold; color: #C00; background: #ffc
 a:visited { text-decoration: none; font-weight: bold; color: #999; background: #ffc; }
 a:active { text-decoration: none; font-weight: bold; color: #F00; background: #FC0; }
 a:hover { text-decoration: none; color: #C00; background: #FC0; }
+.ui-autocomplete-loading {
+    background: white url('css/ui-lightness/images/ui-anim_basic_16x16.gif') right center no-repeat;
+}
 </style>
 <!-- JS -->
-<script type='text/javascript' src='jquery.js'></script>
-<script type='text/javascript' src='jquery-ui.js'></script>
+<script type='text/javascript' src='js/jquery.js'></script>
+<script type='text/javascript' src='js/jquery-ui.js'></script>
+<script type='text/javascript'>
+$(function() {
+    $( "#proteinId" ).autocomplete({
+	source: function( request, response ) {
+          $.getJSON( "get_autocomplete_ids.cgi", {
+            limit:10,
+	     prefix: request.term
+          }, response);
+        },
+      select: function( event, ui ) {
+           //"Selected: " + ui.item.value + " aka " + ui.item.id :
+          //"Nothing selected, input was " + this.value );
+      }
+    });
+});
+</script>
 </head>
 <body>
 <div id="page">
@@ -28,75 +47,8 @@ a:hover { text-decoration: none; color: #C00; background: #FC0; }
  </div>
  <div id="body">
   <h2>Bioinformatics tools</h2>
-  <h3>Download</h3>
   <form method="get" action="get_pdb.cgi">
-	PDB ID: <input type="text" name="pdbid" cols="4" value="1ULI"/><input type="submit" value="Get PDB data"/>
-  </form>
-  
-  <h3>RenderIT</h3>
-  <b style="color: #AAF;'">&bdquo;The best quality PDB renderer webservice you can possibly find in this /24 subnet!&rdquo;</b><br/><br/>
-  <form method="get" action="render_pymol.cgi">
-	PDB ID: <input type="text" name="pdbid" cols="4" value="1ULI"/><input type="submit" value="Render"/>
-  </form>
-    
-  <h3>Import organism genome data into database </h3>
-  <form method="get" action="genome_db.cgi">
-	Organism (<b>only bacteria!</b>): <input type="text" name="organism" cols="4" value="Mycoplasma genitalium"/><input type="submit" value="Find"/>
-  </form>
-  
-  <h3>Find prosite pattern in database: </h3>
-  <form method="get" action="prosite-pattern.cgi">
-	Pattern: <input type="text" name="pattern" cols="4" value="P-P-x-x"/><input type="submit" value="Find"/>
-  </form>
-  
-  <h3>Find AC numbers containing a keyword:</h3>
-  <form method="get" action="search_keyword.cgi">
-	Keyword: <input type="text" name="keyword" cols="4" value="Antigen"/><input type="submit" value="Find"/>
-  </form>
-
-  <h3>Get sequence by ID (e.g. AC Number)	:</h3>
-  <form method="get" action="get_sequence.cgi">
-	ID: <input type="text" name="id" cols="4" value="Q9Y2H6"/><input type="submit" value="Find"/>
-  </form>
-  
-  <h3>Generate SQL Histogram	:</h3>
-  <form method="get" action="histo_sql.cgi">
-	Upper bound: <input type="text" name="M" value="1000"/><br/>
-	Lower bound: <input type="text" name="m" value="100"/><br/>
-	Interval: <input type="text" name="c" value="10"/><br/><input type="submit" value="Generate"/>
-  </form>
-  
-    <h3>Find ORFs in sequence</h3>
-    <a href="chrI.txt">Test data - chrI of S. cerevisiae</a><br/>
-  <form action="orf.cgi" method="post" enctype="multipart/form-data">
-	<b>Plaintext</b> sequence file (<b>NOT FASTA!</b>):<input type="file" name="sequence"><br/>
-	<input type="submit" value="Find ORFs"/>
-  </form>
-  
-<h3>Find atom contacts in proteins</h3>
-  <form action="sscc.cgi" method="get">
-	PDBID: <input type="text" name="pdbid" value="3H9U"><br/>
-	Contact distance: <input type="text" name="contactdistance" value="5"><br/>
-	Atom type: <input type="text" name="atomtype" value="C"><br/>
-	Local contact sequence distance: <input type="text" name="localcontactsequencedistance" value="5"><br/>
-	<input type="submit" value="Find"/>
-  </form>
-  
-  <h3>Find <a href="http://tardis.nibio.go.jp/homstrad/">HOMSTRAD</a> info</h3>
-  <form method="get" action="homstrad.cgi">
-	Find single PDB ID: <input type="text" name="pdbid" cols="4" value="1BGX"/><input type="submit" value="Find"/>
-  </form>
-    <form method="get" action="homstrad_pair.cgi">
-	Show alignment of: <input type="text" name="pdbid1" cols="4" value="1BGXT"/> and <input type="text" name="pdbid2" cols="4" value="1BGX"/> <input type="submit" value="Find"/>
-  </form>
-  
-  <h3>BLAST a sequence in a self-supplied database</h3>
-  <b>Test data:</b>&nbsp;<a href="mgenitalium-proteome.fa">FASTA M. Genitalium complete proteome</a>&nbsp;|&nbsp;<a href="human-atp7b-coding-seq.fa">Human ATP7b coding sequence</a>&nbsp;|&nbsp;<a href="P00846.fasta"> ATP synthase subunit a (H Sapiens)</a><br/>
-  <form action="blastsearch.cgi" method="post" enctype="multipart/form-data">
-	<b>Query</b> is a: <input type="radio" name="type" value="prot" checked> Protein sequence<input type="radio" name="type" value="nucl"> Nucleotide sequence<br/>
-	Protein Database in FASTA format: <input type="file" name="database"><br/>
-	Query sequence (FASTA):<br/> <textarea name="query" cols="50" rows="20"></textarea><br/>
-	<input type="submit" value="Query">
+	ID: <input id="proteinId" /><input type="submit" value="Info"/>
   </form>
 </body>
 </html>

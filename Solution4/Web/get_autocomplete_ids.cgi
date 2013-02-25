@@ -5,6 +5,7 @@ print header;
 #print header("text/plain");
 #
 my $limit = param("limit") || 100;
+my $prefix = param("prefix") || "";
 my $db = "pdb";
 #Write header
 print "[";
@@ -13,6 +14,9 @@ if ($db eq "pdb") {
 	my $isFirstLine = 1;
 	my $entriesLeft  = $limit;
 	while (<PDBIDS>) {
+		#Check if it matches the prefix
+		next unless $_ =~ m/^$prefix/;
+		#Print i
 		chomp $_;
 		print "," unless $isFirstLine;
 		$isFirstLine = 0;
