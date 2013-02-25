@@ -14,7 +14,7 @@ public class Sequence {
     private String sequence;
 
     public Sequence(String sequence) {
-        this.id = id;
+        this.id = null;
         this.sequence = sequence;
     }
 

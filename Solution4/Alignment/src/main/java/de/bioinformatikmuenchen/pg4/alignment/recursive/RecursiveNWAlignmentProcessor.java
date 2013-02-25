@@ -50,9 +50,10 @@ public class RecursiveNWAlignmentProcessor extends AlignmentProcessor {
 
     private double calculateScoreRecursive(int x, int y) {
         if (x == 0) {
-            return gapCost.getGapCost(y);
+            //System.out.println(""+y+ "  " + y*gapCost.getGapCost(1));
+            return y * gapCost.getGapCost(1);
         } else if (y == 0) {
-            return gapCost.getGapCost(x);
+            return x * gapCost.getGapCost(1);
         } else { //We're not on the border
             double topScore = calculateScoreRecursive(x, y - 1) + gapCost.getGapCost(1);
             double leftScore = calculateScoreRecursive(x - 1, y) + gapCost.getGapCost(1);
@@ -67,9 +68,22 @@ public class RecursiveNWAlignmentProcessor extends AlignmentProcessor {
         seq2 = seq2Obj.getSequence();
         //This algorithm can only use constant gap costs
         assert gapCost instanceof ConstantGapCost : "Recursive implementation can use constant gap cost only";
-        double score = calculateScoreRecursive(seq1.length() - 1, seq2.length() - 1);
+        double score = calculateScoreRecursive(seq1.length(), seq2.length()); //0-based indices
+        //Debug: for every single field
+//        System.out.print("\t\t");
+//        for (int x = 0; x < seq1.length(); x++) {
+//            System.out.print(seq1.charAt(x) + "\t");
+//        }
+//        System.out.println("");
+//        for (int y = 0; y <= seq2.length(); y++) {
+//            System.out.print((y == 0 ? ' ' :seq2.charAt(y-1))+ "\t");
+//            for (int x = 0; x <= seq1.length(); x++) {
+//                System.out.print(calculateScoreRecursive(x, y) + "\t");
+//            }
+//            System.out.println("");
+//        }
         //Create and return the result
-        AlignmentResult res = new AlignmentResult();
+        AlignmentResult res = new AlignmentResult(score);
         return res;
     }
 }
