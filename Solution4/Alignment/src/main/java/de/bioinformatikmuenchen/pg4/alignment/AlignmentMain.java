@@ -18,9 +18,17 @@ public class AlignmentMain {
     public static void main(String[] args) {
         //Which opts are available
         final Options opts = new Options();
-        opts.addOption("p", "print", false, "Option for printing")
-                .addOption("g", "gui", false, "HMI option")
-                .addOption("n", true, "Number of copies");
+        opts.addOption("g", "go", true, "Gap open")
+                .addOption("h", "help", false, "Print help")
+                .addOption("e", "ge", true, "gapextend")
+                .addOption("d", "dpmatrices", true, "dpmatrices")
+                .addOption("p", "pair", true, "pairfile")
+                .addOption("s", "seqlib", true, "seqlibfile")
+                .addOption("n", "matrixname", true, "matrixname")
+                .addOption("m", "mode", true, "mode")
+                .addOption("u", "nw", true, "Use Needleman-Wunsch")
+                .addOption("c", "check", true, "Calculate checkscores")
+                .addOption("f", "format", true, "format");
         //Parse the opts
         final CommandLineParser cmdLinePosixParser = new PosixParser();
         CommandLine commandLine;
@@ -29,12 +37,13 @@ public class AlignmentMain {
             if (commandLine.hasOption("display")) {
                 System.out.println("You want a display!");
             }
-        } catch (ParseException parseException) { // checked exception  
-        
+        } catch (ParseException parseException) {    // checked exception  
             System.err.println(
                     "Encountered exception while parsing using PosixParser:\n"
                     + parseException.getMessage());
         }
+        //Check if the options are valid
+        
     }
 
     public static void printUsage(

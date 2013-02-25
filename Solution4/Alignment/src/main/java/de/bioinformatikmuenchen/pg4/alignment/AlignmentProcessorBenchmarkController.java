@@ -7,15 +7,25 @@ package de.bioinformatikmuenchen.pg4.alignment;
 import de.bioinformaikmuenchen.pg4.common.Sequence;
 
 /**
- * Alignment processor that proxies data to two inner processors.
- * For results, ap1 is always preferred
+ * Alignment processor that proxies data to two inner processors. For results,
+ * ap1 is always preferred
+ *
  * @author koehleru
  */
 public class AlignmentProcessorBenchmarkController<T1 extends AlignmentProcessor, T2 extends AlignmentProcessor> extends AlignmentProcessor {
+
     private T1 ap1;
     private T2 ap2;
-    private long t1AlignTime = 0;
-    private long t2AlignTime = 0;
+    private long ap1AlignTime = 0;
+    private long ap2AlignTime = 0;
+
+    public long getAp1AlignTime() {
+        return ap1AlignTime;
+    }
+
+    public long getAp2AlignTime() {
+        return ap2AlignTime;
+    }
 
     public AlignmentProcessorBenchmarkController(T1 ap1, T2 ap2) {
         this.ap1 = ap1;
@@ -25,13 +35,13 @@ public class AlignmentProcessorBenchmarkController<T1 extends AlignmentProcessor
     @Override
     public AlignmentResult align(Sequence seq1, Sequence seq2) {
         long before1 = System.currentTimeMillis();
-        AlignmentResult result = ap1.align(seq1, seq2);
+        AlignmentResult result1 = ap1.align(seq1, seq2);
         long after1 = System.currentTimeMillis();
         long before2 = System.currentTimeMillis();
         AlignmentResult result2 = ap2.align(seq1, seq2);
         long after2 = System.currentTimeMillis();
-        t2AlignTime = (after2 - before2);
-        t1AlignTime = (after1 - before1);
-        return result;
-    }    
+        ap2AlignTime += (after2 - before2);
+        ap1AlignTime += (after1 - before1);
+        return result1;
+    }
 }
