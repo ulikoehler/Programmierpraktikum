@@ -6,25 +6,19 @@ print header;
 #
 my $limit = param("limit") || 100;
 my $prefix = param("prefix") || "";
-my $db = "pdb";
+my $database = param("db") || "PDB";
+my $db = DBI->connect('DBI:mysql:bioprakt4;host=mysql2-ext.bio.ifi.lmu.de', 'bioprakt4', 'vGI5GCMg0x') || die "Could not connect to database: $DBI::errstr";
+my $query = $db->prepare("SELECT IDAutocomplete.Name FROM IDAutocomplete INNER JOIN DB ON DB.Id = IDAutocomplete.DBId WHERE IDAutocomplete.Name LIKE ? AND DB.Name = ? LIMIT ?");
 #Write header
 print "[";
 if ($db eq "pdb") {
-	open PDBIDS, "<pdbids" or die $!;
 	my $isFirstLine = 1;
-	my $entriesLeft  = $limit;
-	while (<PDBIDS>) {
-		#Check if it matches the prefix
-		next unless $_ =~ m/^$prefix/;
-		#Print i
-		chomp $_;
+	my $result = $query->execute($prefix."%",$database,$limit)
+	while (my $row = $result->fetchrow_hashref()) {
 		print "," unless $isFirstLine;
 		$isFirstLine = 0;
-		$entriesLeft--;
-		print "\"$_\"";
-		#Break if limit reached
-		last if $entriesLeft <= 0;
+		print "\"" . $row->{Name} . "\"";
 	}
-	close PDBIDS;
 }
 print "]";
+$db->disconnect();
