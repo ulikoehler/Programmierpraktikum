@@ -2,7 +2,7 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package de.bioinformaikmuenchen.pg4.common;
+package de.bioinformatikmuenchen.pg4.common;
 
 /**
  *
