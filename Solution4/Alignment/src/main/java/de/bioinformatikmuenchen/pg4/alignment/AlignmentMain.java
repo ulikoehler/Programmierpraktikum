@@ -1,5 +1,6 @@
 package de.bioinformatikmuenchen.pg4.alignment;
 
+import java.io.File;
 import java.io.OutputStream;
 import java.io.PrintWriter;
 import org.apache.commons.cli.CommandLine;
@@ -15,23 +16,27 @@ import org.apache.commons.cli.PosixParser;
  */
 public class AlignmentMain {
 
-    public static void main(String[] args) {
+    private AlignmentAlgorithm algorithm = null;
+    private AlignmentMode mode = null;
+    private AlignmentOutputFormat outputFormat = null;
+
+    public AlignmentMain(String[] args) {
         //Which opts are available
         final Options opts = new Options();
         opts.addOption("g", "go", true, "Gap open")
                 .addOption("h", "help", false, "Print help")
                 .addOption("e", "ge", true, "gapextend")
-                .addOption("d", "dpmatrices", true, "dpmatrices")
-                .addOption("p", "pair", true, "pairfile")
+                .addOption("d", "dpmatrices", true, "Output dynamic programming matrices to directory")
+                .addOption("p", "pairs", true, "Path to pairs file")
                 .addOption("s", "seqlib", true, "seqlibfile")
-                .addOption("n", "matrixname", true, "matrixname")
-                .addOption("m", "mode", true, "mode")
+                .addOption("m", "matrixname", true, "matrixname")
+                .addOption("s", "mode", true, "mode")
                 .addOption("u", "nw", true, "Use Needleman-Wunsch")
                 .addOption("c", "check", true, "Calculate checkscores")
                 .addOption("f", "format", true, "format");
         //Parse the opts
         final CommandLineParser cmdLinePosixParser = new PosixParser();
-        CommandLine commandLine;
+        CommandLine commandLine = null;
         try {
             commandLine = cmdLinePosixParser.parse(opts, args);
             if (commandLine.hasOption("display")) {
@@ -42,17 +47,115 @@ public class AlignmentMain {
                     "Encountered exception while parsing using PosixParser:\n"
                     + parseException.getMessage());
         }
+        //
         //Check if the options are valid
-        
+        //
+        if (opts.hasOption("help")) {
+            HelpFormatter formatter = new HelpFormatter();
+            formatter.printHelp("alignment.jar", opts);
+        }
+        //check --dpmatrices
+        File dpMatrixDir = null;
+        if (commandLine.hasOption("dpmatrices")) {
+            dpMatrixDir = new File(commandLine.getOptionValue("dpmatrices"));
+            if (dpMatrixDir.exists() && !dpMatrixDir.isDirectory()) {
+                System.err.println("Error: --dpmatrices argument exists and is not a directory");
+                System.exit(1);
+            }
+            if (!dpMatrixDir.exists()) {
+                dpMatrixDir.mkdirs();
+            }
+        }
+        //check --pairs
+        File pairsFile = null;
+        if (commandLine.hasOption("pairs")) {
+            pairsFile = new File(commandLine.getOptionValue("pairs"));
+            if (!pairsFile.exists() || !pairsFile.isDirectory()) {
+                System.err.println("Error: --pairs argument is not a file!");
+                System.exit(1);
+            }
+        } else {
+            System.err.println("--pairs is mandatory");
+            HelpFormatter formatter = new HelpFormatter();
+            formatter.printHelp("alignment.jar", opts);
+            System.exit(1);
+        }
+        //check --seqlib
+        File seqLibFile = null;
+        if (commandLine.hasOption("seqlib")) {
+            seqLibFile = new File(commandLine.getOptionValue("seqlib"));
+            if (!seqLibFile.exists() || !seqLibFile.isFile()) {
+                System.err.println("Error: --seqlib argument is not a file!");
+                System.exit(1);
+            }
+        } else {
+            System.err.println("--seqlib is mandatory");
+            HelpFormatter formatter = new HelpFormatter();
+            formatter.printHelp("alignment.jar", opts);
+            System.exit(1);
+        }
+        //matrixname
+        File substitutionMatrixFile = null;
+        if (commandLine.hasOption("matrixname")) {
+            substitutionMatrixFile = new File(commandLine.getOptionValue("matrixname"));
+            if (!substitutionMatrixFile.exists() || !substitutionMatrixFile.isFile()) {
+                System.err.println("Error: --matrixname argument is not a file!");
+                System.exit(1);
+            }
+        } else {
+            System.err.println("--matrixname is mandatory");
+            HelpFormatter formatter = new HelpFormatter();
+            formatter.printHelp("alignment.jar", opts);
+            System.exit(1);
+        }
+        //mode
+        String modeString = commandLine.getOptionValue("mode").toLowerCase();
+        if (modeString != null) {
+            if (modeString.equalsIgnoreCase("local")) {
+                mode = AlignmentMode.LOCAL;
+            } else if (modeString.equalsIgnoreCase("global")) {
+                mode = AlignmentMode.GLOBAL;
+            } else if (modeString.equalsIgnoreCase("freeshift")) {
+                mode = AlignmentMode.FREESHIFT;
+            } else {
+                System.err.println("Error: --mode argument " + modeString + " is invalid!");
+                System.exit(1);
+            }
+        } else {
+            System.err.println("--matrixname is mandatory");
+            HelpFormatter formatter = new HelpFormatter();
+            formatter.printHelp("alignment.jar", opts);
+            System.exit(1);
+        }
+        //mode
+        String outputFormatString = commandLine.getOptionValue("format").toLowerCase();
+        if (modeString != null) {
+            if (modeString.equalsIgnoreCase("ali")) {
+                outputFormat = AlignmentOutputFormat.ALI;
+            } else if (modeString.equalsIgnoreCase("html")) {
+                outputFormat = AlignmentOutputFormat.HTML;
+            } else if (modeString.equalsIgnoreCase("scores")) {
+                outputFormat = AlignmentOutputFormat.SCORES;
+            } else {
+                System.err.println("Error: --format argument " + outputFormatString + " is invalid!");
+                System.exit(1);
+            }
+        } else {
+            System.err.println("--format is mandatory");
+            HelpFormatter formatter = new HelpFormatter();
+            formatter.printHelp("alignment.jar", opts);
+            System.exit(1);
+        }
+        //algorithm
+        if(commandLine.hasOption("nw")) {
+            algorithm = (mode == AlignmentMode.LOCAL ? AlignmentAlgorithm.SMITH_WATERMAN : AlignmentAlgorithm.NEEDLEMAN_WUNSCH);
+        } else {
+            algorithm = AlignmentAlgorithm.GOTOH;
+        }
+    }
+    public static void main(String[] args) {
     }
 
-    public static void printUsage(
-            final String applicationName,
-            final Options options,
-            final OutputStream out) {
-        final PrintWriter writer = new PrintWriter(out);
-        final HelpFormatter usageFormatter = new HelpFormatter();
-        usageFormatter.printUsage(writer, 80, applicationName, options);
-        writer.close();
+    private void printUsageAndExit() {
     }
 }

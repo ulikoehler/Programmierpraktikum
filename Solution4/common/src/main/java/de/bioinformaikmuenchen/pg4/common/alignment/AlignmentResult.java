@@ -4,6 +4,8 @@
  */
 package de.bioinformaikmuenchen.pg4.common.alignment;
 
+import java.util.Collection;
+
 /**
  *
  * @author koehleru
@@ -11,7 +13,7 @@ package de.bioinformaikmuenchen.pg4.common.alignment;
 public class AlignmentResult {
 
     private double score;
-    private SequencePairAlignment alignment;
+    private Collection<SequencePairAlignment> alignments;
 
     public AlignmentResult() {
     }
@@ -28,11 +30,8 @@ public class AlignmentResult {
         this.score = score;
     }
 
-    public SequencePairAlignment getAlignment() {
-        return alignment;
-    }
-
-    public void setAlignment(SequencePairAlignment alignment) {
-        this.alignment = alignment;
+    public AlignmentResult(double score, Collection<SequencePairAlignment> alignments) {
+        this.score = score;
+        this.alignments = alignments;
     }
 }
