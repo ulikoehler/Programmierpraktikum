@@ -12,6 +12,6 @@ import de.bioinformatikmuenchen.pg4.alignment.AlignmentOutputFormat;
  */
 public class AlignmentOutputFormatFactory {
     public static IAlignmentOutputFormatter factorize(AlignmentOutputFormat format) {
-        
+        return null; //TODO
     }
 }

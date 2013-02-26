@@ -1,6 +1,7 @@
 package de.bioinformatikmuenchen.pg4.alignment.recursive.io;
 
 import de.bioinformaikmuenchen.pg4.common.alignment.AlignmentResult;
+import de.bioinformaikmuenchen.pg4.common.alignment.SequencePairAlignment;
 
 /**
  *
@@ -14,10 +15,15 @@ public class ALIAlignmentOutputFormatter extends AbstractAlignmentOutputFormatte
         //Score
         builder.append("<b>Score</b>:");
         builder.append(result.getScore());
+        builder.append("<br/>");
         //Alignments
         
+        builder.append("<b>Alignments:</b><br/>");
+        builder.append("<br/>");
         
-        result.getAlignment().
+        for(SequencePairAlignment alignment : result.getAlignments()) {
+            
+        }
         builder.append("</div>");
         return "Alignment score: " + Double.toString(result.getScore());
     }

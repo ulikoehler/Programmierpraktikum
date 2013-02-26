@@ -34,4 +34,12 @@ public class AlignmentResult {
         this.score = score;
         this.alignments = alignments;
     }
+
+    public Collection<SequencePairAlignment> getAlignments() {
+        return alignments;
+    }
+
+    public void setAlignments(Collection<SequencePairAlignment> alignments) {
+        this.alignments = alignments;
+    }
 }
