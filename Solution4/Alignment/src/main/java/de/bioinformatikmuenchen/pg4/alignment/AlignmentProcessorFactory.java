@@ -6,10 +6,6 @@ package de.bioinformatikmuenchen.pg4.alignment;
 
 import de.bioinformaikmuenchen.pg4.common.distance.IDistanceMatrix;
 import de.bioinformatikmuenchen.pg4.alignment.gap.IGapCost;
-import de.bioinformatikmuenchen.pg4.alignment.io.ALIAlignmentOutputFormatter;
-import de.bioinformatikmuenchen.pg4.alignment.io.HTMLAlignmentOutputFormatter;
-import de.bioinformatikmuenchen.pg4.alignment.io.IAlignmentOutputFormatter;
-import de.bioinformatikmuenchen.pg4.alignment.io.ScoreOnlyAlignmentOutputFormatter;
 
 /**
  *
