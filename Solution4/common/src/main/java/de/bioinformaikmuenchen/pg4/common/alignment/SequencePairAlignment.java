@@ -10,14 +10,14 @@ public class SequencePairAlignment {
     public String queryAlignment;
     public String targetAlignment;
     //'|' when two elems match, ' ' else
-    private String matchLine;
+    public String matchLine;
 
     public SequencePairAlignment() {
     }
 
     public void calculateMatchLine() {
         matchLine = "";
-        for (int i = 0; i < 10; i++) {
+        for (int i = 0; i < queryAlignment.length(); i++) {
             matchLine += (queryAlignment.charAt(i) == targetAlignment.charAt(i) ? '|' : ' ');
         }
     }
