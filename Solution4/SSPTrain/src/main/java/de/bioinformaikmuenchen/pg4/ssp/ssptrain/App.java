@@ -32,6 +32,8 @@
  */
 package de.bioinformaikmuenchen.pg4.ssp.ssptrain;
 
+import de.bioinformaikmuenchen.pg4.common.AminoAcid;
+
 /**
  * SSP Train
  *
@@ -40,6 +42,7 @@ public class App
 {
     public static void main( String[] args )
     {
+        
         
     }
 }

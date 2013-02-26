@@ -13,6 +13,7 @@
 use strict;
 use LWP::Simple;
 use DBI;
+
 sub trim {
 	my $string = shift;
 	$string =~ s/^\s+//;
@@ -26,20 +27,17 @@ sub getOrganismId {
     my $organism = $_[1];
 
     #Try to fetch an existing organism
-    my $queryOrganismIdStmt =
-      $db->prepare("SELECT `Id` from Organism WHERE `Name` = ?;");
+    my $queryOrganismIdStmt = $db->prepare("SELECT `Id` from Organism WHERE `Name` = ?;");
     $queryOrganismIdStmt->execute($organism);
     my $result = $queryOrganismIdStmt->fetchrow_hashref();
     if ( defined $result->{Id} ) {
-        return $result->{Id};
+      return $result->{Id};
     }
     else {
-
-        #If that didn't work, we need to insert it
-        my $insertStmt =
-          $db->prepare("INSERT INTO Organism(`Name`) VALUES (?);");
-        $insertStmt->execute($organism);
-        return $insertStmt->{mysql_insertid};
+      #If that didn't work, we need to insert it
+      my $insertStmt = $db->prepare("INSERT INTO Organism(`Name`) VALUES (?);");
+      $insertStmt->execute($organism);
+      return $insertStmt->{mysql_insertid};
     }
 }
 
@@ -59,49 +57,41 @@ sub getHomstradId {
     }
     else {
         die
-"WHO FAILED TO INITIALIZE THE DATABASE PROPERLY, AGAIN? WHOEVER, EXECUTE SQLInsert.sql, DO IT NOW!\n";
+"WHO FAILED TO INITIALIZE THE DATABASE PROPERLY, AGAIN? HOWEVER, EXECUTE SQLInsert.sql, DO IT NOW!\n";
     }
 }
 
 sub insertAlignment {
-    my $db                = $_[0];
-    my $homstradDBId      = $_[1];
-    my $pdbId             = $_[2];
-    my $otherProteinPDBId = $_[3];
-    my $name              = $_[4];
-    my $def               = $_[5];
-    my $organism          = $_[6];
-    my $alignment         = $_[7];
+    my $db                  = $_[0];
+    my $AlignmentIdentifier = $_[1];
+    my $SeqIdentifier       = $_[2];
+    my $OrganismId          = $_[3];
+    my $Content             = $_[4];
+    my $DBId                = $_[5];
+    my $Type                = $_[6];
 
     #Insert the sequence
     my $insertStmt = $db->prepare(
-"INSERT DELAYED IGNORE INTO SecStructAlign(`DBId`, `FromDBId`, `ToDBId`, `Content`, `EntryType`) VALUES (?,?,?,?,'Alignment');"
+      "INSERT DELAYED IGNORE INTO SecStructAlign(`AlignmentIdentifier`, `SeqIdentifier`, `OrganismId`, `Content`, `DBId`, `Type`) VALUES (?,?,?,?,?,?);"
     );
-    $insertStmt->execute( $homstradDBId, $pdbId, $otherProteinPDBId,
-        $alignment );
+    $insertStmt->execute( $AlignmentIdentifier, $SeqIdentifier, $OrganismId, $Content, $DBId, $Type );
     return $insertStmt->{mysql_insertid};
 }
 
-sub insertStructure {
-    my $db           = $_[0];
-    my $homstradDBId = $_[1];
-    my $pdbId        = $_[2];
-    my $type         = $_[3];
-    my $content      = $_[4];
-    #Insert the sequence
-    my $insertStmt = $db->prepare("INSERT DELAYED IGNORE INTO SecStructAlign(`DBId`, `FromDBId`, `Type`, `Content`, `EntryType`) VALUES (?,?,?,?,'Secondary Structure');"
-    );
-    $insertStmt->execute( $homstradDBId, $pdbId, $type, $content );
-    return $insertStmt->{mysql_insertid};
+sub getNextAlignmentId {
+    my $db = $_[0];
+    my $queryOrganismIdStmt = $db->prepare("SELECT (max(AlignmentIdentifier) + 1) AS RESULT FROM SecStructAlign;");
+    $queryOrganismIdStmt->execute();
+    my $result = $queryOrganismIdStmt->fetchrow_hashref();
+    return $result->{RESULT} if( defined $result->{RESULT} );
+    return 0;
 }
 
 # Settings
 my $path = "/home/proj/biocluster/praktikum/bioprakt/Data/HOMSTRAD/";
 
 # open connection to Database
-my $db = DBI->connect( 'DBI:mysql:bioprakt4;host=mysql2-ext.bio.ifi.lmu.de',
-    'bioprakt4', 'vGI5GCMg0x' )
-  or die "Could not connect to database: $DBI::errstr";
+my $db = DBI->connect( 'DBI:mysql:bioprakt4;host=mysql2-ext.bio.ifi.lmu.de', 'bioprakt4', 'vGI5GCMg0x' ) or die "Could not connect to database: $DBI::errstr";
 print "Established database connection...\n";
 my $homstradDBId = getHomstradId($db);
 
@@ -111,102 +101,80 @@ opendir my($dh), $path or die "Couldn't open dir '$path': $!";
 my @homstradFiles = readdir $dh; #The individual directories
 closedir $dh;
 foreach my $directory (@homstradFiles) {
-	next if $directory eq "." or $directory eq "..";
-    print "Processing $path$directory/$directory(.ali|.tem)\n";
-
-    # read
-    open ALIINPUT, "<$path$directory/$directory.ali"
-      or die "Couldn't open file: \'$path$directory/$directory.ali\' " . $!;
-    open TEMINPUT, "<$path$directory/$directory.tem"
-      or die "Couldn't open file: \'$path$directory/$directory.tem\' " . $!;
-    my @aliLines = <ALIINPUT>;
-    my @temLines = <TEMINPUT>;
-    close(ALIINPUT);
-    close(TEMINPUT);
-    my $pdbId             = "";    #PDB ID of the current protein
-    my $otherProteinPDBId = "";
-    my $name              = "";
-    my $organism          = "";
-    my $def               = "";
-    my $alignment         = "";
-
-    ##
-    #Parse Alignments
-    ##
-    foreach my $line (@aliLines) {
-        if ( substr( $line, 0, 2 ) eq "C;" ) {
-            if ( $line =~ m/^C;\s+(.+)$/ ) {
-                $def = $def . $1 . "\n";
-            }
-        }
-        elsif ( substr( $line, 0, 1 ) eq ">" )
-        {    # Identifier => save last ali if there is onex
-            if ($pdbId) {
-                insertAlignment( $db, trim($homstradDBId), trim($pdbId), trim($otherProteinPDBId),
-                    trim($name), trim($def), trim($organism), trim($alignment));
-                $alignment = "";
-                $def       = "";
-            }
-
-            #Parse the identifier data
-            if ( $line =~ m/^>P1;(.+)$/ ) {
-                $pdbId = $1;
-            }
-            else {
-                die "Can't find P1 Protein ID in line $line .... \n";
-            }
-        }
-        elsif ( substr( $line, 0, 10 ) eq "structureX" ) {
-            chomp($line);
-            my @grep = split( /:/, $line );
-            $otherProteinPDBId = $grep[1];
-            $name              = $grep[6];
-            $organism          = $grep[7];
-        }
-        else {    #It's a line of the alignment
-                  #Remove whitespace
-            $line =~ s/\s//g;
-            $alignment = $alignment . $line;
-        }
+  next if $directory eq "." or $directory eq "..";
+  print "Processing $path$directory/$directory(.ali|.tem)\n";
+  
+  # read
+  open ALIINPUT, "<$path$directory/$directory.ali" or die "Couldn't open file: \'$path$directory/$directory.ali\' " . $!;
+  open TEMINPUT, "<$path$directory/$directory.tem" or die "Couldn't open file: \'$path$directory/$directory.tem\' " . $!;
+  my @aliLines = <ALIINPUT>;
+  my @temLines = <TEMINPUT>;
+  close(ALIINPUT);
+  close(TEMINPUT);
+  
+  # save organsim, ids
+  my %organismProtein = ();
+  
+  # variables for inserting
+  my $OrganismName        = "";
+  my $OrganismId          = "";
+  my $SeqIdentifier       = "";
+  my $Content             = "";
+  my $Type                = "";
+  my $seqDescription      = "";
+  my $AlignmentIdentifier = getNextAlignmentId($db);
+  my $otherProteinPDBId   = "";
+  
+  # parse variables
+  my $identifer = "";
+  my $data      = "";
+  my $seq       = "";
+  
+  # parse ALI
+  foreach my $line (@aliLines) {
+    # C; => do nothing
+    next if ( substr( $line, 0, 2 ) eq "C;" );
+    
+    # identifier after ">"
+    if ( substr( $line, 0, 1 ) eq ">" ) {
+      # save seq if variables not empty
+      if( $Content && $OrganismName ) {
+        # save Organism
+        $OrganismId = getOrganismId($db, $OrganismName);
+        # save Seq in Alignment # seqDescription?
+        insertAlignment($db, $AlignmentIdentifier, $SeqIdentifier, $OrganismId, $Content, $homstradDBId, "PROTEINALIGNMENT");
+        $organismProtein{$AlignmentIdentifier} = $OrganismId;
+        $Content = ""; $OrganismName = "";
+      }
+      if ( $line =~ m/^>P1;(.+)$/ ) {
+        $SeqIdentifier = $1;
+      } else {
+        die "Can't find P1 Protein ID in line $line .... \n";
+      }
     }
-    my $nextLineIsType = 0;
-    my $type           = "";
-    my $content        = "";
-    ##
-    #Parse SecStructs
-    ##
-    $pdbId = "";
-    foreach my $line (@temLines) {
-        if ($nextLineIsType) {
-            chomp $line;
-            $type = trim($line);
-	    $nextLineIsType = 0;
-        }
-        else {
-            if ( substr( $line, 0, 1 ) eq ">" ) {    # Protein identifier
-                $nextLineIsType = 1;
-                if ($pdbId) {
-                    insertStructure( $db, trim($homstradDBId), trim($pdbId), trim($type), trim($content));
-                    $content = "";
-                }
-
-                #Parse the identifier data
-                if ( $line =~ m/^>P1;(.+)$/ ) {
-                    $pdbId          = $1;
-                    $nextLineIsType = 1;
-                }
-                else {
-                    die "Can't find P1 Protein ID in line $line .... \n";
-                }
-            }
-            else {    #It's a line of the structure
-                $nextLineIsType = 0;
-                chomp $line;
-
-                #Remove whitespace
-                $line =~ s/\s//g;
-                $content = $content . $line;
-            }
-        }
+    # structureX: line
+    elsif ( substr( $line, 0, 10 ) eq "structureX" ) {
+      chomp($line);
+      my @grep = split( /:/, $line );
+      $seqDescription    = $grep[6];
+      $OrganismName      = $grep[7];
+    } else {
+      # probably seq data
+      chomp $line;
+      
+      #Remove whitespace
+      $line =~ s/\s//g;
+      $Content = $Content.$line;
     }
+  }
+  # also save last line
+  if( $Content && $OrganismName ) {
+    # save Organism
+    $OrganismId = getOrganismId($db, $OrganismName);
+    # save Seq in Alignment # seqDescription?
+    insertAlignment($db, $AlignmentIdentifier, $SeqIdentifier, $OrganismId, $Content, $homstradDBId, "PROTEINALIGNMENT");
+    $organismProtein{$AlignmentIdentifier} = $OrganismId;
+    $Content = ""; $OrganismName = "";
+  }
+  
 }

@@ -1,6 +1,6 @@
 #! /bin/bash
 
-url=http://www.bio.ifi.lmu.de/webfm_send/3308
+url=http://www.bio.ifi.lmu.de/webfm_send/3309
 
 while true; do
   wget -q -S --spider $url -o tmp
@@ -10,5 +10,5 @@ while true; do
     zenity --info --text "$url available!"
     exit
   fi
-  sleep 1m
+  sleep 1s
 done
