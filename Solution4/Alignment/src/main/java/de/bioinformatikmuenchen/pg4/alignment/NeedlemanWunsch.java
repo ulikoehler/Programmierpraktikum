@@ -25,7 +25,7 @@ public class NeedlemanWunsch extends AlignmentProcessor {
     public AlignmentResult align(Sequence seq1, Sequence seq2) {
         initMatrix(seq1.getSequence().length(), seq2.getSequence().length());
         fillMatrix(seq1.getSequence(), seq2.getSequence());
-        alignNew(xSize, ySize, new SequencePairAlignment());
+        oneAlignmentOnly(xSize, ySize);
         AlignmentResult result = new AlignmentResult();
         result.setAlignments(spAlignments);
         return result;
@@ -107,48 +107,24 @@ public class NeedlemanWunsch extends AlignmentProcessor {
         }
         return stringBuffer.toString();
     }
-
     private LinkedList<SequencePairAlignment> spAlignments = new LinkedList<SequencePairAlignment>();
-    
-    public SequencePairAlignment alignNew(int currentX, int currentY, SequencePairAlignment previous) {
-        boolean left = false;
-        boolean topLeft = false;
-        if(currentX<0 || currentY<0){
-            return previous;
-        }
-        //SequencePairAlignment previous = new SequencePairAlignment(previous.queryAlignment, previous.targetAlignment);
-        for (int i=0;i<currentX+currentY;i++) {
-            if (leftArrows[currentX][currentY]) {
-                previous.queryAlignment += seq1.charAt(currentX - 1);
-                previous.targetAlignment += '-';
-                left = true;
-            }
-            if (leftTopArrows[currentX][currentY]) {
-                if(left){
-                    SequencePairAlignment otherPath = alignNew(currentX-1, currentY-1, new SequencePairAlignment(previous.queryAlignment, previous.targetAlignment));
-                    spAlignments.add(otherPath);
-                }
-                else{
-                    previous.queryAlignment += seq1.charAt(currentX - 1);
-                    previous.targetAlignment += seq2.charAt(currentY - 1);
-                }
-                topLeft = true;
-            }
-            if (topArrows[currentX][currentY]) {
-                if(left || topLeft){
-                    SequencePairAlignment otherPath = alignNew(currentX-1, currentY, new SequencePairAlignment(previous.queryAlignment, previous.targetAlignment));
-                    spAlignments.add(otherPath);
-                }
-                else{
-                    previous.queryAlignment += '-';
-                    previous.targetAlignment += seq2.charAt(currentY - 1);
-                }
-            }
-        }
-        return previous;
-    }
 
-    public static void main(String[] args) {
-//        NeedlemanWunsch nw = new NeedlemanWunsch(AlignmentMode.GLOBAL, AlignmentAlgorithm.NEEDLEMAN_WUNSCH, , null)
+    public SequencePairAlignment oneAlignmentOnly(int x, int y) {
+        SequencePairAlignment spa = new SequencePairAlignment();
+        for (int i = 0; i < x + y; i++) {
+            if (leftArrows[x][y]) {
+                spa.queryAlignment += seq1.charAt(x - 1);
+                spa.targetAlignment += '-';
+            }
+            if (leftTopArrows[x][y]) {
+                spa.queryAlignment += seq1.charAt(x - 1);
+                spa.targetAlignment += seq2.charAt(y - 1);
+            }
+            if (topArrows[x][y]) {
+                spa.queryAlignment += '-';
+                spa.targetAlignment += seq2.charAt(y - 1);
+            }
+        }
+        return spa;
     }
 }
