@@ -1,5 +1,7 @@
 package de.bioinformatikmuenchen.pg4.alignment;
 
+import de.bioinformaikmuenchen.pg4.common.alignment.AlignmentResult;
+import de.bioinformaikmuenchen.pg4.common.alignment.SequencePairAlignment;
 import de.bioinformaikmuenchen.pg4.common.distance.IDistanceMatrix;
 import de.bioinformaikmuenchen.pg4.common.distance.QUASARDistanceMatrixFactory;
 import de.bioinformaikmuenchen.pg4.common.sequencesource.ISequenceSource;
@@ -11,6 +13,7 @@ import de.bioinformatikmuenchen.pg4.alignment.io.AlignmentOutputFormatFactory;
 import de.bioinformatikmuenchen.pg4.alignment.io.IAlignmentOutputFormatter;
 import de.bioinformatikmuenchen.pg4.alignment.pairfile.PairfileEntry;
 import de.bioinformatikmuenchen.pg4.alignment.pairfile.PairfileParser;
+import de.bioinformatikmuenchen.pg4.common.Sequence;
 import java.io.File;
 import java.io.IOException;
 import java.util.Collection;
@@ -67,7 +70,7 @@ public class AlignmentMain {
             formatter.printHelp("alignment.jar", opts);
         }
         //gapopen
-        double gapOpen;
+        double gapOpen = Double.NaN;
         try {
             gapOpen = Double.parseDouble(commandLine.getOptionValue("go"));
         } catch (NumberFormatException ex) {
@@ -75,7 +78,7 @@ public class AlignmentMain {
             System.exit(1);
         }
         //ge
-        double gapExtend;
+        double gapExtend = Double.NaN;
         try {
             gapExtend = Double.parseDouble(commandLine.getOptionValue("ge"));
         } catch (NumberFormatException ex) {
@@ -183,7 +186,7 @@ public class AlignmentMain {
         //
         //Inter-argument cheks
         //
-        boolean haveAffineGapCost = (gapOpen != gapExtend);
+        boolean haveAffineGapCost = (gapOpen - gapExtend) > 0.00000001;
         //TODO TEMPORARY assertion until it's impl
         assert !haveAffineGapCost;
         //
@@ -198,9 +201,14 @@ public class AlignmentMain {
         //Create the processor
         AlignmentProcessor proc = AlignmentProcessorFactory.factorize(mode, algorithm, matrix, gapCost);
         for (PairfileEntry entry : pairfileEntries) {
-            //Create a new processor. Processors might save state so a new one has to be created every time
-            //Get the
-            proc.align(null, null);
+            //Get the sequences
+            Sequence seq1 = sequenceSource.getSequence(entry.first);
+            Sequence seq2 = sequenceSource.getSequence(entry.second);
+            AlignmentResult result = proc.align(seq1, seq2);
+            //Print all alignments (usually one)
+            for (SequencePairAlignment alignment : result.getAlignments()) {
+                formatter.formatAndPrint(result);
+            }
         }
     }
 
