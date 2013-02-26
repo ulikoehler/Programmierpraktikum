@@ -25,9 +25,10 @@ public class NeedlemanWunsch extends AlignmentProcessor {
     public AlignmentResult align(Sequence seq1, Sequence seq2) {
         initMatrix(seq1.getSequence().length(), seq2.getSequence().length());
         fillMatrix(seq1.getSequence(), seq2.getSequence());
-        oneAlignmentOnly(xSize, ySize);
         AlignmentResult result = new AlignmentResult();
-        result.setAlignments(spAlignments);
+        LinkedList<SequencePairAlignment> results = new LinkedList<SequencePairAlignment>();
+        results.add(oneAlignmentOnly(xSize, ySize));
+        result.setAlignments(results);
         return result;
     }
 
@@ -107,7 +108,6 @@ public class NeedlemanWunsch extends AlignmentProcessor {
         }
         return stringBuffer.toString();
     }
-    private LinkedList<SequencePairAlignment> spAlignments = new LinkedList<SequencePairAlignment>();
 
     public SequencePairAlignment oneAlignmentOnly(int x, int y) {
         SequencePairAlignment spa = new SequencePairAlignment();
