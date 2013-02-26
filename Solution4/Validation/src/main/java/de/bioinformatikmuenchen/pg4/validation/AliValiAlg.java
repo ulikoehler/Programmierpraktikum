@@ -19,6 +19,8 @@ public class AliValiAlg {
     //sequence without gaps
     private String template;
     private String target;
+    //helping methods
+    private boolean helpboolean;
 
     public AliValiAlg(String refte, String refta, String cante, String canta) {
         reftemp = refte;
@@ -103,17 +105,86 @@ public class AliValiAlg {
         double number = 0;
         //sum of absolut shifts
         double shift = 0;
-        //going through target
-
-        
-        
-        for (int i = 0; i < target.length(); i++){
-            
-            
-            
+        //going through target       
+        for (int i = 0; i < target.length(); i++) {
+            //reseting help boolean to keep track of defined shifts
+            //helpboolean gets modified when getting the shift
+            helpboolean = true;
+            //shift at for characters i
+            int h = getshift(i);
+            //absolut value for shift
+            if(h < 0){
+                h = -h;
+            }
+            //adding to shift sum
+            shift = shift + h;
+            //increasing
+            if (helpboolean) {
+                number++;
+            }
         }
-        
+        if (number == 0) {
+            System.out.println("no shifts defined");
+            return -1;
+        }
+        System.out.println("Number of defined shifts " + number);
         return (double) shift / number;
+    }
+
+    public int getshift(int i) {
+
+        System.out.println("Shift a postion " + i);
+
+        //temp parameter
+        int p = i;
+        //position in target from reference
+        int a = -1;
+        for (int j = 0; j <= p; j++) {
+            if (reftar.charAt(j) == '_') {
+                p++;
+            }
+            a++;
+        }
+        //reset temp parameter
+        p = i;
+        //position in target from candidate
+        int b = -1;
+        for (int j = 0; j <= p; j++) {
+            if (cantar.charAt(j) == '_') {
+                p++;
+            }
+            b++;
+        }
+        //checking if shift is undefined
+        if (reftemp.charAt(a) == '_' || cantemp.charAt(b) == '_') {
+            //modifying helpboolean so 'number' of defined shifts wont be increased
+            helpboolean = false;
+            //returning 0 wont influence MSE
+            System.out.println("undefined");
+            return 0;
+        }
+        System.out.println("Position in reference " + a);
+        System.out.println("Position in candidate " + b);
+        //getting template position from candidate
+        int c = 0;
+        for (int j = 0; j < a; j++) {
+            if(reftemp.charAt(j) != '_'){
+                c++;
+            }
+        }
+        //getting template position from reference
+        int d = 0;
+        for (int j = 0; j < b; j++) {
+            if(cantemp.charAt(j) != '_'){
+                d++;
+            }
+        }
+        System.out.println("partner in template " + c);
+        System.out.println("partner in template " + d);
+        int out = d - c;
+        System.out.println("shift " + out +"\n");
+        return out;
+
     }
 
     public boolean correctlyAligned(int i) {
