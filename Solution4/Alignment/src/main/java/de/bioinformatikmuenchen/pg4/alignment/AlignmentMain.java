@@ -154,8 +154,6 @@ public class AlignmentMain {
         }
     }
     public static void main(String[] args) {
-    }
-
-    private void printUsageAndExit() {
+        new AlignmentMain(args);
     }
 }
