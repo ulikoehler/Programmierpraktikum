@@ -131,6 +131,7 @@ public class NeedlemanWunsch extends AlignmentProcessor {
             }
         }
         assert(x==0 && y==0);
-        return spa;
+        //reverse the output:
+        return new SequencePairAlignment(new StringBuffer(spa.matchLine).reverse().toString(), new StringBuffer(spa.targetAlignment).reverse().toString());
     }
 }
