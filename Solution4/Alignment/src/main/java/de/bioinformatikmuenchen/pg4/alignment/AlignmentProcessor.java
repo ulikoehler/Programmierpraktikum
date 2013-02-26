@@ -8,8 +8,8 @@ import de.bioinformaikmuenchen.pg4.common.alignment.AlignmentResult;
 import de.bioinformatikmuenchen.pg4.common.Sequence;
 import de.bioinformaikmuenchen.pg4.common.distance.IDistanceMatrix;
 import de.bioinformatikmuenchen.pg4.alignment.gap.IGapCost;
-import de.bioinformatikmuenchen.pg4.alignment.recursive.io.IAlignmentOutputFormatter;
-import de.bioinformatikmuenchen.pg4.alignment.recursive.io.ScoreOnlyAlignmentOutputFormatter;
+import de.bioinformatikmuenchen.pg4.alignment.io.IAlignmentOutputFormatter;
+import de.bioinformatikmuenchen.pg4.alignment.io.ScoreOnlyAlignmentOutputFormatter;
 
 /**
  *
