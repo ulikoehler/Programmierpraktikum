@@ -117,44 +117,28 @@ public class NeedlemanWunsch extends AlignmentProcessor {
         return stringBuffer.toString();
     }
 
-    public AlignmentResult alignNew() {
-        AlignmentResult result = new AlignmentResult();
-        boolean left = false;
-        boolean leftTop = false;
-        boolean top = false;
-        for (int x = xSize - 1; x > 0; x++) {
-            for (int y = ySize - 1; y > 0; y++) {
-                if (leftArrows[x][y]) {
-                    left = true;
-                    alignedSequence.queryAlignment += seq1.charAt(x - 1);
-                    alignedSequence.targetAlignment += '-';
+    private AlignmentResult result = new AlignmentResult();
+    
+    public AlignmentResult alignNew(int x, int y) {
+        int currentX = x;
+        int currentY = y;
+        for (int i=0;i<xSize+ySize;i++) {
+            if (leftArrows[currentX][currentY]) {
+                alignedSequence.queryAlignment += seq1.charAt(x - 1);
+                alignedSequence.targetAlignment += '-';
 
-                }
-                if (leftTopArrows[x][y]) {
-                    leftTop = true;
-                    if (left) {
-                        SequencePairAlignment newAlignment = new SequencePairAlignment();
-                        result.getAlignments().add(newAlignment);
-                    } else {
-                        alignedSequence.queryAlignment += seq1.charAt(x - 1);
-                        alignedSequence.targetAlignment += seq2.charAt(y - 1);
-                    }
+            }
+            if (leftTopArrows[x][y]) {
 
-                    left = false;
-                    leftTop = false;
-                    top = false;
-                }
-                if (topArrows[x][y]) {
-                    top = true;
-                    alignedSequence.queryAlignment += '-';
-                    alignedSequence.targetAlignment += seq2.charAt(y - 1);
-                }
-
-                left = false;
-                leftTop = false;
-                top = false;
+                alignedSequence.queryAlignment += seq1.charAt(x - 1);
+                alignedSequence.targetAlignment += seq2.charAt(y - 1);
+            }
+            if (topArrows[x][y]) {
+                alignedSequence.queryAlignment += '-';
+                alignedSequence.targetAlignment += seq2.charAt(y - 1);
             }
         }
+        return result;
     }
 
     public static void main(String[] args) {
