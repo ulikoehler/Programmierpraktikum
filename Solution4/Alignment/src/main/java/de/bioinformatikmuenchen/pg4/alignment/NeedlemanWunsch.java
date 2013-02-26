@@ -25,7 +25,9 @@ public class NeedlemanWunsch extends AlignmentProcessor {
     public AlignmentResult align(Sequence seq1, Sequence seq2) {
         initMatrix(seq1.getSequence().length(), seq2.getSequence().length());
         fillMatrix(seq1.getSequence(), seq2.getSequence());
+        alignNew(xSize, ySize, new SequencePairAlignment());
         AlignmentResult result = new AlignmentResult();
+        result.setAlignments(spAlignments);
         return result;
     }
 
@@ -37,7 +39,7 @@ public class NeedlemanWunsch extends AlignmentProcessor {
      */
     public NeedlemanWunsch(AlignmentMode mode, AlignmentAlgorithm algorithm, IDistanceMatrix distanceMatrix, IGapCost gapCost) {
         super(mode, algorithm, distanceMatrix, gapCost);
-        result = new AlignmentResult();
+        //AlignmentResult result = new AlignmentResult();
     }
 
     public NeedlemanWunsch(AlignmentMode mode, AlignmentAlgorithm algorithm, IDistanceMatrix distanceMatrix, IGapCost gapCost, IAlignmentOutputFormatter outputFormatter) {
@@ -105,18 +107,6 @@ public class NeedlemanWunsch extends AlignmentProcessor {
         }
         return stringBuffer.toString();
     }
-    private LinkedList<SequencePairAlignment> alignmentResults;
-
-    public String printMatrix() {
-        StringBuilder stringBuffer = new StringBuilder();
-        for (int x = 0; x < xSize; x++) {
-            for (int y = 0; y < ySize; y++) {
-                stringBuffer.append(matrix[x][y]).append("\t");
-            }
-            stringBuffer.append("\n");
-        }
-        return stringBuffer.toString();
-    }
 
     private LinkedList<SequencePairAlignment> spAlignments = new LinkedList<SequencePairAlignment>();
     
@@ -159,10 +149,6 @@ public class NeedlemanWunsch extends AlignmentProcessor {
     }
 
     public static void main(String[] args) {
-        String seq1 = "TATAAT";//vertikale
-        String seq2 = "TTACGTAAGC";//horizontale
-        int gap = -4;
-        int match = 3;
-        int mismatch = -2;
+        NeedlemanWunsch nw = new NeedlemanWunsch(AlignmentMode.GLOBAL, AlignmentAlgorithm.NEEDLEMAN_WUNSCH, , null)
     }
 }
