@@ -27,7 +27,7 @@ public class NeedlemanWunsch extends AlignmentProcessor {
         fillMatrix(seq1.getSequence(), seq2.getSequence());
         AlignmentResult result = new AlignmentResult();
         LinkedList<SequencePairAlignment> results = new LinkedList<SequencePairAlignment>();
-        results.add(oneAlignmentOnly(xSize, ySize));
+        results.add(oneAlignmentOnly());
         result.setAlignments(results);
         return result;
     }
@@ -109,22 +109,28 @@ public class NeedlemanWunsch extends AlignmentProcessor {
         return stringBuffer.toString();
     }
 
-    public SequencePairAlignment oneAlignmentOnly(int x, int y) {
+    public SequencePairAlignment oneAlignmentOnly() {
         SequencePairAlignment spa = new SequencePairAlignment();
-        for (int i = 0; i < x + y; i++) {
-            if (leftArrows[x][y]) {
-                spa.queryAlignment += seq1.charAt(x - 1);
-                spa.targetAlignment += '-';
-            }
+        int x = xSize-1;
+        int y = ySize-1;
+        for (int i = 0; i < seq1.length()-1 + seq2.length()-1; i++) {
             if (leftTopArrows[x][y]) {
                 spa.queryAlignment += seq1.charAt(x - 1);
                 spa.targetAlignment += seq2.charAt(y - 1);
+                x--; y--;
+            }
+            if (leftArrows[x][y]) {
+                spa.queryAlignment += seq1.charAt(x - 1);
+                spa.targetAlignment += '-';
+                y--;
             }
             if (topArrows[x][y]) {
                 spa.queryAlignment += '-';
                 spa.targetAlignment += seq2.charAt(y - 1);
+                x--;
             }
         }
+        assert(x==0 && y==0);
         return spa;
     }
 }
