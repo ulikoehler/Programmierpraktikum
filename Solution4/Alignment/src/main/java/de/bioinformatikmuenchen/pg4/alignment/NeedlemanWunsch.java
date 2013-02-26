@@ -7,7 +7,7 @@ import de.bioinformatikmuenchen.pg4.alignment.gap.ConstantGapCost;
 import de.bioinformatikmuenchen.pg4.alignment.gap.IGapCost;
 import de.bioinformatikmuenchen.pg4.alignment.io.IAlignmentOutputFormatter;
 import de.bioinformatikmuenchen.pg4.common.Sequence;
-import java.util.LinkedList;
+import java.util.Collections;
 
 public class NeedlemanWunsch extends AlignmentProcessor {
 
@@ -23,12 +23,15 @@ public class NeedlemanWunsch extends AlignmentProcessor {
 
     @Override
     public AlignmentResult align(Sequence seq1, Sequence seq2) {
+        this.seq1 = seq1.getSequence();
+        this.seq2 = seq2.getSequence();
         initMatrix(seq1.getSequence().length(), seq2.getSequence().length());
         fillMatrix(seq1.getSequence(), seq2.getSequence());
         AlignmentResult result = new AlignmentResult();
-        LinkedList<SequencePairAlignment> results = new LinkedList<SequencePairAlignment>();
-        results.add(oneAlignmentOnly(xSize, ySize));
-        result.setAlignments(results);
+        //Calculate the alignment and add it to the result
+        result.setAlignments(Collections.singletonList(oneAlignmentOnly()));
+        result.setScore(matrix[xSize - 1][ySize - 1]);
+        System.out.println("######Score: " + matrix[xSize - 1][ySize - 1] + " ######\n");
         return result;
     }
 
@@ -50,6 +53,8 @@ public class NeedlemanWunsch extends AlignmentProcessor {
     }
 
     public void initMatrix(int xSize, int ySize) {
+        xSize++;
+        ySize++;
         this.xSize = xSize;
         this.ySize = ySize;
         matrix = new double[xSize][ySize];
@@ -79,8 +84,8 @@ public class NeedlemanWunsch extends AlignmentProcessor {
                 char A = seq1.charAt(x - 1);
                 char B = seq2.charAt(y - 1);
                 double leftTopScore = matrix[x - 1][y - 1] + distanceMatrix.distance(A, B);
-                double leftScore = matrix[x - 1][y] + gapCost.getGapCost(1);
-                double topScore = matrix[x][y - 1] + gapCost.getGapCost(1);
+                double leftScore = matrix[x][y - 1] + gapCost.getGapCost(1);
+                double topScore = matrix[x - 1][y] + gapCost.getGapCost(1);
                 //Calculate the max score
                 matrix[x][y] = Math.max(leftTopScore,
                         Math.max(leftScore, topScore));
@@ -91,11 +96,12 @@ public class NeedlemanWunsch extends AlignmentProcessor {
                 topArrows[x][y] = Math.abs(topScore - maxScore) < compareThreshold;
                 //Assert this field has at least one arrow
                 assert leftTopArrows[x][y] || leftArrows[x][y] || topArrows[x][y];
+                System.out.println(this.printMatrix());
             }
         }
     }
 
-    public String printMatrix(boolean sysout) {
+    public String printMatrix() {
         StringBuffer stringBuffer = new StringBuffer();
         for (int x = 0; x < xSize; x++) {
             for (int y = 0; y < ySize; y++) {
@@ -103,28 +109,31 @@ public class NeedlemanWunsch extends AlignmentProcessor {
             }
             stringBuffer.append("\n");
         }
-        if (sysout) {
-            System.out.println(stringBuffer.toString());
-        }
         return stringBuffer.toString();
     }
 
-    public SequencePairAlignment oneAlignmentOnly(int x, int y) {
+    public SequencePairAlignment oneAlignmentOnly() {
         SequencePairAlignment spa = new SequencePairAlignment();
-        for (int i = 0; i < x + y; i++) {
-            if (leftArrows[x][y]) {
-                spa.queryAlignment += seq1.charAt(x - 1);
-                spa.targetAlignment += '-';
-            }
+        int x = xSize - 1;
+        int y = ySize - 1;
+        while (x != 0 && y != 0) {
+            //System.out.println("x,y="+x+" "+y);
             if (leftTopArrows[x][y]) {
                 spa.queryAlignment += seq1.charAt(x - 1);
                 spa.targetAlignment += seq2.charAt(y - 1);
-            }
-            if (topArrows[x][y]) {
+                x--;
+                y--;
+            } else if (leftArrows[x][y]) {
+                spa.queryAlignment += seq1.charAt(x - 1);
+                spa.targetAlignment += '-';
+                y--;
+            } else if (topArrows[x][y]) {
                 spa.queryAlignment += '-';
                 spa.targetAlignment += seq2.charAt(y - 1);
+                x--;
             }
         }
-        return spa;
+        //reverse the output:
+        return new SequencePairAlignment(new StringBuffer(spa.queryAlignment).reverse().toString(), new StringBuffer(spa.targetAlignment).reverse().toString());
     }
 }

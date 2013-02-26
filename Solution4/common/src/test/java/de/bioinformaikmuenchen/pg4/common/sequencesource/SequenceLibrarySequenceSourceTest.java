@@ -57,6 +57,5 @@ public class SequenceLibrarySequenceSourceTest extends TestCase {
         //at the end
         assertEquals(src.getSequence("7gatA00").getSequence(), "MKNGEQNGPTTCTNCFTQTTPVWRRNPEGQPLCNACGLFLKLHGVVRPLSLKTDVIKKRNRNSAN");
         assertEquals(src.getSequence("8ickA01").getSequence(), "ETLNGGITDMLTELANFEKNVSQAIHKYNAYRKAASVIAKYPHKIKSGAEAKKLPGVGTKIAEKIDEFLATGKLRKLEKIRQ");
-        
     }
 }

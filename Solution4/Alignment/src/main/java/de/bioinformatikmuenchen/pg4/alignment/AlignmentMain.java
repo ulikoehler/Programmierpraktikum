@@ -1,8 +1,22 @@
 package de.bioinformatikmuenchen.pg4.alignment;
 
+import de.bioinformaikmuenchen.pg4.common.alignment.AlignmentResult;
+import de.bioinformaikmuenchen.pg4.common.alignment.SequencePairAlignment;
+import de.bioinformaikmuenchen.pg4.common.distance.IDistanceMatrix;
+import de.bioinformaikmuenchen.pg4.common.distance.QUASARDistanceMatrixFactory;
+import de.bioinformaikmuenchen.pg4.common.sequencesource.ISequenceSource;
+import de.bioinformaikmuenchen.pg4.common.sequencesource.SequenceLibrarySequenceSource;
+import de.bioinformatikmuenchen.pg4.alignment.gap.AffineGapCost;
+import de.bioinformatikmuenchen.pg4.alignment.gap.ConstantGapCost;
+import de.bioinformatikmuenchen.pg4.alignment.gap.IGapCost;
+import de.bioinformatikmuenchen.pg4.alignment.io.AlignmentOutputFormatFactory;
+import de.bioinformatikmuenchen.pg4.alignment.io.IAlignmentOutputFormatter;
+import de.bioinformatikmuenchen.pg4.alignment.pairfile.PairfileEntry;
+import de.bioinformatikmuenchen.pg4.alignment.pairfile.PairfileParser;
+import de.bioinformatikmuenchen.pg4.common.Sequence;
 import java.io.File;
-import java.io.OutputStream;
-import java.io.PrintWriter;
+import java.io.IOException;
+import java.util.Collection;
 import org.apache.commons.cli.CommandLine;
 import org.apache.commons.cli.CommandLineParser;
 import org.apache.commons.cli.HelpFormatter;
@@ -20,7 +34,7 @@ public class AlignmentMain {
     private AlignmentMode mode = null;
     private AlignmentOutputFormat outputFormat = null;
 
-    public AlignmentMain(String[] args) {
+    public AlignmentMain(String[] args) throws IOException {
         //Which opts are available
         final Options opts = new Options();
         opts.addOption("g", "go", true, "Gap open")
@@ -50,9 +64,26 @@ public class AlignmentMain {
         //
         //Check if the options are valid
         //
+        //Check help
         if (opts.hasOption("help")) {
             HelpFormatter formatter = new HelpFormatter();
             formatter.printHelp("alignment.jar", opts);
+        }
+        //gapopen
+        double gapOpen = Double.NaN;
+        try {
+            gapOpen = Double.parseDouble(commandLine.getOptionValue("go"));
+        } catch (NumberFormatException ex) {
+            System.err.println("--go takes a number, not " + commandLine.getOptionValue("go") + "!");
+            System.exit(1);
+        }
+        //ge
+        double gapExtend = Double.NaN;
+        try {
+            gapExtend = Double.parseDouble(commandLine.getOptionValue("ge"));
+        } catch (NumberFormatException ex) {
+            System.err.println("--ge takes a number, not " + commandLine.getOptionValue("ge") + "!");
+            System.exit(1);
         }
         //check --dpmatrices
         File dpMatrixDir = null;
@@ -147,13 +178,41 @@ public class AlignmentMain {
             System.exit(1);
         }
         //algorithm
-        if(commandLine.hasOption("nw")) {
+        if (commandLine.hasOption("nw")) {
             algorithm = (mode == AlignmentMode.LOCAL ? AlignmentAlgorithm.SMITH_WATERMAN : AlignmentAlgorithm.NEEDLEMAN_WUNSCH);
         } else {
             algorithm = AlignmentAlgorithm.GOTOH;
         }
+        //
+        //Inter-argument cheks
+        //
+        boolean haveAffineGapCost = (gapOpen - gapExtend) > 0.00000001;
+        //TODO TEMPORARY assertion until it's impl
+        assert !haveAffineGapCost;
+        //
+        // Read & Collect helper objects
+        //
+        //
+        IAlignmentOutputFormatter formatter = AlignmentOutputFormatFactory.factorize(outputFormat);
+        ISequenceSource sequenceSource = new SequenceLibrarySequenceSource(seqLibFile.getAbsolutePath());
+        Collection<PairfileEntry> pairfileEntries = PairfileParser.parsePairfile(pairsFile.getAbsolutePath());
+        IDistanceMatrix matrix = QUASARDistanceMatrixFactory.factorize(substitutionMatrixFile.getAbsolutePath());
+        IGapCost gapCost = (haveAffineGapCost ? new AffineGapCost(gapOpen, gapExtend) : new ConstantGapCost(gapOpen));
+        //Create the processor
+        AlignmentProcessor proc = AlignmentProcessorFactory.factorize(mode, algorithm, matrix, gapCost);
+        for (PairfileEntry entry : pairfileEntries) {
+            //Get the sequences
+            Sequence seq1 = sequenceSource.getSequence(entry.first);
+            Sequence seq2 = sequenceSource.getSequence(entry.second);
+            AlignmentResult result = proc.align(seq1, seq2);
+            //Print all alignments (usually one)
+            for (SequencePairAlignment alignment : result.getAlignments()) {
+                formatter.formatAndPrint(result);
+            }
+        }
     }
-    public static void main(String[] args) {
+
+    public static void main(String[] args) throws IOException {
         new AlignmentMain(args);
     }
 }
