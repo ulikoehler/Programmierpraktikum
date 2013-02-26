@@ -64,12 +64,9 @@
                     </descriptorRefs>
                     <archive>
                         <manifest>
-                            <mainClass>de.bioinforma</mainClass>
-                            <packageName>schoolalyzer</packageName>
+                            <mainClass>de.bioinformatikmuenchen.pg4.alignment.AlignmentMain</mainClass>
+                            <packageName>de.bioinformatikmuenchen.pg4.alignment</packageName>
                         </manifest>
-                        <manifestEntries>
-                            <SplashScreen-Image>schoolalyzer/splashimage.png</SplashScreen-Image>
-                        </manifestEntries>
                     </archive>
                 </configuration>
                 <executions>

@@ -1,13 +1,12 @@
 package de.bioinformatikmuenchen.pg4.alignment;
 
 import de.bioinformaikmuenchen.pg4.common.alignment.AlignmentResult;
-import de.bioinformatikmuenchen.pg4.common.Sequence;
 import de.bioinformaikmuenchen.pg4.common.alignment.SequencePairAlignment;
 import de.bioinformaikmuenchen.pg4.common.distance.IDistanceMatrix;
 import de.bioinformatikmuenchen.pg4.alignment.gap.ConstantGapCost;
 import de.bioinformatikmuenchen.pg4.alignment.gap.IGapCost;
-import de.bioinformatikmuenchen.pg4.alignment.recursive.io.IAlignmentOutputFormatter;
-import java.util.LinkedList;
+import de.bioinformatikmuenchen.pg4.alignment.io.IAlignmentOutputFormatter;
+import de.bioinformatikmuenchen.pg4.common.Sequence;
 
 public class NeedlemanWunsch extends AlignmentProcessor {
 
@@ -29,12 +28,6 @@ public class NeedlemanWunsch extends AlignmentProcessor {
         return result;
     }
 
-    public NeedlemanWunsch(AlignmentMode mode, AlignmentAlgorithm algorithm, IDistanceMatrix distanceMatrix, IGapCost gapCost, IAlignmentOutputFormatter outputFormatter) {
-        super(mode, algorithm, distanceMatrix, gapCost, outputFormatter);
-        assert gapCost instanceof ConstantGapCost : "Classic Needleman Wunsch can't use affine gap cost";
-        assert algorithm == AlignmentAlgorithm.NEEDLEMAN_WUNSCH;
-    }
-
     /**
      * Initialize an alignment processor with a score-only output formatter
      *
@@ -44,6 +37,12 @@ public class NeedlemanWunsch extends AlignmentProcessor {
     public NeedlemanWunsch(AlignmentMode mode, AlignmentAlgorithm algorithm, IDistanceMatrix distanceMatrix, IGapCost gapCost) {
         super(mode, algorithm, distanceMatrix, gapCost);
         result = new AlignmentResult();
+    }
+
+    public NeedlemanWunsch(AlignmentMode mode, AlignmentAlgorithm algorithm, IDistanceMatrix distanceMatrix, IGapCost gapCost, IAlignmentOutputFormatter outputFormatter) {
+        super(mode, algorithm, distanceMatrix, gapCost, outputFormatter);
+        assert gapCost instanceof ConstantGapCost : "Classic Needleman Wunsch can't use affine gap cost";
+        assert algorithm == AlignmentAlgorithm.NEEDLEMAN_WUNSCH;
     }
 
     public void initMatrix(int xSize, int ySize) {
@@ -92,6 +91,21 @@ public class NeedlemanWunsch extends AlignmentProcessor {
         }
     }
 
+    public String printMatrix(boolean sysout) {
+        StringBuffer stringBuffer = new StringBuffer();
+        for (int x = 0; x < xSize; x++) {
+            for (int y = 0; y < ySize; y++) {
+                stringBuffer.append(matrix[x][y]).append("\t");
+            }
+            stringBuffer.append("\n");
+        }
+        if (sysout) {
+            System.out.println(stringBuffer.toString());
+        }
+        return stringBuffer.toString();
+    }
+    private LinkedList<SequencePairAlignment> alignmentResults;
+
     public String printMatrix() {
         StringBuilder stringBuffer = new StringBuilder();
         for (int x = 0; x < xSize; x++) {
@@ -102,9 +116,9 @@ public class NeedlemanWunsch extends AlignmentProcessor {
         }
         return stringBuffer.toString();
     }
-    private AlignmentResult result;
 
-    public void alignNew(SequencePairAlignment alignedSequence) {
+    public AlignmentResult alignNew() {
+        AlignmentResult result = new AlignmentResult();
         boolean left = false;
         boolean leftTop = false;
         boolean top = false;
@@ -125,6 +139,10 @@ public class NeedlemanWunsch extends AlignmentProcessor {
                         alignedSequence.queryAlignment += seq1.charAt(x - 1);
                         alignedSequence.targetAlignment += seq2.charAt(y - 1);
                     }
+
+                    left = false;
+                    leftTop = false;
+                    top = false;
                 }
                 if (topArrows[x][y]) {
                     top = true;
@@ -136,7 +154,6 @@ public class NeedlemanWunsch extends AlignmentProcessor {
                 leftTop = false;
                 top = false;
             }
-
         }
     }
 
@@ -146,26 +163,5 @@ public class NeedlemanWunsch extends AlignmentProcessor {
         int gap = -4;
         int match = 3;
         int mismatch = -2;
-    }
-
-    class DualString {
-
-        public String s;
-        public String t;
-        public String m = "";
-
-        public DualString(DualString origin) {
-            this.s = origin.s;
-            this.m = origin.m;
-            this.t = origin.t;
-        }
-
-        public String[] tmp_out() {
-            String[] temp = new String[3];
-            temp[0] = s;
-            temp[1] = t;
-            temp[2] = m;
-            return temp;
-        }
     }
 }

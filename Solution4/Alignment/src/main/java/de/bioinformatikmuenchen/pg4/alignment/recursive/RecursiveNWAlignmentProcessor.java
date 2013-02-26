@@ -12,8 +12,8 @@ import de.bioinformatikmuenchen.pg4.alignment.AlignmentProcessor;
 import de.bioinformaikmuenchen.pg4.common.alignment.AlignmentResult;
 import de.bioinformatikmuenchen.pg4.alignment.gap.ConstantGapCost;
 import de.bioinformatikmuenchen.pg4.alignment.gap.IGapCost;
-import de.bioinformatikmuenchen.pg4.alignment.recursive.io.IAlignmentOutputFormatter;
-import de.bioinformatikmuenchen.pg4.alignment.recursive.io.ScoreOnlyAlignmentOutputFormatter;
+import de.bioinformatikmuenchen.pg4.alignment.io.IAlignmentOutputFormatter;
+import de.bioinformatikmuenchen.pg4.alignment.io.ScoreOnlyAlignmentOutputFormatter;
 
 /**
  *

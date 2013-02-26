@@ -1,4 +1,4 @@
-package de.bioinformatikmuenchen.pg4.alignment.recursive.io;
+package de.bioinformatikmuenchen.pg4.alignment.io;
 
 import de.bioinformaikmuenchen.pg4.common.alignment.AlignmentResult;
 
@@ -6,9 +6,11 @@ import de.bioinformaikmuenchen.pg4.common.alignment.AlignmentResult;
  *
  * @author koehleru
  */
-public class ScoreOnlyAlignmentOutputFormatter extends AbstractAlignmentOutputFormatter {
+public class HTMLAlignmentOutputFormatter extends AbstractAlignmentOutputFormatter {
 
     public String format(AlignmentResult result) {
+        StringBuilder builder = new StringBuilder();
+        builder.append("<div>");
         return "Alignment score: " + Double.toString(result.getScore());
     }
 }
