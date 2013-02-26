@@ -149,6 +149,6 @@ public class NeedlemanWunsch extends AlignmentProcessor {
     }
 
     public static void main(String[] args) {
-        NeedlemanWunsch nw = new NeedlemanWunsch(AlignmentMode.GLOBAL, AlignmentAlgorithm.NEEDLEMAN_WUNSCH, , null)
+//        NeedlemanWunsch nw = new NeedlemanWunsch(AlignmentMode.GLOBAL, AlignmentAlgorithm.NEEDLEMAN_WUNSCH, , null)
     }
 }
