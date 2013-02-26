@@ -30,7 +30,8 @@ public class NeedlemanWunsch extends AlignmentProcessor {
         AlignmentResult result = new AlignmentResult();
         //Calculate the alignment and add it to the result
         result.setAlignments(Collections.singletonList(oneAlignmentOnly()));
-        result.setScore(matrix[xSize-1][ySize-1]);
+        result.setScore(matrix[xSize - 1][ySize - 1]);
+        System.out.println("######Score: " + matrix[xSize - 1][ySize - 1] + " ######\n");
         return result;
     }
 
@@ -78,17 +79,13 @@ public class NeedlemanWunsch extends AlignmentProcessor {
 
     public void fillMatrix(String seq1, String seq2) {
         final double compareThreshold = 0.0000001;
-        for (int x = 0; x < xSize; x++) {
-            for (int y = 0; y < ySize; y++) {
-                if(x == 0 && y == 0){
-                    matrix[x][y] = 0;
-                    continue;
-                }
-                char A = (x == 0 ? ' ' : seq1.charAt(x - 1));
-                char B = (y == 0 ? ' ' : seq1.charAt(y - 1));
-                double leftTopScore = (x == 0 || y == 0 ? Double.MIN_VALUE : matrix[x - 1][y - 1] + distanceMatrix.distance(A, B));
-                double leftScore = (x == 0 ? Double.MIN_VALUE : matrix[x - 1][y] + gapCost.getGapCost(1));
-                double topScore = (y == 0 ? Double.MIN_VALUE : matrix[x][y - 1] + gapCost.getGapCost(1));
+        for (int x = 1; x < xSize; x++) {
+            for (int y = 1; y < ySize; y++) {
+                char A = seq1.charAt(x - 1);
+                char B = seq2.charAt(y - 1);
+                double leftTopScore = matrix[x - 1][y - 1] + distanceMatrix.distance(A, B);
+                double leftScore = matrix[x][y - 1] + gapCost.getGapCost(1);
+                double topScore = matrix[x - 1][y] + gapCost.getGapCost(1);
                 //Calculate the max score
                 matrix[x][y] = Math.max(leftTopScore,
                         Math.max(leftScore, topScore));
@@ -117,14 +114,15 @@ public class NeedlemanWunsch extends AlignmentProcessor {
 
     public SequencePairAlignment oneAlignmentOnly() {
         SequencePairAlignment spa = new SequencePairAlignment();
-        int x = xSize-1;
-        int y = ySize-1;
-        while (x!=0 && y!=0) {
+        int x = xSize - 1;
+        int y = ySize - 1;
+        while (x != 0 && y != 0) {
             //System.out.println("x,y="+x+" "+y);
             if (leftTopArrows[x][y]) {
                 spa.queryAlignment += seq1.charAt(x - 1);
                 spa.targetAlignment += seq2.charAt(y - 1);
-                x--; y--;
+                x--;
+                y--;
             } else if (leftArrows[x][y]) {
                 spa.queryAlignment += seq1.charAt(x - 1);
                 spa.targetAlignment += '-';
