@@ -12,7 +12,8 @@ import de.bioinformatikmuenchen.pg4.alignment.io.IAlignmentOutputFormatter;
 import de.bioinformatikmuenchen.pg4.alignment.io.ScoreOnlyAlignmentOutputFormatter;
 
 /**
- *
+ * An object that can process alignments.
+ * AlignmentProcessors may not save state, align() calls shall be expected more than once per instance.
  * @author koehleru
  */
 public abstract class AlignmentProcessor {
