@@ -51,8 +51,6 @@ public class AliValiAlg {
         if (aligned == -1) {
             return 0;
         }
-        System.out.println("correct " + correct);
-        System.out.println("aligned " + aligned);
         return (double) correct / aligned;
     }
 
@@ -74,8 +72,6 @@ public class AliValiAlg {
         if (aligned == 0) {
             return -1;
         }
-        System.out.println("correct " + correct);
-        System.out.println("aligned " + aligned);
         return (double) correct / aligned;
     }
 
@@ -90,7 +86,7 @@ public class AliValiAlg {
             int a = -1;
             //getting position in reference
             for (int j = 0; j <= p; j++) {
-                if (reftar.charAt(j) == '_') {
+                if (reftar.charAt(j) == '-') {
                     p++;
                 }
                 a++;
@@ -100,7 +96,7 @@ public class AliValiAlg {
             int b = -1;
             //getting position in candidate
             for (int j = 0; j <= p; j++) {
-                if (cantar.charAt(j) == '_') {
+                if (cantar.charAt(j) == '-') {
                     p++;
                 }
                 b++;
@@ -120,8 +116,6 @@ public class AliValiAlg {
         if (canaligned == 0) {
             return -1;
         }
-        System.out.println("ref " + bothaligned);
-        System.out.println("can " + canaligned);
         return (double) (bothaligned / canaligned);
     }
 
@@ -152,11 +146,10 @@ public class AliValiAlg {
             System.out.println("no shifts defined");
             return -1;
         }
-        System.out.println("Number of defined shifts " + number);
         return (double) shift / number;
     }
 
-    public double getInvers() {
+    public double getInver() {
         // number of sequence for which the shift is defined
         double number = 0;
         //sum of absolut shifts
@@ -183,20 +176,16 @@ public class AliValiAlg {
             System.out.println("no shifts defined");
             return -1;
         }
-        System.out.println("Number of defined shifts " + number);
         return (double) shift / number;
     }
 
-    public int getshift(int i) {
-
-        System.out.println("Shift a postion " + i);
-
+    private int getshift(int i) {
         //temp parameter
         int p = i;
         //position in target from reference
         int a = -1;
         for (int j = 0; j <= p; j++) {
-            if (reftar.charAt(j) == '_') {
+            if (reftar.charAt(j) == '-') {
                 p++;
             }
             a++;
@@ -206,55 +195,44 @@ public class AliValiAlg {
         //position in target from candidate
         int b = -1;
         for (int j = 0; j <= p; j++) {
-            if (cantar.charAt(j) == '_') {
+            if (cantar.charAt(j) == '-') {
                 p++;
             }
             b++;
         }
         //checking if shift is undefined
-        System.out.println("a" + a);
-        System.out.println("b" + b);
-        if (reftemp.charAt(a) == '_' || cantemp.charAt(b) == '_') {
+        if (reftemp.charAt(a) == '-' || cantemp.charAt(b) == '-') {
             //modifying helpboolean so 'number' of defined shifts wont be increased
             helpboolean = false;
             //returning 0 wont influence MSE
-            System.out.println("undefined");
             return 0;
         }
-        System.out.println("Position in reference " + a);
-        System.out.println("Position in candidate " + b);
         //getting template position from candidate
         int c = 0;
         for (int j = 0; j < a; j++) {
-            if (reftemp.charAt(j) != '_') {
+            if (reftemp.charAt(j) != '-') {
                 c++;
             }
         }
         //getting template position from reference
         int d = 0;
         for (int j = 0; j < b; j++) {
-            if (cantemp.charAt(j) != '_') {
+            if (cantemp.charAt(j) != '-') {
                 d++;
             }
         }
-        System.out.println("partner in template " + c);
-        System.out.println("partner in template " + d);
         int out = d - c;
-        System.out.println("shift " + out + "\n");
         return out;
 
     }
 
-    public int getinvers(int i) {
-
-        System.out.println("InversShift a postion " + i);
-
+    private int getinvers(int i) {
         //temp parameter
         int p = i;
         //position in template from reference
         int a = -1;
         for (int j = 0; j <= p; j++) {
-            if (reftemp.charAt(j) == '_') {
+            if (reftemp.charAt(j) == '-') {
                 p++;
             }
             a++;
@@ -264,47 +242,39 @@ public class AliValiAlg {
         //position in template from candidate
         int b = -1;
         for (int j = 0; j <= p; j++) {
-            if (cantemp.charAt(j) == '_') {
+            if (cantemp.charAt(j) == '-') {
                 p++;
             }
             b++;
         }
         //checking if shift is undefined
-        System.out.println("a" + a);
-        System.out.println("b" + b);
-        if (reftar.charAt(a) == '_' || cantar.charAt(b) == '_') {
+        if (reftar.charAt(a) == '-' || cantar.charAt(b) == '-') {
             //modifying helpboolean so 'number' of defined shifts wont be increased
             helpboolean = false;
             //returning 0 wont influence inverseMSE
-            System.out.println("undefined");
             return 0;
         }
-        System.out.println("Position in reference " + a);
-        System.out.println("Position in candidate " + b);
         //getting target position from candidate
         int c = 0;
         for (int j = 0; j < a; j++) {
-            if (reftar.charAt(j) != '_') {
+            if (reftar.charAt(j) != '-') {
                 c++;
             }
         }
         //getting target position from reference
         int d = 0;
         for (int j = 0; j < b; j++) {
-            if (cantar.charAt(j) != '_') {
+            if (cantar.charAt(j) != '-') {
                 d++;
             }
         }
-        System.out.println("partner in target " + c);
-        System.out.println("partner in target " + d);
         int out = d - c;
-        System.out.println("shift " + out + "\n");
         return out;
 
     }
 
-    public boolean correctlyAligned(int i) {
-        if (cantemp.charAt(i) == '_' || cantar.charAt(i) == '_') {
+    private boolean correctlyAligned(int i) {
+        if (cantemp.charAt(i) == '-' || cantar.charAt(i) == '-') {
             return false;
         }
         //positions in sequence without and gaps
@@ -312,11 +282,11 @@ public class AliValiAlg {
         int b = 0;
         for (int j = 0; j < i; j++) {
             //getting template postion in sequence
-            if (cantemp.charAt(j) != '_') {
+            if (cantemp.charAt(j) != '-') {
                 a++;
             }
             //getting target postion in sequence
-            if (cantar.charAt(j) != '_') {
+            if (cantar.charAt(j) != '-') {
                 b++;
             }
         }
@@ -325,14 +295,14 @@ public class AliValiAlg {
         int d = 0;
         //geting template position in reference
         for (int j = 0; j <= a; j++) {
-            if (reftemp.charAt(j) == '_') {
+            if (reftemp.charAt(j) == '-') {
                 a++;
             }
             c++;
         }
         //getting target position in reference
         for (int j = 0; j <= b; j++) {
-            if (reftar.charAt(j) == '_') {
+            if (reftar.charAt(j) == '-') {
                 b++;
             }
             d++;
@@ -345,19 +315,19 @@ public class AliValiAlg {
         }
     }
 
-    public boolean aligned(String temp, String tar, int i) {
+    private boolean aligned(String temp, String tar, int i) {
         //check position i for gaps
-        if (temp.charAt(i) == '_' || tar.charAt(i) == '_') {
+        if (temp.charAt(i) == '-' || tar.charAt(i) == '-') {
             return false;
         }
         return true;
     }
 
-    public String sequence(String alignmentstring) {
+    private String sequence(String alignmentstring) {
         String temp = "";
         //copy sequence without gaps
         for (int i = 0, n = alignmentstring.length(); i < n; i++) {
-            if (alignmentstring.charAt(i) != '_') {
+            if (alignmentstring.charAt(i) != '-') {
                 temp = temp + alignmentstring.charAt(i);
             }
         }
