@@ -1,5 +1,6 @@
 package de.bioinformatikmuenchen.pg4.alignment;
 
+import java.io.File;
 import java.io.OutputStream;
 import java.io.PrintWriter;
 import org.apache.commons.cli.CommandLine;
@@ -21,8 +22,8 @@ public class AlignmentMain {
         opts.addOption("g", "go", true, "Gap open")
                 .addOption("h", "help", false, "Print help")
                 .addOption("e", "ge", true, "gapextend")
-                .addOption("d", "dpmatrices", true, "dpmatrices")
-                .addOption("p", "pair", true, "pairfile")
+                .addOption("d", "dpmatrices", true, "Output dynamic programming matrices to directory")
+                .addOption("p", "pairs", true, "Path to pairs file")
                 .addOption("s", "seqlib", true, "seqlibfile")
                 .addOption("n", "matrixname", true, "matrixname")
                 .addOption("m", "mode", true, "mode")
@@ -31,7 +32,7 @@ public class AlignmentMain {
                 .addOption("f", "format", true, "format");
         //Parse the opts
         final CommandLineParser cmdLinePosixParser = new PosixParser();
-        CommandLine commandLine;
+        CommandLine commandLine = null;
         try {
             commandLine = cmdLinePosixParser.parse(opts, args);
             if (commandLine.hasOption("display")) {
@@ -42,17 +43,36 @@ public class AlignmentMain {
                     "Encountered exception while parsing using PosixParser:\n"
                     + parseException.getMessage());
         }
+        //
         //Check if the options are valid
-        
-    }
-
-    public static void printUsage(
-            final String applicationName,
-            final Options options,
-            final OutputStream out) {
-        final PrintWriter writer = new PrintWriter(out);
-        final HelpFormatter usageFormatter = new HelpFormatter();
-        usageFormatter.printUsage(writer, 80, applicationName, options);
-        writer.close();
+        //
+        if (opts.hasOption("help")){
+            HelpFormatter formatter = new HelpFormatter();
+            formatter.printHelp("alignment.jar", opts);
+        }
+        //check --dpmatrices
+        File dpMatrixDir = null;
+        if (commandLine.hasOption("dpmatrices")){
+            dpMatrixDir = new File(commandLine.getOptionValue("dpmatrices"));
+            if(dpMatrixDir.exists() && !dpMatrixDir.isDirectory()) {
+                System.err.println("Error: --dpmatrices directory exists and is not a directory");
+                System.exit(1);
+            }
+            if(!dpMatrixDir.exists()) {
+                dpMatrixDir.mkdirs();
+            }
+        }
+        //check --pairs
+        File pairsFile = null;
+        if (commandLine.hasOption("pairs")){
+            dpMatrixDir = new File(commandLine.getOptionValue("pairs"));
+            if(!dpMatrixDir.exists() || !dpMatrixDir.isDirectory()) {
+                System.err.println("Error: --pairs directory is not a file!");
+                System.exit(1);
+            }
+            if(!dpMatrixDir.exists()) {
+                dpMatrixDir.mkdirs();
+            }
+        }
     }
 }
