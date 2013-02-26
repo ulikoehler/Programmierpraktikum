@@ -104,12 +104,9 @@ public class NeedlemanWunsch extends AlignmentProcessor {
         String t_ = "";
         String m_ = "";
         DualString tmp2;
-        if (this.counter < this.compare_counter)//Hört auf Alignments auszugeben, wenn die vorgegebene Anzahl erreicht wird.
-        {
             if (i == 0 && j == 0) {
-                this.counter++;
                 System.out.println(tmp.s + "\n" + tmp.m + "\n" + tmp.t);
-                this.out.setText(this.out.getText() + "### Alignment " + counter + " ###\n" + tmp.s + "\n" + tmp.m + "\n" + tmp.t + "\n\n");
+                //System.out.println("### Alignment " + counter + " ###\n" + tmp.s + "\n" + tmp.m + "\n" + tmp.t + "\n\n");
                 return;
             }
             if (i > 0 && M[i][j] == M[i - 1][j] + Straffaktor) {
@@ -158,7 +155,6 @@ public class NeedlemanWunsch extends AlignmentProcessor {
                     this.opt_Alignment(tmp2, i - 1, j - 1, M, s, t, Straffaktor, Matchfaktor, Mismatchfaktor);
                 }
             }
-        }
     }
 
     public static void main(String[] args) {
@@ -167,11 +163,6 @@ public class NeedlemanWunsch extends AlignmentProcessor {
         int gap = -4;
         int match = 3;
         int mismatch = -2;
-        NeedlemanWunsch alignment = new NeedlemanWunsch(seq1.length() + 1, seq2.length() + 1);
-        alignment.initMatrix(gap);
-        alignment.printMatrix();
-        alignment.fillMatrix(gap, match, mismatch, seq1, seq2);
-        alignment.printMatrix();
     }
 
     class DualString {
