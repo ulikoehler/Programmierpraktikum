@@ -1,5 +1,6 @@
 package de.bioinformatikmuenchen.pg4.alignment;
 
+import com.google.common.collect.Lists;
 import de.bioinformaikmuenchen.pg4.common.alignment.AlignmentResult;
 import de.bioinformaikmuenchen.pg4.common.alignment.SequencePairAlignment;
 import de.bioinformaikmuenchen.pg4.common.distance.IDistanceMatrix;
@@ -7,6 +8,7 @@ import de.bioinformatikmuenchen.pg4.alignment.gap.ConstantGapCost;
 import de.bioinformatikmuenchen.pg4.alignment.gap.IGapCost;
 import de.bioinformatikmuenchen.pg4.alignment.io.IAlignmentOutputFormatter;
 import de.bioinformatikmuenchen.pg4.common.Sequence;
+import java.util.Collections;
 import java.util.LinkedList;
 
 public class NeedlemanWunsch extends AlignmentProcessor {
@@ -26,9 +28,8 @@ public class NeedlemanWunsch extends AlignmentProcessor {
         initMatrix(seq1.getSequence().length(), seq2.getSequence().length());
         fillMatrix(seq1.getSequence(), seq2.getSequence());
         AlignmentResult result = new AlignmentResult();
-        LinkedList<SequencePairAlignment> results = new LinkedList<SequencePairAlignment>();
-        results.add(oneAlignmentOnly());
-        result.setAlignments(results);
+        //Calculate the alignment and add it to the result
+        result.setAlignments(Collections.singletonList(oneAlignmentOnly()));
         return result;
     }
 

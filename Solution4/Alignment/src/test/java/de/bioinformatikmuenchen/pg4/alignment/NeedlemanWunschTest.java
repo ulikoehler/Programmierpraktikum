@@ -50,7 +50,8 @@ public class NeedlemanWunschTest {
     @Test
     public void testAlignZeroOneMatrix() {
         NeedlemanWunsch w = new NeedlemanWunsch(AlignmentMode.GLOBAL, AlignmentAlgorithm.NEEDLEMAN_WUNSCH, new ZeroOneAlignmentMatrix(), new ConstantGapCost(0));
-        AlignmentResult result = w.align(new Sequence("G A A T T C A G T T A"), new Sequence("G G A T C G A "));
+        AlignmentResult result = w.align(new Sequence("GAATTCAGTTA"), new Sequence("GGATCGA"));
+        assertEquals(6, result.getScore());
         //assertEquals("G-AATTCAGTTA", currentAlignment.getSequence());
         
     }
@@ -58,6 +59,6 @@ public class NeedlemanWunschTest {
     
     @Test
     public void testAlignRealMatrix() throws IOException {
-        NeedlemanWunsch nw = new NeedlemanWunsch(AlignmentMode.GLOBAL, AlignmentAlgorithm.NEEDLEMAN_WUNSCH, QUASARDistanceMatrixFactory.factorize(""), null);        
+        NeedlemanWunsch nw = new NeedlemanWunsch(AlignmentMode.GLOBAL, AlignmentAlgorithm.NEEDLEMAN_WUNSCH, QUASARDistanceMatrixFactory.factorize("/matrices/blosum80.mat"), null);        
     }
 }
