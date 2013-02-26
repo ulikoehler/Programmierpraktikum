@@ -2,6 +2,7 @@ package de.bioinformatikmuenchen.pg4.alignment;
 
 import de.bioinformaikmuenchen.pg4.common.alignment.AlignmentResult;
 import de.bioinformaikmuenchen.pg4.common.Sequence;
+import de.bioinformaikmuenchen.pg4.common.alignment.SequencePairAlignment;
 import de.bioinformaikmuenchen.pg4.common.distance.IDistanceMatrix;
 import de.bioinformatikmuenchen.pg4.alignment.gap.ConstantGapCost;
 import de.bioinformatikmuenchen.pg4.alignment.gap.IGapCost;
@@ -42,6 +43,7 @@ public class NeedlemanWunsch extends AlignmentProcessor {
      */
     public NeedlemanWunsch(AlignmentMode mode, AlignmentAlgorithm algorithm, IDistanceMatrix distanceMatrix, IGapCost gapCost) {
         super(mode, algorithm, distanceMatrix, gapCost);
+        result = new AlignmentResult();
     }
 
     public void initMatrix(int xSize, int ySize) {
@@ -90,67 +92,51 @@ public class NeedlemanWunsch extends AlignmentProcessor {
         }
     }
 
-    public String printMatrix(boolean sysout) {
-        StringBuffer stringBuffer = new StringBuffer();
+    public String printMatrix() {
+        StringBuilder stringBuffer = new StringBuilder();
         for (int x = 0; x < xSize; x++) {
             for (int y = 0; y < ySize; y++) {
                 stringBuffer.append(matrix[x][y]).append("\t");
             }
             stringBuffer.append("\n");
         }
-        if(sysout){
-            System.out.println(stringBuffer.toString());
-        }
         return stringBuffer.toString();
     }
-    
-    private char middleLine(int x, int y){
-        if(seq1.charAt(x-1) == seq2.charAt(y-1)){
-            return '|';
-        }
-        else{
-            return 32;//ASCII whitespace code
-        }
-    }
-    
-    private LinkedList<DualString> alignmentResults;
-    
-    public void alignment_NEW(DualString alignedSequence){
+    private AlignmentResult result;
+
+    public void alignNew(SequencePairAlignment alignedSequence) {
         boolean left = false;
         boolean leftTop = false;
         boolean top = false;
-        for (int x = xSize-1; x > 0; x++) {
-            for (int y = ySize-1; y > 0; y++) {
-                if(leftArrows[x][y]){
+        for (int x = xSize - 1; x > 0; x++) {
+            for (int y = ySize - 1; y > 0; y++) {
+                if (leftArrows[x][y]) {
                     left = true;
-                    alignedSequence.s += seq1.charAt(x-1);
-                    alignedSequence.m += this.middleLine(x, y);
-                    alignedSequence.t += '-';
-                    
+                    alignedSequence.queryAlignment += seq1.charAt(x - 1);
+                    alignedSequence.targetAlignment += '-';
+
                 }
-                if(leftTopArrows[x][y]){
+                if (leftTopArrows[x][y]) {
                     leftTop = true;
-                    if(left){
-                        alignmentResults.add(new DualString());
-                    }
-                    else{
-                        alignedSequence.s += seq1.charAt(x-1);
-                        alignedSequence.m += this.middleLine(x, y);
-                        alignedSequence.t += seq2.charAt(y-1);
+                    if (left) {
+                        SequencePairAlignment newAlignment = new SequencePairAlignment();
+                        result.getAlignments().add(newAlignment);
+                    } else {
+                        alignedSequence.queryAlignment += seq1.charAt(x - 1);
+                        alignedSequence.targetAlignment += seq2.charAt(y - 1);
                     }
                 }
-                if(topArrows[x][y]){
+                if (topArrows[x][y]) {
                     top = true;
-                    alignedSequence.s += '-';
-                    alignedSequence.m += this.middleLine(x, y);
-                    alignedSequence.t += seq2.charAt(y-1);
+                    alignedSequence.queryAlignment += '-';
+                    alignedSequence.targetAlignment += seq2.charAt(y - 1);
                 }
-                
+
                 left = false;
                 leftTop = false;
                 top = false;
             }
-            
+
         }
     }
 
@@ -168,12 +154,12 @@ public class NeedlemanWunsch extends AlignmentProcessor {
         public String t;
         public String m = "";
 
-        public DualString(DualString origin){
+        public DualString(DualString origin) {
             this.s = origin.s;
             this.m = origin.m;
             this.t = origin.t;
         }
-        
+
         public String[] tmp_out() {
             String[] temp = new String[3];
             temp[0] = s;
