@@ -7,6 +7,7 @@ import de.bioinformatikmuenchen.pg4.alignment.gap.ConstantGapCost;
 import de.bioinformatikmuenchen.pg4.alignment.gap.IGapCost;
 import de.bioinformatikmuenchen.pg4.alignment.io.IAlignmentOutputFormatter;
 import de.bioinformatikmuenchen.pg4.common.Sequence;
+import java.util.LinkedList;
 
 public class NeedlemanWunsch extends AlignmentProcessor {
 
@@ -117,28 +118,44 @@ public class NeedlemanWunsch extends AlignmentProcessor {
         return stringBuffer.toString();
     }
 
-    private AlignmentResult result = new AlignmentResult();
+    private LinkedList<SequencePairAlignment> spAlignments = new LinkedList<SequencePairAlignment>();
     
-    public AlignmentResult alignNew(int x, int y) {
-        int currentX = x;
-        int currentY = y;
-        for (int i=0;i<xSize+ySize;i++) {
+    public SequencePairAlignment alignNew(int currentX, int currentY, SequencePairAlignment previous) {
+        boolean left = false;
+        boolean topLeft = false;
+        if(currentX<0 || currentY<0){
+            return previous;
+        }
+        //SequencePairAlignment previous = new SequencePairAlignment(previous.queryAlignment, previous.targetAlignment);
+        for (int i=0;i<currentX+currentY;i++) {
             if (leftArrows[currentX][currentY]) {
-                alignedSequence.queryAlignment += seq1.charAt(x - 1);
-                alignedSequence.targetAlignment += '-';
-
+                previous.queryAlignment += seq1.charAt(currentX - 1);
+                previous.targetAlignment += '-';
+                left = true;
             }
-            if (leftTopArrows[x][y]) {
-
-                alignedSequence.queryAlignment += seq1.charAt(x - 1);
-                alignedSequence.targetAlignment += seq2.charAt(y - 1);
+            if (leftTopArrows[currentX][currentY]) {
+                if(left){
+                    SequencePairAlignment otherPath = alignNew(currentX-1, currentY-1, new SequencePairAlignment(previous.queryAlignment, previous.targetAlignment));
+                    spAlignments.add(otherPath);
+                }
+                else{
+                    previous.queryAlignment += seq1.charAt(currentX - 1);
+                    previous.targetAlignment += seq2.charAt(currentY - 1);
+                }
+                topLeft = true;
             }
-            if (topArrows[x][y]) {
-                alignedSequence.queryAlignment += '-';
-                alignedSequence.targetAlignment += seq2.charAt(y - 1);
+            if (topArrows[currentX][currentY]) {
+                if(left || topLeft){
+                    SequencePairAlignment otherPath = alignNew(currentX-1, currentY, new SequencePairAlignment(previous.queryAlignment, previous.targetAlignment));
+                    spAlignments.add(otherPath);
+                }
+                else{
+                    previous.queryAlignment += '-';
+                    previous.targetAlignment += seq2.charAt(currentY - 1);
+                }
             }
         }
-        return result;
+        return previous;
     }
 
     public static void main(String[] args) {
