@@ -77,14 +77,35 @@ public class AliValiAlg {
 
     public double getCover() {
 
-        double refaligned = 0;
+        double bothaligned = 0;
         double canaligned = 0;
 
-        for (int i = 0, n = reftemp.length(); i < n; i++) {
-            //count aligned residues in candidate
-            if (aligned(reftemp, reftar, i)) {
-                refaligned++;
+        for (int i = 0; i < target.length(); i++) {
+            //temp value
+            int p = i;
+            int a = -1;
+            //getting position in reference
+            for (int j = 0; j <= p; j++) {
+                if (reftar.charAt(j) == '_') {
+                    p++;
+                }
+                a++;
             }
+            //reseting temp value
+            p = i;
+            int b = -1;
+            //getting position in candidate
+            for (int j = 0; j <= p; j++) {
+                if (cantar.charAt(j) == '_') {
+                    p++;
+                }
+                b++;
+            }
+            //checking if residue is aligned in both alignments
+            if (aligned(reftemp, reftar, a) && aligned(cantemp, cantar, b)) {
+                bothaligned++;
+            }
+
         }
         for (int i = 0, n = cantemp.length(); i < n; i++) {
             //count aligned residues in candidate
@@ -95,9 +116,9 @@ public class AliValiAlg {
         if (canaligned == 0) {
             return -1;
         }
-        System.out.println("ref " + refaligned);
+        System.out.println("ref " + bothaligned);
         System.out.println("can " + canaligned);
-        return (double) ((refaligned + canaligned) / canaligned);
+        return (double) (bothaligned / canaligned);
     }
 
     public double getMeanS() {
@@ -113,7 +134,7 @@ public class AliValiAlg {
             //shift at for characters i
             int h = getshift(i);
             //absolut value for shift
-            if(h < 0){
+            if (h < 0) {
                 h = -h;
             }
             //adding to shift sum
@@ -168,21 +189,21 @@ public class AliValiAlg {
         //getting template position from candidate
         int c = 0;
         for (int j = 0; j < a; j++) {
-            if(reftemp.charAt(j) != '_'){
+            if (reftemp.charAt(j) != '_') {
                 c++;
             }
         }
         //getting template position from reference
         int d = 0;
         for (int j = 0; j < b; j++) {
-            if(cantemp.charAt(j) != '_'){
+            if (cantemp.charAt(j) != '_') {
                 d++;
             }
         }
         System.out.println("partner in template " + c);
         System.out.println("partner in template " + d);
         int out = d - c;
-        System.out.println("shift " + out +"\n");
+        System.out.println("shift " + out + "\n");
         return out;
 
     }
