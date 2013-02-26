@@ -19,6 +19,10 @@ public class NeedlemanWunsch extends AlignmentProcessor {
 
     @Override
     public AlignmentResult align(Sequence seq1, Sequence seq2) {
+        initMatrix(seq1.getSequence().length(), seq2.getSequence().length());
+        fillMatrix(seq1.getSequence(), seq2.getSequence());
+        AlignmentResult result = new AlignmentResult();
+        return result;
     }
 
     public NeedlemanWunsch(AlignmentMode mode, AlignmentAlgorithm algorithm, IDistanceMatrix distanceMatrix, IGapCost gapCost, IAlignmentOutputFormatter outputFormatter) {
