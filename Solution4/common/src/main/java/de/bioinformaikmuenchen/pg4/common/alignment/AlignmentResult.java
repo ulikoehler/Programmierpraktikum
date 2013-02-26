@@ -2,14 +2,16 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package de.bioinformatikmuenchen.pg4.alignment;
+package de.bioinformaikmuenchen.pg4.common.alignment;
 
 /**
  *
  * @author koehleru
  */
 public class AlignmentResult {
-    double score;
+
+    private double score;
+    private SequencePairAlignment alignment;
 
     public AlignmentResult() {
     }
@@ -25,6 +27,12 @@ public class AlignmentResult {
     public void setScore(double score) {
         this.score = score;
     }
-    
-    
+
+    public SequencePairAlignment getAlignment() {
+        return alignment;
+    }
+
+    public void setAlignment(SequencePairAlignment alignment) {
+        this.alignment = alignment;
+    }
 }
