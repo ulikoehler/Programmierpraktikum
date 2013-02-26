@@ -35,7 +35,7 @@ CREATE TABLE Orf (
 CREATE TABLE SecStructAlign (
   Id INT NOT NULL AUTO_INCREMENT,
   AlignmentIdentifier INT NOT NULL,
-  SeqIdentifier INT NOT NULL,
+  SeqIdentifier VARCHAR(50),
   OrganismId INT NOT NULL,
   Content TEXT,
   DBId INT,
