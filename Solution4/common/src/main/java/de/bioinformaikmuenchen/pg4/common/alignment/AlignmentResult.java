@@ -23,10 +23,6 @@ public class AlignmentResult {
     public AlignmentResult(double score) {
         this.score = score;
     }
-    
-    public void addSequencePairAlignment(SequencePairAlignment seqPAl){
-        alignments.add(seqPAl);
-    }
 
     public double getScore() {
         return score;

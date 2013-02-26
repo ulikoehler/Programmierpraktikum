@@ -7,6 +7,7 @@ import de.bioinformatikmuenchen.pg4.alignment.gap.ConstantGapCost;
 import de.bioinformatikmuenchen.pg4.alignment.gap.IGapCost;
 import de.bioinformatikmuenchen.pg4.alignment.io.IAlignmentOutputFormatter;
 import de.bioinformatikmuenchen.pg4.common.Sequence;
+import java.util.LinkedList;
 
 public class NeedlemanWunsch extends AlignmentProcessor {
 
@@ -25,6 +26,9 @@ public class NeedlemanWunsch extends AlignmentProcessor {
         initMatrix(seq1.getSequence().length(), seq2.getSequence().length());
         fillMatrix(seq1.getSequence(), seq2.getSequence());
         AlignmentResult result = new AlignmentResult();
+        LinkedList<SequencePairAlignment> results = new LinkedList<SequencePairAlignment>();
+        results.add(oneAlignmentOnly(xSize, ySize));
+        result.setAlignments(results);
         return result;
     }
 
@@ -36,7 +40,7 @@ public class NeedlemanWunsch extends AlignmentProcessor {
      */
     public NeedlemanWunsch(AlignmentMode mode, AlignmentAlgorithm algorithm, IDistanceMatrix distanceMatrix, IGapCost gapCost) {
         super(mode, algorithm, distanceMatrix, gapCost);
-        result = new AlignmentResult();
+        //AlignmentResult result = new AlignmentResult();
     }
 
     public NeedlemanWunsch(AlignmentMode mode, AlignmentAlgorithm algorithm, IDistanceMatrix distanceMatrix, IGapCost gapCost, IAlignmentOutputFormatter outputFormatter) {
@@ -104,64 +108,23 @@ public class NeedlemanWunsch extends AlignmentProcessor {
         }
         return stringBuffer.toString();
     }
-    private LinkedList<SequencePairAlignment> alignmentResults;
 
-    public String printMatrix() {
-        StringBuilder stringBuffer = new StringBuilder();
-        for (int x = 0; x < xSize; x++) {
-            for (int y = 0; y < ySize; y++) {
-                stringBuffer.append(matrix[x][y]).append("\t");
+    public SequencePairAlignment oneAlignmentOnly(int x, int y) {
+        SequencePairAlignment spa = new SequencePairAlignment();
+        for (int i = 0; i < x + y; i++) {
+            if (leftArrows[x][y]) {
+                spa.queryAlignment += seq1.charAt(x - 1);
+                spa.targetAlignment += '-';
             }
-            stringBuffer.append("\n");
-        }
-        return stringBuffer.toString();
-    }
-
-    public AlignmentResult alignNew() {
-        AlignmentResult result = new AlignmentResult();
-        boolean left = false;
-        boolean leftTop = false;
-        boolean top = false;
-        for (int x = xSize - 1; x > 0; x++) {
-            for (int y = ySize - 1; y > 0; y++) {
-                if (leftArrows[x][y]) {
-                    left = true;
-                    alignedSequence.queryAlignment += seq1.charAt(x - 1);
-                    alignedSequence.targetAlignment += '-';
-
-                }
-                if (leftTopArrows[x][y]) {
-                    leftTop = true;
-                    if (left) {
-                        SequencePairAlignment newAlignment = new SequencePairAlignment();
-                        result.getAlignments().add(newAlignment);
-                    } else {
-                        alignedSequence.queryAlignment += seq1.charAt(x - 1);
-                        alignedSequence.targetAlignment += seq2.charAt(y - 1);
-                    }
-
-                    left = false;
-                    leftTop = false;
-                    top = false;
-                }
-                if (topArrows[x][y]) {
-                    top = true;
-                    alignedSequence.queryAlignment += '-';
-                    alignedSequence.targetAlignment += seq2.charAt(y - 1);
-                }
-
-                left = false;
-                leftTop = false;
-                top = false;
+            if (leftTopArrows[x][y]) {
+                spa.queryAlignment += seq1.charAt(x - 1);
+                spa.targetAlignment += seq2.charAt(y - 1);
+            }
+            if (topArrows[x][y]) {
+                spa.queryAlignment += '-';
+                spa.targetAlignment += seq2.charAt(y - 1);
             }
         }
-    }
-
-    public static void main(String[] args) {
-        String seq1 = "TATAAT";//vertikale
-        String seq2 = "TTACGTAAGC";//horizontale
-        int gap = -4;
-        int match = 3;
-        int mismatch = -2;
+        return spa;
     }
 }

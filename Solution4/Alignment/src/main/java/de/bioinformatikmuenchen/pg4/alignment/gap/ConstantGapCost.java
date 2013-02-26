@@ -9,7 +9,6 @@ package de.bioinformatikmuenchen.pg4.alignment.gap;
  * @author koehleru
  */
 public class ConstantGapCost implements IGapCost {
-
     private double cost;
 
     public ConstantGapCost(double cost) {
