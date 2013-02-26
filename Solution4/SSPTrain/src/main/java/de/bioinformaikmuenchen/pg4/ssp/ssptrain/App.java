@@ -32,7 +32,7 @@
  */
 package de.bioinformaikmuenchen.pg4.ssp.ssptrain;
 
-import de.bioinformaikmuenchen.pg4.common.AminoAcid;
+import de.bioinformatikmuenchen.pg4.common.AminoAcid;
 
 /**
  * SSP Train

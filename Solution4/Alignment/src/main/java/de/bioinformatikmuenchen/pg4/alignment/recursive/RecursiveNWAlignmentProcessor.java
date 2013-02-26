@@ -4,7 +4,7 @@
  */
 package de.bioinformatikmuenchen.pg4.alignment.recursive;
 
-import de.bioinformaikmuenchen.pg4.common.Sequence;
+import de.bioinformatikmuenchen.pg4.common.Sequence;
 import de.bioinformaikmuenchen.pg4.common.distance.IDistanceMatrix;
 import de.bioinformatikmuenchen.pg4.alignment.AlignmentAlgorithm;
 import de.bioinformatikmuenchen.pg4.alignment.AlignmentMode;

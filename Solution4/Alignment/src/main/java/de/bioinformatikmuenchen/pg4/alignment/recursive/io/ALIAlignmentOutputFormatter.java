@@ -22,7 +22,7 @@ public class ALIAlignmentOutputFormatter extends AbstractAlignmentOutputFormatte
         builder.append("<br/>");
         
         for(SequencePairAlignment alignment : result.getAlignments()) {
-            
+            //builder.appendalignment.getQueryAlignment()
         }
         builder.append("</div>");
         return "Alignment score: " + Double.toString(result.getScore());
