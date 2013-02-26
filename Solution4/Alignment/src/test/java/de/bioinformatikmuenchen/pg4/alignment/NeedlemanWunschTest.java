@@ -57,8 +57,8 @@ public class NeedlemanWunschTest {
     }
     
     
-    @Test
-    public void testAlignRealMatrix() throws IOException {
-        NeedlemanWunsch nw = new NeedlemanWunsch(AlignmentMode.GLOBAL, AlignmentAlgorithm.NEEDLEMAN_WUNSCH, QUASARDistanceMatrixFactory.factorize("/matrices/blosum80.mat"), null);        
-    }
+//    @Test
+//    public void testAlignRealMatrix() throws IOException {
+//        NeedlemanWunsch nw = new NeedlemanWunsch(AlignmentMode.GLOBAL, AlignmentAlgorithm.NEEDLEMAN_WUNSCH, QUASARDistanceMatrixFactory.factorize("/matrices/blosum80.mat"), null);        
+//    }
 }

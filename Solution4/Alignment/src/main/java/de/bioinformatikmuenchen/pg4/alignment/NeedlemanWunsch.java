@@ -1,6 +1,5 @@
 package de.bioinformatikmuenchen.pg4.alignment;
 
-import com.google.common.collect.Lists;
 import de.bioinformaikmuenchen.pg4.common.alignment.AlignmentResult;
 import de.bioinformaikmuenchen.pg4.common.alignment.SequencePairAlignment;
 import de.bioinformaikmuenchen.pg4.common.distance.IDistanceMatrix;
@@ -9,7 +8,6 @@ import de.bioinformatikmuenchen.pg4.alignment.gap.IGapCost;
 import de.bioinformatikmuenchen.pg4.alignment.io.IAlignmentOutputFormatter;
 import de.bioinformatikmuenchen.pg4.common.Sequence;
 import java.util.Collections;
-import java.util.LinkedList;
 
 public class NeedlemanWunsch extends AlignmentProcessor {
 
@@ -32,6 +30,7 @@ public class NeedlemanWunsch extends AlignmentProcessor {
         AlignmentResult result = new AlignmentResult();
         //Calculate the alignment and add it to the result
         result.setAlignments(Collections.singletonList(oneAlignmentOnly()));
+        result.setScore(matrix[xSize-1][ySize-1]);
         return result;
     }
 
@@ -53,6 +52,8 @@ public class NeedlemanWunsch extends AlignmentProcessor {
     }
 
     public void initMatrix(int xSize, int ySize) {
+        xSize++;
+        ySize++;
         this.xSize = xSize;
         this.ySize = ySize;
         matrix = new double[xSize][ySize];
@@ -77,13 +78,17 @@ public class NeedlemanWunsch extends AlignmentProcessor {
 
     public void fillMatrix(String seq1, String seq2) {
         final double compareThreshold = 0.0000001;
-        for (int x = 1; x < xSize; x++) {
-            for (int y = 1; y < ySize; y++) {
-                char A = seq1.charAt(x - 1);
-                char B = seq2.charAt(y - 1);
-                double leftTopScore = matrix[x - 1][y - 1] + distanceMatrix.distance(A, B);
-                double leftScore = matrix[x - 1][y] + gapCost.getGapCost(1);
-                double topScore = matrix[x][y - 1] + gapCost.getGapCost(1);
+        for (int x = 0; x < xSize; x++) {
+            for (int y = 0; y < ySize; y++) {
+                if(x == 0 && y == 0){
+                    matrix[x][y] = 0;
+                    continue;
+                }
+                char A = (x == 0 ? ' ' : seq1.charAt(x - 1));
+                char B = (y == 0 ? ' ' : seq1.charAt(y - 1));
+                double leftTopScore = (x == 0 || y == 0 ? Double.MIN_VALUE : matrix[x - 1][y - 1] + distanceMatrix.distance(A, B));
+                double leftScore = (x == 0 ? Double.MIN_VALUE : matrix[x - 1][y] + gapCost.getGapCost(1));
+                double topScore = (y == 0 ? Double.MIN_VALUE : matrix[x][y - 1] + gapCost.getGapCost(1));
                 //Calculate the max score
                 matrix[x][y] = Math.max(leftTopScore,
                         Math.max(leftScore, topScore));
@@ -94,20 +99,18 @@ public class NeedlemanWunsch extends AlignmentProcessor {
                 topArrows[x][y] = Math.abs(topScore - maxScore) < compareThreshold;
                 //Assert this field has at least one arrow
                 assert leftTopArrows[x][y] || leftArrows[x][y] || topArrows[x][y];
+                System.out.println(this.printMatrix());
             }
         }
     }
 
-    public String printMatrix(boolean sysout) {
+    public String printMatrix() {
         StringBuffer stringBuffer = new StringBuffer();
         for (int x = 0; x < xSize; x++) {
             for (int y = 0; y < ySize; y++) {
                 stringBuffer.append(matrix[x][y]).append("\t");
             }
             stringBuffer.append("\n");
-        }
-        if (sysout) {
-            System.out.println(stringBuffer.toString());
         }
         return stringBuffer.toString();
     }
@@ -116,25 +119,23 @@ public class NeedlemanWunsch extends AlignmentProcessor {
         SequencePairAlignment spa = new SequencePairAlignment();
         int x = xSize-1;
         int y = ySize-1;
-        for (int i = 0; i < seq1.length()-1 + seq2.length()-1; i++) {
+        while (x!=0 && y!=0) {
+            //System.out.println("x,y="+x+" "+y);
             if (leftTopArrows[x][y]) {
                 spa.queryAlignment += seq1.charAt(x - 1);
                 spa.targetAlignment += seq2.charAt(y - 1);
                 x--; y--;
-            }
-            if (leftArrows[x][y]) {
+            } else if (leftArrows[x][y]) {
                 spa.queryAlignment += seq1.charAt(x - 1);
                 spa.targetAlignment += '-';
                 y--;
-            }
-            if (topArrows[x][y]) {
+            } else if (topArrows[x][y]) {
                 spa.queryAlignment += '-';
                 spa.targetAlignment += seq2.charAt(y - 1);
                 x--;
             }
         }
-        assert(x<=0 && y<=0);
         //reverse the output:
-        return new SequencePairAlignment(new StringBuffer(spa.matchLine).reverse().toString(), new StringBuffer(spa.targetAlignment).reverse().toString());
+        return new SequencePairAlignment(new StringBuffer(spa.queryAlignment).reverse().toString(), new StringBuffer(spa.targetAlignment).reverse().toString());
     }
 }
