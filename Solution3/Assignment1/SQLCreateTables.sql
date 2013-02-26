@@ -38,6 +38,7 @@ CREATE TABLE SecStructAlign (
   SeqIdentifier VARCHAR(50),
   OrganismId INT NOT NULL,
   Content TEXT,
+  Description TEXT,
   DBId INT,
   Type VARCHAR(50),
   PRIMARY KEY(Id),
