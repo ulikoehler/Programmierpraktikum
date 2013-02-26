@@ -4,7 +4,7 @@
  */
 package de.bioinformatikmuenchen.pg4.alignment.recursive.io;
 
-import de.bioinformatikmuenchen.pg4.alignment.AlignmentResult;
+import de.bioinformaikmuenchen.pg4.common.alignment.AlignmentResult;
 
 /**
  *

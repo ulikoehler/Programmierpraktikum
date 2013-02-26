@@ -1,4 +1,4 @@
-package de.bioinformaikmuenchen.pg4.common;
+package de.bioinformatikmuenchen.pg4.common;
 
 /**
  * 

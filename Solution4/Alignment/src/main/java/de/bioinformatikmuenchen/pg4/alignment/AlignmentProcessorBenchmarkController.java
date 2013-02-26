@@ -4,7 +4,8 @@
  */
 package de.bioinformatikmuenchen.pg4.alignment;
 
-import de.bioinformaikmuenchen.pg4.common.Sequence;
+import de.bioinformaikmuenchen.pg4.common.alignment.AlignmentResult;
+import de.bioinformatikmuenchen.pg4.common.Sequence;
 
 /**
  * Alignment processor that proxies data to two inner processors. For results,

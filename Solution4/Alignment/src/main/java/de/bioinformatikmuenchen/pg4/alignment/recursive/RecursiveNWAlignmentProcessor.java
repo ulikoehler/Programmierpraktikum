@@ -4,12 +4,12 @@
  */
 package de.bioinformatikmuenchen.pg4.alignment.recursive;
 
-import de.bioinformaikmuenchen.pg4.common.Sequence;
+import de.bioinformatikmuenchen.pg4.common.Sequence;
 import de.bioinformaikmuenchen.pg4.common.distance.IDistanceMatrix;
 import de.bioinformatikmuenchen.pg4.alignment.AlignmentAlgorithm;
 import de.bioinformatikmuenchen.pg4.alignment.AlignmentMode;
 import de.bioinformatikmuenchen.pg4.alignment.AlignmentProcessor;
-import de.bioinformatikmuenchen.pg4.alignment.AlignmentResult;
+import de.bioinformaikmuenchen.pg4.common.alignment.AlignmentResult;
 import de.bioinformatikmuenchen.pg4.alignment.gap.ConstantGapCost;
 import de.bioinformatikmuenchen.pg4.alignment.gap.IGapCost;
 import de.bioinformatikmuenchen.pg4.alignment.recursive.io.IAlignmentOutputFormatter;
