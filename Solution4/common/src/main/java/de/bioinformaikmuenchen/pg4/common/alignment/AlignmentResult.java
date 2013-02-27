@@ -7,6 +7,7 @@ package de.bioinformaikmuenchen.pg4.common.alignment;
 import de.bioinformaikmuenchen.pg4.common.util.CollectionUtil;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.LinkedList;
 
 /**
  *
@@ -34,7 +35,6 @@ public class AlignmentResult {
     public void setScore(double score) {
         this.score = score;
     }
-
     public String getQuerySequenceId() {
         return querySequenceId;
     }
@@ -60,7 +60,7 @@ public class AlignmentResult {
         return alignments;
     }
 
-    public void setAlignments(Collection<SequencePairAlignment> alignments) {
+    public void setAlignments(ArrayList<SequencePairAlignment> alignments) {
         this.alignments = alignments;
     }
     
