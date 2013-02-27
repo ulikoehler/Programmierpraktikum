@@ -62,15 +62,15 @@ public class QUASARDistanceMatrixFactory {
         int lineCounter = 0;
         while ((line = reader.readLine()) != null) {
             lineCounter++;
-            if (line.startsWith("NAME ")) {
-                name = line.substring("NAME ".length());
+            if (line.startsWith("NAME")) {
+                name = line.substring("NAME".length());
             } else if (line.startsWith("NUMROW")) {
                 xSize = Integer.parseInt(line.substring("NUMROW".length()).trim());
             } else if (line.startsWith("NUMCOL")) {
                 ySize = Integer.parseInt(line.substring("NUMCOL".length()).trim());
             } else if (line.startsWith("ROWINDEX")) {
                 rowIndex = line.substring("ROWINDEX".length()).trim();
-            } else if (line.startsWith("COLINDEX ")) {
+            } else if (line.startsWith("COLINDEX")) {
                 colIndex = line.substring("COLINDEX".length()).trim();
             } else if (line.startsWith("MATRIX")) {
                 assert rowIndex != null;
