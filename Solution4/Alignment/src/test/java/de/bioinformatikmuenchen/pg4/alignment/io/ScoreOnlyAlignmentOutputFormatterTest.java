@@ -4,7 +4,7 @@
  */
 package de.bioinformatikmuenchen.pg4.alignment.io;
 
-import de.bioinformaikmuenchen.pg4.common.alignment.AlignmentResult;
+import de.bioinformatikmuenchen.pg4.common.alignment.AlignmentResult;
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;

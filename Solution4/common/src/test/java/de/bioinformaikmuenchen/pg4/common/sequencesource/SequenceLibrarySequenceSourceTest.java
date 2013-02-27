@@ -4,6 +4,7 @@
  */
 package de.bioinformaikmuenchen.pg4.common.sequencesource;
 
+import de.bioinformatikmuenchen.pg4.common.sequencesource.SequenceLibrarySequenceSource;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.Reader;

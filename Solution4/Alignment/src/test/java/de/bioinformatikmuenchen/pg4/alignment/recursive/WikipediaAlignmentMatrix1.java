@@ -4,7 +4,7 @@
  */
 package de.bioinformatikmuenchen.pg4.alignment.recursive;
 
-import de.bioinformaikmuenchen.pg4.common.distance.IDistanceMatrix;
+import de.bioinformatikmuenchen.pg4.common.distance.IDistanceMatrix;
 
 /**
  * Matrix from "A modern presentation" section of

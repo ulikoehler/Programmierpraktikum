@@ -4,9 +4,16 @@
  */
 package de.bioinformatikmuenchen.pg4.alignment;
 
+<<<<<<< HEAD
 import de.bioinformaikmuenchen.pg4.common.alignment.AlignmentResult;
 import de.bioinformaikmuenchen.pg4.common.alignment.SequencePairAlignment;
 import de.bioinformaikmuenchen.pg4.common.distance.IDistanceMatrix;
+=======
+import de.bioinformatikmuenchen.pg4.common.alignment.AlignmentResult;
+import de.bioinformatikmuenchen.pg4.common.alignment.SequencePairAlignment;
+import de.bioinformatikmuenchen.pg4.common.distance.IDistanceMatrix;
+
+>>>>>>> a4cbc51f9f9c4a9e716599b4cb86ece990442636
 import de.bioinformatikmuenchen.pg4.alignment.gap.ConstantGapCost;
 import de.bioinformatikmuenchen.pg4.alignment.gap.IGapCost;
 import de.bioinformatikmuenchen.pg4.alignment.recursive.WikipediaAlignmentMatrix1;

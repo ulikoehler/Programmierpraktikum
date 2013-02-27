@@ -4,6 +4,7 @@
  */
 package de.bioinformaikmuenchen.pg4.common.sequencesource;
 
+import de.bioinformatikmuenchen.pg4.common.sequencesource.PDBSequenceSource;
 import de.bioinformatikmuenchen.pg4.common.Sequence;
 import org.junit.After;
 import org.junit.AfterClass;

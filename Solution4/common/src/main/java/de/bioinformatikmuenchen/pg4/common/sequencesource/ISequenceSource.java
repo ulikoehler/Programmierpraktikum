@@ -1,4 +1,4 @@
-package de.bioinformaikmuenchen.pg4.common.sequencesource;
+package de.bioinformatikmuenchen.pg4.common.sequencesource;
 
 import de.bioinformatikmuenchen.pg4.common.Sequence;
 

@@ -2,7 +2,7 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package de.bioinformaikmuenchen.pg4.common.util;
+package de.bioinformatikmuenchen.pg4.common.util;
 
 import java.util.Collection;
 

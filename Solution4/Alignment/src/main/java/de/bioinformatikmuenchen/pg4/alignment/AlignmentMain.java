@@ -1,11 +1,11 @@
 package de.bioinformatikmuenchen.pg4.alignment;
 
-import de.bioinformaikmuenchen.pg4.common.alignment.AlignmentResult;
-import de.bioinformaikmuenchen.pg4.common.alignment.SequencePairAlignment;
-import de.bioinformaikmuenchen.pg4.common.distance.IDistanceMatrix;
-import de.bioinformaikmuenchen.pg4.common.distance.QUASARDistanceMatrixFactory;
-import de.bioinformaikmuenchen.pg4.common.sequencesource.ISequenceSource;
-import de.bioinformaikmuenchen.pg4.common.sequencesource.SequenceLibrarySequenceSource;
+import de.bioinformatikmuenchen.pg4.common.alignment.AlignmentResult;
+import de.bioinformatikmuenchen.pg4.common.alignment.SequencePairAlignment;
+import de.bioinformatikmuenchen.pg4.common.distance.IDistanceMatrix;
+import de.bioinformatikmuenchen.pg4.common.distance.QUASARDistanceMatrixFactory;
+import de.bioinformatikmuenchen.pg4.common.sequencesource.ISequenceSource;
+import de.bioinformatikmuenchen.pg4.common.sequencesource.SequenceLibrarySequenceSource;
 import de.bioinformatikmuenchen.pg4.alignment.gap.AffineGapCost;
 import de.bioinformatikmuenchen.pg4.alignment.gap.ConstantGapCost;
 import de.bioinformatikmuenchen.pg4.alignment.gap.IGapCost;
@@ -45,7 +45,7 @@ public class AlignmentMain {
                 .addOption("s", "seqlib", true, "seqlibfile")
                 .addOption("m", "matrixname", true, "matrixname")
                 .addOption("s", "mode", true, "mode")
-                .addOption("u", "nw", true, "Use Needleman-Wunsch")
+                .addOption("u", "nw", false, "Use Needleman-Wunsch")
                 .addOption("c", "check", true, "Calculate checkscores")
                 .addOption("f", "format", true, "format");
         //Parse the opts
@@ -53,9 +53,6 @@ public class AlignmentMain {
         CommandLine commandLine = null;
         try {
             commandLine = cmdLinePosixParser.parse(opts, args);
-            if (commandLine.hasOption("display")) {
-                System.out.println("You want a display!");
-            }
         } catch (ParseException parseException) {    // checked exception  
             System.err.println(
                     "Encountered exception while parsing using PosixParser:\n"
@@ -109,8 +106,8 @@ public class AlignmentMain {
         File pairsFile = null;
         if (commandLine.hasOption("pairs")) {
             pairsFile = new File(commandLine.getOptionValue("pairs"));
-            if (!pairsFile.exists() || !pairsFile.isDirectory()) {
-                System.err.println("Error: --pairs argument is not a file!");
+            if (!pairsFile.exists() || pairsFile.isDirectory()) {
+                System.err.println("Error: --pairs argument is not a file or does not exist!");
                 System.exit(1);
             }
         } else {
@@ -124,7 +121,7 @@ public class AlignmentMain {
         if (commandLine.hasOption("seqlib")) {
             seqLibFile = new File(commandLine.getOptionValue("seqlib"));
             if (!seqLibFile.exists() || !seqLibFile.isFile()) {
-                System.err.println("Error: --seqlib argument is not a file!");
+                System.err.println("Error: --seqlib argument is not a file or does not exist!");
                 System.exit(1);
             }
         } else {
@@ -137,7 +134,11 @@ public class AlignmentMain {
         File substitutionMatrixFile = null;
         if (commandLine.hasOption("matrixname")) {
             substitutionMatrixFile = new File(commandLine.getOptionValue("matrixname"));
-            if (!substitutionMatrixFile.exists() || !substitutionMatrixFile.isFile()) {
+            if (!substitutionMatrixFile.exists()) {
+                System.err.println("Error: --matrixname argument '" + substitutionMatrixFile + "' does not exist!");
+                System.exit(1);
+            } else if (!substitutionMatrixFile.isFile()) {
+
                 System.err.println("Error: --matrixname argument is not a file!");
                 System.exit(1);
             }
@@ -167,23 +168,28 @@ public class AlignmentMain {
             System.exit(1);
         }
         //mode
-        String outputFormatString = commandLine.getOptionValue("format").toLowerCase();
-        if (modeString != null) {
-            if (modeString.equalsIgnoreCase("ali")) {
-                outputFormat = AlignmentOutputFormat.ALI;
-            } else if (modeString.equalsIgnoreCase("html")) {
-                outputFormat = AlignmentOutputFormat.HTML;
-            } else if (modeString.equalsIgnoreCase("scores")) {
-                outputFormat = AlignmentOutputFormat.SCORES;
+        if (!commandLine.hasOption("format")) {
+            System.err.println("No --format option given (it's mandatory)");
+            System.exit(1);
+        } else { //We have a format option
+            String outputFormatString = commandLine.getOptionValue("format").toLowerCase();
+            if (outputFormatString != null) {
+                if (outputFormatString.equalsIgnoreCase("ali")) {
+                    outputFormat = AlignmentOutputFormat.ALI;
+                } else if (outputFormatString.equalsIgnoreCase("html")) {
+                    outputFormat = AlignmentOutputFormat.HTML;
+                } else if (outputFormatString.equalsIgnoreCase("scores")) {
+                    outputFormat = AlignmentOutputFormat.SCORES;
+                } else {
+                    System.err.println("Error: --format argument " + outputFormatString + " is invalid!");
+                    System.exit(1);
+                }
             } else {
-                System.err.println("Error: --format argument " + outputFormatString + " is invalid!");
+                System.err.println("Error: --format is mandatory");
+                HelpFormatter formatter = new HelpFormatter();
+                formatter.printHelp("alignment.jar", opts);
                 System.exit(1);
             }
-        } else {
-            System.err.println("--format is mandatory");
-            HelpFormatter formatter = new HelpFormatter();
-            formatter.printHelp("alignment.jar", opts);
-            System.exit(1);
         }
         //algorithm
         if (commandLine.hasOption("nw")) {

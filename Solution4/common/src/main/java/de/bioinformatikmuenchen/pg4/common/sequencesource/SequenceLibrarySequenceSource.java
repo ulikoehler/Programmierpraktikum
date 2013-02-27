@@ -2,7 +2,7 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package de.bioinformaikmuenchen.pg4.common.sequencesource;
+package de.bioinformatikmuenchen.pg4.common.sequencesource;
 
 import com.google.common.collect.Maps;
 import de.bioinformatikmuenchen.pg4.common.Sequence;
