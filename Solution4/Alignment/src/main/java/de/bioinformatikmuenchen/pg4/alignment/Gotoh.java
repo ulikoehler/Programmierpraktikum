@@ -15,11 +15,13 @@ import java.util.Collections;
  */    
 public class Gotoh extends AlignmentProcessor {
     
-    private double[][] matrix;
+    private double[][] matrixA;
+    private double[][] matrixIn;
+    private double[][] matrixDel;
     //Matrices that save whether any given field got its value from the specified direction
-    private boolean[][] leftTopArrows;
-    private boolean[][] leftArrows;
-    private boolean[][] topArrows;
+//    private boolean[][] leftTopArrows;
+//    private boolean[][] leftArrows;
+//    private boolean[][] topArrows;
     private int xSize = -1;
     private int ySize = -1;
     private String seq1;
@@ -49,14 +51,17 @@ public class Gotoh extends AlignmentProcessor {
         AlignmentResult result = new AlignmentResult();
         //Calculate the alignment and add it to the result
         result.setAlignments(Collections.singletonList(backTracking()));
-        result.setScore(matrix[xSize - 1][ySize - 1]);
-        result.setQuerySequenceId(seq1.getId());
-        result.setTargetSequenceId(seq2.getId());
+//        result.setScore(matrix[xSize - 1][ySize - 1]);
+//        result.setQuerySequenceId(seq1.getId());
+//        result.setTargetSequenceId(seq2.getId());
         return result;
     }
     
     public void initMatrix(int xSize, int ySize){
-        
+        matrixA[0][1] = ;
+        for (int i = 0; i < xSize; i++) {
+            matrixA[i]
+        }
     }
     
     public void fillMatrix(String seq1, String seq2){
