@@ -58,6 +58,7 @@ public class AlignmentMain {
             System.err.println(
                     "Encountered exception while parsing using PosixParser:\n"
                     + parseException.getMessage());
+            System.exit(1);
         }
         //
         //Check if the options are valid
