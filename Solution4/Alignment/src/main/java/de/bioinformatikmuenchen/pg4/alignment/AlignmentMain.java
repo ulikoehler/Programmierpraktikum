@@ -72,7 +72,11 @@ public class AlignmentMain {
         //gapopen
         double gapOpen = Double.NaN;
         try {
-            gapOpen = Double.parseDouble(commandLine.getOptionValue("go"));
+            if (commandLine.hasOption("go")) {
+                gapOpen = Double.parseDouble(commandLine.getOptionValue("go"));
+            } else { //Default
+                gapOpen = -12;
+            }
         } catch (NumberFormatException ex) {
             System.err.println("--go takes a number, not " + commandLine.getOptionValue("go") + "!");
             System.exit(1);
@@ -80,7 +84,11 @@ public class AlignmentMain {
         //ge
         double gapExtend = Double.NaN;
         try {
-            gapExtend = Double.parseDouble(commandLine.getOptionValue("ge"));
+            if (commandLine.hasOption("ge")) {
+                gapExtend = Double.parseDouble(commandLine.getOptionValue("ge"));
+            } else { //Default
+                gapExtend = -1;
+            }
         } catch (NumberFormatException ex) {
             System.err.println("--ge takes a number, not " + commandLine.getOptionValue("ge") + "!");
             System.exit(1);
