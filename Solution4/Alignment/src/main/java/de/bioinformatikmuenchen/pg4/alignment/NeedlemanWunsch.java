@@ -20,9 +20,21 @@ public class NeedlemanWunsch extends AlignmentProcessor {
     private int ySize = -1;
     private String seq1;
     private String seq2;
+    
+    /**
+     * Get an reference to the matrix, or null if not applicable
+     * Modifying this might lead to undesi
+     * @return 
+     */
+    public double[][] getMatrix() {
+        return matrix;
+    }
 
     @Override
     public AlignmentResult align(Sequence seq1, Sequence seq2) {
+        assert seq1 != null && seq2 != null;
+        assert seq1.getSequence().length() > 0;
+        assert seq2.getSequence().length() > 0;
         this.seq1 = seq1.getSequence();
         this.seq2 = seq2.getSequence();
         initMatrix(seq1.getSequence().length(), seq2.getSequence().length());
@@ -30,8 +42,11 @@ public class NeedlemanWunsch extends AlignmentProcessor {
         AlignmentResult result = new AlignmentResult();
         //Calculate the alignment and add it to the result
         result.setAlignments(Collections.singletonList(oneAlignmentOnly()));
+        SequencePairAlignment alignment = oneAlignmentOnly();
+//        System.out.println("##spa query: "+spa.queryAlignment);
+        result.setAlignments(Collections.singletonList(alignment));
         result.setScore(matrix[xSize - 1][ySize - 1]);
-        result.setQuerySequenceId(seq1   .getId());
+        result.setQuerySequenceId(seq1.getId());
         result.setTargetSequenceId(seq2.getId());
         return result;
     }
@@ -44,6 +59,7 @@ public class NeedlemanWunsch extends AlignmentProcessor {
      */
     public NeedlemanWunsch(AlignmentMode mode, AlignmentAlgorithm algorithm, IDistanceMatrix distanceMatrix, IGapCost gapCost) {
         super(mode, algorithm, distanceMatrix, gapCost);
+        assert gapCost instanceof ConstantGapCost;
         //AlignmentResult result = new AlignmentResult();
     }
 

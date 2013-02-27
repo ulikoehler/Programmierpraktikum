@@ -16,6 +16,7 @@ import de.bioinformatikmuenchen.pg4.alignment.pairfile.PairfileParser;
 import de.bioinformatikmuenchen.pg4.common.Sequence;
 import java.io.File;
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.util.Collection;
 import org.apache.commons.cli.CommandLine;
 import org.apache.commons.cli.CommandLineParser;
@@ -62,9 +63,12 @@ public class AlignmentMain {
         //Check if the options are valid
         //
         //Check help
-        if (opts.hasOption("help")) {
+        if (commandLine.hasOption("help")) {
             HelpFormatter formatter = new HelpFormatter();
+//            formatter.printHelp(new PrintWriter(System.err), 100, "gnu", "alignment.jar", opts, 4, 4, "Exiting...");
             formatter.printHelp("alignment.jar", opts);
+            System.out.println("--help supplied, exiting...");
+            System.exit(1);
         }
         //gapopen
         double gapOpen = Double.NaN;

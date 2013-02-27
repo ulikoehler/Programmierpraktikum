@@ -12,6 +12,10 @@ import de.bioinformatikmuenchen.pg4.alignment.gap.IGapCost;
 import de.bioinformatikmuenchen.pg4.alignment.recursive.WikipediaAlignmentMatrix1;
 import de.bioinformatikmuenchen.pg4.alignment.recursive.ZeroOneAlignmentMatrix;
 import de.bioinformatikmuenchen.pg4.common.Sequence;
+import de.bioinformatikmuenchen.pg4.common.distance.QUASARDistanceMatrixFactory;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import static junit.framework.Assert.assertEquals;
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
@@ -58,6 +62,9 @@ public class NeedlemanWunschTest {
         //assertEquals(6.0, result.getScore(), 0.0000000001);
         SequencePairAlignment spa = result.getFirstAlignment();
         System.out.println("##### \n" + spa.queryAlignment + "\n" + spa.matchLine + "\n" + spa.targetAlignment);
+        assertEquals(6.0, result.getScore(), 0.0000000001);
+        System.out.println("Q: " + result.getFirstAlignment().getQueryAlignment());
+        System.out.println("T: " + result.getFirstAlignment().getTargetAlignment());
         //assertEquals("G-AATTCAGTTA", currentAlignment.getSequence());
 
     }
@@ -91,8 +98,19 @@ public class NeedlemanWunschTest {
 //        SequencePairAlignment spa = result.getFirstAlignment();
 //        System.out.println("##### \n"+spa.queryAlignment+"\n"+spa.matchLine+"\n"+spa.targetAlignment);
 //    }
+    @Test
+    public void testAlignSimple() {
+        Sequence seq1Obj = new Sequence("GAATT");
+        Sequence seq2Obj = new Sequence("GGATC");
+        IDistanceMatrix matrix = new WikipediaAlignmentMatrix1();
+        IGapCost gapCost = new ConstantGapCost(-5);
+        NeedlemanWunsch instance = new NeedlemanWunsch(AlignmentMode.GLOBAL, AlignmentAlgorithm.NEEDLEMAN_WUNSCH, matrix, gapCost);
+        AlignmentResult result = instance.align(seq1Obj, seq2Obj);
+        assertEquals(24.0, result.getScore(), 0.0000000001);
+    }
+
 //    @Test
-//    public void testStuff() {
+//    public void test Stuff() {
 //
 //        //SmithWaterman w = new SmithWaterman(AlignmentMode.GLOBAL, AlignmentAlgorithm.NEEDLEMAN_WUNSCH, new ZeroOneAlignmentMatrix(), new ConstantGapCost(0));
 //        NeedlemanWunsch w = new NeedlemanWunsch(AlignmentMode.GLOBAL, AlignmentAlgorithm.NEEDLEMAN_WUNSCH, new ZeroOneAlignmentMatrix(), new ConstantGapCost(0));
@@ -103,6 +121,21 @@ public class NeedlemanWunschTest {
 //        SequencePairAlignment spa = result.getFirstAlignment();
 //        System.out.println("##aligned sequence: " + spa.queryAlignment + "\n" + spa.matchLine + "\n" + spa.targetAlignment);
 //        assertEquals("G-AATTCAGTTA", spa.queryAlignment);
+//    }
+    /**
+     * Real world example from sanity.pairs that hasn't worked somewhen -- Not
+     * sure if this is Gotoh or SW
+     */
+//    @Test
+//    public void testAlignReal1() throws IOException {
+//        IDistanceMatrix matrix = QUASARDistanceMatrixFactory.factorize(new InputStreamReader(NeedlemanWunschTest.class.getResourceAsStream("/matrices/dayhoff.mat")));
+//        Sequence seq1Obj = new Sequence("GPLDVQVTEDAVRRYLTRKPMTTKDLLKKFQTKKTGLSSEQTVNVLAQILKRLNPERKMINDKMHFSLK");
+//        Sequence seq2Obj = new Sequence("MEEAKQKVVDFLNSKSKSKFYFNDFTDLFPDMKQREVKKILTALVNDEVLEYWSSGSTTMYGLKG");
+//        IGapCost gapCost = new ConstantGapCost(-5);
+//        NeedlemanWunsch instance = new NeedlemanWunsch(AlignmentMode.GLOBAL, AlignmentAlgorithm.NEEDLEMAN_WUNSCH, matrix, gapCost);
+//        AlignmentResult result = instance.align(seq1Obj, seq2Obj);
+//        assertEquals(4.90, result.getScore(), 0.00000001);
+//
 //    }
 //    @Test
 //    public void testAlignRealMatrix() throws IOException {
