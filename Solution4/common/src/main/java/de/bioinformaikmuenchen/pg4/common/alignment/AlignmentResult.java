@@ -4,6 +4,7 @@
  */
 package de.bioinformaikmuenchen.pg4.common.alignment;
 
+import de.bioinformaikmuenchen.pg4.common.util.CollectionUtil;
 import java.util.ArrayList;
 import java.util.Collection;
 
@@ -61,5 +62,9 @@ public class AlignmentResult {
 
     public void setAlignments(Collection<SequencePairAlignment> alignments) {
         this.alignments = alignments;
+    }
+    
+    public SequencePairAlignment getFirstAlignment() {
+        return CollectionUtil.getFirst(alignments);
     }
 }
