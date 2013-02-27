@@ -1,13 +1,13 @@
 package de.bioinformatikmuenchen.pg4.alignment;
 
-import de.bioinformaikmuenchen.pg4.common.alignment.AlignmentResult;
-import de.bioinformaikmuenchen.pg4.common.alignment.SequencePairAlignment;
-import de.bioinformaikmuenchen.pg4.common.distance.IDistanceMatrix;
+import de.bioinformatikmuenchen.pg4.common.alignment.AlignmentResult;
+import de.bioinformatikmuenchen.pg4.common.alignment.SequencePairAlignment;
+import de.bioinformatikmuenchen.pg4.common.distance.IDistanceMatrix;
 import de.bioinformatikmuenchen.pg4.alignment.gap.ConstantGapCost;
 import de.bioinformatikmuenchen.pg4.alignment.gap.IGapCost;
 import de.bioinformatikmuenchen.pg4.alignment.io.IAlignmentOutputFormatter;
 import de.bioinformatikmuenchen.pg4.common.Sequence;
-import java.util.Collections;
+import java.util.ArrayList;
 
 public class NeedlemanWunsch extends AlignmentProcessor {
 
@@ -29,11 +29,14 @@ public class NeedlemanWunsch extends AlignmentProcessor {
         fillMatrix(seq1.getSequence(), seq2.getSequence());
         AlignmentResult result = new AlignmentResult();
         //Calculate the alignment and add it to the result
-        result.setAlignments(Collections.singletonList(oneAlignmentOnly()));
+        ArrayList<SequencePairAlignment> list = new ArrayList<SequencePairAlignment>();
+        SequencePairAlignment spa = oneAlignmentOnly();
+        System.out.println("##spa query: "+spa.queryAlignment);
+        list.add(spa);
+        result.setAlignments(list);
         result.setScore(matrix[xSize - 1][ySize - 1]);
-        result.setSeq1Id(seq1   .getId());
-        result.setSeq2Id(seq2.getId());
-        System.out.println("######Score: " + matrix[xSize - 1][ySize - 1] + " ######\n");
+        result.setQuerySequenceId(seq1   .getId());
+        result.setTargetSequenceId(seq2.getId());
         return result;
     }
 
@@ -98,7 +101,6 @@ public class NeedlemanWunsch extends AlignmentProcessor {
                 topArrows[x][y] = Math.abs(topScore - maxScore) < compareThreshold;
                 //Assert this field has at least one arrow
                 assert leftTopArrows[x][y] || leftArrows[x][y] || topArrows[x][y];
-                System.out.println(this.printMatrix());
             }
         }
     }

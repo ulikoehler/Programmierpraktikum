@@ -4,6 +4,7 @@
  */
 package de.bioinformaikmuenchen.pg4.common.alignment;
 
+import de.bioinformatikmuenchen.pg4.common.alignment.SequencePairAlignment;
 import junit.framework.TestCase;
 
 /**

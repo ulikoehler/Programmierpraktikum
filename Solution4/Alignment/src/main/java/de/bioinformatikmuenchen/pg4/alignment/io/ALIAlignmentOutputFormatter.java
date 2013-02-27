@@ -1,7 +1,10 @@
 package de.bioinformatikmuenchen.pg4.alignment.io;
 
-import de.bioinformaikmuenchen.pg4.common.alignment.AlignmentResult;
-import de.bioinformaikmuenchen.pg4.common.alignment.SequencePairAlignment;
+import de.bioinformatikmuenchen.pg4.common.alignment.AlignmentResult;
+import de.bioinformatikmuenchen.pg4.common.alignment.SequencePairAlignment;
+import de.bioinformatikmuenchen.pg4.common.util.CollectionUtil;
+import java.text.DecimalFormat;
+import java.text.DecimalFormatSymbols;
 
 /**
  *
@@ -9,22 +12,26 @@ import de.bioinformaikmuenchen.pg4.common.alignment.SequencePairAlignment;
  */
 public class ALIAlignmentOutputFormatter extends AbstractAlignmentOutputFormatter {
 
+    private DecimalFormat numberFormat = new DecimalFormat();
+
+    public ALIAlignmentOutputFormatter() {
+        DecimalFormatSymbols dfs = new DecimalFormatSymbols();
+        dfs.setDecimalSeparator('.');
+        numberFormat.setMinimumFractionDigits(4);
+        numberFormat.setMinimumFractionDigits(4);
+        numberFormat.setDecimalFormatSymbols(dfs);
+    }
+
+    @Override
     public String format(AlignmentResult result) {
-        StringBuilder builder = new StringBuilder();
-        builder.append("<div>");
-        //Score
-        builder.append("<b>Score</b>:");
-        builder.append(result.getScore());
-        builder.append("<br/>");
-        //Alignments
-        
-        builder.append("<b>Alignments:</b><br/>");
-        builder.append("<br/>");
-        
-        for(SequencePairAlignment alignment : result.getAlignments()) {
-            //builder.appendalignment.getQueryAlignment()
-        }
-        builder.append("</div>");
-        return "Alignment score: " + Double.toString(result.getScore());
+        //
+        // NOTE: This formatter currently only prints the first alignment, even if there are more
+        //
+        StringBuilder ret = new StringBuilder();
+        ret.append(">").append(result.getQuerySequenceId()).append(" ").append(result.getTargetSequenceId()).append(" ").append(numberFormat.format(result.getScore())).append("\n");
+        SequencePairAlignment alignment = result.getFirstAlignment();
+        ret.append(result.getQuerySequenceId()).append(": ").append(alignment.getQueryAlignment());
+        ret.append(result.getTargetSequenceId()).append(": ").append(alignment.getTargetAlignment());
+        return ret.toString();
     }
 }

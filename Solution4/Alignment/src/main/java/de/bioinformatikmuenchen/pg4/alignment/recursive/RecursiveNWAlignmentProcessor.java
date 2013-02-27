@@ -5,11 +5,11 @@
 package de.bioinformatikmuenchen.pg4.alignment.recursive;
 
 import de.bioinformatikmuenchen.pg4.common.Sequence;
-import de.bioinformaikmuenchen.pg4.common.distance.IDistanceMatrix;
+import de.bioinformatikmuenchen.pg4.common.distance.IDistanceMatrix;
 import de.bioinformatikmuenchen.pg4.alignment.AlignmentAlgorithm;
 import de.bioinformatikmuenchen.pg4.alignment.AlignmentMode;
 import de.bioinformatikmuenchen.pg4.alignment.AlignmentProcessor;
-import de.bioinformaikmuenchen.pg4.common.alignment.AlignmentResult;
+import de.bioinformatikmuenchen.pg4.common.alignment.AlignmentResult;
 import de.bioinformatikmuenchen.pg4.alignment.gap.ConstantGapCost;
 import de.bioinformatikmuenchen.pg4.alignment.gap.IGapCost;
 import de.bioinformatikmuenchen.pg4.alignment.io.IAlignmentOutputFormatter;
@@ -90,8 +90,8 @@ public class RecursiveNWAlignmentProcessor extends AlignmentProcessor {
 //        }
         //Create and return the result
         AlignmentResult res = new AlignmentResult(score);
-        res.setSeq1Id(seq1Obj.getId());
-        res.setSeq2Id(seq2Obj.getId());
+        res.setQuerySequenceId(seq1Obj.getId());
+        res.setTargetSequenceId(seq2Obj.getId());
         return res;
     }
 }

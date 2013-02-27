@@ -1,7 +1,7 @@
 package de.bioinformatikmuenchen.pg4.alignment.io;
 
-import de.bioinformaikmuenchen.pg4.common.alignment.AlignmentResult;
-import de.bioinformaikmuenchen.pg4.common.alignment.SequencePairAlignment;
+import de.bioinformatikmuenchen.pg4.common.alignment.AlignmentResult;
+import de.bioinformatikmuenchen.pg4.common.alignment.SequencePairAlignment;
 
 /**
  *
@@ -13,7 +13,7 @@ public class HTMLAlignmentOutputFormatter extends AbstractAlignmentOutputFormatt
         StringBuilder builder = new StringBuilder();
         builder.append("<div>");
         for (SequencePairAlignment align : result.getAlignments()) {
-            builder.append("<h3>" + result.getScore() + "</h3>");
+            builder.append("<h3>").append(result.getScore()).append("</h3>");
             //First line
             builder.append("<pre>");
             builder.append(align.queryAlignment);
