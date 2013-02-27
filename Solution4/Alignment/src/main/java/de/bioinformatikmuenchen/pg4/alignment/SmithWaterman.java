@@ -10,6 +10,12 @@ import de.bioinformatikmuenchen.pg4.common.Sequence;
 import java.util.ArrayList;
 
 public class SmithWaterman extends AlignmentProcessor {
+    
+    
+    @Override
+    public double[][] getMatrix() {
+        return matrix;
+    }
 
     private double[][] matrix;
     //Matrices that save whether any given field got its value from the specified direction
@@ -124,4 +130,5 @@ public class SmithWaterman extends AlignmentProcessor {
         return spa;
 
     }
+
 }

@@ -32,6 +32,7 @@ public class AlignmentProcessorBenchmarkController<T1 extends AlignmentProcessor
         this.ap1 = ap1;
         this.ap2 = ap2;
     }
+    
 
     @Override
     public AlignmentResult align(Sequence seq1, Sequence seq2) {
@@ -44,5 +45,10 @@ public class AlignmentProcessorBenchmarkController<T1 extends AlignmentProcessor
         ap2AlignTime += (after2 - before2);
         ap1AlignTime += (after1 - before1);
         return result1;
+    }
+
+    @Override
+    public double[][] getMatrix() {
+        return ap1.getMatrix();
     }
 }
