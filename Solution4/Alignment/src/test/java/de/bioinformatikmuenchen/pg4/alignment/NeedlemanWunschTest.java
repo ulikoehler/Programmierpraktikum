@@ -46,7 +46,7 @@ public class NeedlemanWunschTest {
      */
     @Test
     public void testAlignZeroOneMatrix() {
-        SmithWaterman w = new SmithWaterman(AlignmentMode.GLOBAL, AlignmentAlgorithm.NEEDLEMAN_WUNSCH, new ZeroOneAlignmentMatrix(), new ConstantGapCost(0));
+        NeedlemanWunsch w = new NeedlemanWunsch(AlignmentMode.GLOBAL, AlignmentAlgorithm.NEEDLEMAN_WUNSCH, new ZeroOneAlignmentMatrix(), new ConstantGapCost(0));
         AlignmentResult result = w.align(new Sequence("ACGA"), new Sequence("TCCG"));
         System.out.println("Score: "+result.getScore());
         assertEquals(6, result.getScore(), 0.00000001);
