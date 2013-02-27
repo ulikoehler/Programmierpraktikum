@@ -7,11 +7,6 @@ package de.bioinformatikmuenchen.pg4.alignment;
 import de.bioinformaikmuenchen.pg4.common.alignment.AlignmentResult;
 import static junit.framework.Assert.assertEquals;
 
-<<<<<<< Updated upstream
-import de.bioinformaikmuenchen.pg4.common.distance.IDistanceMatrix;
-=======
-import de.bioinformaikmuenchen.pg4.common.alignment.SequencePairAlignment;
->>>>>>> Stashed changes
 import de.bioinformatikmuenchen.pg4.alignment.gap.ConstantGapCost;
 import de.bioinformatikmuenchen.pg4.alignment.gap.IGapCost;
 import de.bioinformatikmuenchen.pg4.alignment.recursive.RecursiveNWAlignmentProcessor;
