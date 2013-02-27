@@ -19,8 +19,9 @@ public class ScoreOnlyAlignmentOutputFormatter extends AbstractAlignmentOutputFo
         numberFormat.setDecimalFormatSymbols(dfs);
     }
 
+    @Override
     public String format(AlignmentResult result) {
         check(result);
-         return result.getQuerySequenceId() + " " + result.getTargetSequenceId() + " " + numberFormat.format(result.getScore());
+        return result.getQuerySequenceId() + " " + result.getTargetSequenceId() + " " + numberFormat.format(result.getScore());
     }
 }
