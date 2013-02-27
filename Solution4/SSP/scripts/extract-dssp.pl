@@ -150,11 +150,11 @@
     # convert pdb's 2 dssp's
     pdbS2dsspS($tmpDir, $localDsspBinPath);
     # directory to output
-    directoryToList($tmpDir, $outputDsspFile, @inputFileLines);
+    directoryToList($tmpDir, $outputDsspFile, \@inputFileLines);
     
   } elsif($runMode eq "CMP") {
     # CMP run mode
-    # TODO
+    print "CMP MODE\n";
   } else {
     # run mode not found!
     print "RUN MODE NOT FOUND!\n";
@@ -246,7 +246,7 @@
     # args
     my $tmpDir    = $_[0];
     my $output    = $_[1];
-    my @fileIds   = $_[2];
+    my @fileIds   = @{$_[2]};
     
     open FILE, ">>$output"; # append
     # write line 
@@ -254,7 +254,7 @@
       # correct $file
       $file = $file.".dssp";
       # get required data
-      my @toSavelist = dsspFileParser($tmpDir.$file, $file);
+      my @toSavelist = dsspFileParser($tmpDir.$file, substr($file, 0, 4));
       # save all seq
       while(@toSavelist) {
         my $id = shift @toSavelist;
@@ -276,6 +276,9 @@
     # args
     my $file      = $_[0];
     my $idPraefix = $_[1];
+    
+    # scip invalid files
+    return unless (-f $file);
     
     # print stmt
     print "Parsing file: \'$file\'\n";
@@ -323,19 +326,13 @@
     my @grepSeq   = split(/\//, $preprocessSeq);
     my @grepStruc = split(/\//, $preprocessStruc);
     
-    # init breaks Hash map
-    my %breaksLookup = ();
-    for my $line(@grepChain) {
-      my $char = substr($line, 0, 1);
-      if (exists $breaksLookup{$char}) {
-        $breaksLookup{$char} = $breaksLookup{$char} + 1;
-      } else {
-        $breaksLookup{$char} = 0;
-      }
+    # to return variable
+    foreach my $i (0 .. $#grepChain) {
+      my $id    = $idPraefix.substr($grepChain[$i], 0, 1).((length "$i" == 1)?"0$i":"$i");
+      my $seq   = $grepSeq[$i];
+      my $struc = $grepStruc[$i];
+      push(@seqs, ($id, $seq, $struc))
     }
-    
-    # create list
-    
     
     # return everything
     return (@seqs);
