@@ -23,6 +23,7 @@ public class RecursiveNWAlignmentProcessor extends AlignmentProcessor {
 
     private String seq1;
     private String seq2;
+    private long calculateRecursiveCount = 0;
 
     /**
      * Checks if the mode and algorithm is correct
@@ -48,7 +49,12 @@ public class RecursiveNWAlignmentProcessor extends AlignmentProcessor {
         checkModeAndAlgorithm();
     }
 
+    public long getCalculateRecursiveCount() {
+        return calculateRecursiveCount;
+    }
+
     private double calculateScoreRecursive(int x, int y) {
+        calculateRecursiveCount++;
         if (x == 0) {
             //System.out.println(""+y+ "  " + y*gapCost.getGapCost(1));
             return y * gapCost.getGapCost(1);
@@ -84,6 +90,8 @@ public class RecursiveNWAlignmentProcessor extends AlignmentProcessor {
 //        }
         //Create and return the result
         AlignmentResult res = new AlignmentResult(score);
+        res.setSeq1Id(seq1Obj.getId());
+        res.setSeq2Id(seq2Obj.getId());
         return res;
     }
 }
