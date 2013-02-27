@@ -13,6 +13,15 @@ import de.bioinformatikmuenchen.pg4.common.alignment.AlignmentResult;
 public abstract class AbstractAlignmentOutputFormatter implements IAlignmentOutputFormatter {
 
     public abstract String format(AlignmentResult result);
+    
+    /**
+     * Check if the given AlignmentResult object contains valid data
+     * Throws an exception or fails an assertion if invalid.
+     */
+    protected void check(AlignmentResult result) {
+        assert result != null;
+        assert result.getAlignments().size() >= 1;
+    }
 
     public void formatAndPrint(AlignmentResult result) {
         System.out.println(format(result));

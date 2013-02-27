@@ -24,6 +24,7 @@ public class ALIAlignmentOutputFormatter extends AbstractAlignmentOutputFormatte
 
     @Override
     public String format(AlignmentResult result) {
+        check(result);
         //
         // NOTE: This formatter currently only prints the first alignment, even if there are more
         //
