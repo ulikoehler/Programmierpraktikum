@@ -13,6 +13,7 @@ import de.bioinformatikmuenchen.pg4.alignment.gap.ConstantGapCost;
 import de.bioinformatikmuenchen.pg4.alignment.gap.IGapCost;
 import static junit.framework.Assert.assertEquals;
 import junit.framework.TestCase;
+import org.junit.Test;
 
 /**
  *
@@ -38,6 +39,7 @@ public class RecursiveNWAlignmentProcessorTest extends TestCase {
     /**
      * Test of align method, of class RecursiveNWAlignmentProcessor.
      */
+    @Test
     public void testAlignWikiepdia() {
         Sequence seq1Obj = new Sequence("AGACTAGTTAC");
         Sequence seq2Obj = new Sequence("CGAGACGT");
@@ -52,6 +54,7 @@ public class RecursiveNWAlignmentProcessorTest extends TestCase {
      * Test of align method, of class RecursiveNWAlignmentProcessor.
      * http://www.avatar.se/molbioinfo2001/dynprog/dynamic.html
      */
+    @Test
     public void testAlignAvatarSE() {
         Sequence seq1Obj = new Sequence("GAATTCAGTTA");
         Sequence seq2Obj = new Sequence("GGATCGA");
@@ -66,6 +69,7 @@ public class RecursiveNWAlignmentProcessorTest extends TestCase {
      * Test of align method, of class RecursiveNWAlignmentProcessor.
      * Just something with high match rate.
      */
+    @Test
     public void testAlignSimple() {
         Sequence seq1Obj = new Sequence("GAATT");
         Sequence seq2Obj = new Sequence("GGATC");

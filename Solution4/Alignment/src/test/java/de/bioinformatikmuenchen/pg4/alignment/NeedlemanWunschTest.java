@@ -80,6 +80,7 @@ public class NeedlemanWunschTest {
      *
      * Manually verified (Uli)
      */
+    @Test
     public void testAlignSimple() {
         Sequence seq1Obj = new Sequence("GAATT");
         Sequence seq2Obj = new Sequence("GGATC");
@@ -87,7 +88,7 @@ public class NeedlemanWunschTest {
         IGapCost gapCost = new ConstantGapCost(-5);
         NeedlemanWunsch instance = new NeedlemanWunsch(AlignmentMode.GLOBAL, AlignmentAlgorithm.NEEDLEMAN_WUNSCH, matrix, gapCost);
         AlignmentResult result = instance.align(seq1Obj, seq2Obj);
-        assertEquals(24.0, result.getScore());
+        assertEquals(24.0, result.getScore(), 0.0000000001);
 
     }
 //    @Test
