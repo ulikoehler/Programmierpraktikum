@@ -79,7 +79,7 @@ public class SmithWaterman extends AlignmentProcessor {
                 leftArrows[x][y] = Math.abs(leftScore - maxScore) < compareThreshold;
                 topArrows[x][y] = Math.abs(topScore - maxScore) < compareThreshold;
                 //Assert this field has at least one arrow
-                assert leftTopArrows[x][y] || leftArrows[x][y] || topArrows[x][y];
+                assert leftTopArrows[x][y] || leftArrows[x][y] || topArrows[x][y];//assert only
             }
         }
     }
@@ -98,26 +98,30 @@ public class SmithWaterman extends AlignmentProcessor {
                 }
             }
         }
-        SequencePairAlignment spa = new SequencePairAlignment();
+        String queryAlignment = "";
+        String targetAlignment = "";
         while (x >= 0 && y >= 0 && matrix[x][y] != 0) {
             if (leftTopArrows[x][y]) {
-                spa.queryAlignment += seq1.charAt(x - 1);
-                spa.targetAlignment += seq2.charAt(y - 1);
+                queryAlignment += seq1.charAt(x - 1);
+                targetAlignment += seq2.charAt(y - 1);
                 x--;
                 y--;
             }
             if (leftArrows[x][y]) {
-                spa.queryAlignment += seq1.charAt(x - 1);
-                spa.targetAlignment += '-';
+                queryAlignment += seq1.charAt(x - 1);
+                targetAlignment += '-';
                 y--;
             }
             if (topArrows[x][y]) {
-                spa.queryAlignment += '-';
-                spa.targetAlignment += seq2.charAt(y - 1);
+                queryAlignment += '-';
+                targetAlignment += seq2.charAt(y - 1);
                 x--;
             }
         }
-        return new SequencePairAlignment(new StringBuffer(spa.queryAlignment).reverse().toString(), new StringBuffer(spa.targetAlignment).reverse().toString());
+        SequencePairAlignment spa = new SequencePairAlignment();
+        spa.setQueryAlignment(new StringBuffer(queryAlignment).reverse().toString());
+        spa.setTargetAlignment(new StringBuffer(targetAlignment).reverse().toString());
+        return spa;
 
     }
 }
