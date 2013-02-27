@@ -156,7 +156,7 @@
     # CMP run mode
     print "CMP MODE\n";
     # check --dssp-bin
-    if($#files != -1 && ($dsspBin eq "" || !-f $dsspBin)) {
+    if($localDsspBinPath eq "" || !-f $localDsspBinPath) {
       # ddspBin not given
       print "--- ERROR: CMP MODE REQUIRES --dssp-bin ARGUMENT FOR CROSS COMPILATION! ---\n";
       printHelp();
@@ -164,24 +164,26 @@
     # check each id
     foreach my $id(@inputFileLines) {
       chomp($id);
+      next if(length $id <= 1);
       # generate both files
-      my $fileDssp = $localDsspPath.substr($id, 1, 2)."/$id.dssp";
-      my $filePdb = $localPdbPath.substr($id, 1, 2)."/pdb$id.ent";
+      my $fileDssp = $localDsspPath.substr($id, 1, 2)."/".$id.".dssp";
+      my $filePdb = $localPdbPath.substr($id, 1, 2)."/pdb".$id.".ent";
       # check cases
       if(!-f $fileDssp && !-f $filePdb) {
-        print STDERR "DSSP AND PDB FILE DON'T EXISTS! => INCONSISTENT!";
+        print STDERR "DSSP AND PDB FILE DON'T EXISTS (ID: $id)! => INCONSISTENT!\n";
       } elsif(!-f $fileDssp) {
-        print STDERR "DSSP FILE DON'T EXISTS! => INCONSISTENT!";
+        print STDERR "DSSP FILE DON'T EXISTS (ID: $id)! => INCONSISTENT!\n";
       } elsif(!-f $filePdb) {
-        print STDERR "PDB FILE DON'T EXISTS! => INCONSISTENT!";
-      } else {# TODO
+        print STDERR "PDB FILE DON'T EXISTS (ID: $id)! => INCONSISTENT!\n";
+      } else {
         # both file exists => check content
         # compile pdb file to tmp dir
-        my @cmd = `$dsspBin -i '$filePdb' -o '$tmpFolder.$id.dssp'`;
+        my $fileTo = $tmpDir.$id.".dssp";
+        my @cmd = `$localDsspBinPath -i '$filePdb' -o '$fileTo'`;
         # check content
-        if(!system("diff '$tmpFolder.$id.dssp' '$fileDssp' > /dev/null") == 0) {
-          print STDERR "COMPILED PDB FILE AND DSSP FILE DIFFER! => INCONSISTENT!";
-          unlink("$tmpFolder.$id.dssp");  # don't compile
+        if(differ("$fileTo", "$fileDssp") eq "true") {
+          print STDERR "COMPILED PDB FILE AND DSSP FILE DIFFER (ID: $id)! => INCONSISTENT!\n";
+          unlink($fileTo);  # don't compile
         }
         # create list
         pdbS2dsspS($tmpDir, $localDsspBinPath);
@@ -199,6 +201,44 @@
   
 # }}}
 # {{{ functions
+  # {{{ cmp2FilesBySeq
+  
+  sub differ {
+    # args
+    my $file1 = $_[0];
+    my $file2 = $_[1];
+    
+    # valid files
+    return "true" if(!-f $file1 || !-f $file2);
+    
+    # parse both files
+    my @p1 = dsspFileParser($file1, "DIFFER");
+    my @p2 = dsspFileParser($file2, "DIFFER");
+    
+    my $debug = "false";
+    if($debug eq "true") {
+      foreach(@p1) { print "1: $_\n"; }
+      foreach(@p1) { print "2: $_\n"; }
+    }
+    
+    # differ in parsing result
+    if($#p1 != $#p2) {
+      return "true";
+    }
+    while (@p1) {
+      my $p1id = shift(@p1); my $p2id = shift(@p2);
+      my $p1ac = shift(@p1); my $p2ac = shift(@p2);
+      my $p1ss = shift(@p1); my $p2ss = shift(@p2);
+      if($p1ac ne $p2ac || $p1ss ne $p2ss) {
+        return "true";
+      }
+    }
+    
+    # files don't differ
+    return "false";
+  }
+  
+  # }}}
   # {{{ tmp initaliser
   
   sub tmpInitaliser {
@@ -213,10 +253,10 @@
     
     # source
     my $fileDssp = $localDsspPath.substr($id, 1, 2)."/$id.dssp";
-    my $filePdb = $localPdbPath.substr($id, 1, 2)."/pdb$id.ent";
-    my $file = "";
-    $file = $filePdb if ($runMode eq "PDB");
-    $file = $fileDssp if ($runMode eq "DSSP");
+    my $filePdb  = $localPdbPath.substr($id, 1, 2)."/pdb$id.ent";
+    my $file     = "";
+       $file     = $filePdb if ($runMode eq "PDB");
+       $file     = $fileDssp if ($runMode eq "DSSP");
         
     # processing output
     print "Processing: $id\n";
@@ -285,6 +325,8 @@
     open FILE, ">>$output"; # append
     # write line 
     foreach my $file (@fileIds) {
+      # next?
+      next if($file =~ m/\s/i || $file eq "");
       # correct $file
       $file = $file.".dssp";
       # get required data
@@ -311,7 +353,8 @@
     my $file      = $_[0];
     my $idPraefix = $_[1];
     
-    # scip invalid files
+    # skip invalid files
+    chomp($file);
     return unless (-f $file);
     
     # print stmt
