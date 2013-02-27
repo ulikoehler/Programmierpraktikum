@@ -5,11 +5,11 @@
 package de.bioinformatikmuenchen.pg4.alignment;
 
 import de.bioinformaikmuenchen.pg4.common.alignment.AlignmentResult;
-import static junit.framework.Assert.assertEquals;
+import de.bioinformaikmuenchen.pg4.common.alignment.SequencePairAlignment;
+import de.bioinformaikmuenchen.pg4.common.distance.IDistanceMatrix;
 
 import de.bioinformatikmuenchen.pg4.alignment.gap.ConstantGapCost;
 import de.bioinformatikmuenchen.pg4.alignment.gap.IGapCost;
-import de.bioinformatikmuenchen.pg4.alignment.recursive.RecursiveNWAlignmentProcessor;
 import de.bioinformatikmuenchen.pg4.alignment.recursive.WikipediaAlignmentMatrix1;
 import de.bioinformatikmuenchen.pg4.alignment.recursive.ZeroOneAlignmentMatrix;
 import de.bioinformatikmuenchen.pg4.common.Sequence;
@@ -93,19 +93,19 @@ public class NeedlemanWunschTest {
 
     }
 
-    @Test
-    public void testStuff() {
-
-        //SmithWaterman w = new SmithWaterman(AlignmentMode.GLOBAL, AlignmentAlgorithm.NEEDLEMAN_WUNSCH, new ZeroOneAlignmentMatrix(), new ConstantGapCost(0));
-        NeedlemanWunsch w = new NeedlemanWunsch(AlignmentMode.GLOBAL, AlignmentAlgorithm.NEEDLEMAN_WUNSCH, new ZeroOneAlignmentMatrix(), new ConstantGapCost(0));
-        AlignmentResult result = w.align(new Sequence("GAATTCAGTTA"), new Sequence("G   GATCGA"));
-        System.out.println("Score: " + result.getScore());
-        assertEquals(6, result.getScore(), 0.00000001);
-        System.out.println("spa size: " + result.getAlignments().size());
-        SequencePairAlignment spa = result.getFirstAlignment();
-        System.out.println("##aligned sequence: " + spa.queryAlignment + "\n" + spa.matchLine + "\n" + spa.targetAlignment);
-        assertEquals("G-AATTCAGTTA", spa.queryAlignment);
-    }
+//    @Test
+//    public void testStuff() {
+//
+//        //SmithWaterman w = new SmithWaterman(AlignmentMode.GLOBAL, AlignmentAlgorithm.NEEDLEMAN_WUNSCH, new ZeroOneAlignmentMatrix(), new ConstantGapCost(0));
+//        NeedlemanWunsch w = new NeedlemanWunsch(AlignmentMode.GLOBAL, AlignmentAlgorithm.NEEDLEMAN_WUNSCH, new ZeroOneAlignmentMatrix(), new ConstantGapCost(0));
+//        AlignmentResult result = w.align(new Sequence("GAATTCAGTTA"), new Sequence("GGATCGA"));
+//        System.out.println("Score: " + result.getScore());
+//        assertEquals(6, result.getScore(), 0.00000001);
+//        System.out.println("spa size: " + result.getAlignments().size());
+//        SequencePairAlignment spa = result.getFirstAlignment();
+//        System.out.println("##aligned sequence: " + spa.queryAlignment + "\n" + spa.matchLine + "\n" + spa.targetAlignment);
+//        assertEquals("G-AATTCAGTTA", spa.queryAlignment);
+//    }
 //    @Test
 //    public void testAlignRealMatrix() throws IOException {
 //        NeedlemanWunsch nw = new NeedlemanWunsch(AlignmentMode.GLOBAL, AlignmentAlgorithm.NEEDLEMAN_WUNSCH, QUASARDistanceMatrixFactory.factorize("/matrices/blosum80.mat"), null);        
