@@ -14,7 +14,7 @@ public class ALIAlignmentOutputFormatter extends AbstractAlignmentOutputFormatte
 
     private DecimalFormat numberFormat = new DecimalFormat();
 
-    public ScoreOnlyAlignmentOutputFormatter() {
+    public ALIAlignmentOutputFormatter() {
         DecimalFormatSymbols dfs = new DecimalFormatSymbols();
         dfs.setDecimalSeparator('.');
         numberFormat.setMinimumFractionDigits(4);
@@ -22,15 +22,16 @@ public class ALIAlignmentOutputFormatter extends AbstractAlignmentOutputFormatte
         numberFormat.setDecimalFormatSymbols(dfs);
     }
 
+    @Override
     public String format(AlignmentResult result) {
         //
         // NOTE: This formatter currently only prints the first alignment, even if there are more
         //
         StringBuilder ret = new StringBuilder();
-        ret.append(">" + result.getSeq1Id() + " " + result.getSeq2Id() + " " + numberFormat.format(result.getScore()) + "\n");
+        ret.append(">").append(result.getQuerySequenceId()).append(" ").append(result.getTargetSequenceId()).append(" ").append(numberFormat.format(result.getScore())).append("\n");
         SequencePairAlignment alignment = result.getFirstAlignment();
-        ret.append(result.getSeq1Id() + ": " + alignment.getQueryAlignment());
-        ret.append(result.getSeq2Id() + ": " + alignment.getTargetAlignment());
-        return;
+        ret.append(result.getQuerySequenceId()).append(": ").append(alignment.getQueryAlignment());
+        ret.append(result.getTargetSequenceId()).append(": ").append(alignment.getTargetAlignment());
+        return ret.toString();
     }
 }

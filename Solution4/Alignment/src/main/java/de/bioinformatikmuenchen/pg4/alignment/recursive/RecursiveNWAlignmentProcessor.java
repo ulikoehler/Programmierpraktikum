@@ -90,8 +90,8 @@ public class RecursiveNWAlignmentProcessor extends AlignmentProcessor {
 //        }
         //Create and return the result
         AlignmentResult res = new AlignmentResult(score);
-        res.setSeq1Id(seq1Obj.getId());
-        res.setSeq2Id(seq2Obj.getId());
+        res.setQuerySequenceId(seq1Obj.getId());
+        res.setTargetSequenceId(seq2Obj.getId());
         return res;
     }
 }

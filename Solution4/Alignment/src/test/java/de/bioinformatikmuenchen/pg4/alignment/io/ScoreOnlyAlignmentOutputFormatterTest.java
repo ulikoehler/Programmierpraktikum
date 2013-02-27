@@ -26,8 +26,8 @@ public class ScoreOnlyAlignmentOutputFormatterTest {
         ScoreOnlyAlignmentOutputFormatter instance = new ScoreOnlyAlignmentOutputFormatter();
         //1j2xA00 1wq2B00 33.9000
         AlignmentResult result = new AlignmentResult();
-        result.setSeq1Id("1j2xA00");
-        result.setSeq2Id("1wq2B00");
+        result.setQuerySequenceId("1j2xA00");
+        result.setTargetSequenceId("1wq2B00");
         result.setScore(33.9);
         assertEquals("1j2xA00 1wq2B00 33.9000", instance.format(result));
     }

@@ -31,8 +31,8 @@ public class NeedlemanWunsch extends AlignmentProcessor {
         //Calculate the alignment and add it to the result
         result.setAlignments(Collections.singletonList(oneAlignmentOnly()));
         result.setScore(matrix[xSize - 1][ySize - 1]);
-        result.setSeq1Id(seq1   .getId());
-        result.setSeq2Id(seq2.getId());
+        result.setQuerySequenceId(seq1   .getId());
+        result.setTargetSequenceId(seq2.getId());
         return result;
     }
 

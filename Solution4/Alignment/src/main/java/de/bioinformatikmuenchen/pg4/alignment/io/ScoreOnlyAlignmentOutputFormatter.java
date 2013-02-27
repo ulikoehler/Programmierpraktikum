@@ -20,6 +20,6 @@ public class ScoreOnlyAlignmentOutputFormatter extends AbstractAlignmentOutputFo
     }
 
     public String format(AlignmentResult result) {
-         return result.getSeq1Id() + " " + result.getSeq2Id() + " " + numberFormat.format(result.getScore());
+         return result.getQuerySequenceId() + " " + result.getTargetSequenceId() + " " + numberFormat.format(result.getScore());
     }
 }
