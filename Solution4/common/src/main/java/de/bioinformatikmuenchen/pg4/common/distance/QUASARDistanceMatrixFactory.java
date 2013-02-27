@@ -62,7 +62,6 @@ public class QUASARDistanceMatrixFactory {
         int lineCounter = 0;
         while ((line = reader.readLine()) != null) {
             lineCounter++;
-            System.out.println("L: " + line);
             if (line.startsWith("NAME ")) {
                 name = line.substring("NAME ".length());
             } else if (line.startsWith("NUMROW")) {
@@ -84,7 +83,7 @@ public class QUASARDistanceMatrixFactory {
                 for (int i = 0; i < values.size(); i++) {
                     mapping.put(rowIndex.charAt(currentMatrixLineIndex) + "-" + colIndex.charAt(i), values.get(i));
                     mapping.put(colIndex.charAt(i) + "-" + rowIndex.charAt(currentMatrixLineIndex), values.get(i));
-                    System.out.println(rowIndex.charAt(currentMatrixLineIndex) + "-" + colIndex.charAt(i) + "= " + values.get(i));
+//                    System.out.println(rowIndex.charAt(currentMatrixLineIndex) + "-" + colIndex.charAt(i) + "= " + values.get(i));
                 }
                 currentMatrixLineIndex++;
             }
