@@ -5,6 +5,8 @@
 package de.bioinformatikmuenchen.pg4.common.distance;
 
 import java.io.InputStreamReader;
+import static junit.framework.Assert.assertEquals;
+import static junit.framework.Assert.assertTrue;
 import junit.framework.TestCase;
 import org.junit.After;
 import org.junit.AfterClass;
@@ -60,7 +62,26 @@ public class QUASARDistanceMatrixFactoryTest extends TestCase {
                 char A = rowIndex.charAt(x);
                 char B = colIndex.charAt(y);
                 assertTrue("No data for " + A + " " + B + ": " + matrix.distance(A, B), matrix.distance(A, B) >= Double.NEGATIVE_INFINITY);
-                assertTrue("No data for " + B + " " + A + ": " + matrix.distance(B,A), matrix.distance(B, A) >= Double.NEGATIVE_INFINITY);
+                assertTrue("No data for " + B + " " + A + ": " + matrix.distance(B, A), matrix.distance(B, A) >= Double.NEGATIVE_INFINITY);
+            }
+        }
+    }
+
+    @Test
+    public void testDayhoff() throws Exception {
+        IDistanceMatrix matrix = QUASARDistanceMatrixFactory.factorize(
+                new InputStreamReader(
+                QUASARDistanceMatrixFactoryTest.class.getResourceAsStream("/de/bioinformatikmuenchen/pg4/common/distance/dayhoff.mat")));
+        //Check if there's a value for every pair
+        String rowIndex = "ARNDCQEGHILKMFPSTWYV";
+        String colIndex = "ARNDCQEGHILKMFPSTWYV";
+        //Check if the matrix has data for all character pairs
+        for (int y = 0; y < colIndex.length(); y++) {
+            for (int x = 0; x < rowIndex.length(); x++) {
+                char A = rowIndex.charAt(x);
+                char B = colIndex.charAt(y);
+                assertTrue("No data for " + A + " " + B + ": " + matrix.distance(A, B), matrix.distance(A, B) >= Double.NEGATIVE_INFINITY);
+                assertTrue("No data for " + B + " " + A + ": " + matrix.distance(B, A), matrix.distance(B, A) >= Double.NEGATIVE_INFINITY);
             }
         }
     }
