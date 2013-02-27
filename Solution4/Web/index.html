@@ -16,12 +16,13 @@
 			#available-sequences { width: 99%; height: 150px; padding: 0.5em; }
 			#align-from {float:none; height: 100px;}
 			#align-to {float:none; height: 100px;}
+			#aligna-from-list, #aligna-to-list {height:100%; width:100%;}
 			.resizable > h3 { text-align: center; margin: 0; }
 			#proteinId {border-radius: 5px;}
 			.dropList { list-style-type: none; margin: 0; padding: 0 0 2.5em; float: left; margin-right: 10px; }
 			.dropList li { margin: 0 5px 5px 5px; padding: 5px; font-size: 1.2em;}
 
-			.sequence {}
+			.sequence {min-width: 150px;}
 		</style>
 		<!-- JS -->
 		<script type="text/javascript" src="js/jquery.js"></script>
@@ -33,9 +34,10 @@
 			$("#available-sequences").resizable({containment: "#body"});
 			$("#align-from").resizable({containment: "#body"});
 			$("#align-to").resizable({containment: "#body"});
-			$( "#align-from, #align-to, #available-sequences" ).sortable({
+			$( "#align-from-list, #align-to-list, #available-sequences" ).sortable({
 			      connectWith: ".dropList"
 			}).disableSelection();
+			$('.nodrag').draggable( "disable" )
 			$("#droppable").droppable({
 			      drop: function( event, ui ) {
 				$( this )
@@ -74,17 +76,16 @@
 				<div style="width:50%;">
 					<div id="align-from" class="resizable ui-widget-content">
 						<h3 class="ui-widget-header">Align from</h3>
-						<ul class="dropList" style="margin-top:5px;">
-							<li class="sequence ui-state-highlight">Drop sequences here</li>
-							<li class="sequence ui-state-highlight">Drop sequences here</li>
+						<ul id="align-from-list" class="dropList" style="margin-top:5px;">
+							<li class="nodrag sequence ui-state-highlight">Drop sequence here</li>
 						</ul>
 					</div>
 				</div>
 				<div style="width:50%;text-align:right;">
 					<div id="align-to" class="resizable ui-widget-content">
 						<h3 class="ui-widget-header">Align to</h3>
-						<ul class="dropList" style="margin-top:5px;">
-							<li class="sequence ui-state-highlight">Drop sequences here</li>
+						<ul id="align-to-list" class="dropList" style="margin-top:5px;">
+							<li class="nodrag sequence ui-state-highlight">Drop sequence here</li>
 						</ul>
 					</div>
 				</div>
