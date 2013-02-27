@@ -21,8 +21,8 @@ import de.bioinformatikmuenchen.pg4.alignment.io.ScoreOnlyAlignmentOutputFormatt
  */
 public class RecursiveNWAlignmentProcessor extends AlignmentProcessor {
 
-    private String seq1;
-    private String seq2;
+    private String querySequence;
+    private String targetSequence;
     private long calculateRecursiveCount = 0;
 
     /**
@@ -63,18 +63,18 @@ public class RecursiveNWAlignmentProcessor extends AlignmentProcessor {
         } else { //We're not on the border
             double topScore = calculateScoreRecursive(x, y - 1) + gapCost.getGapCost(1);
             double leftScore = calculateScoreRecursive(x - 1, y) + gapCost.getGapCost(1);
-            double leftTopScore = calculateScoreRecursive(x - 1, y - 1) + distanceMatrix.distance(seq1.charAt(x - 1), seq2.charAt(y - 1));
+            double leftTopScore = calculateScoreRecursive(x - 1, y - 1) + distanceMatrix.distance(querySequence.charAt(x - 1), targetSequence.charAt(y - 1));
             return Math.max(topScore, Math.max(leftScore, leftTopScore));
         }
     }
 
     @Override
     public AlignmentResult align(Sequence seq1Obj, Sequence seq2Obj) {
-        seq1 = seq1Obj.getSequence();
-        seq2 = seq2Obj.getSequence();
+        querySequence = seq1Obj.getSequence();
+        targetSequence = seq2Obj.getSequence();
         //This algorithm can only use constant gap costs
         assert gapCost instanceof ConstantGapCost : "Recursive implementation can use constant gap cost only";
-        double score = calculateScoreRecursive(seq1.length(), seq2.length()); //0-based indices
+        double score = calculateScoreRecursive(querySequence.length(), targetSequence.length()); //0-based indices
         //Debug: for every single field
 //        System.out.print("\t\t");
 //        for (int x = 0; x < seq1.length(); x++) {
@@ -93,5 +93,17 @@ public class RecursiveNWAlignmentProcessor extends AlignmentProcessor {
         res.setQuerySequenceId(seq1Obj.getId());
         res.setTargetSequenceId(seq2Obj.getId());
         return res;
+    }
+
+    @Override
+    public double[][] getMatrix() {
+        //This takes a LONG time
+        double[][] matrix = new double[querySequence.length()][targetSequence.length()];
+        for (int x = 0; x < querySequence.length(); x++) {
+            for (int y = 0; y < targetSequence.length(); y++) {
+                matrix[x][y] = calculateScoreRecursive(x, y);
+            }
+        }
+        return matrix;
     }
 }

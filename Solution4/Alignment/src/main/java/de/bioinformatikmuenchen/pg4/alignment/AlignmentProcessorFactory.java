@@ -17,9 +17,9 @@ public class AlignmentProcessorFactory {
         if (algorithm == AlignmentAlgorithm.NEEDLEMAN_WUNSCH) {
             return new NeedlemanWunsch(alignmentMode, algorithm, distanceMatrix, gapCost);
         } else if (algorithm == AlignmentAlgorithm.SMITH_WATERMAN) {
-            throw new UnsupportedOperationException("SW is not impl yet");
+            return new SmithWaterman(alignmentMode, algorithm, distanceMatrix, gapCost);
         } else if (algorithm == AlignmentAlgorithm.GOTOH) {
-            throw new UnsupportedOperationException("Gotoh is not impl yet");
+            return new Gotoh(alignmentMode, algorithm, distanceMatrix, gapCost);
         } else {
             throw new IllegalArgumentException("Algorithm " + algorithm.toString() + " unknown / not supported!");
         }

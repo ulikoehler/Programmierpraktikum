@@ -10,6 +10,7 @@ import de.bioinformatikmuenchen.pg4.common.alignment.SequencePairAlignment;
 public class HTMLAlignmentOutputFormatter extends AbstractAlignmentOutputFormatter {
 
     public String format(AlignmentResult result) {
+        check(result);
         StringBuilder builder = new StringBuilder();
         builder.append("<div>");
         for (SequencePairAlignment align : result.getAlignments()) {

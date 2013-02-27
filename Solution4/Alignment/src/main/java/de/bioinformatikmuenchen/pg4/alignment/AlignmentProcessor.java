@@ -12,8 +12,9 @@ import de.bioinformatikmuenchen.pg4.alignment.io.IAlignmentOutputFormatter;
 import de.bioinformatikmuenchen.pg4.alignment.io.ScoreOnlyAlignmentOutputFormatter;
 
 /**
- * An object that can process alignments.
- * AlignmentProcessors may not save state, align() calls shall be expected more than once per instance.
+ * An object that can process alignments. AlignmentProcessors may not save
+ * state, align() calls shall be expected more than once per instance.
+ *
  * @author koehleru
  */
 public abstract class AlignmentProcessor {
@@ -26,7 +27,7 @@ public abstract class AlignmentProcessor {
 
     public AlignmentProcessor() {
     }
-    
+
     public AlignmentProcessor(AlignmentMode mode, AlignmentAlgorithm algorithm, IDistanceMatrix distanceMatrix, IGapCost gapCost, IAlignmentOutputFormatter outputFormatter) {
         this.mode = mode;
         this.algorithm = algorithm;
@@ -57,6 +58,8 @@ public abstract class AlignmentProcessor {
      * @return
      */
     public abstract AlignmentResult align(Sequence seq1, Sequence seq2);
+
+    public abstract double[][] getMatrix();
 
     /**
      * Aligns two sequences and formats the
