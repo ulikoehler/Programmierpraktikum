@@ -59,7 +59,7 @@ public class QUASARDistanceMatrixFactoryTest extends TestCase {
             for (int x = 0; x < rowIndex.length(); x++) {
                 char A = rowIndex.charAt(x);
                 char B = colIndex.charAt(y);
-                assertTrue("No data for " + A + " " + B + ": " + matrix.distance(A, B), matrix.distance(A, B) >= Double.MIN_VALUE);
+                assertTrue("No data for " + A + " " + B + ": " + matrix.distance(A, B), matrix.distance(A, B) >= Double.NEGATIVE_INFINITY);
             }
         }
     }
