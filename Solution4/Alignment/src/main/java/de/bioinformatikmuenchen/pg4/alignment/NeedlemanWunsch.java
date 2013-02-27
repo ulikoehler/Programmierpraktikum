@@ -7,7 +7,7 @@ import de.bioinformatikmuenchen.pg4.alignment.gap.ConstantGapCost;
 import de.bioinformatikmuenchen.pg4.alignment.gap.IGapCost;
 import de.bioinformatikmuenchen.pg4.alignment.io.IAlignmentOutputFormatter;
 import de.bioinformatikmuenchen.pg4.common.Sequence;
-import java.util.ArrayList;
+import java.util.Collections;
 
 public class NeedlemanWunsch extends AlignmentProcessor {
 
@@ -29,11 +29,7 @@ public class NeedlemanWunsch extends AlignmentProcessor {
         fillMatrix(seq1.getSequence(), seq2.getSequence());
         AlignmentResult result = new AlignmentResult();
         //Calculate the alignment and add it to the result
-        ArrayList<SequencePairAlignment> list = new ArrayList<SequencePairAlignment>();
-        SequencePairAlignment spa = oneAlignmentOnly();
-        System.out.println("##spa query: "+spa.queryAlignment);
-        list.add(spa);
-        result.setAlignments(list);
+        result.setAlignments(Collections.singletonList(oneAlignmentOnly()));
         result.setScore(matrix[xSize - 1][ySize - 1]);
         result.setQuerySequenceId(seq1   .getId());
         result.setTargetSequenceId(seq2.getId());
@@ -42,7 +38,7 @@ public class NeedlemanWunsch extends AlignmentProcessor {
 
     /**
      * Initialize an alignment processor with a score-only output formatter
-     *
+     *Pr
      * @param mode
      * @param algorithm
      */
