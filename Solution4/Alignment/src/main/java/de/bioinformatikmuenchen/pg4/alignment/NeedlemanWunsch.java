@@ -122,20 +122,23 @@ public class NeedlemanWunsch extends AlignmentProcessor {
         SequencePairAlignment spa = new SequencePairAlignment();
         int x = xSize - 1;
         int y = ySize - 1;
+        System.out.println("start: "+x+", "+y);
         while (x != 0 && y != 0) {
-            //System.out.println("x,y="+x+" "+y);
             if (leftTopArrows[x][y]) {
-                spa.queryAlignment += seq1.charAt(x - 1);
-                spa.targetAlignment += seq2.charAt(y - 1);
+                System.out.println("leftTop "+(x-1)+", "+(y-1));
+                spa.queryAlignment += seq2.charAt(x - 1);
+                spa.targetAlignment += seq1.charAt(y - 1);
                 x--;
                 y--;
             } else if (leftArrows[x][y]) {
-                spa.queryAlignment += seq1.charAt(x - 1);
+                System.out.println("left "+(x-1)+", "+y);
+                spa.queryAlignment += seq2.charAt(y - 1);
                 spa.targetAlignment += '-';
                 y--;
             } else if (topArrows[x][y]) {
+                System.out.println("top "+x+", "+(y-1));
                 spa.queryAlignment += '-';
-                spa.targetAlignment += seq2.charAt(y - 1);
+                spa.targetAlignment += seq1.charAt(x - 1);
                 x--;
             }
         }
