@@ -5,6 +5,8 @@
 package de.bioinformatikmuenchen.pg4.alignment;
 
 import de.bioinformaikmuenchen.pg4.common.alignment.AlignmentResult;
+import static junit.framework.Assert.assertEquals;
+
 <<<<<<< Updated upstream
 import de.bioinformaikmuenchen.pg4.common.distance.IDistanceMatrix;
 =======
@@ -70,7 +72,6 @@ public class NeedlemanWunschTest {
      */
     @Test
     public void testAlignZeroOneMatrix() {
-<<<<<<< Updated upstream
         NeedlemanWunsch w = new NeedlemanWunsch(AlignmentMode.GLOBAL, AlignmentAlgorithm.NEEDLEMAN_WUNSCH, new ZeroOneAlignmentMatrix(), new ConstantGapCost(0));
         AlignmentResult result = w.align(new Sequence("ACGA"), new Sequence("TCCG"));
         System.out.println("Score: " + result.getScore());
@@ -95,18 +96,20 @@ public class NeedlemanWunschTest {
         AlignmentResult result = instance.align(seq1Obj, seq2Obj);
         assertEquals(24.0, result.getScore(), 0.0000000001);
 
-=======
+    }
+
+    @Test
+    public void testStuff() {
+
         //SmithWaterman w = new SmithWaterman(AlignmentMode.GLOBAL, AlignmentAlgorithm.NEEDLEMAN_WUNSCH, new ZeroOneAlignmentMatrix(), new ConstantGapCost(0));
         NeedlemanWunsch w = new NeedlemanWunsch(AlignmentMode.GLOBAL, AlignmentAlgorithm.NEEDLEMAN_WUNSCH, new ZeroOneAlignmentMatrix(), new ConstantGapCost(0));
         AlignmentResult result = w.align(new Sequence("GAATTCAGTTA"), new Sequence("G   GATCGA"));
-        System.out.println("Score: "+result.getScore());
+        System.out.println("Score: " + result.getScore());
         assertEquals(6, result.getScore(), 0.00000001);
-        System.out.println("spa size: "+result.getAlignments().size());
-        SequencePairAlignment spa = result.getAlignments().get(0);
-        System.out.println("##aligned sequence: "+spa.queryAlignment+"\n"+spa.matchLine+"\n"+spa.targetAlignment);
+        System.out.println("spa size: " + result.getAlignments().size());
+        SequencePairAlignment spa = result.getFirstAlignment();
+        System.out.println("##aligned sequence: " + spa.queryAlignment + "\n" + spa.matchLine + "\n" + spa.targetAlignment);
         assertEquals("G-AATTCAGTTA", spa.queryAlignment);
-        
->>>>>>> Stashed changes
     }
 //    @Test
 //    public void testAlignRealMatrix() throws IOException {
