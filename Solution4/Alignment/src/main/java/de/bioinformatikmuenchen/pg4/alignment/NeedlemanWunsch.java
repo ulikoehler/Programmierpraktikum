@@ -23,6 +23,9 @@ public class NeedlemanWunsch extends AlignmentProcessor {
 
     @Override
     public AlignmentResult align(Sequence seq1, Sequence seq2) {
+        assert seq1 != null && seq2 != null;
+        assert seq1.getSequence().length() > 0;
+        assert seq2.getSequence().length() > 0;
         this.seq1 = seq1.getSequence();
         this.seq2 = seq2.getSequence();
         initMatrix(seq1.getSequence().length(), seq2.getSequence().length());

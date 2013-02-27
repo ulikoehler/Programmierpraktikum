@@ -92,6 +92,8 @@ public class QUASARDistanceMatrixFactory {
         if (rowIndex == null || colIndex == null) {
             throw new IllegalStateException("Could not read QUASAR data from substitution matrix file -- read overall " + lineCounter + " lines");
         }
+        //Assert we have some matrix entries
+        assert mapping.size() > 0;
 //        System.out.println("Read " + lineCounter + " lines");
         reader.close();
         return new MapDistanceMatrix(mapping);

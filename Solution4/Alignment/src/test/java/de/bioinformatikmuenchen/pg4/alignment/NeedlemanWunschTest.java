@@ -13,6 +13,9 @@ import de.bioinformatikmuenchen.pg4.alignment.gap.IGapCost;
 import de.bioinformatikmuenchen.pg4.alignment.recursive.WikipediaAlignmentMatrix1;
 import de.bioinformatikmuenchen.pg4.alignment.recursive.ZeroOneAlignmentMatrix;
 import de.bioinformatikmuenchen.pg4.common.Sequence;
+import de.bioinformatikmuenchen.pg4.common.distance.QUASARDistanceMatrixFactory;
+import java.io.IOException;
+import java.io.InputStreamReader;
 import static junit.framework.Assert.assertEquals;
 import org.junit.After;
 import org.junit.AfterClass;
@@ -93,6 +96,20 @@ public class NeedlemanWunschTest {
 
     }
 
+    /**
+     * Real world example from sanity.pairs that hasn't worked somewhen
+     */
+    @Test
+    public void testAlignReal1() throws IOException {
+        IDistanceMatrix matrix = QUASARDistanceMatrixFactory.factorize(new InputStreamReader(NeedlemanWunschTest.class.getResourceAsStream("/matrices/dayhoff.mat")));
+        Sequence seq1Obj = new Sequence("GPLDVQVTEDAVRRYLTRKPMTTKDLLKKFQTKKTGLSSEQTVNVLAQILKRLNPERKMINDKMHFSLK");
+        Sequence seq2Obj = new Sequence("MEEAKQKVVDFLNSKSKSKFYFNDFTDLFPDMKQREVKKILTALVNDEVLEYWSSGSTTMYGLKG");
+        IGapCost gapCost = new ConstantGapCost(-5);
+        NeedlemanWunsch instance = new NeedlemanWunsch(AlignmentMode.GLOBAL, AlignmentAlgorithm.NEEDLEMAN_WUNSCH, matrix, gapCost);
+        AlignmentResult result = instance.align(seq1Obj, seq2Obj);
+        assertEquals(4.90, result.getScore(), 0.00000001);
+
+    }
 //    @Test
 //    public void testStuff() {
 //
