@@ -34,6 +34,9 @@ public class SmithWaterman extends AlignmentProcessor {
 
     @Override
     public AlignmentResult align(Sequence seq1, Sequence seq2) {
+        assert seq1 != null && seq2 != null;
+        assert seq1.getSequence().length() > 0;
+        assert seq2.getSequence().length() > 0;
         this.seq1 = seq1.getSequence();
         this.seq2 = seq2.getSequence();
         initAndFillMatrix(seq1.getSequence(), seq2.getSequence());
@@ -42,21 +45,22 @@ public class SmithWaterman extends AlignmentProcessor {
         ArrayList<SequencePairAlignment> list = new ArrayList<SequencePairAlignment>();
         list.add(backtracking());
         result.setAlignments(list);//result.setAlignments(Collections.singletonList(backtracking()));
-        result.setScore(matrix[xSize - 1][ySize - 1]);
-        System.out.println("######Score: " + matrix[xSize - 1][ySize - 1] + " ######\n");
+        result.setScore(matrix[xSize][ySize]);
         return result;
     }
 
     public void initAndFillMatrix(String s, String t) {
         //////  init matrix:
-        xSize = s.length();
-        ySize = t.length();
-        matrix = new double[xSize][ySize];
-        leftArrows = new boolean[xSize][ySize];
-        leftTopArrows = new boolean[xSize][ySize];
-        topArrows = new boolean[xSize][ySize];
-        for (int x = 0; x < xSize; x++) {
-            for (int y = 0; y < ySize; y++) {
+        this.xSize = s.length();
+        this.ySize = t.length();
+        int xSizeInit = this.xSize+1;
+        int ySizeInit = this.ySize+1;
+        matrix = new double[xSizeInit][ySizeInit];
+        leftArrows = new boolean[xSizeInit][ySizeInit];
+        leftTopArrows = new boolean[xSizeInit][ySizeInit];
+        topArrows = new boolean[xSizeInit][ySizeInit];
+        for (int x = 0; x < xSizeInit; x++) {
+            for (int y = 0; y < ySizeInit; y++) {
                 leftArrows[x][y] = false;
                 leftTopArrows[x][y] = false;
                 topArrows[x][y] = false;
@@ -64,8 +68,8 @@ public class SmithWaterman extends AlignmentProcessor {
         }
         /////////   fill matrix:
         final double compareThreshold = 0.0000001;
-        for (int x = 1; x < xSize; x++) {
-            for (int y = 1; y < ySize; y++) {
+        for (int x = 1; x < xSizeInit; x++) {
+            for (int y = 1; y < ySizeInit; y++) {
                 char A = seq1.charAt(x - 1);
                 char B = seq2.charAt(y - 1);
                 double leftTopScore = matrix[x - 1][y - 1] + distanceMatrix.distance(A, B);
@@ -79,9 +83,10 @@ public class SmithWaterman extends AlignmentProcessor {
                 leftArrows[x][y] = Math.abs(leftScore - maxScore) < compareThreshold;
                 topArrows[x][y] = Math.abs(topScore - maxScore) < compareThreshold;
                 //Assert this field has at least one arrow
-                assert leftTopArrows[x][y] || leftArrows[x][y] || topArrows[x][y];//assert only
+                //######### assert leftTopArrows[x][y] || leftArrows[x][y] || topArrows[x][y];//assert only the area where the l/a takes place
             }
         }
+        System.out.println("m["+xSizeInit+"]["+ySizeInit+"] = "+matrix[xSizeInit-1][ySizeInit-1]);
     }
 
     public SequencePairAlignment backtracking() {
@@ -89,8 +94,8 @@ public class SmithWaterman extends AlignmentProcessor {
         double maxEntry = -1;
         int x = 0;
         int y = 0;
-        for (int i = 0; i < matrix.length; i++) {
-            for (int j = 0; j < matrix.length; j++) {
+        for (int i = 0; i < xSize; i++) {
+            for (int j = 0; j < ySize; j++) {
                 if (matrix[i][j] >= maxEntry) {
                     x = i;
                     y = j;
@@ -98,6 +103,7 @@ public class SmithWaterman extends AlignmentProcessor {
                 }
             }
         }
+        System.out.println("maxCell "+x+", "+y);
         String queryAlignment = "";
         String targetAlignment = "";
         while (x >= 0 && y >= 0 && matrix[x][y] != 0) {
@@ -122,6 +128,22 @@ public class SmithWaterman extends AlignmentProcessor {
         spa.setQueryAlignment(new StringBuffer(queryAlignment).reverse().toString());
         spa.setTargetAlignment(new StringBuffer(targetAlignment).reverse().toString());
         return spa;
-
+    }
+    
+    public String printMatrix() {
+        StringBuilder builder = new StringBuilder();
+        builder.append("\t\t");
+        for (int x = 0; x < seq1.length(); x++) {
+            builder.append(seq1.charAt(x)).append("\t");
+        }
+        builder.append("\n");
+        for (int y = 0; y <= seq2.length(); y++) {
+            builder.append(y == 0 ? ' ' : seq2.charAt(y - 1)).append("\t");
+            for (int x = 0; x <= seq1.length(); x++) {
+                builder.append(matrix[x][y]).append("\t");
+            }
+            builder.append("\n");
+        }
+        return builder.toString();
     }
 }

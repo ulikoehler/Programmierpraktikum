@@ -55,6 +55,7 @@ public class NeedlemanWunschTest {
     @Test
     public void testAlignAvatar() {
         NeedlemanWunsch instance = new NeedlemanWunsch(AlignmentMode.GLOBAL, AlignmentAlgorithm.NEEDLEMAN_WUNSCH, new ZeroOneAlignmentMatrix(), new ConstantGapCost(0));
+        instance.setFreeShift();
         Sequence seq1Obj = new Sequence("GAATTCAGTTA");
         Sequence seq2Obj = new Sequence("GGATCGA");
         AlignmentResult result = instance.align(seq1Obj, seq2Obj);
@@ -98,16 +99,16 @@ public class NeedlemanWunschTest {
 //        SequencePairAlignment spa = result.getFirstAlignment();
 //        System.out.println("##### \n"+spa.queryAlignment+"\n"+spa.matchLine+"\n"+spa.targetAlignment);
 //    }
-    @Test
-    public void testAlignSimple() {
-        Sequence seq1Obj = new Sequence("GAATT");
-        Sequence seq2Obj = new Sequence("GGATC");
-        IDistanceMatrix matrix = new WikipediaAlignmentMatrix1();
-        IGapCost gapCost = new ConstantGapCost(-5);
-        NeedlemanWunsch instance = new NeedlemanWunsch(AlignmentMode.GLOBAL, AlignmentAlgorithm.NEEDLEMAN_WUNSCH, matrix, gapCost);
-        AlignmentResult result = instance.align(seq1Obj, seq2Obj);
-        assertEquals(24.0, result.getScore(), 0.0000000001);
-    }
+//    @Test
+//    public void testAlignSimple() {
+//        Sequence seq1Obj = new Sequence("GAATT");
+//        Sequence seq2Obj = new Sequence("GGATC");
+//        IDistanceMatrix matrix = new WikipediaAlignmentMatrix1();
+//        IGapCost gapCost = new ConstantGapCost(-5);
+//        NeedlemanWunsch instance = new NeedlemanWunsch(AlignmentMode.GLOBAL, AlignmentAlgorithm.NEEDLEMAN_WUNSCH, matrix, gapCost);
+//        AlignmentResult result = instance.align(seq1Obj, seq2Obj);
+//        assertEquals(24.0, result.getScore(), 0.0000000001);
+//    }
 
 //    @Test
 //    public void test Stuff() {
