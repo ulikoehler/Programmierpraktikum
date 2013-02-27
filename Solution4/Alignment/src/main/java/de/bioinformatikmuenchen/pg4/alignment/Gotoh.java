@@ -19,9 +19,9 @@ public class Gotoh extends AlignmentProcessor {
     private double[][] matrixIn;
     private double[][] matrixDel;
     //Matrices that save whether any given field got its value from the specified direction
-//    private boolean[][] leftTopArrows;
-//    private boolean[][] leftArrows;
-//    private boolean[][] topArrows;
+    private boolean[][] leftTopArrows;
+    private boolean[][] leftArrows;
+    private boolean[][] topArrows;
     private int xSize = -1;
     private int ySize = -1;
     private String seq1;
@@ -72,9 +72,26 @@ public class Gotoh extends AlignmentProcessor {
             matrixIn[0][i] = Double.NaN;
             matrixDel[0][i] = Double.NEGATIVE_INFINITY;
         }
+        //init the three boolean matrices, which "store" the alignment arrows
+        for (int x = 0; x < xSize; x++) {
+            for (int y = 0; y < ySize; y++) {
+                leftArrows[x][y] = false;
+                leftTopArrows[x][y] = false;
+                topArrows[x][y] = false;
+            }
+        }
     }
 
     public void fillMatrix(String seq1, String seq2) {
+        int inGaps = 0; int delGaps = 0;
+        for (int x = 1; x < xSize; x++) {
+            for (int y = 1; y < ySize; y++) {
+                matrixIn[x][y] = Math.max(matrixA[x][y-1]+gapCost.getGapCost(1), matrixIn[x][y-1]+gapCost.getGapExtensionPenalty(0, 1));
+                matrixDel[x][y] = Math.max(matrixA[x-1][y]+gapCost.getGapCost(1), matrixDel[x-1][y]+gapCost.getGapExtensionPenalty(0, 1));
+                matrixA[x][y] = Math.max(Math.max(matrixIn[x][y], matrixDel[x][y]), matrixA[x-1][y-1]+distanceMatrix.distance(seq1.charAt(x-1), seq2.charAt(y-1)));
+            }
+            //######!!!!!!!set boolean matrices like in NW
+        }
     }
 
     public SequencePairAlignment backTracking() {

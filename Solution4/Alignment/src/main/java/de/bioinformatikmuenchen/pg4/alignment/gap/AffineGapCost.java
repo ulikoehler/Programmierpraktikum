@@ -24,7 +24,7 @@ public class AffineGapCost implements IGapCost {
     }
 
     @Override
-    public double getGapExtensionPenalty(int previousLength, int extendBy) {
+    public double getGapExtensionPenalty(int previousLength, int extendBy) {//why param previousLength??
         return extendBy * gapextend;
     }
 }
