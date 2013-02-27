@@ -60,6 +60,7 @@ public class QUASARDistanceMatrixFactoryTest extends TestCase {
                 char A = rowIndex.charAt(x);
                 char B = colIndex.charAt(y);
                 assertTrue("No data for " + A + " " + B + ": " + matrix.distance(A, B), matrix.distance(A, B) >= Double.NEGATIVE_INFINITY);
+                assertTrue("No data for " + B + " " + A + ": " + matrix.distance(B,A), matrix.distance(B, A) >= Double.NEGATIVE_INFINITY);
             }
         }
     }
