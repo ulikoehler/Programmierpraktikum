@@ -1,66 +1,93 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
-<head>
-<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-<title>Propra G4</title>
-<link rel="stylesheet" href="css/ui-lightness/jquery-ui-1.10.1.custom.min.css" type="text/css" media="screen"/>
-<style type="text/css" media="screen">
-body { background: #e7e7e7; font-family: Verdana, sans-serif; font-size: 11pt; }
-#page { background: #ffffff; margin: 50px; border: 2px solid #c0c0c0; padding: 10px; }
-#header { background: #4b6983; border: 2px solid #7590ae; text-align: center; padding: 10px; color: #ffffff; }
-#header h1 { color: #ffffff; }
-#body { padding: 10px; }
-span.tt { font-family: monospace; }
-span.bold { font-weight: bold; }
-a:link { text-decoration: none; font-weight: bold; color: #C00; background: #ffc; }
-a:visited { text-decoration: none; font-weight: bold; color: #999; background: #ffc; }
-a:active { text-decoration: none; font-weight: bold; color: #F00; background: #FC0; }
-a:hover { text-decoration: none; color: #C00; background: #FC0; }
-.ui-autocomplete-loading {
-    background: white url('css/ui-lightness/images/ui-anim_basic_16x16.gif') right center no-repeat;
-}
-#proteinId {border-radius: 5px;}
-</style>
-<!-- JS -->
-<script type='text/javascript' src='js/jquery.js'></script>
-<script type='text/javascript' src='js/jquery-ui.js'></script>
-<script type='text/javascript'>
-$(function() {
-$( ".accordion" ).accordion();
-    $( "#proteinId" ).autocomplete({
-	source: function( request, response ) {
-          $.getJSON( "get_autocomplete_ids.cgi", {
-            limit:10,
-	     prefix: request.term,
-	     db: $("#dbselect").val()
-          }, response);
-        },
-      select: function( event, ui ) {
-           //"Selected: " + ui.item.value + " aka " + ui.item.id :
-          //"Nothing selected, input was " + this.value );
-      }
-    });
-});
-</script>
-</head>
-<body>
-<div id="page">
- <div id="header">
- <h1>Sequence tools (Gr. 4)</h1>
- </div>
- <div id="body">
-  <h2>Bioinformatics tools</h2>
-  <div class="accordion">
-  <h3>Select protein ID</h3>
-  <div>
-  <form method="get" action="get_pdb.cgi">
-      <select id="dbselect" name="db">
-	<option>PDB</option>
-	<option>SwissProt</option>
-	</select>
-	<input id="proteinId" /><input type="submit" value="Info"/>
-  </form>
-  </div>
-  </div>
-</body>
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+		<title>Propra G4</title>
+		<link rel="stylesheet" href="css/start/jquery-ui-1.10.1.custom.min.css" type="text/css" media="screen" />
+		<style type="text/css" media="screen">
+			body { background: #e7e7e7; font-family: Verdana, sans-serif; font-size: 11pt; }
+			#page { background: #ffffff; margin: 50px; border: 2px solid #c0c0c0; padding: 10px; }
+			#header { background: #4b6983; border: 2px solid #7590ae; text-align: center; padding: 10px; color: #ffffff; }
+			#header h1 { color: #ffffff; }
+			#body { padding: 10px; }
+			span.tt { font-family: monospace; }
+			span.bold { font-weight: bold; }
+			.ui-autocomplete-loading {
+			background: white url('css/ui-lightness/images/ui-anim_basic_16x16.gif') right center no-repeat;
+			}
+			#proteinId {border-radius: 5px;}
+		</style>
+		<!-- JS -->
+		<script type="text/javascript" src="js/jquery.js"></script>
+		<script type="text/javascript" src="js/jquery-ui.js"></script>
+		<script type="text/javascript">
+			$(function() {
+			$( ".accordion" ).accordion();
+			$( ".tabs" ).tabs();
+			$( "#droppable" ).droppable({
+			      drop: function( event, ui ) {
+				$( this )
+				  .addClass( "ui-state-highlight" )
+				  .find( "p" )
+				    .html( "Dropped!" );
+			      }
+			    });
+			$(".uibtn").button();
+			    $( "#proteinId" ).autocomplete({
+				source: function( request, response ) {
+			          $.getJSON( "get_autocomplete_ids.cgi", {
+			            limit:10,
+				     prefix: request.term,
+				     db: $("#dbselect").val()
+			          }, response);
+			        },
+			      select: function( event, ui ) {
+			           //"Selected: " + ui.item.value + " aka " + ui.item.id :
+			          //"Nothing selected, input was " + this.value );
+			      }
+			    });
+			});
+		</script>
+	</head>
+	<body>
+		<div id="page" />
+		<div id="header">
+			<h1>Sequence tools (Gr. 4)</h1>
+		</div>
+		<div id="body">
+			<h3>Select protein ID</h3>
+			<div style="height: 30px;">
+			</div>
+			<h3>Upload sequence data</h3>
+			<div class="tabs">
+				<ul>
+					<li><a href="#upload-dbid">From database</a></li>
+					<li><a href="#upload-fastainput">FASTA input</a></li>
+					<li><a href="#upload-fileinput">File upload</a></li>
+				</ul>
+				<div id="upload-dbid">
+					<select id="dbselect" name="db">
+						<option>PDB</option>
+						<option>SwissProt</option>
+					</select>
+					<input id="proteinId" />
+					<input class="uibtn" type="submit" value="Add" />
+				</div>
+				<div id="upload-fastainput">
+					Query sequence (FASTA):<br />
+					<textarea name="query" cols="50" rows="20"></textarea>
+					<br />
+					<div class="uibtn">Add </div>
+				</div>
+				<div id="upload-fileinput">
+					<input type="file" name="database" /><br />
+				</div>
+			</div>
+		</div>
+		<!-- accordion -->
+	</body>
 </html>
+
+
+
+
