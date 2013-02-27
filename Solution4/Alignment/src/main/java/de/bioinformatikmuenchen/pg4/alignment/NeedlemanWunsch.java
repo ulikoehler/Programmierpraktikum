@@ -33,7 +33,6 @@ public class NeedlemanWunsch extends AlignmentProcessor {
         result.setScore(matrix[xSize - 1][ySize - 1]);
         result.setSeq1Id(seq1   .getId());
         result.setSeq2Id(seq2.getId());
-        System.out.println("######Score: " + matrix[xSize - 1][ySize - 1] + " ######\n");
         return result;
     }
 
@@ -98,7 +97,6 @@ public class NeedlemanWunsch extends AlignmentProcessor {
                 topArrows[x][y] = Math.abs(topScore - maxScore) < compareThreshold;
                 //Assert this field has at least one arrow
                 assert leftTopArrows[x][y] || leftArrows[x][y] || topArrows[x][y];
-                System.out.println(this.printMatrix());
             }
         }
     }

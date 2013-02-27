@@ -54,10 +54,9 @@ public class NeedlemanWunschTest {
         NeedlemanWunsch instance = new NeedlemanWunsch(AlignmentMode.GLOBAL, AlignmentAlgorithm.NEEDLEMAN_WUNSCH, new ZeroOneAlignmentMatrix(), new ConstantGapCost(0));
         Sequence seq1Obj = new Sequence("GAATTCAGTTA");
         Sequence seq2Obj = new Sequence("GGATCGA");
-        IDistanceMatrix matrix = new ZeroOneAlignmentMatrix();
-        IGapCost gapCost = new ConstantGapCost(0);
         AlignmentResult result = instance.align(seq1Obj, seq2Obj);
-        assertEquals(6.0, result.getScore());        
+        System.out.println(instance.printMatrix());
+        assertEquals(6.0, result.getScore(), 0.0000000001);
         //assertEquals("G-AATTCAGTTA", currentAlignment.getSequence());
 
     }
@@ -70,7 +69,7 @@ public class NeedlemanWunschTest {
         NeedlemanWunsch w = new NeedlemanWunsch(AlignmentMode.GLOBAL, AlignmentAlgorithm.NEEDLEMAN_WUNSCH, new ZeroOneAlignmentMatrix(), new ConstantGapCost(0));
         AlignmentResult result = w.align(new Sequence("ACGA"), new Sequence("TCCG"));
         System.out.println("Score: " + result.getScore());
-        assertEquals(6, result.getScore(), 0.00000001);
+        assertEquals(2, result.getScore(), 0.00000001);
         //assertEquals("G-AATTCAGTTA", currentAlignment.getSequence());
 
     }
