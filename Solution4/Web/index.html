@@ -12,19 +12,31 @@
 			#body { padding: 10px; }
 			span.tt { font-family: monospace; }
 			span.bold { font-weight: bold; }
-			.ui-autocomplete-loading {
-			background: white url('css/ui-lightness/images/ui-anim_basic_16x16.gif') right center no-repeat;
-			}
+			.ui-autocomplete-loading {background: white url('css/ui-lightness/images/ui-anim_basic_16x16.gif') right center no-repeat;}
+			#available-sequences { width: 99%; height: 150px; padding: 0.5em; }
+			#align-from {float:none; height: 100px;}
+			#align-to {float:none; height: 100px;}
+			.resizable > h3 { text-align: center; margin: 0; }
 			#proteinId {border-radius: 5px;}
+			.dropList { list-style-type: none; margin: 0; padding: 0 0 2.5em; float: left; margin-right: 10px; }
+			.dropList li { margin: 0 5px 5px 5px; padding: 5px; font-size: 1.2em;}
+
+			.sequence {}
 		</style>
 		<!-- JS -->
 		<script type="text/javascript" src="js/jquery.js"></script>
 		<script type="text/javascript" src="js/jquery-ui.js"></script>
 		<script type="text/javascript">
-			$(function() {
+		$(function() {
 			$( ".accordion" ).accordion();
 			$( ".tabs" ).tabs();
-			$( "#droppable" ).droppable({
+			$("#available-sequences").resizable({containment: "#body"});
+			$("#align-from").resizable({containment: "#body"});
+			$("#align-to").resizable({containment: "#body"});
+			$( "#align-from, #align-to, #available-sequences" ).sortable({
+			      connectWith: ".dropList"
+			}).disableSelection();
+			$("#droppable").droppable({
 			      drop: function( event, ui ) {
 				$( this )
 				  .addClass( "ui-state-highlight" )
@@ -33,20 +45,20 @@
 			      }
 			    });
 			$(".uibtn").button();
-			    $( "#proteinId" ).autocomplete({
+			$( "#proteinId" ).autocomplete({
 				source: function( request, response ) {
-			          $.getJSON( "get_autocomplete_ids.cgi", {
-			            limit:10,
+				  $.getJSON( "get_autocomplete_ids.cgi", {
+				    limit:10,
 				     prefix: request.term,
 				     db: $("#dbselect").val()
-			          }, response);
-			        },
+				  }, response);
+				},
 			      select: function( event, ui ) {
-			           //"Selected: " + ui.item.value + " aka " + ui.item.id :
-			          //"Nothing selected, input was " + this.value );
-			      }
-			    });
+				   //"Selected: " + ui.item.value + " aka " + ui.item.id :
+				  //"Nothing selected, input was " + this.value );
+			    }
 			});
+		});
 		</script>
 	</head>
 	<body>
@@ -58,6 +70,33 @@
 			<h3>Select protein ID</h3>
 			<div style="height: 30px;">
 			</div>
+			<div>
+				<div style="width:50%;">
+					<div id="align-from" class="resizable ui-widget-content">
+						<h3 class="ui-widget-header">Align from</h3>
+						<ul class="dropList" style="margin-top:5px;">
+							<li class="sequence ui-state-highlight">Drop sequences here</li>
+							<li class="sequence ui-state-highlight">Drop sequences here</li>
+						</ul>
+					</div>
+				</div>
+				<div style="width:50%;text-align:right;">
+					<div id="align-to" class="resizable ui-widget-content">
+						<h3 class="ui-widget-header">Align to</h3>
+						<ul class="dropList" style="margin-top:5px;">
+							<li class="sequence ui-state-highlight">Drop sequences here</li>
+						</ul>
+					</div>
+				</div>
+			</div>
+			<div id="available-sequences" class="resizable ui-widget-content">
+				<h3 class="ui-widget-header">Available sequences</h3>
+				<ul class="dropList" style="margin-top:5px;">
+					<li class="sequence ui-state-default">Item 1</li>
+				</ul>
+			</div>
+			
+				
 			<h3>Upload sequence data</h3>
 			<div class="tabs">
 				<ul>
