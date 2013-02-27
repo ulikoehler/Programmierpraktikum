@@ -2,7 +2,7 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package de.bioinformaikmuenchen.pg4.common.distance;
+package de.bioinformatikmuenchen.pg4.common.distance;
 
 import java.util.HashMap;
 

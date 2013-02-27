@@ -1,4 +1,4 @@
-package de.bioinformaikmuenchen.pg4.common.alignment;
+package de.bioinformatikmuenchen.pg4.common.alignment;
 
 /**
  * An alignment of exactly two sequences

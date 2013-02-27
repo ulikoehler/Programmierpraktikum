@@ -2,9 +2,9 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package de.bioinformaikmuenchen.pg4.common.alignment;
+package de.bioinformatikmuenchen.pg4.common.alignment;
 
-import de.bioinformaikmuenchen.pg4.common.util.CollectionUtil;
+import de.bioinformatikmuenchen.pg4.common.util.CollectionUtil;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.LinkedList;

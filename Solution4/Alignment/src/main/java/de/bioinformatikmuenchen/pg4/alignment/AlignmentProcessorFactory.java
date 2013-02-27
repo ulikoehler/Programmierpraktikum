@@ -4,7 +4,7 @@
  */
 package de.bioinformatikmuenchen.pg4.alignment;
 
-import de.bioinformaikmuenchen.pg4.common.distance.IDistanceMatrix;
+import de.bioinformatikmuenchen.pg4.common.distance.IDistanceMatrix;
 import de.bioinformatikmuenchen.pg4.alignment.gap.IGapCost;
 
 /**

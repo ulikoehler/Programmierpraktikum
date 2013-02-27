@@ -2,7 +2,7 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package de.bioinformaikmuenchen.pg4.common.distance;
+package de.bioinformatikmuenchen.pg4.common.distance;
 
 import com.google.common.base.Function;
 import com.google.common.collect.Collections2;
@@ -74,6 +74,7 @@ public class QUASARDistanceMatrixFactory {
                 for (int i = 0; i < values.size(); i++) {
                     mapping.put(rowIndex.charAt(currentMatrixLineIndex) + "-" + colIndex.charAt(i), values.get(i));
                     mapping.put(colIndex.charAt(i) + "-" + rowIndex.charAt(currentMatrixLineIndex), values.get(i));
+                    System.out.println(rowIndex.charAt(currentMatrixLineIndex) + "-" + colIndex.charAt(i) + "= " + values.get(i));
                 }
                 currentMatrixLineIndex++;
             }

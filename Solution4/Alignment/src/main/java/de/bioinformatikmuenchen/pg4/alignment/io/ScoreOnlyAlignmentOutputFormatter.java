@@ -1,6 +1,6 @@
 package de.bioinformatikmuenchen.pg4.alignment.io;
 
-import de.bioinformaikmuenchen.pg4.common.alignment.AlignmentResult;
+import de.bioinformatikmuenchen.pg4.common.alignment.AlignmentResult;
 import java.text.DecimalFormat;
 import java.text.DecimalFormatSymbols;
 
