@@ -119,30 +119,52 @@ public class NeedlemanWunsch extends AlignmentProcessor {
     }
 
     public SequencePairAlignment oneAlignmentOnly() {
-        SequencePairAlignment spa = new SequencePairAlignment();
+        String queryAlignment = "";
+        String targetAlignment = "";
         int x = xSize - 1;
         int y = ySize - 1;
         System.out.println("start: "+x+", "+y);
-        while (x != 0 && y != 0) {
+        while (x >= 0 && y >= 0) {
             if (leftTopArrows[x][y]) {
                 System.out.println("leftTop "+(x-1)+", "+(y-1));
-                spa.queryAlignment += seq2.charAt(x - 1);
-                spa.targetAlignment += seq1.charAt(y - 1);
+                queryAlignment += seq1.charAt(x - 1);
+                targetAlignment += seq2.charAt(y - 1);
                 x--;
                 y--;
             } else if (leftArrows[x][y]) {
                 System.out.println("left "+(x-1)+", "+y);
-                spa.queryAlignment += seq2.charAt(y - 1);
-                spa.targetAlignment += '-';
-                y--;
+                queryAlignment += seq1.charAt(x - 1);
+                targetAlignment += '-';
+                x--;
             } else if (topArrows[x][y]) {
                 System.out.println("top "+x+", "+(y-1));
-                spa.queryAlignment += '-';
-                spa.targetAlignment += seq1.charAt(x - 1);
-                x--;
+                queryAlignment += '-';
+                targetAlignment += seq2.charAt(y - 1);
+                y--;
+            }
+            else if(x==0){
+                while(y>0){
+                    System.out.println("top0 "+x+", "+(y-1));
+                    queryAlignment += '-';
+                    targetAlignment += seq2.charAt(y - 1);
+                    y--;
+                }
+                break;
+            }
+            else if(y==0){
+                while(x>0){
+                    System.out.println("left0 "+(x-1)+", "+y);
+                    queryAlignment += seq1.charAt(x - 1);
+                    targetAlignment += '-';
+                    x--;
+                }
+                break;
             }
         }
         //reverse the output:
-        return new SequencePairAlignment(new StringBuffer(spa.queryAlignment).reverse().toString(), new StringBuffer(spa.targetAlignment).reverse().toString());
+        SequencePairAlignment spa = new SequencePairAlignment();
+        spa.setQueryAlignment(new StringBuffer(queryAlignment).reverse().toString());
+        spa.setTargetAlignment(new StringBuffer(targetAlignment).reverse().toString());
+        return spa;//new SequencePairAlignment(new StringBuffer().reverse().toString(), new StringBuffer(spa.targetAlignment).reverse().toString());
     }
 }

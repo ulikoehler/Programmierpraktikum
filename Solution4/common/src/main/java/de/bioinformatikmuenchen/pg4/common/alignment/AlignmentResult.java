@@ -4,13 +4,10 @@
  */
 package de.bioinformatikmuenchen.pg4.common.alignment;
 
-<<<<<<< HEAD:Solution4/common/src/main/java/de/bioinformaikmuenchen/pg4/common/alignment/AlignmentResult.java
-import de.bioinformaikmuenchen.pg4.common.util.CollectionUtil;
-=======
+
 import de.bioinformatikmuenchen.pg4.common.util.CollectionUtil;
-import java.util.ArrayList;
->>>>>>> a4cbc51f9f9c4a9e716599b4cb86ece990442636:Solution4/common/src/main/java/de/bioinformatikmuenchen/pg4/common/alignment/AlignmentResult.java
 import java.util.Collection;
+
 
 
 /**
