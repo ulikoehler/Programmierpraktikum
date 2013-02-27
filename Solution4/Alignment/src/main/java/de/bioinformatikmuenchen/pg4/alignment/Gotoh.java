@@ -12,9 +12,9 @@ import java.util.Collections;
 /**
  *
  * @author tobias
- */    
+ */
 public class Gotoh extends AlignmentProcessor {
-    
+
     private double[][] matrixA;
     private double[][] matrixIn;
     private double[][] matrixDel;
@@ -26,6 +26,8 @@ public class Gotoh extends AlignmentProcessor {
     private int ySize = -1;
     private String seq1;
     private String seq2;
+    private boolean freeshift;
+    private boolean local;
 
     public Gotoh(AlignmentMode mode, AlignmentAlgorithm algorithm, IDistanceMatrix distanceMatrix, IGapCost gapCost) {
         super(mode, algorithm, distanceMatrix, gapCost);
@@ -56,24 +58,41 @@ public class Gotoh extends AlignmentProcessor {
 //        result.setTargetSequenceId(seq2.getId());
         return result;
     }
-    
-    public void initMatrix(int xSize, int ySize){
-        matrixA[0][1] = ;
-        for (int i = 0; i < xSize; i++) {
-            matrixA[i]
+
+    public void initMatrix(int xSize, int ySize) {
+        matrixDel[0][0] = Double.NaN;
+        matrixIn[0][0] = Double.NaN;
+        for (int i = 1; i < xSize; i++) {
+            matrixA[i][0] = gapCost.getGapCost(i);
+            matrixIn[i][0] = Double.NEGATIVE_INFINITY;
+            matrixDel[i][0] = Double.NaN;
+        }
+        for (int i = 1; i < ySize; i++) {
+            matrixA[0][i] = gapCost.getGapCost(i);
+            matrixIn[0][i] = Double.NaN;
+            matrixDel[0][i] = Double.NEGATIVE_INFINITY;
         }
     }
-    
-    public void fillMatrix(String seq1, String seq2){
-        
+
+    public void fillMatrix(String seq1, String seq2) {
     }
-    
-    public SequencePairAlignment backTracking(){
+
+    public SequencePairAlignment backTracking() {
         return null;
     }
 
     @Override
     public double[][] getMatrix() {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    public boolean setFreeshift(boolean freeshift) {
+        this.freeshift = freeshift;
+        return this.freeshift;
+    }
+
+    public boolean setLocal(boolean local) {
+        this.local = local;
+        return this.local;
     }
 }
