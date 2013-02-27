@@ -220,7 +220,7 @@ public class StrucValiAlg {
                 //overlapping segment in predicted goes on further or ends at same position
                 if (seqp == true) {
                     //add to list of segments that need to be included later on 
-                    phantom2.add(new VTupel(stao, endo, stap, -1));
+                    phantom1.add(new VTupel(stao, endo, stap, -1));
                 } else {
                     //check for overlap
                     if (phantom1.isEmpty()) {
@@ -269,6 +269,7 @@ public class StrucValiAlg {
                         overlapps.add(new VTupel(phantom2.get(j).att1, endo, phantom2.get(j).att3, phantom2.get(j).att4));
                     }
                 }
+                //case:segment in predicted ends at last position
                 if (seqp == true) {
                     endp = observ.length() - 1;
                     for (int j = 0; j < phantom1.size(); j++) {

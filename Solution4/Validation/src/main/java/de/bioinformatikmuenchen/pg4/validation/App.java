@@ -43,10 +43,9 @@ public class App {
         
         StrucValiAlg test2 = new StrucValiAlg (a6,b6);
 
-        System.out.println("QH " + test2.getQH());
-        System.out.println("QE " + test2.getQE());
-        System.out.println("QC " + test2.getQC());
-        System.out.println("Q3 " + test2.getQ3());
+        //System.out.println("QE " + test2.getQE());
+        //System.out.println("QC " + test2.getQC());
+        //System.out.println("Q3 " + test2.getQ3());
         
     }
 }
