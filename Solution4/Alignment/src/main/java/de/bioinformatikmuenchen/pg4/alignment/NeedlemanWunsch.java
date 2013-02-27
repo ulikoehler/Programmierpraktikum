@@ -20,6 +20,7 @@ public class NeedlemanWunsch extends AlignmentProcessor {
     private int ySize = -1;
     private String seq1;
     private String seq2;
+    private boolean freeShift = false;
     
     /**
      * Get an reference to the matrix, or null if not applicable
@@ -41,8 +42,8 @@ public class NeedlemanWunsch extends AlignmentProcessor {
         fillMatrix(seq1.getSequence(), seq2.getSequence());
         AlignmentResult result = new AlignmentResult();
         //Calculate the alignment and add it to the result
-        result.setAlignments(Collections.singletonList(oneAlignmentOnly()));
-        SequencePairAlignment alignment = oneAlignmentOnly();
+        result.setAlignments(Collections.singletonList(backTracking()));
+        SequencePairAlignment alignment = backTracking();
 //        System.out.println("##spa query: "+spa.queryAlignment);
         result.setAlignments(Collections.singletonList(alignment));
         result.setScore(matrix[xSize - 1][ySize - 1]);
@@ -78,11 +79,13 @@ public class NeedlemanWunsch extends AlignmentProcessor {
         leftArrows = new boolean[xSize][ySize];
         leftTopArrows = new boolean[xSize][ySize];
         topArrows = new boolean[xSize][ySize];
-        for (int i = 0; i < xSize; i++) {
+        if(!freeShift){
+            for (int i = 0; i < xSize; i++) {
             matrix[i][0] = gapCost.getGapCost(i);
-        }
-        for (int i = 0; i < ySize; i++) {
-            matrix[0][i] = gapCost.getGapCost(i);
+            }
+            for (int i = 0; i < ySize; i++) {
+                matrix[0][i] = gapCost.getGapCost(i);
+            }
         }
         //EXPLICITLY init the matrices
         for (int x = 0; x < xSize; x++) {
@@ -134,7 +137,7 @@ public class NeedlemanWunsch extends AlignmentProcessor {
         return builder.toString();
     }
 
-    public SequencePairAlignment oneAlignmentOnly() {
+    public SequencePairAlignment backTracking() {
         String queryAlignment = "";
         String targetAlignment = "";
         int x = xSize - 1;
@@ -182,5 +185,10 @@ public class NeedlemanWunsch extends AlignmentProcessor {
         spa.setQueryAlignment(new StringBuffer(queryAlignment).reverse().toString());
         spa.setTargetAlignment(new StringBuffer(targetAlignment).reverse().toString());
         return spa;//new SequencePairAlignment(new StringBuffer().reverse().toString(), new StringBuffer(spa.targetAlignment).reverse().toString());
+    }
+    
+    public boolean setFreeShift(){
+        this.freeShift = true;
+        return this.freeShift;
     }
 }
