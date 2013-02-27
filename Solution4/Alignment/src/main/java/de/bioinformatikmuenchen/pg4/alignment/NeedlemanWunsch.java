@@ -31,6 +31,8 @@ public class NeedlemanWunsch extends AlignmentProcessor {
         //Calculate the alignment and add it to the result
         result.setAlignments(Collections.singletonList(oneAlignmentOnly()));
         result.setScore(matrix[xSize - 1][ySize - 1]);
+        result.setSeq1Id(seq1   .getId());
+        result.setSeq2Id(seq2.getId());
         System.out.println("######Score: " + matrix[xSize - 1][ySize - 1] + " ######\n");
         return result;
     }
@@ -102,14 +104,20 @@ public class NeedlemanWunsch extends AlignmentProcessor {
     }
 
     public String printMatrix() {
-        StringBuffer stringBuffer = new StringBuffer();
-        for (int x = 0; x < xSize; x++) {
-            for (int y = 0; y < ySize; y++) {
-                stringBuffer.append(matrix[x][y]).append("\t");
-            }
-            stringBuffer.append("\n");
+        StringBuilder builder = new StringBuilder();
+        builder.append("\t\t");
+        for (int x = 0; x < seq1.length(); x++) {
+            builder.append(seq1.charAt(x)).append("\t");
         }
-        return stringBuffer.toString();
+        builder.append("\n");
+        for (int y = 0; y <= seq2.length(); y++) {
+            builder.append(y == 0 ? ' ' : seq2.charAt(y - 1)).append("\t");
+            for (int x = 0; x <= seq1.length(); x++) {
+                builder.append(matrix[x][y]).append("\t");
+            }
+            builder.append("\n");
+        }
+        return builder.toString();
     }
 
     public SequencePairAlignment oneAlignmentOnly() {

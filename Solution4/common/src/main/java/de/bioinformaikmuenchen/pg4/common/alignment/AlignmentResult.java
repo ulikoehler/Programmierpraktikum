@@ -14,6 +14,8 @@ import java.util.Collection;
 public class AlignmentResult {
 
     private double score;
+    private String seq1Id;
+    private String seq2Id;
     private Collection<SequencePairAlignment> alignments;
 
     public AlignmentResult() {
@@ -30,6 +32,22 @@ public class AlignmentResult {
 
     public void setScore(double score) {
         this.score = score;
+    }
+
+    public String getSeq1Id() {
+        return seq1Id;
+    }
+
+    public void setSeq1Id(String seq1Id) {
+        this.seq1Id = seq1Id;
+    }
+
+    public String getSeq2Id() {
+        return seq2Id;
+    }
+
+    public void setSeq2Id(String seq2Id) {
+        this.seq2Id = seq2Id;
     }
 
     public AlignmentResult(double score, Collection<SequencePairAlignment> alignments) {
