@@ -7,7 +7,7 @@ import de.bioinformatikmuenchen.pg4.alignment.gap.ConstantGapCost;
 import de.bioinformatikmuenchen.pg4.alignment.gap.IGapCost;
 import de.bioinformatikmuenchen.pg4.alignment.io.IAlignmentOutputFormatter;
 import de.bioinformatikmuenchen.pg4.common.Sequence;
-import java.util.ArrayList;
+import java.util.Collections;
 
 public class NeedlemanWunsch extends AlignmentProcessor {
 
@@ -29,13 +29,11 @@ public class NeedlemanWunsch extends AlignmentProcessor {
         fillMatrix(seq1.getSequence(), seq2.getSequence());
         AlignmentResult result = new AlignmentResult();
         //Calculate the alignment and add it to the result
-        ArrayList<SequencePairAlignment> list = new ArrayList<SequencePairAlignment>();
-        SequencePairAlignment spa = oneAlignmentOnly();
-        System.out.println("##spa query: "+spa.queryAlignment);
-        list.add(spa);
-        result.setAlignments(list);
+        SequencePairAlignment alignment = oneAlignmentOnly();
+//        System.out.println("##spa query: "+spa.queryAlignment);
+        result.setAlignments(Collections.singletonList(alignment));
         result.setScore(matrix[xSize - 1][ySize - 1]);
-        result.setQuerySequenceId(seq1   .getId());
+        result.setQuerySequenceId(seq1.getId());
         result.setTargetSequenceId(seq2.getId());
         return result;
     }
@@ -48,6 +46,7 @@ public class NeedlemanWunsch extends AlignmentProcessor {
      */
     public NeedlemanWunsch(AlignmentMode mode, AlignmentAlgorithm algorithm, IDistanceMatrix distanceMatrix, IGapCost gapCost) {
         super(mode, algorithm, distanceMatrix, gapCost);
+        assert gapCost instanceof ConstantGapCost;
         //AlignmentResult result = new AlignmentResult();
     }
 

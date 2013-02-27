@@ -60,7 +60,7 @@ public class AlignmentResult {
         return alignments;
     }
 
-    public void setAlignments(ArrayList<SequencePairAlignment> alignments) {
+    public void setAlignments(Collection<SequencePairAlignment> alignments) {
         this.alignments = alignments;
     }
     
