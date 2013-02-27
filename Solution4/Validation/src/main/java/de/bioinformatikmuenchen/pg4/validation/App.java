@@ -35,15 +35,17 @@ public class App {
         //System.out.println("MeanS " + test.getMeanS());
         //System.out.println("Inver " + test.getInver());
         
-        String a5 = "---CCCHHHHHHCCC---";
-        String b5 = "CCCCCCHHCHCHCCCCCC";
+        String a5 = "CCCCCCHHHHHHCCCCCC";
+        String b5 = "---CCCHHCHCHCCC---";
         
-        StrucValiAlg test2 = new StrucValiAlg (a5,b5);
+        String a6 = "CCCHHHHHHCCC";
+        String b6 = "CCHHHHHHHHCC";
+        
+        StrucValiAlg test2 = new StrucValiAlg (a6,b6);
 
-        System.out.println("QH " + test2.getQH());
-        System.out.println("QE " + test2.getQE());
-        System.out.println("QC " + test2.getQC());
-        System.out.println("Q3 " + test2.getQ3());
+        //System.out.println("QE " + test2.getQE());
+        //System.out.println("QC " + test2.getQC());
+        //System.out.println("Q3 " + test2.getQ3());
         
     }
 }
