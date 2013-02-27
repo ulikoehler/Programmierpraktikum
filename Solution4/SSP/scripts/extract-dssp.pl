@@ -155,6 +155,40 @@
   } elsif($runMode eq "CMP") {
     # CMP run mode
     print "CMP MODE\n";
+    # check --dssp-bin
+    if($#files != -1 && ($dsspBin eq "" || !-f $dsspBin)) {
+      # ddspBin not given
+      print "--- ERROR: CMP MODE REQUIRES --dssp-bin ARGUMENT FOR CROSS COMPILATION! ---\n";
+      printHelp();
+    }
+    # check each id
+    foreach my $id(@inputFileLines) {
+      chomp($id);
+      # generate both files
+      my $fileDssp = $localDsspPath.substr($id, 1, 2)."/$id.dssp";
+      my $filePdb = $localPdbPath.substr($id, 1, 2)."/pdb$id.ent";
+      # check cases
+      if(!-f $fileDssp && !-f $filePdb) {
+        print STDERR "DSSP AND PDB FILE DON'T EXISTS! => INCONSISTENT!";
+      } elsif(!-f $fileDssp) {
+        print STDERR "DSSP FILE DON'T EXISTS! => INCONSISTENT!";
+      } elsif(!-f $filePdb) {
+        print STDERR "PDB FILE DON'T EXISTS! => INCONSISTENT!";
+      } else {# TODO
+        # both file exists => check content
+        # compile pdb file to tmp dir
+        my @cmd = `$dsspBin -i '$filePdb' -o '$tmpFolder.$id.dssp'`;
+        # check content
+        if(!system("diff '$tmpFolder.$id.dssp' '$fileDssp' > /dev/null") == 0) {
+          print STDERR "COMPILED PDB FILE AND DSSP FILE DIFFER! => INCONSISTENT!";
+          unlink("$tmpFolder.$id.dssp");  # don't compile
+        }
+        # create list
+        pdbS2dsspS($tmpDir, $localDsspBinPath);
+        # directory to output
+        directoryToList($tmpDir, $outputDsspFile, \@inputFileLines);
+      }
+    }
   } else {
     # run mode not found!
     print "RUN MODE NOT FOUND!\n";
