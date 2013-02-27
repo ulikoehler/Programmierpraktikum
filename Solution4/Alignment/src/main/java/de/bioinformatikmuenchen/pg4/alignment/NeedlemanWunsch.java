@@ -20,6 +20,15 @@ public class NeedlemanWunsch extends AlignmentProcessor {
     private int ySize = -1;
     private String seq1;
     private String seq2;
+    
+    /**
+     * Get an reference to the matrix, or null if not applicable
+     * Modifying this might lead to undesi
+     * @return 
+     */
+    public double[][] getMatrix() {
+        return matrix;
+    }
 
     @Override
     public AlignmentResult align(Sequence seq1, Sequence seq2) {

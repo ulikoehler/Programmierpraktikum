@@ -77,6 +77,8 @@ public class QUASARDistanceMatrixFactoryTest extends TestCase {
         String colIndex = "ARNDCQEGHILKMFPSTWYV";
         assertEquals(-1.60, matrix.distance('A', 'R'), 0.0000000001);
         assertEquals(-1.60, matrix.distance('R', 'A'), 0.0000000001);
+        assertEquals(-2.10, matrix.distance('Y', 'N'), 0.0000000001);
+        assertEquals(-2.10, matrix.distance('N', 'Y'), 0.0000000001);
         assertEquals(1.8, matrix.distance('A', 'A'), 0.0000000001);
         //Check if the matrix has data for all character pairs
         for (int y = 0; y < colIndex.length(); y++) {
