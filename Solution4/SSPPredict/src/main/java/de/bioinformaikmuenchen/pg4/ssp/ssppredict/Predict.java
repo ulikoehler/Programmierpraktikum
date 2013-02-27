@@ -41,7 +41,7 @@ import de.bioinformatikmuenchen.pg4.common.AminoAcid;
  * SSP Prediction
  *
  */
-public class App 
+public class Predict 
 {
     public static void main( String[] args )
     {

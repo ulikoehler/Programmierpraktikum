@@ -45,44 +45,12 @@ import org.apache.commons.cli.ParseException;
 public class Train {
 
     /**
-     * database for training
-     */
-    public File trainFile;
-
-    /**
      * enum for possible training methods
      */
     public enum TrainingMethods {
 
         GOR1, GOR3, GOR4
     };
-    /**
-     * Currently selected Training method
-     */
-    public TrainingMethods actTrainingMethod = TrainingMethods.GOR1;
-    /**
-     * result of training output files
-     */
-    public File trainOutputFile;
-
-    /**
-     * Init a new trainer with the specific parameters
-     *
-     * @param inputFile The dssp file for reading test data
-     * @param outputFile The file to output all the train test data
-     * @param method The method to train
-     */
-    public Train(File inputFile, File outputFile, TrainingMethods method) {
-        this.trainFile = inputFile;
-        this.trainOutputFile = outputFile;
-        this.actTrainingMethod = method;
-    }
-
-    /**
-     * start a new training campain with specified options
-     */
-    public void startTraining() {
-    }
 
     /**
      *
@@ -120,7 +88,7 @@ public class Train {
         // first the database
         String db = "";
         File dbFile = new File("");
-        if (opts.hasOption("db")) {
+        if (commandLine.hasOption("db")) {
             // option db has been declared => check if valid
             db = commandLine.getOptionValue("db");
             // check if db is valid path
@@ -149,7 +117,7 @@ public class Train {
         String model = "";
         File modelFile = new File("");
         // second check if method is valid
-        if (opts.hasOption("model")) {
+        if (commandLine.hasOption("model")) {
             // option model has been declared => check if valid
             model = commandLine.getOptionValue("model");
             // check if db is valid path
@@ -161,7 +129,7 @@ public class Train {
                 printUsageAndQuit();
             }
             // check if accessable
-            if (!modelFile.canWrite()) {
+            if (modelFile.exists() && !modelFile.canWrite()) {
                 System.err.println("ERROR CAN'T WRITE TO MODEL FILE!");
                 printUsageAndQuit();
             }
@@ -173,7 +141,7 @@ public class Train {
         String method = "";
         TrainingMethods tmethod = TrainingMethods.GOR1;
         // third check if model is valid
-        if (opts.hasOption("method")) {
+        if (commandLine.hasOption("method")) {
             // option method has been declared => check if valid
             method = commandLine.getOptionValue("method");
             // method to TrainingMethods
@@ -192,8 +160,23 @@ public class Train {
             printUsageAndQuit();
         }
 
-        // do a new trainer object and train
-        Train trainer = new Train(dbFile, modelFile, tmethod);
+        // create a new trainer and let him do his job
+        Trainer myTrainer;
+        if (tmethod == Train.TrainingMethods.GOR1) {
+            myTrainer = new TrainerGor1();
+        } else if (tmethod == Train.TrainingMethods.GOR3) {
+            myTrainer = new TrainerGor3();
+        } else {
+            myTrainer = new TrainerGor4();
+        }
+
+        // give the trainer the data he requires
+        myTrainer.inputFile = dbFile;
+        myTrainer.outputFile = modelFile;
+
+        // let the Trainer train
+        myTrainer.trainMatrix();
+        myTrainer.printMatrixToBash();
 
     }
 
