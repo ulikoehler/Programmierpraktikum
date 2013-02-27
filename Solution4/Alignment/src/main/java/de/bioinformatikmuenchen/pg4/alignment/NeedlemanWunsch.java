@@ -187,8 +187,8 @@ public class NeedlemanWunsch extends AlignmentProcessor {
         return spa;//new SequencePairAlignment(new StringBuffer().reverse().toString(), new StringBuffer(spa.targetAlignment).reverse().toString());
     }
     
-    public boolean setFreeShift(){
-        this.freeShift = true;
+    public boolean setFreeShift(boolean freeShift){
+        this.freeShift = freeShift;
         return this.freeShift;
     }
 }
