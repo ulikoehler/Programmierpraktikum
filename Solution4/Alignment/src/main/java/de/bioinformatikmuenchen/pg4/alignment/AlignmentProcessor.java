@@ -8,6 +8,7 @@ import de.bioinformatikmuenchen.pg4.common.alignment.AlignmentResult;
 import de.bioinformatikmuenchen.pg4.common.Sequence;
 import de.bioinformatikmuenchen.pg4.common.distance.IDistanceMatrix;
 import de.bioinformatikmuenchen.pg4.alignment.gap.IGapCost;
+import de.bioinformatikmuenchen.pg4.alignment.io.DPMatrixExporter;
 import de.bioinformatikmuenchen.pg4.alignment.io.IAlignmentOutputFormatter;
 import de.bioinformatikmuenchen.pg4.alignment.io.ScoreOnlyAlignmentOutputFormatter;
 
@@ -59,7 +60,7 @@ public abstract class AlignmentProcessor {
      */
     public abstract AlignmentResult align(Sequence seq1, Sequence seq2);
 
-    public abstract double[][] getMatrix();
+    public abstract void writeMatrices(DPMatrixExporter exporter);
 
     /**
      * Aligns two sequences and formats the

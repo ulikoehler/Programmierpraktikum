@@ -2,6 +2,7 @@ package de.bioinformatikmuenchen.pg4.alignment;
 
 import de.bioinformatikmuenchen.pg4.alignment.gap.ConstantGapCost;
 import de.bioinformatikmuenchen.pg4.alignment.gap.IGapCost;
+import de.bioinformatikmuenchen.pg4.alignment.io.DPMatrixExporter;
 import de.bioinformatikmuenchen.pg4.alignment.io.IAlignmentOutputFormatter;
 import de.bioinformatikmuenchen.pg4.common.Sequence;
 import de.bioinformatikmuenchen.pg4.common.alignment.AlignmentResult;
@@ -98,11 +99,6 @@ public class Gotoh extends AlignmentProcessor {
         return null;
     }
 
-    @Override
-    public double[][] getMatrix() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
     public boolean setFreeshift(boolean freeshift) {
         this.freeshift = freeshift;
         return this.freeshift;
@@ -111,5 +107,10 @@ public class Gotoh extends AlignmentProcessor {
     public boolean setLocal(boolean local) {
         this.local = local;
         return this.local;
+    }
+
+    @Override
+    public void writeMatrices(DPMatrixExporter exporter) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 }

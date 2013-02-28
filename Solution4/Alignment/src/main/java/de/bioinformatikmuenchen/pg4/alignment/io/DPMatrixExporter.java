@@ -21,18 +21,19 @@ public class DPMatrixExporter {
 
     public static class DPMatrixInfo {
 
-        String query;
-        String queryId;
-        String target;
-        String targetId;
-        int xSize;
-        int ySize;
-        double score; //of the alignment
-        double[][] matrix;
+        public String query;
+        public String queryId;
+        public String target;
+        public String targetId;
+        public int xSize;
+        public int ySize;
+        public String matrixPostfix; //A filename postfix that specifies which matrix will be written
+        public double score; //of the alignment
+        public double[][] matrix;
         //'Arrows'
-        boolean[][] topLeft;
-        boolean[][] left;
-        boolean[][] top;
+        public boolean[][] topLeftArrows;
+        public boolean[][] leftArrows;
+        public boolean[][] topArrows;
 
         public DPMatrixInfo() {
         }
@@ -40,55 +41,47 @@ public class DPMatrixExporter {
     private AlignmentOutputFormat outputFormat; //HTML or 'something else'
     private File matrixDirectory = null;
 
-    public DPMatrixExporter(AlignmentOutputFormat outputFormat) {
+    public DPMatrixExporter(File matrixDir, AlignmentOutputFormat outputFormat) {
         this.outputFormat = outputFormat;
+        this.matrixDirectory = matrixDir;
+    }
+
+    public void write(DPMatrixInfo info) throws IOException {
+        //Build the filename
+        String filename = info.queryId + "-" + info.targetId + (info.matrixPostfix == null ? "" : "-" + info.matrixPostfix) + ".txt";
+        //Open the file
+        File outFile = new File(matrixDirectory, filename);
+        Writer writer = new BufferedWriter(new FileWriter(outFile));
+        if (outputFormat == AlignmentOutputFormat.HTML) {
+            writer.append(formatMatrixHTML(info, true));
+        } else { //Write plaintext
+            writer.append(formatMatrixPlaintext(info));
+        }
+        //Generate the HTML
+        writer.close();
     }
 
     /**
      * Generate a plaintext matrix representation and return the stringbuilder43
      */
-    private static StringBuilder matrixToString(String querySeq, String targetSeq, double[][] matrix) {
+    private StringBuilder formatMatrixPlaintext(DPMatrixInfo info) {
         StringBuilder builder = new StringBuilder();
         builder.append("\t\t");
-        for (int x = 0; x < querySeq.length(); x++) {
-            builder.append(querySeq.charAt(x)).append("\t");
+        for (int x = 0; x < info.query.length(); x++) {
+            builder.append(info.query.charAt(x)).append("\t");
         }
         builder.append("\n");
-        for (int y = 0; y <= targetSeq.length(); y++) {
-            builder.append(y == 0 ? ' ' : targetSeq.charAt(y - 1)).append("\t");
-            for (int x = 0; x <= querySeq.length(); x++) {
-                builder.append(matrix[x][y]).append("\t");
+        for (int y = 0; y <= info.target.length(); y++) {
+            builder.append(y == 0 ? ' ' : info.target.charAt(y - 1)).append("\t");
+            for (int x = 0; x <= info.query.length(); x++) {
+                builder.append(info.matrix[x][y]).append("\t");
             }
             builder.append("\n");
         }
         return builder;
     }
 
-    private void writeMatrixPlaintextToFile(AlignmentResult result, double[][] matrix) throws IOException {
-        File outFile = new File(matrixDirectory, result.getQuerySequenceId() + "-" + result.getTargetSequenceId() + ".txt");
-        Writer writer = new BufferedWriter(new FileWriter(outFile));
-        writer.write(matrixToString(result.getQuerySequenceId(), result.getTargetSequenceId(), matrix).toString());
-        writer.close();
-    }
-
-    private void writeMatrixHTMLToFile(AlignmentResult result, double[][] matrix) throws IOException {
-        writeMatrixHTMLToFile(result, matrix, true);
-    }
-
-    private void writeMatrixHTMLToFile(AlignmentResult result, double[][] matrix, boolean writeHead) throws IOException {
-
-        //Open the file
-        File outFile = new File(matrixDirectory, result.getQuerySequenceId() + "-" + result.getTargetSequenceId() + ".txt");
-        Writer writer = new BufferedWriter(new FileWriter(outFile));
-        //Generate the HTML
-        writer.close();
-    }
-
-    private StringBuilder formatHTMLMatrix(DPMatrixInfo info) {
-        return formatHTMLMatrix(info, false);
-    }
-
-    public StringBuilder formatHTMLMatrix(DPMatrixInfo info, boolean writeHead) {
+    public StringBuilder formatMatrixHTML(DPMatrixInfo info, boolean writeHead) {
         //Extract 
         assert info != null;
         assert info.matrix != null;
@@ -110,7 +103,8 @@ public class DPMatrixExporter {
             builder.append("</style>");
             builder.append("</head><body>");
         }
-        builder.append("<h3>").append(info.score).append("</h3>");
+        builder.append("<h3>").append("Alignment of:").append(info.queryId).append(" and ").append(info.targetId).append("</h3>");
+        builder.append("<p>").append(info.score).append("</p>");
         //Foreach field, write one <div>
         for (int y = 0; y < info.ySize; y++) {
             for (int x = 0; x < info.xSize; x++) {
@@ -124,13 +118,13 @@ public class DPMatrixExporter {
                 //
                 //Overlays
                 //
-                if (info.left[x][y]) {
+                if (info.leftArrows[x][y]) {
                     builder.append("<img src=\"L.svg\" class=\"overlay-left\" />");
                 }
-                if (info.top[x][y]) {
+                if (info.topArrows[x][y]) {
                     builder.append("<img src=\"T.svg\" class=\"overlay-top\" />");
                 }
-                if (info.topLeft[x][y]) {
+                if (info.topLeftArrows[x][y]) {
                     builder.append("<img src=\"LT.svg\" class=\"overlay-topleft\" />");
                 }
                 //

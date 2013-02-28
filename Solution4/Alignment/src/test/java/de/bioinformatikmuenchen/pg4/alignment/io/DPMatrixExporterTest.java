@@ -41,15 +41,15 @@ public class DPMatrixExporterTest {
     public void testSomeMethod() {
         DPMatrixExporter.DPMatrixInfo info;
         info = new DPMatrixExporter.DPMatrixInfo();
-        info.topLeft = new boolean[3][3];
-        info.top = new boolean[3][3];
-        info.left = new boolean[3][3];
+        info.topLeftArrows = new boolean[3][3];
+        info.topArrows = new boolean[3][3];
+        info.leftArrows = new boolean[3][3];
         info.matrix = new double[3][3];
         for (int i = 0; i < 3; i++) {
             for (int j = 0; j < 3; j++) {
-                info.topLeft[i][j] = true;
-                info.left[i][j] = true;
-                info.top[i][j] = true;
+                info.topLeftArrows[i][j] = true;
+                info.leftArrows[i][j] = true;
+                info.topArrows[i][j] = true;
                 info.matrix[i][j] = 0.0;
             }
         }
@@ -63,7 +63,7 @@ public class DPMatrixExporterTest {
         info.targetId = "DId";
         info.xSize = 3;
         info.ySize = 3;
-        DPMatrixExporter instance = new DPMatrixExporter(AlignmentOutputFormat.HTML);
-        System.out.println(instance.formatHTMLMatrix(info, true));
+        DPMatrixExporter instance = new DPMatrixExporter(null, AlignmentOutputFormat.HTML);
+        System.out.println(instance.formatMatrixHTML(info, true));
     }
 }
