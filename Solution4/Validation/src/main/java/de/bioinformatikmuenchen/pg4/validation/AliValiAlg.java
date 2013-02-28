@@ -22,7 +22,7 @@ public class AliValiAlg {
     //helping methods
     private boolean helpboolean;
 
-    public AliValiAlg(String refte, String refta, String cante, String canta) {
+    public AliValiAlg(String cante, String canta, String refte, String refta) {
         assert refte.length() == refta.length();
         assert cante.length() == canta.length();
         reftemp = refte;
@@ -48,9 +48,6 @@ public class AliValiAlg {
                 correct++;
             }
         }
-        if (aligned == -1) {
-            return 0;
-        }
         return (double) correct / aligned;
     }
 
@@ -68,9 +65,6 @@ public class AliValiAlg {
             if (aligned(reftemp, reftar, i)) {
                 aligned++;
             }
-        }
-        if (aligned == 0) {
-            return -1;
         }
         return (double) correct / aligned;
     }
@@ -113,9 +107,6 @@ public class AliValiAlg {
                 canaligned++;
             }
         }
-        if (canaligned == 0) {
-            return -1;
-        }
         return (double) (bothaligned / canaligned);
     }
 
@@ -142,10 +133,6 @@ public class AliValiAlg {
                 number++;
             }
         }
-        if (number == 0) {
-            System.out.println("no shifts defined");
-            return -1;
-        }
         return (double) shift / number;
     }
 
@@ -171,10 +158,6 @@ public class AliValiAlg {
             if (helpboolean) {
                 number++;
             }
-        }
-        if (number == 0) {
-            System.out.println("no shifts defined");
-            return -1;
         }
         return (double) shift / number;
     }
