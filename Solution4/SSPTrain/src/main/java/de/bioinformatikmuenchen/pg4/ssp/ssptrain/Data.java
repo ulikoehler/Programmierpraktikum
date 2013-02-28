@@ -7,12 +7,12 @@ package de.bioinformatikmuenchen.pg4.ssp.ssptrain;
 public class Data {
     
     
-    public static final int trainingWindowSize = 17;
+    public static int trainingWindowSize = 17;
     
     /**
      * prevInWindow + middle(1) + rest = trainingWindowSize
      */
-    public static final int prevInWindow = 8;
+    public static int prevInWindow = 8;
     
     /**
      * one letter code of all AA

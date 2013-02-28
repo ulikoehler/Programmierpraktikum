@@ -34,19 +34,28 @@
  */
 package de.bioinformatikmuenchen.pg4.ssp.ssppredict;
 
-import java.io.File;
+import java.io.*;
 import java.io.IOException;
 import org.apache.commons.cli.CommandLine;
 import org.apache.commons.cli.CommandLineParser;
 import org.apache.commons.cli.PosixParser;
 import org.apache.commons.cli.Options;
 import org.apache.commons.cli.ParseException;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  * SSP Prediction
  *
  */
 public class Predict {
+
+    public enum simpleGorMethods {
+
+        gor1, gor3, gor4
+    }
 
     public enum gorMethods {
 
@@ -98,10 +107,37 @@ public class Predict {
 
 
         boolean postprocessing = false;
-        
-        
 
-        System.out.println(model + "-" + seq + "-" + maf + "-" + format + "-" + probabilities + "-" + postprocessing);
+
+
+        try {
+        } catch (RuntimeException e) {
+            System.err.println("Error predicting sequence! " + e.toString());
+            System.exit(1);
+        }
+    }
+
+    public static simpleGorMethods getGorFromFile(File model) {
+        Pattern gor1 = Pattern.compile("=\\s*[a-zA-Z]\\s*=");
+        Pattern gor3 = Pattern.compile("=\\s*[a-zA-Z]\\s*,\\s*[a-zA-Z]\\s*=");
+        Pattern gor4 = Pattern.compile("=\\s*[a-zA-Z]\\s*,\\s*[a-zA-Z]\\s*,\\s*[a-zA-Z]\\s*,\\s*.\\d*\\s*=");
+
+        try {
+            BufferedReader br = new BufferedReader(new FileReader(model));
+            String line = "";
+            while ((line = br.readLine()) != null) {
+                if(gor1.matcher(line).find()) return simpleGorMethods.gor1;
+                if(gor3.matcher(line).find()) return simpleGorMethods.gor3;
+                if(gor4.matcher(line).find()) return simpleGorMethods.gor4;
+            }
+            br.close();
+        } catch (Exception e) {
+            System.err.println("Error reading model file! " + e.toString());
+            System.exit(1);
+        }
+        System.err.println("invalid model file!");
+        System.exit(1);
+        return simpleGorMethods.gor1;
     }
 
     public static void printUsageAndQuit() {

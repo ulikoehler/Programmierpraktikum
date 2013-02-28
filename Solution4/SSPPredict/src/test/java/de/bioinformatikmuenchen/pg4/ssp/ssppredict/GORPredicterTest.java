@@ -9,15 +9,17 @@ import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
-import static org.junit.Assert.*;
+import junit.framework.TestCase;
+import org.junit.*;
+import static junit.framework.Assert.assertEquals;
 
 /**
  *
  * @author spoeri
  */
-public class PredictTest {
+public class GORPredicterTest {
     
-    public PredictTest() {
+    public GORPredicterTest() {
     }
     
     @BeforeClass
@@ -37,15 +39,14 @@ public class PredictTest {
     }
 
     /**
-     * Test of main method, of class Predict.
+     * Test of predictionArgMax method, of class GORPredicter.
      */
     @Test
-    public void testMain() {
-        System.out.println("main");
-        String[] args = null;
-        Predict.main(args);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+    public void testPredictionArgMax() {
+        System.out.println("test the predictionArgMax");
+        assertEquals(GORPredicter.predictionArgMax(0.9, 0.2, 0.5), 'C');
+        assertEquals(GORPredicter.predictionArgMax(0.3, 0.7, 0.5), 'E');
+        assertEquals(GORPredicter.predictionArgMax(0.2, 0.2, 0.5), 'H');
+        
     }
-
 }

@@ -67,7 +67,9 @@ public class Train {
         final Options opts = new Options();
         opts.addOption("d", "db", true, "dssp path to train method (database)")
                 .addOption("m", "method", true, "method to train <gor1|gor3|gor4>")
-                .addOption("l", "model", true, "output file");
+                .addOption("l", "model", true, "output file")
+                .addOption("w", "window", true, "windowSize")
+                .addOption("p", "splitWindow", true, "split window at position");
         // 
         // Parse these options with PosixParser
         // 
@@ -124,6 +126,14 @@ public class Train {
         } else {
             System.err.println("ERROR METHOD NOT SPEC!");
             printUsageAndQuit();
+        }
+        
+        if(commandLine.hasOption("window")) {
+            Data.trainingWindowSize = Integer.parseInt(commandLine.getOptionValue("method"));
+        }
+        
+        if(commandLine.hasOption("splitWindow")) {
+            Data.prevInWindow = Integer.parseInt(commandLine.getOptionValue("splitWindow"));
         }
 
         // create a new trainer and let him do his job
