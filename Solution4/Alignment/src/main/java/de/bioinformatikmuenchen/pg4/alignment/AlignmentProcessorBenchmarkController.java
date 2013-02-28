@@ -4,6 +4,7 @@
  */
 package de.bioinformatikmuenchen.pg4.alignment;
 
+import de.bioinformatikmuenchen.pg4.alignment.io.DPMatrixExporter;
 import de.bioinformatikmuenchen.pg4.common.alignment.AlignmentResult;
 import de.bioinformatikmuenchen.pg4.common.Sequence;
 
@@ -48,7 +49,7 @@ public class AlignmentProcessorBenchmarkController<T1 extends AlignmentProcessor
     }
 
     @Override
-    public double[][] getMatrix() {
-        return ap1.getMatrix();
+    public void writeMatrices(DPMatrixExporter exporter) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 }

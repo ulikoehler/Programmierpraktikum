@@ -10,13 +10,13 @@ import de.bioinformatikmuenchen.pg4.alignment.gap.AffineGapCost;
 import de.bioinformatikmuenchen.pg4.alignment.gap.ConstantGapCost;
 import de.bioinformatikmuenchen.pg4.alignment.gap.IGapCost;
 import de.bioinformatikmuenchen.pg4.alignment.io.AlignmentOutputFormatFactory;
+import de.bioinformatikmuenchen.pg4.alignment.io.DPMatrixExporter;
 import de.bioinformatikmuenchen.pg4.alignment.io.IAlignmentOutputFormatter;
 import de.bioinformatikmuenchen.pg4.alignment.pairfile.PairfileEntry;
 import de.bioinformatikmuenchen.pg4.alignment.pairfile.PairfileParser;
 import de.bioinformatikmuenchen.pg4.common.Sequence;
 import java.io.File;
 import java.io.IOException;
-import java.io.PrintWriter;
 import java.util.Collection;
 import org.apache.commons.cli.CommandLine;
 import org.apache.commons.cli.CommandLineParser;
@@ -217,6 +217,7 @@ public class AlignmentMain {
         Collection<PairfileEntry> pairfileEntries = PairfileParser.parsePairfile(pairsFile.getAbsolutePath());
         IDistanceMatrix matrix = QUASARDistanceMatrixFactory.factorize(substitutionMatrixFile.getAbsolutePath());
         IGapCost gapCost = (haveAffineGapCost ? new AffineGapCost(gapOpen, gapExtend) : new ConstantGapCost(gapOpen));
+        DPMatrixExporter matrixExporter = new DPMatrixExporter(dpMatrixDir, outputFormat);
         //Create the processor
         AlignmentProcessor proc = AlignmentProcessorFactory.factorize(mode, algorithm, matrix, gapCost);
         for (PairfileEntry entry : pairfileEntries) {
@@ -225,13 +226,15 @@ public class AlignmentMain {
             Sequence seq2 = sequenceSource.getSequence(entry.second);
             AlignmentResult result = proc.align(seq1, seq2);
             //Print all alignments (usually one)
-            for (SequencePairAlignment alignment : result.getAlignments()) {
-                formatter.formatAndPrint(result);
+            formatter.formatAndPrint(result);
+            //Write the dynamic programming matrix if applicable 
+            if (dpMatrixDir != null) {
+                proc.writeMatrices(matrixExporter);
             }
         }
     }
 
     public static void main(String[] args) throws IOException {
-        new AlignmentMain(args);
+        AlignmentMain alignmentMain = new AlignmentMain(args);
     }
 }
