@@ -54,6 +54,14 @@ public class StrucValiAlg {
         this.detOver('H');
         this.detOver('E');
         this.detOver('C');
+        //determine SovNs
+        this.detSovNumber('H');
+        this.detSovNumber('E');
+        this.detSovNumber('C');
+        //detminte SovSums
+        this.detSovSum('H');
+        this.detSovSum('E');
+        this.detSovSum('C');
 
     }
 
@@ -237,7 +245,7 @@ public class StrucValiAlg {
             }
             //open segment in predicted
             if (pred.charAt(i) == input && seqp == false) {
-                stap = i - 1;
+                stap = i;
                 seqp = true;
             }
             //close segment in predicted and handle safing indexes if neccessary
@@ -280,6 +288,90 @@ public class StrucValiAlg {
         }
     }
 
+    private void detSovNumber(char input) {
+        //getting correct reference
+        ArrayList<VTupel> overlapps = OvC;
+        ArrayList<ZTupel> noover = NvC;
+        if (input == 'H') {
+            overlapps = OvH;
+            noover = NvH;
+        }
+        if (input == 'E') {
+            overlapps = OvE;
+            noover = NvE;
+        }
+        //countting lengths 
+        int number = 0;
+        //counting overlapps segment lengths 
+        for (int i = 0; i < overlapps.size(); i++) {
+            number = number + overlapps.get(i).att2 - overlapps.get(i).att1 + 1;
+        }
+        //
+        for (int i = 0; i < noover.size(); i++) {
+            number = number + noover.get(i).att2 - noover.get(i).att1 + 1;
+        }
+        if (input == 'H') {
+            numH = number;
+        }
+        if (input == 'E') {
+            numE = number;
+        }
+        if (input == 'C') {
+            numC = number;
+        }
+    }
+
+    private void detSovSum(char input) {
+        //getting correct reference
+        ArrayList<VTupel> overlapps = OvC;
+        if (input == 'H') {
+            overlapps = OvH;
+        }
+        if (input == 'E') {
+            overlapps = OvE;
+        }
+
+        double SSum = 0;
+        //going through all overlapps
+        for (int i = 0; i < overlapps.size(); i++) {
+            //getting start and end position for segments overlapping
+            int s1start = overlapps.get(i).att1;
+            int s1end = overlapps.get(i).att2;
+            int s2start = overlapps.get(i).att3;
+            int s2end = overlapps.get(i).att4;
+            //calculating maximal overlapps and minimal overlapp
+            double maxov = Math.max(s1end, s2end) - Math.min(s1start, s2start) + 1;
+            double minov = Math.min(s1end, s2end) - Math.max(s1start, s2start) + 1;
+            //updating SSum
+            //System.out.println("Tupel " +input + " " + s1start + " " + s1end + " " + s2start + " " + s2end );
+            SSum += ((double) ((minov + delta(s1start, s1end, s2start, s2end)) / maxov)) * (s1end - s1start + 1);
+        }
+        //safing result in correct global argument
+         if (input == 'H') {
+            sumSH = SSum;
+        }
+        if (input == 'E') {
+            sumSE = SSum;
+        }
+        if (input == 'C') {
+            sumSC = SSum;
+        }           
+    }
+
+    public static double delta(int s1start, int s1end, int s2start, int s2end) {
+        //calculating maximal overlapps and minimal overlapp
+        int maxov = Math.max(s1end, s2end) - Math.min(s1start, s2start) + 1;
+        int minov = Math.min(s1end, s2end) - Math.max(s1start, s2start) + 1;
+        //calculating half of the sequence lengths and rounding it down (java automatically rounds down when deviding integers)
+        int floor1 = (s1end - s1start + 1) / 2;
+        int floor2 = (s2end - s2start + 1) / 2;
+        //getting intermediate results as Math.min only compares 2 arguments
+        int intermediate1 = Math.min(maxov - minov, minov);
+        int intermediate2 = Math.min(floor1, floor2);
+        //return final result from intermediate results
+        return Math.min(intermediate1, intermediate2);
+    }
+
     private void cutends() {
         //initialize cutting borders
         int start = 0;
@@ -295,8 +387,5 @@ public class StrucValiAlg {
         //extract useful parts
         pred = pred.substring(start, end);
         observ = observ.substring(start, end);
-
-        System.out.println(observ);
-        System.out.println(pred);
     }
 }
