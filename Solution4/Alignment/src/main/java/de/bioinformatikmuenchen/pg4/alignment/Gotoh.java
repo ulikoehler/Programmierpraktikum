@@ -84,12 +84,13 @@ public class Gotoh extends AlignmentProcessor {
     }
 
     public void fillMatrix(String seq1, String seq2) {
-        int inGaps = 0; int delGaps = 0;
+        int inGaps = 0;
+        int delGaps = 0;
         for (int x = 1; x < xSize; x++) {
             for (int y = 1; y < ySize; y++) {
-                matrixIn[x][y] = Math.max(matrixA[x][y-1]+gapCost.getGapCost(1), matrixIn[x][y-1]+gapCost.getGapExtensionPenalty(0, 1));
-                matrixDel[x][y] = Math.max(matrixA[x-1][y]+gapCost.getGapCost(1), matrixDel[x-1][y]+gapCost.getGapExtensionPenalty(0, 1));
-                matrixA[x][y] = Math.max(Math.max(matrixIn[x][y], matrixDel[x][y]), matrixA[x-1][y-1]+distanceMatrix.distance(seq1.charAt(x-1), seq2.charAt(y-1)));
+                matrixIn[x][y] = Math.max(matrixA[x][y - 1] + gapCost.getGapCost(1), matrixIn[x][y - 1] + gapCost.getGapExtensionPenalty(0, 1));
+                matrixDel[x][y] = Math.max(matrixA[x - 1][y] + gapCost.getGapCost(1), matrixDel[x - 1][y] + gapCost.getGapExtensionPenalty(0, 1));
+                matrixA[x][y] = Math.max(Math.max(matrixIn[x][y], matrixDel[x][y]), matrixA[x - 1][y - 1] + distanceMatrix.distance(seq1.charAt(x - 1), seq2.charAt(y - 1)));
             }
             //######!!!!!!!set boolean matrices like in NW
         }

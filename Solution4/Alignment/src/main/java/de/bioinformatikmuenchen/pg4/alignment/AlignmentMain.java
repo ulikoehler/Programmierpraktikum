@@ -1,5 +1,6 @@
 package de.bioinformatikmuenchen.pg4.alignment;
 
+import com.sun.org.apache.bcel.internal.generic.CPInstruction;
 import de.bioinformatikmuenchen.pg4.common.alignment.AlignmentResult;
 import de.bioinformatikmuenchen.pg4.common.alignment.SequencePairAlignment;
 import de.bioinformatikmuenchen.pg4.common.distance.IDistanceMatrix;
@@ -14,6 +15,7 @@ import de.bioinformatikmuenchen.pg4.alignment.io.DPMatrixExporter;
 import de.bioinformatikmuenchen.pg4.alignment.io.IAlignmentOutputFormatter;
 import de.bioinformatikmuenchen.pg4.alignment.pairfile.PairfileEntry;
 import de.bioinformatikmuenchen.pg4.alignment.pairfile.PairfileParser;
+import de.bioinformatikmuenchen.pg4.alignment.recursive.RecursiveNWAlignmentProcessor;
 import de.bioinformatikmuenchen.pg4.common.Sequence;
 import java.io.File;
 import java.io.IOException;
@@ -47,6 +49,7 @@ public class AlignmentMain {
                 .addOption("m", "matrixname", true, "matrixname")
                 .addOption("s", "mode", true, "mode")
                 .addOption("u", "nw", false, "Use Needleman-Wunsch")
+                .addOption("b", "benchmark", false, "Benchmark the selected algorithm versus the recursive Needleman-Wunsch")
                 .addOption("c", "check", true, "Calculate checkscores")
                 .addOption("f", "format", true, "format");
         //Parse the opts
@@ -202,6 +205,8 @@ public class AlignmentMain {
         } else {
             algorithm = AlignmentAlgorithm.GOTOH;
         }
+        //benchmark
+        boolean benchmark = commandLine.hasOption("benchmark");
         //
         //Inter-argument cheks
         //
@@ -220,6 +225,10 @@ public class AlignmentMain {
         DPMatrixExporter matrixExporter = new DPMatrixExporter(dpMatrixDir, outputFormat);
         //Create the processor
         AlignmentProcessor proc = AlignmentProcessorFactory.factorize(mode, algorithm, matrix, gapCost);
+        //Handle possible benchmarks if applicable -- benchmark to recursive NW
+        if (benchmark) {
+            proc = new AlignmentProcessorBenchmarkController(proc, new RecursiveNWAlignmentProcessor(mode, algorithm, matrix, gapCost));
+        }
         for (PairfileEntry entry : pairfileEntries) {
             //Get the sequences
             Sequence seq1 = sequenceSource.getSequence(entry.first);
@@ -231,6 +240,15 @@ public class AlignmentMain {
             if (dpMatrixDir != null) {
                 proc.writeMatrices(matrixExporter);
             }
+        }
+        //Print the benchmark results if there are any benchmarks
+        if (benchmark) {
+            AlignmentProcessorBenchmarkController benchmarkController = ((AlignmentProcessorBenchmarkController) proc);
+            long align1Time = benchmarkController.getAp1AlignTime();
+            long align2Time = benchmarkController.getAp1AlignTime();
+            System.err.println("Main algorithm " + benchmarkController.getAp1ClassName() + " vs Recursive Needleman Wunsch:");
+            System.err.println("\t" + benchmarkController.getAp1ClassName() + " took " + align1Time + " ms");
+            System.err.println("\t Recursive Needleman Wunsch took " + align2Time + " ms");
         }
     }
 
