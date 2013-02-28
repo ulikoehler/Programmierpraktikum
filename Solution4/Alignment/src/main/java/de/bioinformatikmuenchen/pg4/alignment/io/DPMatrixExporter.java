@@ -30,13 +30,6 @@ public class DPMatrixExporter {
         public String matrixPostfix; //A filename postfix that specifies which matrix will be written
         public double score; //of the alignment
         public double[][] matrix;
-        //Gotoh matrices:
-        public double[][] matrixA;
-        public double[][] matrixIn;
-        public double[][] matrixDel;
-        public String matrixAPostfix;
-        public String matrixInPostfix;
-        public String matrixDelPostfix;
         //'Arrows'
         public boolean[][] topLeftArrows;
         public boolean[][] leftArrows;

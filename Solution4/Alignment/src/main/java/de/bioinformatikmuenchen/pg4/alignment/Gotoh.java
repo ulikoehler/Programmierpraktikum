@@ -8,7 +8,10 @@ import de.bioinformatikmuenchen.pg4.common.Sequence;
 import de.bioinformatikmuenchen.pg4.common.alignment.AlignmentResult;
 import de.bioinformatikmuenchen.pg4.common.alignment.SequencePairAlignment;
 import de.bioinformatikmuenchen.pg4.common.distance.IDistanceMatrix;
+import java.io.IOException;
 import java.util.Collections;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
@@ -127,12 +130,27 @@ public class Gotoh extends AlignmentProcessor {
         //Set IDs
         info.queryId = querySequenceId;
         info.targetId = targetSequenceId;
-        info.matrixA = this.matrixA;
-        info.matrixAPostfix = "Gotoh alignment matrix";
-        info.matrixIn = this.matrixIn;
-        info.matrixInPostfix = "Gotoh insertions matrix";
-        info.matrixDel = this.matrixDel;
-        info.matrixDelPostfix = "Gotoh deletions matrix";
+        info.matrix = this.matrixA;
+        info.matrixPostfix = "Gotoh alignment matrix";
+        try {
+            exporter.write(info);
+        } catch (IOException ex) {
+            Logger.getLogger(Gotoh.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        info.matrix = this.matrixIn;
+        info.matrixPostfix = "Gotoh insertions matrix";
+        try {
+            exporter.write(info);
+        } catch (IOException ex) {
+            Logger.getLogger(Gotoh.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        info.matrix = this.matrixDel;
+        info.matrixPostfix = "Gotoh deletions matrix";
+        try {
+            exporter.write(info);
+        } catch (IOException ex) {
+            Logger.getLogger(Gotoh.class.getName()).log(Level.SEVERE, null, ex);
+        }
         info.leftArrows = leftArrows;
         info.topArrows = topArrows;
         info.topLeftArrows = leftTopArrows;
