@@ -126,6 +126,7 @@ public class GotohGlobal extends AlignmentProcessor {
                 System.out.println("No possibility found to move on (indicates a sure failure)");
             }
         }
+        return new SequencePairAlignment(queryLine.reverse().toString(), targetLine.reverse().toString());
     }
     
     private int findK(double entry, int x, int y, boolean insertion){
