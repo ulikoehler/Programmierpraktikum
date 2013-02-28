@@ -13,7 +13,7 @@ public class CheckScoreCalculator {
     public static String[] stripStartAndEndGaps(String qa, String ta) {
         int startIndex = 0;
         int endIndex = qa.length();
-        if((qa.startsWith("-") && ta.startsWith("-") || (qa.endsWith("-") && ta.endsWith("-")))) {
+        if ((qa.startsWith("-") && ta.startsWith("-") || (qa.endsWith("-") && ta.endsWith("-")))) {
             throw new IllegalArgumentException("Alignment starts or ends with a gap on both parts!");
         }
         //
@@ -60,12 +60,32 @@ public class CheckScoreCalculator {
         return new String[]{qa.substring(startIndex, endIndex), ta.substring(startIndex, endIndex)};
     }
 
+    public static double getOverallGapCost(String alignmentPart, IGapCost gapCost) {
+        double scoreSum = 0.0;
+        int currentGapLength = 0;
+        for (int i = 0; i < alignmentPart.length(); i++) {
+            if (alignmentPart.charAt(i) == '-') {
+                currentGapLength++;
+            } else {
+                if (currentGapLength > 0) {
+                    scoreSum += gapCost.getGapCost(currentGapLength);
+                    currentGapLength = 0;
+                }
+            }
+        }
+        //Process the last gap, if any
+        if (currentGapLength > 0) {
+            scoreSum += gapCost.getGapCost(currentGapLength);
+        }
+        return scoreSum;
+    }
+
     public static double calculateCheckScoreNonAffine(AlignmentMode mode, SequencePairAlignment alignment, IDistanceMatrix distanceMatrix, IGapCost gapCost) {
         assert alignment.getQueryAlignment().length() == alignment.getTargetAlignment().length();
         String qa = alignment.getQueryAlignment();
         String ta = alignment.getTargetAlignment();
         double score = 0;
-        //Remove gaps at the beginning/end for local & freeshift
+        //Remove gaps at the beginning/end for local
         if (mode == AlignmentMode.LOCAL) {
             String[] vals = stripStartAndEndGaps(qa, ta);
             qa = vals[0];
@@ -82,18 +102,27 @@ public class CheckScoreCalculator {
         return score;
     }
 
-    public static double calculateCheckScoreAffine(SequencePairAlignment alignment, IDistanceMatrix distanceMatrix, IGapCost gapCost) {
+    public static double calculateCheckScoreAffine(AlignmentMode mode, SequencePairAlignment alignment, IDistanceMatrix distanceMatrix, IGapCost gapCost) {
         assert alignment.getQueryAlignment().length() == alignment.getTargetAlignment().length();
         String qa = alignment.getQueryAlignment();
         String ta = alignment.getTargetAlignment();
         double score = 0;
+        //Remove gaps at the beginning/end for local
+        if (mode == AlignmentMode.LOCAL) {
+            String[] vals = stripStartAndEndGaps(qa, ta);
+            qa = vals[0];
+            ta = vals[1];
+        }
+        //Calculate the substitution-only score!
         for (int i = 0; i < alignment.getQueryAlignment().length(); i++) {
+            //Ignore gaps
             if (qa.charAt(i) == '-' || ta.charAt(i) == '-') {
-                score += gapCost.getGapCost(1);
+                continue;
             } else { //Match or mismatch
                 score += distanceMatrix.distance(qa.charAt(i), ta.charAt(i));
             }
         }
-        return score;
+        //Return the sum 
+        return score + getOverallGapCost(qa, gapCost) + getOverallGapCost(ta, gapCost);
     }
 }
