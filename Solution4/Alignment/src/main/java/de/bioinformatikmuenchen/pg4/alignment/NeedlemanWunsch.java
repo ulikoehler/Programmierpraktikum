@@ -83,6 +83,10 @@ public class NeedlemanWunsch extends AlignmentProcessor {
         leftArrows = new boolean[xSize][ySize];
         leftTopArrows = new boolean[xSize][ySize];
         topArrows = new boolean[xSize][ySize];
+        leftTopPath = new boolean[xSize][ySize];
+        leftPath = new boolean[xSize][ySize];
+        topPath = new boolean[xSize][ySize];
+        hasPath = new boolean[xSize][ySize];
         if (!freeShift) {
             for (int i = 0; i < xSize; i++) {
                 matrix[i][0] = gapCost.getGapCost(i);

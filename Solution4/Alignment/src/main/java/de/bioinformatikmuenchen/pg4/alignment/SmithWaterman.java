@@ -73,6 +73,11 @@ public class SmithWaterman extends AlignmentProcessor {
         leftArrows = new boolean[xSizeInit][ySizeInit];
         leftTopArrows = new boolean[xSizeInit][ySizeInit];
         topArrows = new boolean[xSizeInit][ySizeInit];
+
+        leftTopPath = new boolean[xSizeInit][ySizeInit];
+        leftPath = new boolean[xSizeInit][ySizeInit];
+        topPath = new boolean[xSizeInit][ySizeInit];
+        hasPath = new boolean[xSizeInit][ySizeInit];
         for (int x = 0; x < xSize; x++) {
             for (int y = 0; y < ySize; y++) {
                 leftArrows[x][y] = (y == 0);//first row --> true
