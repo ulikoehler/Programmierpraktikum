@@ -22,8 +22,8 @@ public class TrainerGor3 extends Trainer {
     @Override
     public void train1Example(String aminoSeq, String secStruct) {
         // middle of window
-        char mA = aminoSeq.charAt(Data.prevInWindow + 1);
-        char mSG = secStruct.charAt(Data.prevInWindow + 1);
+        char mA = aminoSeq.charAt(Data.prevInWindow);
+        char mSG = secStruct.charAt(Data.prevInWindow);
         for (int i = 0; i < Data.triaingWindowSize; i++) {
             char sL = aminoSeq.charAt(i);
             if (convertASCharToMatrixId(mA) == -1 || convertStructureCharToMatrixId(mSG) == -1 || convertASCharToMatrixId(sL) == -1) {

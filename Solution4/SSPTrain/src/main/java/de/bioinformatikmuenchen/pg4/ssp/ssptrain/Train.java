@@ -127,13 +127,13 @@ public class Train {
         }
 
         // create a new trainer and let him do his job
-        Trainer myTrainer = new TrainerGor1();
+        Trainer myTrainer;
         if (tmethod == Train.TrainingMethods.GOR1) {
             myTrainer = new TrainerGor1();
         } else if (tmethod == Train.TrainingMethods.GOR3) {
             myTrainer = new TrainerGor3();
         } else {
-            //myTrainer = new TrainerGor4();
+            myTrainer = new TrainerGor4();
         }
 
         // let the Trainer train
@@ -158,21 +158,4 @@ public class Train {
         System.exit(1);
     }
     
-    public static int convertStructureCharToMatrixId(char x) {
-        for (int i = 0; i < Data.secStruct.length; i++) {
-            if (Data.secStruct[i] == x) {
-                return i;
-            }
-        }
-        throw new RuntimeException("invalid character in structure sequence (" + x + ")!");
-    }
-
-    public static int convertASCharToMatrixId(char x) {
-        for (int i = 0; i < Data.AcTable.length; i++) {
-            if (Data.AcTable[i] == x) {
-                return i;
-            }
-        }
-        throw new RuntimeException("invalid character in amino acid sequence (" + x + ")!");
-    }
 }
