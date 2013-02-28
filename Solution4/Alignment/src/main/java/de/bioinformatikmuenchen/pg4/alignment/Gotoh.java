@@ -102,7 +102,7 @@ public class Gotoh extends AlignmentProcessor {
     }
     
     public SequencePairAlignment backTrackingLocal(){
-        StringBuffer queryLine = new StringBuffer(); StringBuffer targetLine = new StringBuffer();
+        StringBuilder queryLine = new StringBuilder(); StringBuilder targetLine = new StringBuilder();
         //find the cell with the greatest entry:
         int x = -1; int y = -1; double maxCell = Double.NEGATIVE_INFINITY;
         for (int i = 0; i < xSize; i++) {
@@ -147,7 +147,7 @@ public class Gotoh extends AlignmentProcessor {
 
     public SequencePairAlignment backTrackingGlobal() {
         int x = xSize; int y = ySize;
-        StringBuffer queryLine = new StringBuffer(); StringBuffer targetLine = new StringBuffer();
+        StringBuilder queryLine = new StringBuilder(); StringBuilder targetLine = new StringBuilder();
         while(x!=0 || y!=0){//while the rim of the matrix or its left upper corner is not reached
             char A = querySequence.charAt(x - 1);
             char B = targetSequence.charAt(y - 1);

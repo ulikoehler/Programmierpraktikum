@@ -143,8 +143,8 @@ public class NeedlemanWunsch extends AlignmentProcessor {
     }
 
     public SequencePairAlignment backTracking() {
-        StringBuffer queryAlignment = new StringBuffer();
-        StringBuffer targetAlignment = new StringBuffer();
+        StringBuilder queryAlignment = new StringBuilder();
+        StringBuilder targetAlignment = new StringBuilder();
         int x = xSize - 1;
         int y = ySize - 1;
         while (x >= 0 && y >= 0) {
