@@ -25,14 +25,13 @@ public abstract class Trainer {
         // get data from file
         try {
             BufferedReader file = new BufferedReader(new FileReader(inputFile));
-            String strLine = "", id = "", aminoSeq = "", secStruct = "";
+            String strLine = "", aminoSeq = "", secStruct = "";
             while ((strLine = file.readLine()) != null) {
                 if (strLine.startsWith(">")) {
-                    // save id?
-                    if (!id.isEmpty() && !aminoSeq.isEmpty() && !secStruct.isEmpty()) {
-                        trainOneSeq(id, aminoSeq, secStruct);
+                    // id isn't interesting so just parse SS/AS
+                    if (!aminoSeq.isEmpty() && !secStruct.isEmpty()) {
+                        trainOneSeq(aminoSeq, secStruct);
                     }
-                    id = strLine.substring(2);
                     aminoSeq = "";
                     secStruct = "";
                 } else if (strLine.startsWith("AS ")) {
@@ -42,8 +41,8 @@ public abstract class Trainer {
                 }
             }
             // don't forget the (last) id?
-            if (!id.isEmpty() && !aminoSeq.isEmpty() && !secStruct.isEmpty()) {
-                trainOneSeq(id, aminoSeq, secStruct);
+            if (!aminoSeq.isEmpty() && !secStruct.isEmpty()) {
+                trainOneSeq(aminoSeq, secStruct);
             }
             file.close();
         } catch (IOException err) {
@@ -52,18 +51,18 @@ public abstract class Trainer {
         }
     }
 
-    public void trainOneSeq(String id, String aminoSeq, String secStruct) {
+    public void trainOneSeq(String aminoSeq, String secStruct) {
         if (aminoSeq.length() != secStruct.length()) {
             throw new RuntimeException("Error; AC Sequence and SS Sequence differ in length!");
         }
-        for (int startPos = 0; startPos < aminoSeq.length() - Data.triaingWindowSize + 1; startPos++) {
-            trainOneExample(aminoSeq.substring(startPos, startPos + Data.triaingWindowSize), secStruct.substring(startPos, startPos + Data.triaingWindowSize));
+        for (int startPos = 0; startPos < aminoSeq.length() - Data.trainingWindowSize + 1; startPos++) {
+            trainOneExample(aminoSeq.substring(startPos, startPos + Data.trainingWindowSize), secStruct.substring(startPos, startPos + Data.trainingWindowSize));
         }
     }
 
     public void trainOneExample(String aminoSeq, String secStruct) {
-        if (aminoSeq.length() != Data.triaingWindowSize || secStruct.length() != Data.triaingWindowSize) {
-            throw new RuntimeException("Error; AC Sequence and SS Sequence substr didn't have a length of " + Data.triaingWindowSize + " (" + aminoSeq + ", " + secStruct + ")!");
+        if (aminoSeq.length() != Data.trainingWindowSize || secStruct.length() != Data.trainingWindowSize) {
+            throw new RuntimeException("Error; AC Sequence and SS Sequence substr didn't have a length of " + Data.trainingWindowSize + " (" + aminoSeq + ", " + secStruct + ")!");
         }
         train1Example(aminoSeq, secStruct);
     }
@@ -93,8 +92,8 @@ public abstract class Trainer {
     }
 
     public static int convertASCharToMatrixId(char x) {
-        for (int i = 0; i < Data.AcTable.length; i++) {
-            if (Data.AcTable[i] == x) {
+        for (int i = 0; i < Data.aaTable.length; i++) {
+            if (Data.aaTable[i] == x) {
                 return i;
             }
         }
