@@ -44,16 +44,21 @@ public class App {
         String a7 = "CCCCCHHHHHCCCEEEEECCEEEECHHHHHHEEECCCCHEEECC";
         String b7 = "CCCCCHHHHHCCCEEEEECCEEEECHHHHHHEEECCCCHEEECC";
         
-        StrucValiAlg test2 = new StrucValiAlg (a6,b6);
+        String b8 = "--------CCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCHHHHHCHCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCC--------";
+        String a8 = "CECCCCCCCCCCCCCCCCCCEHHHHHHHHHHHHHHHHHCCCCCCHHHHHCCCCCCCCCCECCCCHHHHHHHHHHHHHCCCCCCCCCCCCCCCCEEEEEEEECCEEEEEEEEECCEEEEEEEEECCCCCCCCHHHHHHHHHHHHHHHHHHHHCCCCEEEECECHHHHHHHHHHHCCCCCCCEEEECCCCCHHHHCCC";
 
-        //System.out.println("QH " + test2.getQH());
-        //System.out.println("QE " + test2.getQE());
-        //System.out.println("QC " + test2.getQC());
+
+        StrucValiAlg test2 = new StrucValiAlg (a8,b8);
+
         System.out.println("Q3 " + test2.getQ3());
+        System.out.println("QH " + test2.getQH());
+        System.out.println("QE " + test2.getQE());
+        System.out.println("QC " + test2.getQC());
+
         System.out.println("SOV " + test2.getSOV());
-        //System.out.println("SOVH " + test2.getSOVH());
+        System.out.println("SOVH " + test2.getSOVH());
         System.out.println("SOVE " + test2.getSOVE());
-        //System.out.println("SOVH " + test2.getSOVE());
+        System.out.println("SOVC " + test2.getSOVC());
         
     }
 }
