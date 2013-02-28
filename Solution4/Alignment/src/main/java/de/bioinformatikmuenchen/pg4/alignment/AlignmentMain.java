@@ -1,8 +1,7 @@
 package de.bioinformatikmuenchen.pg4.alignment;
 
-import com.sun.org.apache.bcel.internal.generic.CPInstruction;
+import com.google.common.collect.Lists;
 import de.bioinformatikmuenchen.pg4.common.alignment.AlignmentResult;
-import de.bioinformatikmuenchen.pg4.common.alignment.SequencePairAlignment;
 import de.bioinformatikmuenchen.pg4.common.distance.IDistanceMatrix;
 import de.bioinformatikmuenchen.pg4.common.distance.QUASARDistanceMatrixFactory;
 import de.bioinformatikmuenchen.pg4.common.sequencesource.ISequenceSource;
@@ -19,13 +18,17 @@ import de.bioinformatikmuenchen.pg4.alignment.recursive.RecursiveNWAlignmentProc
 import de.bioinformatikmuenchen.pg4.common.Sequence;
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.Collection;
+import java.util.List;
 import org.apache.commons.cli.CommandLine;
 import org.apache.commons.cli.CommandLineParser;
 import org.apache.commons.cli.HelpFormatter;
 import org.apache.commons.cli.Options;
 import org.apache.commons.cli.ParseException;
 import org.apache.commons.cli.PosixParser;
+import org.apache.commons.io.FileUtils;
+import org.apache.commons.io.IOUtils;
 
 /**
  * Hello world!
@@ -213,6 +216,16 @@ public class AlignmentMain {
         boolean haveAffineGapCost = (gapOpen - gapExtend) > 0.00000001;
         //TODO TEMPORARY assertion until it's impl
         assert !haveAffineGapCost;
+        //If a DP matrix dir is set, we need to copy the SVG graphics there
+        if (dpMatrixDir != null) {
+            for (String filename : Lists.newArrayList("T.svg", "L.svg", "LT.svg")) {
+                InputStream istream = AlignmentMain.class.getResourceAsStream("/graphics/" + filename);
+                //Read it...
+                List<String> lines = IOUtils.readLines(istream);
+                //And write it right away
+                FileUtils.writeLines(new File(dpMatrixDir, filename), lines);
+            }
+        }
         //
         // Read & Collect helper objects
         //

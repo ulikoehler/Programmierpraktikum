@@ -112,6 +112,6 @@ public class Gotoh extends AlignmentProcessor {
 
     @Override
     public void writeMatrices(DPMatrixExporter exporter) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        
     }
 }
