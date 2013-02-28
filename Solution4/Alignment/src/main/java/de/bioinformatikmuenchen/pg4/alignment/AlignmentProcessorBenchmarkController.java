@@ -1,7 +1,3 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package de.bioinformatikmuenchen.pg4.alignment;
 
 import de.bioinformatikmuenchen.pg4.alignment.io.DPMatrixExporter;
@@ -20,13 +16,18 @@ public class AlignmentProcessorBenchmarkController<T1 extends AlignmentProcessor
     private T2 ap2;
     private long ap1AlignTime = 0;
     private long ap2AlignTime = 0;
+    private boolean verbose = false;
+
+    public void setVerbose(boolean verbose) {
+        this.verbose = verbose;
+    }
 
     public String getAp1ClassName() {
-        return ap1.getClass().getName();
+        return ap1.getClass().getCanonicalName();
     }
 
     public String getAp2ClassName() {
-        return ap2.getClass().getName();
+        return ap2.getClass().getCanonicalName();
     }
 
     public long getAp1AlignTime() {
@@ -47,9 +48,15 @@ public class AlignmentProcessorBenchmarkController<T1 extends AlignmentProcessor
         long before1 = System.currentTimeMillis();
         AlignmentResult result1 = ap1.align(seq1, seq2);
         long after1 = System.currentTimeMillis();
+        if (verbose) {
+            System.err.println("\tFinished " + getAp1ClassName() + " alignment");
+        }
         long before2 = System.currentTimeMillis();
         AlignmentResult result2 = ap2.align(seq1, seq2);
         long after2 = System.currentTimeMillis();
+        if (verbose) {
+            System.err.println("\tFinished " + getAp2ClassName() + " alignment");
+        }
         ap2AlignTime += (after2 - before2);
         ap1AlignTime += (after1 - before1);
         return result1;
