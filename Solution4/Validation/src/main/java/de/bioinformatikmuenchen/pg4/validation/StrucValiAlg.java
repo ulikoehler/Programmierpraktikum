@@ -39,7 +39,7 @@ public class StrucValiAlg {
     private ArrayList<ZTupel> NvE = new ArrayList();
     private ArrayList<ZTupel> NvC = new ArrayList();
 
-    public StrucValiAlg(String sec, String pre) {
+    public StrucValiAlg(String pre, String sec) {
         assert (sec.length() == pre.length());
         pred = pre;
         observ = sec;
