@@ -27,6 +27,7 @@ public class DPMatrixExporter {
         String targetId;
         int xSize;
         int ySize;
+        double score; //of the alignment
         double[][] matrix;
         //'Arrows'
         boolean[][] topLeft;
@@ -34,19 +35,6 @@ public class DPMatrixExporter {
         boolean[][] top;
 
         public DPMatrixInfo() {
-        }
-
-        public DPMatrixInfo(String query, String queryId, String target, String targetId, int xSize, int ySize, double[][] matrix, boolean[][] leftTop, boolean[][] left, boolean[][] top) {
-            this.query = query;
-            this.queryId = queryId;
-            this.target = target;
-            this.targetId = targetId;
-            this.xSize = xSize;
-            this.ySize = ySize;
-            this.matrix = matrix;
-            this.topLeft = leftTop;
-            this.left = left;
-            this.top = top;
         }
     }
     private AlignmentOutputFormat outputFormat; //HTML or 'something else'
@@ -122,6 +110,7 @@ public class DPMatrixExporter {
             builder.append("</style>");
             builder.append("</head><body>");
         }
+        builder.append("<h3>").append(info.score).append("</h3>");
         //Foreach field, write one <div>
         for (int y = 0; y < info.ySize; y++) {
             for (int x = 0; x < info.xSize; x++) {
