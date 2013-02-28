@@ -94,7 +94,7 @@ public class Train {
         String modelFile = "";
         if(commandLine.hasOption("model")) {
             String inputModel = commandLine.getOptionValue("model");
-            if(IO.isValidFilePathOrName(inputModel)) modelFile = inputModel;
+            if(IO.isValidFilePathOrName(inputModel) && (!new File(inputModel).isDirectory())) modelFile = inputModel;
             else {
                 System.err.println("Invalid model file given!");
                 printUsageAndQuit();
@@ -138,8 +138,11 @@ public class Train {
 
         // let the Trainer train
         try {
+            System.out.println("Init training ...");
             myTrainer.init();
+            System.out.println("Parse and train ...");
             myTrainer.parseFileAndTrain(new File(dbFile));  // give the trainer the data he requires
+            System.out.println("Write data to " + modelFile + " ...");
             myTrainer.writeMatrixToFile(new File(modelFile));
         } catch(RuntimeException e) {
             System.err.println("Trainingerror: " + e.getMessage());

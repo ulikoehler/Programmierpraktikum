@@ -44,4 +44,10 @@ public class SequencePairAlignment {
     public void setTargetAlignment(String targetAlignment) {
         this.targetAlignment = targetAlignment;
     }
+
+    @Override
+    public String toString() {
+        calculateMatchLine();
+        return queryAlignment + "\n" + matchLine + "\n" + targetAlignment;
+    }
 }

@@ -143,45 +143,42 @@ public class NeedlemanWunsch extends AlignmentProcessor {
     }
 
     public SequencePairAlignment backTracking() {
-        String queryAlignment = "";
-        String targetAlignment = "";
+        StringBuffer queryAlignment = new StringBuffer();
+        StringBuffer targetAlignment = new StringBuffer();
         int x = xSize - 1;
         int y = ySize - 1;
         while (x >= 0 && y >= 0) {
             if (leftTopArrows[x][y]) {
-                queryAlignment += querySequence.charAt(x - 1);
-                targetAlignment += targetSequence.charAt(y - 1);
+                queryAlignment.append(querySequence.charAt(x - 1));
+                targetAlignment.append(targetSequence.charAt(y - 1));
                 x--;
                 y--;
             } else if (leftArrows[x][y]) {
-                queryAlignment += querySequence.charAt(x - 1);
-                targetAlignment += '-';
+                queryAlignment.append(querySequence.charAt(x - 1));
+                targetAlignment.append('-');
                 x--;
             } else if (topArrows[x][y]) {
-                queryAlignment += '-';
-                targetAlignment += targetSequence.charAt(y - 1);
+                queryAlignment.append('-');
+                targetAlignment.append(targetSequence.charAt(y - 1));
                 y--;
             } else if (x == 0) {
                 while (y > 0) {
-                    queryAlignment += '-';
-                    targetAlignment += targetSequence.charAt(y - 1);
+                    queryAlignment.append('-');
+                    targetAlignment.append(targetSequence.charAt(y - 1));
                     y--;
                 }
                 break;
             } else if (y == 0) {
                 while (x > 0) {
-                    queryAlignment += querySequence.charAt(x - 1);
-                    targetAlignment += '-';
+                    queryAlignment.append(querySequence.charAt(x - 1));
+                    targetAlignment.append('-');
                     x--;
                 }
                 break;
             }
         }
         //reverse the output:
-        SequencePairAlignment spa = new SequencePairAlignment();
-        spa.setQueryAlignment(new StringBuffer(queryAlignment).reverse().toString());
-        spa.setTargetAlignment(new StringBuffer(targetAlignment).reverse().toString());
-        return spa;
+        return new SequencePairAlignment(queryAlignment.reverse().toString(), targetAlignment.reverse().toString());
     }
 
     public boolean setFreeShift(boolean freeShift) {
