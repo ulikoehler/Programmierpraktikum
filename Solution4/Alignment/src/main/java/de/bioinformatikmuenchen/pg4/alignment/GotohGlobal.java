@@ -107,7 +107,7 @@ public class GotohGlobal extends AlignmentProcessor {
                 x--; y--;
             }
             else if(matrixA[x][y] == matrixIn[x][y]){
-                int shift = findK(max, y, true);
+                int shift = findK(matrixA[x][y], x, y, true);
                 for (int i = x; i >= (x-shift); i--) {
                     queryLine.append(querySequence.charAt(i-1));
                     targetLine.append('-');
@@ -115,7 +115,7 @@ public class GotohGlobal extends AlignmentProcessor {
                 x -= shift;
             }
             else if(matrixA[x][y] == matrixDel[x][y]){
-                int shift = findK(x, y, false);
+                int shift = findK(matrixA[x][y], x, y, false);
                 for (int i = y; i >= (y-shift); i--) {
                     queryLine.append(querySequence.charAt(i));
                     targetLine.append('-');
@@ -125,7 +125,12 @@ public class GotohGlobal extends AlignmentProcessor {
     }
     
     private int findK(double entry, int x, int y, boolean insertion){
-        return 0;
+        if(insertion){
+            
+        }
+        else{//Deletion
+            
+        }
     }
 
     public boolean setFreeshift(boolean freeshift) {
