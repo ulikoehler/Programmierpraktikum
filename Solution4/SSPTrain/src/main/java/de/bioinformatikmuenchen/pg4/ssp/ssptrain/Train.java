@@ -118,7 +118,7 @@ public class Train {
             } else if ("GOR4".equalsIgnoreCase(method)) {
                 tmethod = TrainingMethods.GOR4;
             } else {
-                System.err.println("ERROR MISSING METHOD SPEC!");
+                System.err.println("ERROR INVALID OR MISSING METHOD!");
                 printUsageAndQuit();
             }
         } else {
@@ -142,8 +142,9 @@ public class Train {
             myTrainer.init();
             System.out.println("Parse and train ...");
             myTrainer.parseFileAndTrain(new File(dbFile));  // give the trainer the data he requires
-            System.out.println("Write data to " + modelFile + " ...");
-            myTrainer.writeMatrixToFile(new File(modelFile));
+            File inputFile = new File(modelFile);
+            System.out.println("Write data to " + inputFile.getAbsolutePath() + " ...");
+            myTrainer.writeMatrixToFile(inputFile);
         } catch(RuntimeException e) {
             System.err.println("Trainingerror: " + e.getMessage());
             System.exit(1);

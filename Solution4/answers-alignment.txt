@@ -1,3 +1,0 @@
-Der Rekursive Algorithmus ist deutlich langsamer, da, ausgehend vom rechtesten untersten Feld, nicht wie beim dynamischen Algorithmus jedes Feld nur einmal berechnet
-werden muss sondern stattdessen die meisten Felder extrem oft berechnet werden, da ein einziger Aufruf der rekursiven Funktion bis zu 3 Pfade ablaufen muss.
-Diese Pfade überschneiden sich aber in so hohem Maße, dass insbesondere Felder, die weiter vom Startfeld entfernt sind, exponentiell oft berechnet werden müssen.

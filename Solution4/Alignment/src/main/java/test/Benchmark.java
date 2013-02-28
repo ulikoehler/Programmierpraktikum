@@ -23,16 +23,17 @@ import java.io.InputStreamReader;
 public class Benchmark {
 
     public static void main(String[] args) throws IOException {
-        String longS1 = "EEKRNRAITARNKGEEKRNRAITARNKGEEKRNRAITARNKGEEKRNRAITARNKGEEKRNRAITARNKG";
-        String longS2 = "GERRRSQLDRTAEEGERRRSQLDRTAEEGERRRSQLDRTAEEGERRRSQLDRTAEEGERRRSQLDRTAEE";
-        int size = Integer.parseInt(args[1]);
+        String longS1 = "EEKRNRAITARNKGEEKRNRAITARNKGEEKRNRAITARNKGEEKRNRAITARNKGEEKRNRAITARNKGEEKRNRAITARNKGEEKRNRAITARNKGEEKRNRAITARNKGEEKRNRAITARNKGEEKRNRAITARNKG";
+        String longS2 = "GERRRSQLDRTAEEGERRRSQLDRTAEEGERRRSQLDRTAEEGERRRSQLDRTAEEGERRRSQLDRTAEEGERRRSQLDRTAEEGERRRSQLDRTAEEGERRRSQLDRTAEEGERRRSQLDRTAEEGERRRSQLDRTAEE";
+        int size = Integer.parseInt(args[0]);
         Sequence seq1Obj = new Sequence(longS1.substring(0,size));
-        Sequence seq2Obj = new Sequence(longS1.substring(0,size));
+        Sequence seq2Obj = new Sequence(longS2.substring(0,size));
         IDistanceMatrix matrix = QUASARDistanceMatrixFactory.factorize(new InputStreamReader(Benchmark.class.getResourceAsStream("/matrices/dayhoff.mat")));
         IGapCost gapCost = new ConstantGapCost(1.0);
         //Comment or uncomment depending on desired usage to prevent overhead
-//        RecursiveNWAlignmentProcessor instance = new RecursiveNWAlignmentProcessor(AlignmentMode.GLOBAL, AlignmentAlgorithm.NEEDLEMAN_WUNSCH, matrix, gapCost);
-        NeedlemanWunsch instance = new NeedlemanWunsch(AlignmentMode.GLOBAL, AlignmentAlgorithm.NEEDLEMAN_WUNSCH, matrix, gapCost);
+        RecursiveNWAlignmentProcessor instance = new RecursiveNWAlignmentProcessor(AlignmentMode.GLOBAL, AlignmentAlgorithm.NEEDLEMAN_WUNSCH, matrix, gapCost);
+//        NeedlemanWunsch instance = new NeedlemanWunsch(AlignmentMode.GLOBAL, AlignmentAlgorithm.NEEDLEMAN_WUNSCH, matrix, gapCost);
+        instance.align(seq1Obj, seq2Obj);
         System.out.println("Finished");
     }
 }
