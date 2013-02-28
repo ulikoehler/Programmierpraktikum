@@ -27,6 +27,10 @@ public class SmithWaterman extends AlignmentProcessor {
     private String querySequenceId;
     private String targetSequenceId;
     private double score;
+    boolean[][] leftPath;
+    boolean[][] leftTopPath;
+    boolean[][] topPath;
+    boolean[][] hasPath;
 
     public SmithWaterman(AlignmentMode mode, AlignmentAlgorithm algorithm, IDistanceMatrix distanceMatrix, IGapCost gapCost) {
         super(mode, algorithm, distanceMatrix, gapCost);
@@ -69,13 +73,21 @@ public class SmithWaterman extends AlignmentProcessor {
         leftArrows = new boolean[xSizeInit][ySizeInit];
         leftTopArrows = new boolean[xSizeInit][ySizeInit];
         topArrows = new boolean[xSizeInit][ySizeInit];
-        for (int x = 0; x < xSizeInit; x++) {
-            for (int y = 0; y < ySizeInit; y++) {
-                leftArrows[x][y] = false;
-                leftTopArrows[x][y] = false;
-                topArrows[x][y] = false;
+        for (int x = 0; x < xSize; x++) {
+            for (int y = 0; y < ySize; y++) {
+                leftArrows[x][y] = (y == 0);//first row --> true
+                leftTopArrows[x][y] = false;//true
+                topArrows[x][y] = (x == 0); //first column --> true
+                leftPath[x][y] = false;
+                leftTopPath[x][y] = false;
+                topPath[x][y] = false;
+                hasPath[x][y] = false;
             }
         }
+        //Handle the topleft corner
+        leftArrows[0][0] = false;
+        leftTopArrows[0][0] = false;
+        topArrows[0][0] = false;
         /////////   fill matrix:
         final double compareThreshold = 0.0000001;
         for (int x = 1; x < xSizeInit; x++) {
@@ -118,17 +130,23 @@ public class SmithWaterman extends AlignmentProcessor {
         String targetAlignment = "";
         while (x >= 0 && y >= 0 && matrix[x][y] != 0) {
             if (leftTopArrows[x][y]) {
+                leftTopPath[x][y] = true;
+                hasPath[x][y] = true;
                 queryAlignment += querySequence.charAt(x - 1);
                 targetAlignment += targetSequence.charAt(y - 1);
                 x--;
                 y--;
             }
             if (leftArrows[x][y]) {
+                topPath[x][y] = true;
+                hasPath[x][y] = true;
                 queryAlignment += querySequence.charAt(x - 1);
                 targetAlignment += '-';
                 y--;
             }
             if (topArrows[x][y]) {
+                leftPath[x][y] = true;
+                hasPath[x][y] = true;
                 queryAlignment += '-';
                 targetAlignment += targetSequence.charAt(y - 1);
                 x--;

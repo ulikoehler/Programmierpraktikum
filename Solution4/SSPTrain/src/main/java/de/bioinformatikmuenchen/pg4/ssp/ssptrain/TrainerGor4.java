@@ -13,11 +13,14 @@ import static de.bioinformatikmuenchen.pg4.ssp.ssptrain.Trainer.convertStructure
 public class TrainerGor4 extends Trainer {
 
     private long[][][][][][] cMatrix;
+    private TrainerGor3 train;
 
     @Override
     public void init() {
         // [amino acid somewhere in window][position of acid somewhere in window][amino acid in the middle][amino acid relative to the middle][position relative to the middle][secondary state in middle] = count
         cMatrix = new long[Data.aaTable.length][Data.trainingWindowSize][Data.aaTable.length][Data.aaTable.length][Data.trainingWindowSize][Data.secStruct.length];
+        train = new TrainerGor3();
+        train.init();
     }
 
     @Override
@@ -39,6 +42,8 @@ public class TrainerGor4 extends Trainer {
                 cMatrix[convertASCharToMatrixId(asOther)][posOtherAa][convertASCharToMatrixId(aaMiddle)][convertASCharToMatrixId(aaRel)][posRel][convertStructureCharToMatrixId(ssMiddle)]++;
             }
         }
+        
+        train.train1Example(aminoSeq, secStruct);
     }
 
     @Override
@@ -67,6 +72,9 @@ public class TrainerGor4 extends Trainer {
                 }
             }
         }
+
+        result.append("+++++++++++++++++++++++++++\n\n/");
+        result.append(train.getMatrixRepresentation());
 
         return result.toString();
 

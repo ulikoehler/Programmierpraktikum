@@ -4,6 +4,7 @@
  */
 package de.bioinformatikmuenchen.pg4.alignment;
 
+import de.bioinformatikmuenchen.pg4.alignment.gap.AffineGapCost;
 import de.bioinformatikmuenchen.pg4.alignment.gap.ConstantGapCost;
 import de.bioinformatikmuenchen.pg4.alignment.gap.IGapCost;
 import de.bioinformatikmuenchen.pg4.alignment.recursive.WikipediaAlignmentMatrix1;
@@ -63,6 +64,17 @@ public class CheckScoreCalculatorTest {
         assertEquals(24.0, CheckScoreCalculator.calculateCheckScoreNonAffine(AlignmentMode.GLOBAL, result.getFirstAlignment(), matrix, gapCost), 0.00001);
     }
 
+    /**
+     * Test of calculateCheckScoreNonAffine method, of class
+     * CheckScoreCalculator. See testAvatarAlign() in NeedlemanWunsch Test
+     */
+    @Test
+    public void testGetSinglePartGapCost() {
+        System.out.println("testGetSinglePartGapCost");
+        IGapCost gapCost = new AffineGapCost(-3, -1); //1 Gap = -4
+        assertEquals(-11, CheckScoreCalculator.getOverallGapCost("---A--", gapCost), 0.0000001);
+    }
+
 //    /**
 //     * Test of calculateCheckScoreNonAffine method, of class
 //     * CheckScoreCalculator. See testAvatarAlign() in NeedlemanWunsch Test
@@ -80,7 +92,6 @@ public class CheckScoreCalculatorTest {
 //        System.out.println(alignment.toString());
 //        assertEquals(result.getScore(), CheckScoreCalculator.calculateCheckScoreNonAffine(AlignmentMode.LOCAL, result.getFirstAlignment(), matrix, gapCost), 0.00001);
 //    }
-
     /**
      * Test of stripStartAndEndGaps method, of class CheckScoreCalculator.
      */
@@ -115,6 +126,15 @@ public class CheckScoreCalculatorTest {
         String[] result = CheckScoreCalculator.stripStartAndEndGaps(qa, ta);
         assertArrayEquals(expResult, result);
     }
+    @Test
+    public void testCheckScoreAffine() {
+        System.out.println("testCheckScoreAffine");
+        IGapCost gapCost = new AffineGapCost(-3, -1); //1 Gap = 4
+        assertEquals(-4, gapCost.getGapCost(1), 0.000001);
+        String qa = "A--ATAGTTATA";
+        String ta = "ATA---G--A-T";
+        assertEquals(-17, CheckScoreCalculator.calculateCheckScoreAffine(AlignmentMode.GLOBAL, new SequencePairAlignment(qa, ta), new ZeroOneAlignmentMatrix(), gapCost), 0.000000001);
+    }
 
     /**
      * Test of stripStartAndEndGaps method, of class CheckScoreCalculator.
@@ -128,7 +148,6 @@ public class CheckScoreCalculatorTest {
         String[] result = CheckScoreCalculator.stripStartAndEndGaps(qa, ta);
         assertArrayEquals(expResult, result);
     }
-
     /**
      * Test of calculateCheckScoreAffine method, of class CheckScoreCalculator.
      */

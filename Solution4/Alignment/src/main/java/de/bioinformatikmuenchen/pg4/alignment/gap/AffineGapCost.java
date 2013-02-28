@@ -20,6 +20,9 @@ public class AffineGapCost implements IGapCost {
 
     @Override
     public double getGapCost(int length) {
+        if(length <= 0) {
+            return 0;
+        }
         return gapopen + length * gapextend;
     }
 
