@@ -9,6 +9,7 @@ import java.text.DecimalFormatSymbols;
  * @author koehleru
  */
 public class ScoreOnlyAlignmentOutputFormatter extends AbstractAlignmentOutputFormatter {
+
     private DecimalFormat numberFormat = new DecimalFormat();
 
     public ScoreOnlyAlignmentOutputFormatter() {

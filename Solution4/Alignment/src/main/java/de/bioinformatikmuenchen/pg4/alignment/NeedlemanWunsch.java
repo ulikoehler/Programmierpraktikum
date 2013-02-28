@@ -5,8 +5,10 @@ import de.bioinformatikmuenchen.pg4.common.alignment.SequencePairAlignment;
 import de.bioinformatikmuenchen.pg4.common.distance.IDistanceMatrix;
 import de.bioinformatikmuenchen.pg4.alignment.gap.ConstantGapCost;
 import de.bioinformatikmuenchen.pg4.alignment.gap.IGapCost;
+import de.bioinformatikmuenchen.pg4.alignment.io.DPMatrixExporter;
 import de.bioinformatikmuenchen.pg4.alignment.io.IAlignmentOutputFormatter;
 import de.bioinformatikmuenchen.pg4.common.Sequence;
+import java.io.IOException;
 import java.util.Collections;
 
 public class NeedlemanWunsch extends AlignmentProcessor {
@@ -18,43 +20,39 @@ public class NeedlemanWunsch extends AlignmentProcessor {
     private boolean[][] topArrows;
     private int xSize = -1;
     private int ySize = -1;
-    private String seq1;
-    private String seq2;
+    private String querySequence;
+    private String targetSequence;
+    private String querySequenceId;
+    private String targetSequenceId;
     private boolean freeShift = false;
-    
-    /**
-     * Get an reference to the matrix, or null if not applicable
-     * Modifying this might lead to undesi
-     * @return 
-     */
-    public double[][] getMatrix() {
-        return matrix;
-    }
+    private double score;
 
     @Override
     public AlignmentResult align(Sequence seq1, Sequence seq2) {
         assert seq1 != null && seq2 != null;
         assert seq1.getSequence().length() > 0;
         assert seq2.getSequence().length() > 0;
-        this.seq1 = seq1.getSequence();
-        this.seq2 = seq2.getSequence();
+        this.querySequence = seq1.getSequence();
+        this.targetSequence = seq2.getSequence();
+        this.querySequenceId = seq1.getId();
+        this.targetSequenceId = seq2.getId();
         initMatrix(seq1.getSequence().length(), seq2.getSequence().length());
         fillMatrix(seq1.getSequence(), seq2.getSequence());
         AlignmentResult result = new AlignmentResult();
         //Calculate the alignment and add it to the result
-        result.setAlignments(Collections.singletonList(backTracking()));
         SequencePairAlignment alignment = backTracking();
 //        System.out.println("##spa query: "+spa.queryAlignment);
         result.setAlignments(Collections.singletonList(alignment));
-        result.setScore(matrix[xSize - 1][ySize - 1]);
+        this.score = matrix[xSize - 1][ySize - 1];
+        result.setScore(this.score);
         result.setQuerySequenceId(seq1.getId());
         result.setTargetSequenceId(seq2.getId());
         return result;
     }
 
     /**
-     * Initialize an alignment processor with a score-only output formatter
-     *Pr
+     * Initialize an alignment processor with a score-only output formatter Pr
+     *
      * @param mode
      * @param algorithm
      */
@@ -79,9 +77,9 @@ public class NeedlemanWunsch extends AlignmentProcessor {
         leftArrows = new boolean[xSize][ySize];
         leftTopArrows = new boolean[xSize][ySize];
         topArrows = new boolean[xSize][ySize];
-        if(!freeShift){
+        if (!freeShift) {
             for (int i = 0; i < xSize; i++) {
-            matrix[i][0] = gapCost.getGapCost(i);
+                matrix[i][0] = gapCost.getGapCost(i);
             }
             for (int i = 0; i < ySize; i++) {
                 matrix[0][i] = gapCost.getGapCost(i);
@@ -123,13 +121,13 @@ public class NeedlemanWunsch extends AlignmentProcessor {
     public String printMatrix() {
         StringBuilder builder = new StringBuilder();
         builder.append("\t\t");
-        for (int x = 0; x < seq1.length(); x++) {
-            builder.append(seq1.charAt(x)).append("\t");
+        for (int x = 0; x < querySequence.length(); x++) {
+            builder.append(querySequence.charAt(x)).append("\t");
         }
         builder.append("\n");
-        for (int y = 0; y <= seq2.length(); y++) {
-            builder.append(y == 0 ? ' ' : seq2.charAt(y - 1)).append("\t");
-            for (int x = 0; x <= seq1.length(); x++) {
+        for (int y = 0; y <= targetSequence.length(); y++) {
+            builder.append(y == 0 ? ' ' : targetSequence.charAt(y - 1)).append("\t");
+            for (int x = 0; x <= querySequence.length(); x++) {
                 builder.append(matrix[x][y]).append("\t");
             }
             builder.append("\n");
@@ -146,34 +144,32 @@ public class NeedlemanWunsch extends AlignmentProcessor {
         while (x >= 0 && y >= 0) {
             if (leftTopArrows[x][y]) {
 //                System.out.println("leftTop "+(x-1)+", "+(y-1));
-                queryAlignment += seq1.charAt(x - 1);
-                targetAlignment += seq2.charAt(y - 1);
+                queryAlignment += querySequence.charAt(x - 1);
+                targetAlignment += targetSequence.charAt(y - 1);
                 x--;
                 y--;
             } else if (leftArrows[x][y]) {
 //                System.out.println("left "+(x-1)+", "+y);
-                queryAlignment += seq1.charAt(x - 1);
+                queryAlignment += querySequence.charAt(x - 1);
                 targetAlignment += '-';
                 x--;
             } else if (topArrows[x][y]) {
 //                System.out.println("top "+x+", "+(y-1));
                 queryAlignment += '-';
-                targetAlignment += seq2.charAt(y - 1);
+                targetAlignment += targetSequence.charAt(y - 1);
                 y--;
-            }
-            else if(x==0){
-                while(y>0){
+            } else if (x == 0) {
+                while (y > 0) {
 //                    System.out.println("top0 "+x+", "+(y-1));
                     queryAlignment += '-';
-                    targetAlignment += seq2.charAt(y - 1);
+                    targetAlignment += targetSequence.charAt(y - 1);
                     y--;
                 }
                 break;
-            }
-            else if(y==0){
-                while(x>0){
+            } else if (y == 0) {
+                while (x > 0) {
 //                    System.out.println("left0 "+(x-1)+", "+y);
-                    queryAlignment += seq1.charAt(x - 1);
+                    queryAlignment += querySequence.charAt(x - 1);
                     targetAlignment += '-';
                     x--;
                 }
@@ -186,9 +182,31 @@ public class NeedlemanWunsch extends AlignmentProcessor {
         spa.setTargetAlignment(new StringBuffer(targetAlignment).reverse().toString());
         return spa;//new SequencePairAlignment(new StringBuffer().reverse().toString(), new StringBuffer(spa.targetAlignment).reverse().toString());
     }
-    
-    public boolean setFreeShift(boolean freeShift){
+
+    public boolean setFreeShift(boolean freeShift) {
         this.freeShift = freeShift;
         return this.freeShift;
+    }
+
+    @Override
+    public void writeMatrices(DPMatrixExporter exporter) {
+        DPMatrixExporter.DPMatrixInfo info = new DPMatrixExporter.DPMatrixInfo();
+        //Set sequences
+        info.query = querySequence;
+        info.target = targetSequence;
+        //Set IDs
+        info.queryId = querySequenceId;
+        info.targetId = targetSequenceId;
+        info.matrix = matrix;
+        info.matrixPostfix = "matrix";
+        info.leftArrows = leftArrows;
+        info.topArrows = topArrows;
+        info.topLeftArrows = leftTopArrows;
+        info.score = score;
+        try {
+            exporter.write(info);
+        } catch (IOException ex) {
+            throw new RuntimeException(ex);
+        }
     }
 }

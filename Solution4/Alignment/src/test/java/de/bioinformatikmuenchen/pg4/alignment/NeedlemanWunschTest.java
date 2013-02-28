@@ -109,7 +109,6 @@ public class NeedlemanWunschTest {
 //        AlignmentResult result = instance.align(seq1Obj, seq2Obj);
 //        assertEquals(24.0, result.getScore(), 0.0000000001);
 //    }
-
 //    @Test
 //    public void test Stuff() {
 //

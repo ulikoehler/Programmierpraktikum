@@ -4,6 +4,7 @@
  */
 package de.bioinformatikmuenchen.pg4.alignment;
 
+import de.bioinformatikmuenchen.pg4.alignment.io.DPMatrixExporter;
 import de.bioinformatikmuenchen.pg4.common.alignment.AlignmentResult;
 import de.bioinformatikmuenchen.pg4.common.Sequence;
 
@@ -20,6 +21,14 @@ public class AlignmentProcessorBenchmarkController<T1 extends AlignmentProcessor
     private long ap1AlignTime = 0;
     private long ap2AlignTime = 0;
 
+    public String getAp1ClassName() {
+        return ap1.getClass().getName();
+    }
+
+    public String getAp2ClassName() {
+        return ap2.getClass().getName();
+    }
+
     public long getAp1AlignTime() {
         return ap1AlignTime;
     }
@@ -32,7 +41,6 @@ public class AlignmentProcessorBenchmarkController<T1 extends AlignmentProcessor
         this.ap1 = ap1;
         this.ap2 = ap2;
     }
-    
 
     @Override
     public AlignmentResult align(Sequence seq1, Sequence seq2) {
@@ -48,7 +56,7 @@ public class AlignmentProcessorBenchmarkController<T1 extends AlignmentProcessor
     }
 
     @Override
-    public double[][] getMatrix() {
-        return ap1.getMatrix();
+    public void writeMatrices(DPMatrixExporter exporter) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 }

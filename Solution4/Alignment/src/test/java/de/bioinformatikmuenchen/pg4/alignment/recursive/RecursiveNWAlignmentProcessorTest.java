@@ -64,10 +64,10 @@ public class RecursiveNWAlignmentProcessorTest extends TestCase {
         AlignmentResult result = instance.align(seq1Obj, seq2Obj);
         assertEquals(6.0, result.getScore());
     }
-    
+
     /**
-     * Test of align method, of class RecursiveNWAlignmentProcessor.
-     * Just something with high match rate.
+     * Test of align method, of class RecursiveNWAlignmentProcessor. Just
+     * something with high match rate.
      */
     @Test
     public void testAlignSimple() {

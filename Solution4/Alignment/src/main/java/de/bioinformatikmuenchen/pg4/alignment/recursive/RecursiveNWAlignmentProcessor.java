@@ -12,6 +12,7 @@ import de.bioinformatikmuenchen.pg4.alignment.AlignmentProcessor;
 import de.bioinformatikmuenchen.pg4.common.alignment.AlignmentResult;
 import de.bioinformatikmuenchen.pg4.alignment.gap.ConstantGapCost;
 import de.bioinformatikmuenchen.pg4.alignment.gap.IGapCost;
+import de.bioinformatikmuenchen.pg4.alignment.io.DPMatrixExporter;
 import de.bioinformatikmuenchen.pg4.alignment.io.IAlignmentOutputFormatter;
 import de.bioinformatikmuenchen.pg4.alignment.io.ScoreOnlyAlignmentOutputFormatter;
 
@@ -95,8 +96,7 @@ public class RecursiveNWAlignmentProcessor extends AlignmentProcessor {
         return res;
     }
 
-    @Override
-    public double[][] getMatrix() {
+    private double[][] getMatrix() {
         //This takes a LONG time
         double[][] matrix = new double[querySequence.length()][targetSequence.length()];
         for (int x = 0; x < querySequence.length(); x++) {
@@ -105,5 +105,10 @@ public class RecursiveNWAlignmentProcessor extends AlignmentProcessor {
             }
         }
         return matrix;
+    }
+
+    @Override
+    public void writeMatrices(DPMatrixExporter exporter) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 }

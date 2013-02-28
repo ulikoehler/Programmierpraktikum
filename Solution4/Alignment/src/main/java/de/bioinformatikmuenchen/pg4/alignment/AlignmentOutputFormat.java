@@ -9,5 +9,6 @@ package de.bioinformatikmuenchen.pg4.alignment;
  * @author koehleru
  */
 public enum AlignmentOutputFormat {
+
     SCORES, ALI, HTML
 }

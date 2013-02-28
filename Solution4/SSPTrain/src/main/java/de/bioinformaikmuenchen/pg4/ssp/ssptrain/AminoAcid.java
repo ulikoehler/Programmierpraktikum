@@ -1,4 +1,4 @@
-package de.bioinformatikmuenchen.pg4.common;
+package de.bioinformaikmuenchen.pg4.ssp.ssptrain;
 
 /**
  * 
@@ -9,7 +9,7 @@ public class AminoAcid {
     /**
      * one letter code of all AA
      */
-    public static char[] AC1 = {
+    final public static char[] AcTable = {
         'A', 'C', 'D', 'E', 'F',
         'G', 'H', 'I', 'K', 'L',
         'M', 'N', 'P', 'Q', 'R',

@@ -2,12 +2,16 @@ package de.bioinformatikmuenchen.pg4.alignment;
 
 import de.bioinformatikmuenchen.pg4.alignment.gap.ConstantGapCost;
 import de.bioinformatikmuenchen.pg4.alignment.gap.IGapCost;
+import de.bioinformatikmuenchen.pg4.alignment.io.DPMatrixExporter;
 import de.bioinformatikmuenchen.pg4.alignment.io.IAlignmentOutputFormatter;
 import de.bioinformatikmuenchen.pg4.common.Sequence;
 import de.bioinformatikmuenchen.pg4.common.alignment.AlignmentResult;
 import de.bioinformatikmuenchen.pg4.common.alignment.SequencePairAlignment;
 import de.bioinformatikmuenchen.pg4.common.distance.IDistanceMatrix;
+import java.io.IOException;
 import java.util.Collections;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
@@ -18,14 +22,17 @@ public class Gotoh extends AlignmentProcessor {
     private double[][] matrixA;
     private double[][] matrixIn;
     private double[][] matrixDel;
+    private double score;
     //Matrices that save whether any given field got its value from the specified direction
-//    private boolean[][] leftTopArrows;
-//    private boolean[][] leftArrows;
-//    private boolean[][] topArrows;
+    private boolean[][] leftTopArrows;
+    private boolean[][] leftArrows;
+    private boolean[][] topArrows;
     private int xSize = -1;
     private int ySize = -1;
-    private String seq1;
-    private String seq2;
+    private String querySequence;
+    private String targetSequence;
+    private String querySequenceId;
+    private String targetSequenceId;
     private boolean freeshift;
     private boolean local;
 
@@ -46,10 +53,15 @@ public class Gotoh extends AlignmentProcessor {
         assert seq1 != null && seq2 != null;
         assert seq1.getSequence().length() > 0;
         assert seq2.getSequence().length() > 0;
-        this.seq1 = seq1.getSequence();
-        this.seq2 = seq2.getSequence();
+        this.querySequence = seq1.getSequence();
+        this.targetSequence = seq2.getSequence();
+        this.querySequenceId = seq1.getId();
+        this.targetSequenceId = seq2.getId();
+        this.xSize = querySequence.length();
+        this.ySize = targetSequence.length();
         initMatrix(seq1.getSequence().length(), seq2.getSequence().length());
         fillMatrix(seq1.getSequence(), seq2.getSequence());
+        this.score = matrixA[xSize-1][ySize-1];
         AlignmentResult result = new AlignmentResult();
         //Calculate the alignment and add it to the result
         result.setAlignments(Collections.singletonList(backTracking()));
@@ -72,18 +84,31 @@ public class Gotoh extends AlignmentProcessor {
             matrixIn[0][i] = Double.NaN;
             matrixDel[0][i] = Double.NEGATIVE_INFINITY;
         }
+        //init the three boolean matrices, which "store" the alignment arrows
+        for (int x = 0; x < xSize; x++) {
+            for (int y = 0; y < ySize; y++) {
+                leftArrows[x][y] = false;
+                leftTopArrows[x][y] = false;
+                topArrows[x][y] = false;
+            }
+        }
     }
 
     public void fillMatrix(String seq1, String seq2) {
+        int inGaps = 0;
+        int delGaps = 0;
+        for (int x = 1; x < xSize; x++) {
+            for (int y = 1; y < ySize; y++) {
+                matrixIn[x][y] = Math.max(matrixA[x][y - 1] + gapCost.getGapCost(1), matrixIn[x][y - 1] + gapCost.getGapExtensionPenalty(0, 1));
+                matrixDel[x][y] = Math.max(matrixA[x - 1][y] + gapCost.getGapCost(1), matrixDel[x - 1][y] + gapCost.getGapExtensionPenalty(0, 1));
+                matrixA[x][y] = Math.max(Math.max(matrixIn[x][y], matrixDel[x][y]), matrixA[x - 1][y - 1] + distanceMatrix.distance(seq1.charAt(x - 1), seq2.charAt(y - 1)));
+            }
+            //######!!!!!!!set boolean matrices like in NW
+        }
     }
 
     public SequencePairAlignment backTracking() {
         return null;
-    }
-
-    @Override
-    public double[][] getMatrix() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     public boolean setFreeshift(boolean freeshift) {
@@ -94,5 +119,41 @@ public class Gotoh extends AlignmentProcessor {
     public boolean setLocal(boolean local) {
         this.local = local;
         return this.local;
+    }
+
+    @Override
+    public void writeMatrices(DPMatrixExporter exporter) {
+        DPMatrixExporter.DPMatrixInfo info = new DPMatrixExporter.DPMatrixInfo();
+        //Set sequences
+        info.query = querySequence;
+        info.target = targetSequence;
+        //Set IDs
+        info.queryId = querySequenceId;
+        info.targetId = targetSequenceId;
+        info.matrix = this.matrixA;
+        info.matrixPostfix = "Gotoh alignment matrix";
+        try {
+            exporter.write(info);
+        } catch (IOException ex) {
+            Logger.getLogger(Gotoh.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        info.matrix = this.matrixIn;
+        info.matrixPostfix = "Gotoh insertions matrix";
+        try {
+            exporter.write(info);
+        } catch (IOException ex) {
+            Logger.getLogger(Gotoh.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        info.matrix = this.matrixDel;
+        info.matrixPostfix = "Gotoh deletions matrix";
+        try {
+            exporter.write(info);
+        } catch (IOException ex) {
+            Logger.getLogger(Gotoh.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        info.leftArrows = leftArrows;
+        info.topArrows = topArrows;
+        info.topLeftArrows = leftTopArrows;
+        info.score = score;
     }
 }
