@@ -53,6 +53,7 @@ public class AlignmentMain {
                 .addOption("s", "mode", true, "mode")
                 .addOption("u", "nw", false, "Use Needleman-Wunsch")
                 .addOption("b", "benchmark", false, "Benchmark the selected algorithm versus the recursive Needleman-Wunsch")
+                .addOption("v", "verbose", false, "Print verbose status reports (on stderr)")
                 .addOption("c", "check", true, "Calculate checkscores")
                 .addOption("f", "format", true, "format");
         //Parse the opts
@@ -210,6 +211,8 @@ public class AlignmentMain {
         }
         //benchmark
         boolean benchmark = commandLine.hasOption("benchmark");
+        //verbose
+        boolean verbose = commandLine.hasOption("verbose");
         //
         //Inter-argument cheks
         //
@@ -240,13 +243,23 @@ public class AlignmentMain {
         AlignmentProcessor proc = AlignmentProcessorFactory.factorize(mode, algorithm, matrix, gapCost);
         //Handle possible benchmarks if applicable -- benchmark to recursive NW
         if (benchmark) {
+            if (verbose) {
+                System.err.println("Benchmarking...");
+            }
             proc = new AlignmentProcessorBenchmarkController(proc, new RecursiveNWAlignmentProcessor(mode, algorithm, matrix, gapCost));
+            ((AlignmentProcessorBenchmarkController) proc).setVerbose(verbose);
         }
         for (PairfileEntry entry : pairfileEntries) {
             //Get the sequences
             Sequence seq1 = sequenceSource.getSequence(entry.first);
             Sequence seq2 = sequenceSource.getSequence(entry.second);
+            //Print status if in verbose mode
+            if (verbose) {
+                System.err.println("Aligning " + seq1.getId() + " and " + seq2.getId() + "...");
+            }
+            //Calculate the alignment
             AlignmentResult result = proc.align(seq1, seq2);
+            //
             //Print all alignments (usually one)
             formatter.formatAndPrint(result);
             //Write the dynamic programming matrix if applicable 

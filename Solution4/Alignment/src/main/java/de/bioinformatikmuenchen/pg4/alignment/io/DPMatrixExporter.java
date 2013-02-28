@@ -11,13 +11,15 @@ import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.Writer;
+import java.text.DecimalFormat;
+import java.text.DecimalFormatSymbols;
 
 /**
  * An exporter for dynamic prorgamming matrices
  *
  * @author koehleru
  */
-public class DPMatrixExporter {
+public class DPMatrixExporter implements IDPMatrixExporter {
 
     public static class DPMatrixInfo {
 
@@ -40,15 +42,28 @@ public class DPMatrixExporter {
     }
     private AlignmentOutputFormat outputFormat; //HTML or 'something else'
     private File matrixDirectory = null;
+    private static DecimalFormat numberFormat = getTwoDigitDecimalFormat();
+
+    private static DecimalFormat getTwoDigitDecimalFormat() {
+        DecimalFormat ret = new DecimalFormat();
+        DecimalFormatSymbols dfs = new DecimalFormatSymbols();
+        dfs.setDecimalSeparator('.');
+        ret.setDecimalFormatSymbols(dfs);
+        ret.setMinimumFractionDigits(2);
+        ret.setMaximumFractionDigits(2);
+        return ret;
+    }
 
     public DPMatrixExporter(File matrixDir, AlignmentOutputFormat outputFormat) {
         this.outputFormat = outputFormat;
         this.matrixDirectory = matrixDir;
     }
 
+    @Override
     public void write(DPMatrixInfo info) throws IOException {
         //Build the filename
-        String filename = info.queryId + "-" + info.targetId + (info.matrixPostfix == null ? "" : "-" + info.matrixPostfix) + ".txt";
+        String filename = info.queryId + "-" + info.targetId + (info.matrixPostfix == null ? "" : "-" + info.matrixPostfix);
+        filename += (outputFormat == AlignmentOutputFormat.HTML ? ".html" : ".txt");
         //Open the file
         File outFile = new File(matrixDirectory, filename);
         Writer writer = new BufferedWriter(new FileWriter(outFile));
@@ -97,14 +112,14 @@ public class DPMatrixExporter {
             builder.append(".matrix-element {font-size:130%;text-align: center;display:table-cell;vertical-align: middle;}\n");
             builder.append(".vcenter-container {display:table}\n");
             builder.append(".overlay-top, .overlay-left, .overlay-topleft, .vcenter-container {width: 80px;height: 80px; position: absolute;top: 0;left: 0;}\n");
-            builder.append(".overlay-top {z-index: 2;}\n");
-            builder.append(".overlay-left {z-index: 3;}\n");
-            builder.append(".overlay-topleft {z-index: 4;}\n");
+            builder.append(".overlay-top {z-index: -2;}\n");
+            builder.append(".overlay-left {z-index: -3;}\n");
+            builder.append(".overlay-topleft {z-index: -4;}\n");
             builder.append("</style>");
             builder.append("</head><body>");
         }
-        builder.append("<h3>").append("Alignment of:").append(info.queryId).append(" and ").append(info.targetId).append("</h3>");
-        builder.append("<p>").append(info.score).append("</p>");
+        builder.append("<h3>").append("Alignment of:&nbsp;").append(info.queryId).append(" and ").append(info.targetId).append("</h3>");
+        builder.append("<p>Score:&nbsp;").append(info.score).append("</p>");
         //Foreach field, write one <div>
         for (int y = 0; y < info.ySize; y++) {
             for (int x = 0; x < info.xSize; x++) {
@@ -112,7 +127,7 @@ public class DPMatrixExporter {
                 //Write
                 builder.append("<div class=\"vcenter-container\">");
                 builder.append("<div class=\"matrix-element\">");
-                builder.append(info.matrix[x][y]);
+                builder.append(numberFormat.format(info.matrix[x][y]));
                 builder.append("</div>"); //Matrix element
                 builder.append("</div>"); //vcenter-container
                 //
