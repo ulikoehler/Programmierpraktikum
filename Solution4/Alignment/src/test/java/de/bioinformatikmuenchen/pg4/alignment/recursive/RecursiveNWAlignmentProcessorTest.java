@@ -49,6 +49,20 @@ public class RecursiveNWAlignmentProcessorTest extends TestCase {
         AlignmentResult result = instance.align(seq1Obj, seq2Obj);
         assertEquals(16.0, result.getScore()); //Assuming this is correct
     }
+    //Wikipedia does not provide the correct alignment
+    /**
+     * Test of align method, of class RecursiveNWAlignmentProcessor.
+     */
+    @Test
+    public void testAlignLarge() {
+        Sequence seq1Obj = new Sequence("EEKRRARNK");
+        Sequence seq2Obj = new Sequence("GERRRSTAE");
+        IDistanceMatrix matrix = new ZeroOneAlignmentMatrix();
+        IGapCost gapCost = new ConstantGapCost(-5);
+        RecursiveNWAlignmentProcessor instance = new RecursiveNWAlignmentProcessor(AlignmentMode.GLOBAL, AlignmentAlgorithm.NEEDLEMAN_WUNSCH, matrix, gapCost);
+        AlignmentResult result = instance.align(seq1Obj, seq2Obj);
+//        assertEquals(16.0, result.getScore()); //Assuming this is correct
+    }
 
     /**
      * Test of align method, of class RecursiveNWAlignmentProcessor.

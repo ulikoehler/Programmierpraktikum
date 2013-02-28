@@ -18,7 +18,7 @@ import java.util.logging.Logger;
  *
  * @author tobias
  */
-public class GotohGlobal extends AlignmentProcessor {
+public class Gotoh extends AlignmentProcessor {
 
     private double[][] matrixA;
     private double[][] matrixIn;
@@ -30,16 +30,16 @@ public class GotohGlobal extends AlignmentProcessor {
     private String targetSequence;
     private String querySequenceId;
     private String targetSequenceId;
-    private boolean freeshift;
-    private boolean local;
+    private boolean freeshift = false;
+    private boolean local = false;
 
-    public GotohGlobal(AlignmentMode mode, AlignmentAlgorithm algorithm, IDistanceMatrix distanceMatrix, IGapCost gapCost) {
+    public Gotoh(AlignmentMode mode, AlignmentAlgorithm algorithm, IDistanceMatrix distanceMatrix, IGapCost gapCost) {
         super(mode, algorithm, distanceMatrix, gapCost);
         assert gapCost instanceof ConstantGapCost;
         //AlignmentResult result = new AlignmentResult();
     }
 
-    public GotohGlobal(AlignmentMode mode, AlignmentAlgorithm algorithm, IDistanceMatrix distanceMatrix, IGapCost gapCost, IAlignmentOutputFormatter outputFormatter) {
+    public Gotoh(AlignmentMode mode, AlignmentAlgorithm algorithm, IDistanceMatrix distanceMatrix, IGapCost gapCost, IAlignmentOutputFormatter outputFormatter) {
         super(mode, algorithm, distanceMatrix, gapCost, outputFormatter);
         assert gapCost instanceof ConstantGapCost : "Classic Needleman Wunsch can't use affine gap cost";
         assert algorithm == AlignmentAlgorithm.NEEDLEMAN_WUNSCH;
@@ -61,7 +61,7 @@ public class GotohGlobal extends AlignmentProcessor {
         this.score = matrixA[xSize-1][ySize-1];
         AlignmentResult result = new AlignmentResult();
         //Calculate the alignment and add it to the result
-        result.setAlignments(Collections.singletonList(backTracking()));
+        result.setAlignments(Collections.singletonList(backTrackingGlobal()));
 //        result.setScore(matrix[xSize - 1][ySize - 1]);
 //        result.setQuerySequenceId(seq1.getId());
 //        result.setTargetSequenceId(seq2.getId());
@@ -71,13 +71,19 @@ public class GotohGlobal extends AlignmentProcessor {
     public void initMatrix(int xSize, int ySize) {
         matrixDel[0][0] = Double.NaN;
         matrixIn[0][0] = Double.NaN;
-        for (int i = 1; i < xSize; i++) {
+        if(!(this.local || this.freeshift)){// " == if(global)"
+            for (int i = 1; i < xSize; i++) {
             matrixA[i][0] = gapCost.getGapCost(i);
+        }
+            for (int i = 1; i < ySize; i++) {
+                matrixA[0][i] = gapCost.getGapCost(i);
+            }
+        }
+        for (int i = 1; i < xSize; i++) {
             matrixIn[i][0] = Double.NEGATIVE_INFINITY;
             matrixDel[i][0] = Double.NaN;
         }
-        for (int i = 1; i < ySize; i++) {
-            matrixA[0][i] = gapCost.getGapCost(i);
+        for (int i = 1  ; i < ySize; i++) {
             matrixIn[0][i] = Double.NaN;
             matrixDel[0][i] = Double.NEGATIVE_INFINITY;
         }
@@ -94,8 +100,52 @@ public class GotohGlobal extends AlignmentProcessor {
             }
         }
     }
+    
+    public SequencePairAlignment backTrackingLocal(){
+        StringBuffer queryLine = new StringBuffer(); StringBuffer targetLine = new StringBuffer();
+        //find the cell with the greatest entry:
+        int x = -1; int y = -1; double maxCell = Double.NEGATIVE_INFINITY;
+        for (int i = 0; i < xSize; i++) {
+            for (int j = 0; j < ySize; j++) {
+                if(matrixA[i][j] >= maxCell){
+                    x = i; y = j;
+                    maxCell = matrixA[i][j];
+                }
+            }
+        }
+        assert (x>=0 && y>=0 && maxCell > Double.NEGATIVE_INFINITY);
+        while(matrixA[x][y] != 0){
+            char A = querySequence.charAt(x - 1);
+            char B = targetSequence.charAt(y - 1);
+            if(matrixA[x][y] == matrixA[x-1][y-1] + distanceMatrix.distance(A, B)){
+                queryLine.append(A);
+                targetLine.append(B);
+                x--; y--;
+            }
+            else if(matrixA[x][y] == matrixIn[x][y]){
+                int shift = findK(matrixA[x][y], x, y, true);
+                for (int i = x; i >= (x-shift); i--) {
+                    queryLine.append(querySequence.charAt(i-1));
+                    targetLine.append('-');
+                }
+                x -= shift;
+            }
+            else if(matrixA[x][y] == matrixDel[x][y]){
+                int shift = findK(matrixA[x][y], x, y, false);
+                for (int i = y; i >= (y-shift); i--) {
+                    queryLine.append(querySequence.charAt(i));
+                    targetLine.append('-');
+                }
+                y -= shift;
+            }
+            else{
+                System.out.println("No possibility found to move on (indicates a sure failure)");
+            }
+        }
+        return new SequencePairAlignment(queryLine.reverse().toString(), targetLine.reverse().toString());
+    }
 
-    public SequencePairAlignment backTracking() {
+    public SequencePairAlignment backTrackingGlobal() {
         int x = xSize; int y = ySize;
         StringBuffer queryLine = new StringBuffer(); StringBuffer targetLine = new StringBuffer();
         while(x!=0 || y!=0){//while the rim of the matrix or its left upper corner is not reached
@@ -182,21 +232,21 @@ public class GotohGlobal extends AlignmentProcessor {
         try {
             exporter.write(info);
         } catch (IOException ex) {
-            Logger.getLogger(GotohGlobal.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(Gotoh.class.getName()).log(Level.SEVERE, null, ex);
         }
         info.matrix = this.matrixIn;
         info.matrixPostfix = "Gotoh insertions matrix";
         try {
             exporter.write(info);
         } catch (IOException ex) {
-            Logger.getLogger(GotohGlobal.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(Gotoh.class.getName()).log(Level.SEVERE, null, ex);
         }
         info.matrix = this.matrixDel;
         info.matrixPostfix = "Gotoh deletions matrix";
         try {
             exporter.write(info);
         } catch (IOException ex) {
-            Logger.getLogger(GotohGlobal.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(Gotoh.class.getName()).log(Level.SEVERE, null, ex);
         }
         info.score = score;
     }

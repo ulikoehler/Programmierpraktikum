@@ -19,7 +19,7 @@ public class AlignmentProcessorFactory {
         } else if (algorithm == AlignmentAlgorithm.SMITH_WATERMAN) {
             return new SmithWaterman(alignmentMode, algorithm, distanceMatrix, gapCost);
         } else if (algorithm == AlignmentAlgorithm.GOTOH) {
-            return new GotohGlobal(alignmentMode, algorithm, distanceMatrix, gapCost);
+            return new Gotoh(alignmentMode, algorithm, distanceMatrix, gapCost);
         } else {
             throw new IllegalArgumentException("Algorithm " + algorithm.toString() + " unknown / not supported!");
         }

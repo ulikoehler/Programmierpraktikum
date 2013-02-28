@@ -48,7 +48,7 @@ public class GotohTest {
      * Real world example from sanity.pairs that hasn't worked somewhen -- Not
      * sure if this is for Goto, so doublechekc
      */
-    @Test
+//    @Test
     public void testAlignReal1() throws IOException {
         IDistanceMatrix matrix = QUASARDistanceMatrixFactory.factorize(new InputStreamReader(NeedlemanWunschTest.class.getResourceAsStream("/matrices/dayhoff.mat")));
         Sequence seq1Obj = new Sequence("GPLDVQVTEDAVRRYLTRKPMTTKDLLKKFQTKKTGLSSEQTVNVLAQILKRLNPERKMINDKMHFSLK");
@@ -59,8 +59,8 @@ public class GotohTest {
         assertEquals(4.90, result.getScore(), 0.00000001);
     }
 
-    @Test
-    public void testAlignReal1() throws IOException {
+//    @Test
+    public void testAlignHay() throws IOException {
         IDistanceMatrix matrix = QUASARDistanceMatrixFactory.factorize(new InputStreamReader(NeedlemanWunschTest.class.getResourceAsStream("/matrices/dayhoff.mat")));
         Sequence seq1Obj = new Sequence("GPLDVQVTEDAVRRYLTRKPMTTKDLLKKFQTKKTGLSSEQTVNVLAQILKRLNPERKMINDKMHFSLK");
         Sequence seq2Obj = new Sequence("MEEAKQKVVDFLNSKSKSKFYFNDFTDLFPDMKQREVKKILTALVNDEVLEYWSSGSTTMYGLKG");

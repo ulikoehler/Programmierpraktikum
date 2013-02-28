@@ -47,9 +47,9 @@ public class StrucValiAlg {
         this.cutends();
         assert sec.length() > 0;
         //counting secondary structure elements
-        this.detHelix();
-        this.detSheet();
-        this.detCoil();
+        this.detStruc('H');
+        this.detStruc('E');
+        this.detStruc('C');
         //determine overlapping segments
         this.detOver('H');
         this.detOver('E');
@@ -66,110 +66,64 @@ public class StrucValiAlg {
     }
 
     public double getQ3() {
-        if (BH + BE + BC == 0) {
-            System.out.println("No Secondary Struture annotated");
-            return 0;
-        }
-        double result = (double) (AH + AE + AC) / (BH + BE + BC) * 100;
-        return result;
+        return (double) (AH + AE + AC) / (BH + BE + BC) * 100;
     }
 
     public double getQH() {
-        if (AH == 0 && BH == 0) {
-            return 100;
-        }
         return (double) (AH / BH) * 100;
     }
 
     public double getQE() {
-        if (AE == 0 && BE == 0) {
-            return 100;
-        }
         return (double) (AE / BE) * 100;
     }
 
     public double getQC() {
-        if (AC == 0 && BC == 0) {
-            return 100;
-        }
         return (double) (AC / BC) * 100;
     }
 
     public double getSOV() {
-        double result = (double) (sumSH + sumSE + sumSC) / (numH + numE + numC) * 100;
-        return result;
+        return (double) (sumSH + sumSE + sumSC) / (numH + numE + numC) * 100;
     }
 
     public double getSOVH() {
-        double result = (double) sumSH / numH * 100;
-        return result;
+        return (double) (sumSH / numH) * 100;
     }
 
     public double getSOVE() {
-        double result = (double) sumSE / numE * 100;
-        return result;
+        return (double) (sumSE / numE) * 100;
     }
 
     public double getSOVC() {
-        double result = (double) sumSC / numC * 100;
-        return result;
+        return (double) (sumSC / numC) * 100;
     }
 
-    private void detHelix() {
-        //correctly predicted helices
+    private void detStruc(char input){
+        //correctly predicted input secondary struture
         int A = 0;
-        //helices in structure
+        //input secondary struture in observed
         int B = 0;
         //go through secondary structure sequence
         for (int i = 0; i < pred.length(); i++) {
-            if (observ.charAt(i) == 'H') {
+            if (observ.charAt(i) == input ) {
                 B++;
-                if (pred.charAt(i) == 'H') {
+                if (pred.charAt(i) == input) {
                     A++;
                 }
             }
         }
         //write into global variables
-        AH = A;
-        BH = B;
-    }
-
-    private void detSheet() {
-        //correctly predicted sheet
-        int A = 0;
-        //sheet in structure
-        int B = 0;
-        //go through secondary structure sequence
-        for (int i = 0; i < pred.length(); i++) {
-            if (observ.charAt(i) == 'E') {
-                B++;
-                if (pred.charAt(i) == 'E') {
-                    A++;
-                }
-            }
+        if(input == 'H'){
+            AH = A;
+            BH = B;
         }
-        //write into global variables
-        AE = A;
-        BE = B;
-    }
-
-    private void detCoil() {
-        //correctly predicted coil
-        int A = 0;
-        //coil in structure
-        int B = 0;
-        //go through secondary structure sequence
-        for (int i = 0; i < pred.length(); i++) {
-            if (observ.charAt(i) == 'C') {
-                B++;
-                if (pred.charAt(i) == 'C') {
-                    A++;
-                }
-            }
+        if(input == 'E'){
+            AE = A;
+            BE = B;
         }
-        //write into global variables
-        AC = A;
-        BC = B;
+        if(input == 'C'){
+            AC = A;
+            BC = B;
+        }        
     }
 
     private void detOver(char input) {
@@ -257,6 +211,11 @@ public class StrucValiAlg {
                     if (pred.charAt(endo) == input) {
                         phantom1.add(new VTupel(stao, endo, stap, -1));
                     }
+                    //case: no overlapp
+                    if(phantom2.isEmpty()){
+                        //add to no overlapp list
+                        noover.add(new ZTupel(stao, endo));
+                    }
                     for (int j = 0; j < phantom2.size(); j++) {
                         overlapps.add(new VTupel(phantom2.get(j).att1, endo, phantom2.get(j).att3, phantom2.get(j).att4));
                     }
@@ -291,7 +250,7 @@ public class StrucValiAlg {
             number = number + overlapps.get(i).att2 - overlapps.get(i).att1 + 1;
         }
         //
-        for (int i = 0; i < noover.size(); i++) {            
+        for (int i = 0; i < noover.size(); i++) {
             number = number + noover.get(i).att2 - noover.get(i).att1 + 1;
         }
         if (input == 'H') {
@@ -331,7 +290,7 @@ public class StrucValiAlg {
             SSum += ((double) ((minov + delta(s1start, s1end, s2start, s2end)) / maxov)) * (s1end - s1start + 1);
         }
         //safing result in correct global argument
-         if (input == 'H') {
+        if (input == 'H') {
             sumSH = SSum;
         }
         if (input == 'E') {
@@ -339,10 +298,10 @@ public class StrucValiAlg {
         }
         if (input == 'C') {
             sumSC = SSum;
-        }           
+        }
     }
 
-    public static double delta(int s1start, int s1end, int s2start, int s2end) {
+    private double delta(int s1start, int s1end, int s2start, int s2end) {
         //calculating maximal overlapps and minimal overlapp
         int maxov = Math.max(s1end, s2end) - Math.min(s1start, s2start) + 1;
         int minov = Math.min(s1end, s2end) - Math.max(s1start, s2start) + 1;
