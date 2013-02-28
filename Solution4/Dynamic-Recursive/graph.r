@@ -27,8 +27,6 @@ Größe Algorithmus Laufzeit
 13	Dynamisch	0.340
 13	Rekursiv	93.582
 14	Dynamisch	0.380
-14	Rekursiv	524.153
-
 '))
 close(con)
 

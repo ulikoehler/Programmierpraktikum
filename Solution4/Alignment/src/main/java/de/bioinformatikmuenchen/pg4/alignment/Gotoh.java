@@ -32,6 +32,10 @@ public class Gotoh extends AlignmentProcessor {
     private String targetSequenceId;
     private boolean freeshift = false;
     private boolean local = false;
+    boolean[][] leftPath;
+    boolean[][] leftTopPath;
+    boolean[][] topPath;
+    boolean[][] hasPath;
 
     public Gotoh(AlignmentMode mode, AlignmentAlgorithm algorithm, IDistanceMatrix distanceMatrix, IGapCost gapCost) {
         super(mode, algorithm, distanceMatrix, gapCost);
@@ -87,6 +91,15 @@ public class Gotoh extends AlignmentProcessor {
             matrixIn[0][i] = Double.NaN;
             matrixDel[0][i] = Double.NEGATIVE_INFINITY;
         }
+        //init the boolean[][] arrays which store the path taken by the backtracking algorithm
+        for (int x = 0; x < xSize; x++) {
+            for (int y = 0; y < ySize; y++) {
+                leftPath[x][y] = false;
+                leftTopPath[x][y] = false;
+                topPath[x][y] = false;
+                hasPath[x][y] = false;
+            }
+        }
     }
 
     public void fillMatrix(String seq1, String seq2) {
@@ -102,7 +115,7 @@ public class Gotoh extends AlignmentProcessor {
     }
     
     public SequencePairAlignment backTrackingLocal(){
-        StringBuffer queryLine = new StringBuffer(); StringBuffer targetLine = new StringBuffer();
+        StringBuilder queryLine = new StringBuilder(); StringBuilder targetLine = new StringBuilder();
         //find the cell with the greatest entry:
         int x = -1; int y = -1; double maxCell = Double.NEGATIVE_INFINITY;
         for (int i = 0; i < xSize; i++) {
@@ -118,6 +131,8 @@ public class Gotoh extends AlignmentProcessor {
             char A = querySequence.charAt(x - 1);
             char B = targetSequence.charAt(y - 1);
             if(matrixA[x][y] == matrixA[x-1][y-1] + distanceMatrix.distance(A, B)){
+                leftTopPath[x][y] = true;
+                hasPath[x][y] = true;
                 queryLine.append(A);
                 targetLine.append(B);
                 x--; y--;
@@ -125,6 +140,8 @@ public class Gotoh extends AlignmentProcessor {
             else if(matrixA[x][y] == matrixIn[x][y]){
                 int shift = findK(matrixA[x][y], x, y, true);
                 for (int i = x; i >= (x-shift); i--) {
+                    leftPath[i][y] = true;
+                    hasPath[i][y] = true;
                     queryLine.append(querySequence.charAt(i-1));
                     targetLine.append('-');
                 }
@@ -133,6 +150,8 @@ public class Gotoh extends AlignmentProcessor {
             else if(matrixA[x][y] == matrixDel[x][y]){
                 int shift = findK(matrixA[x][y], x, y, false);
                 for (int i = y; i >= (y-shift); i--) {
+                    topPath[x][i] = true;
+                    hasPath[x][i] = true;
                     queryLine.append(querySequence.charAt(i));
                     targetLine.append('-');
                 }
@@ -147,11 +166,13 @@ public class Gotoh extends AlignmentProcessor {
 
     public SequencePairAlignment backTrackingGlobal() {
         int x = xSize; int y = ySize;
-        StringBuffer queryLine = new StringBuffer(); StringBuffer targetLine = new StringBuffer();
+        StringBuilder queryLine = new StringBuilder(); StringBuilder targetLine = new StringBuilder();
         while(x!=0 || y!=0){//while the rim of the matrix or its left upper corner is not reached
             char A = querySequence.charAt(x - 1);
             char B = targetSequence.charAt(y - 1);
             if(matrixA[x][y] == matrixA[x-1][y-1] + distanceMatrix.distance(A, B)){
+                leftTopPath[x][y] = true;
+                hasPath[x][y] = true;
                 queryLine.append(A);
                 targetLine.append(B);
                 x--; y--;
@@ -159,6 +180,8 @@ public class Gotoh extends AlignmentProcessor {
             else if(matrixA[x][y] == matrixIn[x][y]){
                 int shift = findK(matrixA[x][y], x, y, true);
                 for (int i = x; i >= (x-shift); i--) {
+                    leftPath[i][y] = true;
+                    hasPath[i][y] = true;
                     queryLine.append(querySequence.charAt(i-1));
                     targetLine.append('-');
                 }
@@ -167,6 +190,8 @@ public class Gotoh extends AlignmentProcessor {
             else if(matrixA[x][y] == matrixDel[x][y]){
                 int shift = findK(matrixA[x][y], x, y, false);
                 for (int i = y; i >= (y-shift); i--) {
+                    topPath[x][i] = true;
+                    hasPath[x][i] = true;
                     queryLine.append(querySequence.charAt(i));
                     targetLine.append('-');
                 }

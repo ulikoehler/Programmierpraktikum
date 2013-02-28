@@ -27,6 +27,11 @@ public class NeedlemanWunsch extends AlignmentProcessor {
     private String targetSequenceId;
     private boolean freeShift = false;
     private double score;
+    //boolean arrays to store the backtracking path which is taken by the backtracking algorithm
+    private boolean[][] leftTopPath;
+    private boolean[][] leftPath;
+    private boolean[][] topPath;
+    private boolean[][] hasPath;
 
     @Override
     public AlignmentResult align(Sequence seq1, Sequence seq2) {
@@ -92,14 +97,16 @@ public class NeedlemanWunsch extends AlignmentProcessor {
                 leftArrows[x][y] = (y == 0);//first row --> true
                 leftTopArrows[x][y] = false;//true
                 topArrows[x][y] = (x == 0); //first column --> true
-                //Handle the topleft corner
-                if (x == 0 && y == 0) {
-                    leftArrows[x][y] = false;//first row --> true
-                    leftTopArrows[x][y] = false;//true
-                    topArrows[x][y] = false; //first column --> true
-                }
+                leftPath[x][y] = false;
+                leftTopPath[x][y] = false;
+                topPath[x][y] = false;
+                hasPath[x][y] = false;
             }
         }
+        //Handle the topleft corner
+        leftArrows[0][0] = false;
+        leftTopArrows[0][0] = false;
+        topArrows[0][0] = false;
     }
 
     public void fillMatrix(String seq1, String seq2) {
@@ -143,26 +150,34 @@ public class NeedlemanWunsch extends AlignmentProcessor {
     }
 
     public SequencePairAlignment backTracking() {
-        StringBuffer queryAlignment = new StringBuffer();
-        StringBuffer targetAlignment = new StringBuffer();
+        StringBuilder queryAlignment = new StringBuilder();
+        StringBuilder targetAlignment = new StringBuilder();
         int x = xSize - 1;
         int y = ySize - 1;
         while (x >= 0 && y >= 0) {
             if (leftTopArrows[x][y]) {
+                leftTopPath[x][y] = true;
+                hasPath[x][y] = true;
                 queryAlignment.append(querySequence.charAt(x - 1));
                 targetAlignment.append(targetSequence.charAt(y - 1));
                 x--;
                 y--;
             } else if (leftArrows[x][y]) {
+                leftPath[x][y] = true;
+                hasPath[x][y] = true;
                 queryAlignment.append(querySequence.charAt(x - 1));
                 targetAlignment.append('-');
                 x--;
             } else if (topArrows[x][y]) {
+                topPath[x][y] = true;
+                hasPath[x][y] = true;
                 queryAlignment.append('-');
                 targetAlignment.append(targetSequence.charAt(y - 1));
                 y--;
             } else if (x == 0) {
                 while (y > 0) {
+                    topPath[x][y] = true;
+                    hasPath[x][y] = true;
                     queryAlignment.append('-');
                     targetAlignment.append(targetSequence.charAt(y - 1));
                     y--;
@@ -170,6 +185,8 @@ public class NeedlemanWunsch extends AlignmentProcessor {
                 break;
             } else if (y == 0) {
                 while (x > 0) {
+                    leftPath[x][y] = true;
+                    hasPath[x][y] = true;
                     queryAlignment.append(querySequence.charAt(x - 1));
                     targetAlignment.append('-');
                     x--;
