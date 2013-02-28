@@ -27,17 +27,17 @@ public class SmithWatermanTest {
     }
 
     /**
-     * Test of align method, of class SmithWaterman. Example from example
-     * section of
+     * Test of align method, of class SmithWaterman. Example from
      * http://en.wikipedia.org/wiki/Smith%E2%80%93Waterman_algorithm#Example
+     * 
+     * Matrix is completely verified
      */
     @Test
-    public void testAlign() {
+    public void testMatrix() {
         System.out.println("align");
         Sequence seq1 = new Sequence("ACACACTA");
         Sequence seq2 = new Sequence("AGCACACA");
         SmithWaterman instance = new SmithWaterman(AlignmentMode.LOCAL, AlignmentAlgorithm.SMITH_WATERMAN, new MinusOneTwoAlignmentMatrix(), new ConstantGapCost(-1));
-        AlignmentResult result = instance.align(seq1, seq2);
         instance.printMatrix();
         //Check the edges
         for (int xy = 0; xy < seq1.getSequence().length(); xy++) {
