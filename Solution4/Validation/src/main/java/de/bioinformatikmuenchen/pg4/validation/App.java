@@ -22,20 +22,24 @@ public class App {
         String c3 = "ROFL-MAO";
         String d3 = "GNAALO-L";
 
-        String a4 = "";
-        String b4 = "";
-        String c4 = "";
-        String d4 = "";
+        String a4 = "EKSVVFKAEGEHFTDQKGNTIVGSGSGGTTKYF-------RIPAM--CTTSKGTIVVFADARHNTASDQSFIDTAAA---RSTDGGKTWNKKIAIYNDRVNSKLSRVMDPTCIVANIQGRETILVMVGKWNNNDKTWGAYRDKAPDTDWDLVLYKSTDDGVTFSKVETNIHDIVTKNGTISAMLGGVGSGLQL---------NDGKLVFPVQMVRTKNITTVLNTSFIYSTD-GITWSLPSGYCEGF------------GSENNIIEF-NASLVNNIR----------NSGLRRSFETKDFGKTWTEFPPMDKKV-DNRNHGVQGSTIT---IPSGNKLVAAHSSAQNKNNDYTRSDISL---YAHNL-YSGEVKLIDDFYPKVGNASGAGYSCLSYRKNVDKETLYVVYEANGSIEFQDLSRHLPVIKSYN--------";
+        String b4 = "---------------------------------VIFRGPDRIPSIVASSVTPGVVTAFAEKRVGGGDPGALSNTNDIITRTSRDGGITWDTELNLTEQINVSDEFDFSDPRPIYD--PSSNTVLVSYARWPTDAA-----QNGDRIKPW-------MPNGIFYS-----VYDVASGNWQAPIVNPGPGHGITLTRQQNISGSQNGRLIYPA-IVLDRFFLNVMS---IYSDDGGSNWQTGSTLPIPFRWKSSSILETLEPSEADMVELQNGDLLLTARLDFNQIVNGVNYSPRQQFLSKDGGITWSLLEANNANVFSNISTGTVDASITRFEQSDGSHFLLFTNPQGNPAGTNGRQNLGLWFSFDEGVTWKGPIQLVN---------GASAYSDI-YQ--LDSENAIVIVETDNS-NMRILRMPITLLK---QKLTLSQN";
+        String c4 = "EKSVVFKAEGEHFTDQKGNTIVGSGSGGTTKYFRIPAMCTTSK--GTIVVFADARHNTASDQ---SFIDTAAARSTDGGKTW-NKKIAIYNDRVNSKLSRVMDPTCIVANIQGRETILVMVGKWNNNDKTWG--AYRDKAPDT--DWDLVLYKSTDDGVTFSKVETNIHDIVTKNGTISAMLGGVGSGLQLN---------DGKLVFPVQMVRTKNITTVLNTSFIYSTD-GITWSLPS------------GYCEGFGSENNIIEF-NASLVNNIRNS----------GLRRSFETKDFGKTWTEFPPMDKKV--DNRNHGVQGSTITIPSG---NKLVAAHSSAQNK-NNDYTRSDISLYAHNLYSGEVKLIDDFYPKVGNASGAGYSCLSYRKNVDKETLYVVYEA-NGSIEFQDL--SRHLPVIKSYN-";
+        String d4 = "---VIFRG-----------------------PDRIPSIVASSVTPGVVTAFAEKRVGGGDPGALSNTNDIITRTSRDGGITWDTELNLTEQINVS-DEFDFSDPRPIYDP--SSNTVLVSYARWP-TDAAQNGDRIKP-----WMPNGIFYSVYDVASGNWQAPI---------------VNPGPGHGITLTRQQNISGSQNGRLIYPAIVLDR----FFLNVMSIYSDDGGSNWQTGSTLPIPFRWKSSSILETLEPSEADMVELQNGDLLLTARLDFNQIVNGVNYSPRQQFLSKDGGITWSLLEANNANVFSNISTGTVDASITRFEQSDGS--HFLLFTNPQGNPAGTNGRQNLGLWFSFDEGVTWKGPIQLVNGA-----SAYSDIYQLD---SENAIVIVETDNSNMRILRMPITLLKQKLTLSQN";
+        
+        //prediciton
+        //reference
 
         AliValiAlg test = new AliValiAlg(a4, b4, c4, d4);
 
-        //System.out.println("Speci " + test.getSpeci());
-        //System.out.println("Sensi " + test.getSensi());
-        //System.out.println("Cover " + test.getCover());
-        //System.out.println("MeanS " + test.getMeanS());
-        //System.out.println("Inver " + test.getInver());
+        System.out.println(test.getSensi());
+        System.out.println(test.getSpeci());
+        System.out.println(test.getCover());
+        System.out.println(test.getMeanS());
+        System.out.println(test.getInver());
         
         /*
+           
         String a5 = "CCCCCCHHHHHHCCCCCC";
         String b5 = "---CCCHHCHCHCCC---";
         
@@ -51,18 +55,21 @@ public class App {
         String a9 = "CCCCCCCCHHHHHHHCCHHHHHHHCCCCCEEEEEECCCEECCCEECCEEEEEEEEEEECCCCEEEEEEEEECCCCCCCEEEEEEEEEECCCCCCCCCEEEEECCCCCEEEEEEEEEECCEEEEEECCCCCCCCEEEEEECCCCEEEHHHHHHHHHHCCCCCCEECCCHHHHC";
         String b9 = "--------HHCCCCCCHCHCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCHCCCHCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCHCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCHHCCCCCCCCCCCCCCC--------";
         
+        //prediciton
+        //reference
+         
         StrucValiAlg test2 = new StrucValiAlg (a9,b9);
         
-        System.out.println("Q3 " + test2.getQ3());
-        System.out.println("SOV " + test2.getSOV());
+        System.out.println(test2.getQ3());
+        System.out.println(test2.getSOV());
         
-        System.out.println("QH " + test2.getQH());
-        System.out.println("QE " + test2.getQE());
-        System.out.println("QC " + test2.getQC());
+        System.out.println(test2.getQH());
+        System.out.println(test2.getQE());
+        System.out.println(test2.getQC());
 
-        System.out.println("SOVH " + test2.getSOVH());
-        System.out.println("SOVE " + test2.getSOVE());
-        System.out.println("SOVC " + test2.getSOVC());
+        System.out.println(test2.getSOVH());
+        System.out.println(test2.getSOVE());
+        System.out.println(test2.getSOVC());
         */
     }
 }

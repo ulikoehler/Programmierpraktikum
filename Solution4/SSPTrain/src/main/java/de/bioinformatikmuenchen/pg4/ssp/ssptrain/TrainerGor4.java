@@ -12,45 +12,63 @@ import static de.bioinformatikmuenchen.pg4.ssp.ssptrain.Trainer.convertStructure
  */
 public class TrainerGor4 extends Trainer {
 
-    private int[][][][][][] cMatrix;
+    private long[][][][][][] cMatrix;
 
     @Override
     public void init() {
-        cMatrix = new int[][][][][][];
+        // [amino acid somewhere in window][position of acid somewhere in window][amino acid in the middle][amino acid relative to the middle][position relative to the middle][secondary state in middle] = count
+        cMatrix = new long[Data.aaTable.length][Data.trainingWindowSize][Data.aaTable.length][Data.aaTable.length][Data.trainingWindowSize][Data.secStruct.length];
     }
 
     @Override
     public void train1Example(String aminoSeq, String secStruct) {
         // middle of window
-        char mA = aminoSeq.charAt(Data.prevInWindow);
-        char mSG = secStruct.charAt(Data.prevInWindow);
-        for (int i = 0; i < Data.triaingWindowSize; i++) {
-            char sL = aminoSeq.charAt(i);
-            if (convertASCharToMatrixId(mA) == -1 || convertStructureCharToMatrixId(mSG) == -1 || convertASCharToMatrixId(sL) == -1) {
-                continue;
+        // Note, that Java starts counting by 0 (charAt)!
+        char aaMiddle = aminoSeq.charAt(Data.prevInWindow);
+        char ssMiddle = secStruct.charAt(Data.prevInWindow);
+        // foreach other positions
+        for (int posOtherAa = 0; posOtherAa < Data.trainingWindowSize; posOtherAa++) {
+            char asOther = aminoSeq.charAt(posOtherAa);
+
+            for (int posRel = posOtherAa + 1; posRel < Data.trainingWindowSize; posRel++) {
+                char aaRel = aminoSeq.charAt(posRel);
+
+                if (convertStructureCharToMatrixId(ssMiddle) == -1 || convertASCharToMatrixId(aaMiddle) == -1 || convertASCharToMatrixId(asOther) == -1 || convertASCharToMatrixId(aaRel) == -1) {
+                    continue;
+                }
+                cMatrix[convertASCharToMatrixId(asOther)][posOtherAa][convertASCharToMatrixId(aaMiddle)][convertASCharToMatrixId(aaRel)][posRel][convertStructureCharToMatrixId(ssMiddle)]++;
             }
-            cMatrix[convertASCharToMatrixId(mA)][convertStructureCharToMatrixId(mSG)][i][convertASCharToMatrixId(sL)]++;
         }
     }
 
     @Override
     public String getMatrixRepresentation() {
 
-        String result = "// Matrix 6D (" + Data.AcTable.length + "x" + Data.secStruct.length + "x" + Data.triaingWindowSize + "x" + Data.AcTable.length + ")\n\n";
-        for (int aa = 0; aa < Data.AcTable.length; aa++) {
-            for (int m = 0; m < Data.secStruct.length; m++) {
-                result += "=" + Data.AcTable[aa] + "," + Data.secStruct[m] + "=\n\n";
-                for (int as = 0; as < Data.AcTable.length; as++) {
-                    result += Data.AcTable[as] + "\t";
-                    for (int ws = 0; ws < Data.triaingWindowSize; ws++) {
-                        result += cMatrix[aa][m][ws][as] + "\t";
+        // =State, AS, AS, Pos=
+        //        POS
+        //  AS   count
+
+        StringBuilder result = new StringBuilder("// Matrix6D\n\n");
+
+        for (int ss = 0; ss < Data.secStruct.length; ss++) {
+            for (int aaAbove = 0; aaAbove < Data.aaTable.length; aaAbove++) {
+                for (int aaSom = 0; aaSom < Data.aaTable.length; aaSom++) {
+                    for (int aaSomPos = 0; aaSomPos < Data.trainingWindowSize; aaSomPos++) {
+                        result.append("=").append(Data.secStruct[ss]).append(",").append(Data.aaTable[aaAbove]).append(",").append(Data.aaTable[aaSom]).append(",").append(aaSomPos - Data.prevInWindow).append("=\n\n");
+                        for (int aaRel = 0; aaRel < Data.aaTable.length; aaRel++) {
+                            result.append(Data.aaTable[aaRel]).append("\t");
+                            for (int relPos = 0; relPos < Data.trainingWindowSize; relPos++) {
+                                result.append(cMatrix[aaSom][aaSomPos][aaAbove][aaRel][relPos][ss]).append("\t");
+                            }
+                            result.append('\n');
+                        }
+                        result.append("\n");
                     }
-                    result += "\n";
                 }
-                result += "\n\n";
             }
         }
-        return result;
+
+        return result.toString();
 
     }
 }

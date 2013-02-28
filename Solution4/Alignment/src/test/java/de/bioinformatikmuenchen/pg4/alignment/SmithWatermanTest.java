@@ -38,12 +38,7 @@ public class SmithWatermanTest {
         Sequence seq1 = new Sequence("ACACACTA");
         Sequence seq2 = new Sequence("AGCACACA");
         SmithWaterman instance = new SmithWaterman(AlignmentMode.LOCAL, AlignmentAlgorithm.SMITH_WATERMAN, new MinusOneTwoAlignmentMatrix(), new ConstantGapCost(-1));
-        instance.printMatrix();
-        //Check the edges
-        for (int xy = 0; xy < seq1.getSequence().length(); xy++) {
-            assertEquals(0, instance.getMatrix()[0][xy], 0.00000001);
-            assertEquals(0, instance.getMatrix()[xy][0], 0.00000001);
-        }
+        instance.align(seq1, seq2);
         //Check some other values
         assertArrayEquals(new double[]{0, 2, 1, 0, 2, 1, 2, 1, 2}, instance.getMatrix()[1], 0.000000001);
         assertArrayEquals(new double[]{0, 1, 1, 3, 2, 4, 3, 4, 3}, instance.getMatrix()[2], 0.000000001);

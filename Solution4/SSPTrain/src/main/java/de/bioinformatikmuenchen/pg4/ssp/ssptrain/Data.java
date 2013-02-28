@@ -7,7 +7,7 @@ package de.bioinformatikmuenchen.pg4.ssp.ssptrain;
 public class Data {
     
     
-    public static final int triaingWindowSize = 17;
+    public static final int trainingWindowSize = 17;
     
     /**
      * prevInWindow + middle(1) + rest = trainingWindowSize
@@ -17,7 +17,7 @@ public class Data {
     /**
      * one letter code of all AA
      */
-    final public static char[] AcTable = {
+    final public static char[] aaTable = {
         'A', 'C', 'D', 'E', 'F',
         'G', 'H', 'I', 'K', 'L',
         'M', 'N', 'P', 'Q', 'R',

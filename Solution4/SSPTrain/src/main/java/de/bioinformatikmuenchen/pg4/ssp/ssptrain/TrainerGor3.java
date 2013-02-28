@@ -12,19 +12,19 @@ import static de.bioinformatikmuenchen.pg4.ssp.ssptrain.Trainer.convertStructure
  */
 public class TrainerGor3 extends Trainer {
 
-    private int[][][][] cMatrix;
+    private long[][][][] cMatrix;
 
     @Override
     public void init() {
-        cMatrix = new int[Data.AcTable.length][Data.secStruct.length][Data.triaingWindowSize][Data.AcTable.length];
+        cMatrix = new long[Data.aaTable.length][Data.secStruct.length][Data.trainingWindowSize][Data.aaTable.length];
     }
 
     @Override
     public void train1Example(String aminoSeq, String secStruct) {
         // middle of window
-        char mA = aminoSeq.charAt(Data.prevInWindow);
+        char mA = aminoSeq.charAt(Data.prevInWindow);   // Note, that Java starts counting by 0!
         char mSG = secStruct.charAt(Data.prevInWindow);
-        for (int i = 0; i < Data.triaingWindowSize; i++) {
+        for (int i = 0; i < Data.trainingWindowSize; i++) {
             char sL = aminoSeq.charAt(i);
             if (convertASCharToMatrixId(mA) == -1 || convertStructureCharToMatrixId(mSG) == -1 || convertASCharToMatrixId(sL) == -1) {
                 continue;
@@ -36,21 +36,21 @@ public class TrainerGor3 extends Trainer {
     @Override
     public String getMatrixRepresentation() {
 
-        String result = "// Matrix 4D (" + Data.AcTable.length + "x" + Data.secStruct.length + "x" + Data.triaingWindowSize + "x" + Data.AcTable.length + ")\n\n";
-        for (int aa = 0; aa < Data.AcTable.length; aa++) {
+        StringBuilder result = new StringBuilder("// Matrix4D\n\n");
+        for (int aa = 0; aa < Data.aaTable.length; aa++) {
             for (int m = 0; m < Data.secStruct.length; m++) {
-                result += "=" + Data.AcTable[aa] + "," + Data.secStruct[m] + "=\n\n";
-                for (int as = 0; as < Data.AcTable.length; as++) {
-                    result += Data.AcTable[as] + "\t";
-                    for (int ws = 0; ws < Data.triaingWindowSize; ws++) {
-                        result += cMatrix[aa][m][ws][as] + "\t";
+                result.append("=").append(Data.aaTable[aa]).append(",").append(Data.secStruct[m]).append("=\n\n");
+                for (int as = 0; as < Data.aaTable.length; as++) {
+                    result.append(Data.aaTable[as]).append("\t");
+                    for (int ws = 0; ws < Data.trainingWindowSize; ws++) {
+                        result.append(cMatrix[aa][m][ws][as]).append("\t");
                     }
-                    result += "\n";
+                    result.append("\n");
                 }
-                result += "\n\n";
+                result.append("\n\n");
             }
         }
-        return result;
+        return result.toString();
 
     }
 }
