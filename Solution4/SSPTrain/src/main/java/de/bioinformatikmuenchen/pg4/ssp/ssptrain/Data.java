@@ -8,6 +8,10 @@ public class Data {
     
     
     public static final int triaingWindowSize = 17;
+    
+    /**
+     * prevInWindow + middle(1) + rest = trainingWindowSize
+     */
     public static final int prevInWindow = 8;
     
     /**
