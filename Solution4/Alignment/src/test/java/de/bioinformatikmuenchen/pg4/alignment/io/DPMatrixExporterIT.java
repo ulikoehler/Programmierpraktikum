@@ -12,7 +12,7 @@ import de.bioinformatikmuenchen.pg4.alignment.gap.ConstantGapCost;
 import de.bioinformatikmuenchen.pg4.alignment.recursive.ZeroOneAlignmentMatrix;
 import de.bioinformatikmuenchen.pg4.common.Sequence;
 import java.util.Random;
-
+import static org.mockito.Mockito.*;
 /**
  *
  * @author koehleru
@@ -27,7 +27,10 @@ public class DPMatrixExporterIT {
         instance.setFreeShift(true);
         Sequence seq1Obj = new Sequence("GAATTCAGTTA");
         Sequence seq2Obj = new Sequence("GGATCGA");
-        instance.writeMatrices(null);
+        //mockit    
+        DPMatrixExporter exp = mock(DPMatrixExporter.class);
+        instance.writeMatrices(exp);
+        exp.write(null);
     }
 
     public static void testSomeMethod() {

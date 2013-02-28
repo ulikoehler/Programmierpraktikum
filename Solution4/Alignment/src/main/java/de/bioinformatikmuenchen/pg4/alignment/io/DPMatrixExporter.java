@@ -19,7 +19,7 @@ import java.text.DecimalFormatSymbols;
  *
  * @author koehleru
  */
-public class DPMatrixExporter {
+public class DPMatrixExporter implements IDPMatrixExporter {
 
     public static class DPMatrixInfo {
 
@@ -59,6 +59,7 @@ public class DPMatrixExporter {
         this.matrixDirectory = matrixDir;
     }
 
+    @Override
     public void write(DPMatrixInfo info) throws IOException {
         //Build the filename
         String filename = info.queryId + "-" + info.targetId + (info.matrixPostfix == null ? "" : "-" + info.matrixPostfix);
