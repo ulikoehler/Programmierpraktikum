@@ -19,14 +19,17 @@ public class Gotoh extends AlignmentProcessor {
     private double[][] matrixA;
     private double[][] matrixIn;
     private double[][] matrixDel;
+    private double score;
     //Matrices that save whether any given field got its value from the specified direction
     private boolean[][] leftTopArrows;
     private boolean[][] leftArrows;
     private boolean[][] topArrows;
     private int xSize = -1;
     private int ySize = -1;
-    private String seq1;
-    private String seq2;
+    private String querySequence;
+    private String targetSequence;
+    private String querySequenceId;
+    private String targetSequenceId;
     private boolean freeshift;
     private boolean local;
 
@@ -47,10 +50,15 @@ public class Gotoh extends AlignmentProcessor {
         assert seq1 != null && seq2 != null;
         assert seq1.getSequence().length() > 0;
         assert seq2.getSequence().length() > 0;
-        this.seq1 = seq1.getSequence();
-        this.seq2 = seq2.getSequence();
+        this.querySequence = seq1.getSequence();
+        this.targetSequence = seq2.getSequence();
+        this.querySequenceId = seq1.getId();
+        this.targetSequenceId = seq2.getId();
+        this.xSize = querySequence.length();
+        this.ySize = targetSequence.length();
         initMatrix(seq1.getSequence().length(), seq2.getSequence().length());
         fillMatrix(seq1.getSequence(), seq2.getSequence());
+        this.score = matrixA[xSize-1][ySize-1];
         AlignmentResult result = new AlignmentResult();
         //Calculate the alignment and add it to the result
         result.setAlignments(Collections.singletonList(backTracking()));
@@ -112,6 +120,22 @@ public class Gotoh extends AlignmentProcessor {
 
     @Override
     public void writeMatrices(DPMatrixExporter exporter) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        DPMatrixExporter.DPMatrixInfo info = new DPMatrixExporter.DPMatrixInfo();
+        //Set sequences
+        info.query = querySequence;
+        info.target = targetSequence;
+        //Set IDs
+        info.queryId = querySequenceId;
+        info.targetId = targetSequenceId;
+        info.matrixA = this.matrixA;
+        info.matrixAPostfix = "Gotoh alignment matrix";
+        info.matrixIn = this.matrixIn;
+        info.matrixInPostfix = "Gotoh insertions matrix";
+        info.matrixDel = this.matrixDel;
+        info.matrixDelPostfix = "Gotoh deletions matrix";
+        info.leftArrows = leftArrows;
+        info.topArrows = topArrows;
+        info.topLeftArrows = leftTopArrows;
+        info.score = score;
     }
 }
