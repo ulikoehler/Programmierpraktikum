@@ -129,7 +129,7 @@ public class Train {
         }
         
         if(commandLine.hasOption("window")) {
-            Data.trainingWindowSize = Integer.parseInt(commandLine.getOptionValue("method"));
+            Data.trainingWindowSize = Integer.parseInt(commandLine.getOptionValue("window"));
         }
         
         if(commandLine.hasOption("splitWindow")) {
