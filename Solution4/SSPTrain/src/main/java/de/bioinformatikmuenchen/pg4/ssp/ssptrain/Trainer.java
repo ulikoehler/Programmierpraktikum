@@ -1,12 +1,14 @@
 /*
  * abstract class Trainer
  */
-package de.bioinformaikmuenchen.pg4.ssp.ssptrain;
+package de.bioinformatikmuenchen.pg4.ssp.ssptrain;
 
 import java.io.File;
 import java.io.IOException;
 import java.io.FileReader;
 import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.FileWriter;
 
 /**
  *
@@ -22,7 +24,7 @@ public abstract class Trainer {
         }
         // get data from file
         try {
-            BufferedReader file = new BufferedReader(new FileReader("inputFile"));
+            BufferedReader file = new BufferedReader(new FileReader(inputFile));
             String strLine = "", id = "", aminoSeq = "", secStruct = "";
             while ((strLine = file.readLine()) != null) {
                 if (strLine.startsWith(">")) {
@@ -45,7 +47,7 @@ public abstract class Trainer {
             }
             file.close();
         } catch (IOException err) {
-            System.err.println("ERROR READING INPUT FILE!\n");
+            System.err.println("ERROR READING INPUT FILE!\n" + err.toString());
             System.exit(1);
         }
     }
@@ -54,19 +56,48 @@ public abstract class Trainer {
         if (aminoSeq.length() != secStruct.length()) {
             throw new RuntimeException("Error; AC Sequence and SS Sequence differ in length!");
         }
-        for (int startPos = 0; startPos < aminoSeq.length() - 19; startPos++) {
-            trainOneExample(aminoSeq.substring(startPos, 19), secStruct.substring(startPos, 19));
+        for (int startPos = 0; startPos < aminoSeq.length() - Data.triaingWindowSize + 1; startPos++) {
+            trainOneExample(aminoSeq.substring(startPos, startPos + Data.triaingWindowSize), secStruct.substring(startPos, startPos + Data.triaingWindowSize));
         }
     }
 
     public void trainOneExample(String aminoSeq, String secStruct) {
-        if (aminoSeq.length() != 17 || secStruct.length() != 17) {
-            throw new RuntimeException("Error; AC Sequence and SS Sequence substr didn't have a length of 17!");
+        if (aminoSeq.length() != Data.triaingWindowSize || secStruct.length() != Data.triaingWindowSize) {
+            throw new RuntimeException("Error; AC Sequence and SS Sequence substr didn't have a length of " + Data.triaingWindowSize + " (" + aminoSeq + ", " + secStruct + ")!");
         }
         train1Example(aminoSeq, secStruct);
     }
 
     public abstract void train1Example(String aminoSeq, String secStruct);
 
-    public abstract void writeMatrixToFile(File f);
+    public void writeMatrixToFile(File f) {
+        try {
+            FileWriter fstream = new FileWriter(f);
+            BufferedWriter out = new BufferedWriter(fstream);
+            out.write(getMatrixRepresentation());
+            out.close();
+        } catch (Exception e) {
+            throw new RuntimeException("Error writing to model file! " + e.toString());
+        }
+    }
+
+    public abstract String getMatrixRepresentation();
+
+    public static int convertStructureCharToMatrixId(char x) {
+        for (int i = 0; i < Data.secStruct.length; i++) {
+            if (Data.secStruct[i] == x) {
+                return i;
+            }
+        }
+        return -1;
+    }
+
+    public static int convertASCharToMatrixId(char x) {
+        for (int i = 0; i < Data.AcTable.length; i++) {
+            if (Data.AcTable[i] == x) {
+                return i;
+            }
+        }
+        return -1;
+    }
 }

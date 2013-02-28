@@ -4,6 +4,7 @@ import de.bioinformatikmuenchen.pg4.alignment.gap.ConstantGapCost;
 import de.bioinformatikmuenchen.pg4.alignment.gap.IGapCost;
 import de.bioinformatikmuenchen.pg4.alignment.io.DPMatrixExporter;
 import de.bioinformatikmuenchen.pg4.alignment.io.IAlignmentOutputFormatter;
+import de.bioinformatikmuenchen.pg4.alignment.io.IDPMatrixExporter;
 import de.bioinformatikmuenchen.pg4.common.Sequence;
 import de.bioinformatikmuenchen.pg4.common.alignment.AlignmentResult;
 import de.bioinformatikmuenchen.pg4.common.alignment.SequencePairAlignment;
@@ -17,16 +18,12 @@ import java.util.logging.Logger;
  *
  * @author tobias
  */
-public class Gotoh extends AlignmentProcessor {
+public class GotohGlobal extends AlignmentProcessor {
 
     private double[][] matrixA;
     private double[][] matrixIn;
     private double[][] matrixDel;
     private double score;
-    //Matrices that save whether any given field got its value from the specified direction
-    private boolean[][] leftTopArrows;
-    private boolean[][] leftArrows;
-    private boolean[][] topArrows;
     private int xSize = -1;
     private int ySize = -1;
     private String querySequence;
@@ -36,13 +33,13 @@ public class Gotoh extends AlignmentProcessor {
     private boolean freeshift;
     private boolean local;
 
-    public Gotoh(AlignmentMode mode, AlignmentAlgorithm algorithm, IDistanceMatrix distanceMatrix, IGapCost gapCost) {
+    public GotohGlobal(AlignmentMode mode, AlignmentAlgorithm algorithm, IDistanceMatrix distanceMatrix, IGapCost gapCost) {
         super(mode, algorithm, distanceMatrix, gapCost);
         assert gapCost instanceof ConstantGapCost;
         //AlignmentResult result = new AlignmentResult();
     }
 
-    public Gotoh(AlignmentMode mode, AlignmentAlgorithm algorithm, IDistanceMatrix distanceMatrix, IGapCost gapCost, IAlignmentOutputFormatter outputFormatter) {
+    public GotohGlobal(AlignmentMode mode, AlignmentAlgorithm algorithm, IDistanceMatrix distanceMatrix, IGapCost gapCost, IAlignmentOutputFormatter outputFormatter) {
         super(mode, algorithm, distanceMatrix, gapCost, outputFormatter);
         assert gapCost instanceof ConstantGapCost : "Classic Needleman Wunsch can't use affine gap cost";
         assert algorithm == AlignmentAlgorithm.NEEDLEMAN_WUNSCH;
@@ -84,14 +81,6 @@ public class Gotoh extends AlignmentProcessor {
             matrixIn[0][i] = Double.NaN;
             matrixDel[0][i] = Double.NEGATIVE_INFINITY;
         }
-        //init the three boolean matrices, which "store" the alignment arrows
-        for (int x = 0; x < xSize; x++) {
-            for (int y = 0; y < ySize; y++) {
-                leftArrows[x][y] = false;
-                leftTopArrows[x][y] = false;
-                topArrows[x][y] = false;
-            }
-        }
     }
 
     public void fillMatrix(String seq1, String seq2) {
@@ -103,12 +92,68 @@ public class Gotoh extends AlignmentProcessor {
                 matrixDel[x][y] = Math.max(matrixA[x - 1][y] + gapCost.getGapCost(1), matrixDel[x - 1][y] + gapCost.getGapExtensionPenalty(0, 1));
                 matrixA[x][y] = Math.max(Math.max(matrixIn[x][y], matrixDel[x][y]), matrixA[x - 1][y - 1] + distanceMatrix.distance(seq1.charAt(x - 1), seq2.charAt(y - 1)));
             }
-            //######!!!!!!!set boolean matrices like in NW
         }
     }
 
     public SequencePairAlignment backTracking() {
-        return null;
+        int x = xSize; int y = ySize;
+        StringBuffer queryLine = new StringBuffer(); StringBuffer targetLine = new StringBuffer();
+        while(x!=0 || y!=0){//while the rim of the matrix or its left upper corner is not reached
+            char A = querySequence.charAt(x - 1);
+            char B = targetSequence.charAt(y - 1);
+            if(matrixA[x][y] == matrixA[x-1][y-1] + distanceMatrix.distance(A, B)){
+                queryLine.append(A);
+                targetLine.append(B);
+                x--; y--;
+            }
+            else if(matrixA[x][y] == matrixIn[x][y]){
+                int shift = findK(matrixA[x][y], x, y, true);
+                for (int i = x; i >= (x-shift); i--) {
+                    queryLine.append(querySequence.charAt(i-1));
+                    targetLine.append('-');
+                }
+                x -= shift;
+            }
+            else if(matrixA[x][y] == matrixDel[x][y]){
+                int shift = findK(matrixA[x][y], x, y, false);
+                for (int i = y; i >= (y-shift); i--) {
+                    queryLine.append(querySequence.charAt(i));
+                    targetLine.append('-');
+                }
+                y -= shift;
+            }
+            else{
+                System.out.println("No possibility found to move on (indicates a sure failure)");
+            }
+        }
+        return new SequencePairAlignment(queryLine.reverse().toString(), targetLine.reverse().toString());
+    }
+    
+    private int findK(double entry, int x, int y, boolean insertion){
+        int shift = 0;
+        if(insertion){
+            while(x != 0){
+                if((matrixA[x-1][y] + gapCost.getGapCost(shift+1)) == entry){
+                    shift++;
+                    break;
+                }
+                else{
+                    shift++; x--;
+                }
+            }
+        }
+        else{//Deletion
+            while(x != 0){
+                if((matrixA[x][y-1] + gapCost.getGapCost(shift+1)) == entry){
+                    shift++; break;
+                }
+                else{
+                    shift++; y--;
+                }
+            }
+        }
+        assert shift > 0;
+        return shift;
     }
 
     public boolean setFreeshift(boolean freeshift) {
@@ -122,7 +167,7 @@ public class Gotoh extends AlignmentProcessor {
     }
 
     @Override
-    public void writeMatrices(DPMatrixExporter exporter) {
+    public void writeMatrices(IDPMatrixExporter exporter) {
         DPMatrixExporter.DPMatrixInfo info = new DPMatrixExporter.DPMatrixInfo();
         //Set sequences
         info.query = querySequence;
@@ -130,30 +175,29 @@ public class Gotoh extends AlignmentProcessor {
         //Set IDs
         info.queryId = querySequenceId;
         info.targetId = targetSequenceId;
+        info.xSize = xSize;
+        info.ySize = ySize;
         info.matrix = this.matrixA;
         info.matrixPostfix = "Gotoh alignment matrix";
         try {
             exporter.write(info);
         } catch (IOException ex) {
-            Logger.getLogger(Gotoh.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(GotohGlobal.class.getName()).log(Level.SEVERE, null, ex);
         }
         info.matrix = this.matrixIn;
         info.matrixPostfix = "Gotoh insertions matrix";
         try {
             exporter.write(info);
         } catch (IOException ex) {
-            Logger.getLogger(Gotoh.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(GotohGlobal.class.getName()).log(Level.SEVERE, null, ex);
         }
         info.matrix = this.matrixDel;
         info.matrixPostfix = "Gotoh deletions matrix";
         try {
             exporter.write(info);
         } catch (IOException ex) {
-            Logger.getLogger(Gotoh.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(GotohGlobal.class.getName()).log(Level.SEVERE, null, ex);
         }
-        info.leftArrows = leftArrows;
-        info.topArrows = topArrows;
-        info.topLeftArrows = leftTopArrows;
         info.score = score;
     }
 }

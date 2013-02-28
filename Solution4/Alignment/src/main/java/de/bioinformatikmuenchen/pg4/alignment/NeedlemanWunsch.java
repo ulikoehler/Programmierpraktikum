@@ -7,6 +7,7 @@ import de.bioinformatikmuenchen.pg4.alignment.gap.ConstantGapCost;
 import de.bioinformatikmuenchen.pg4.alignment.gap.IGapCost;
 import de.bioinformatikmuenchen.pg4.alignment.io.DPMatrixExporter;
 import de.bioinformatikmuenchen.pg4.alignment.io.IAlignmentOutputFormatter;
+import de.bioinformatikmuenchen.pg4.alignment.io.IDPMatrixExporter;
 import de.bioinformatikmuenchen.pg4.common.Sequence;
 import java.io.IOException;
 import java.util.Collections;
@@ -85,12 +86,18 @@ public class NeedlemanWunsch extends AlignmentProcessor {
                 matrix[0][i] = gapCost.getGapCost(i);
             }
         }
-        //EXPLICITLY init the matrices
+        //EXPLICITLY init the arrow matrices
         for (int x = 0; x < xSize; x++) {
             for (int y = 0; y < ySize; y++) {
-                leftArrows[x][y] = false;
-                leftTopArrows[x][y] = false;
-                topArrows[x][y] = false;
+                leftArrows[x][y] = (y == 0);//first row --> true
+                leftTopArrows[x][y] = false;//true
+                topArrows[x][y] = (x == 0); //first column --> true
+                //Handle the topleft corner
+                if (x == 0 && y == 0) {
+                    leftArrows[x][y] = false;//first row --> true
+                    leftTopArrows[x][y] = false;//true
+                    topArrows[x][y] = false; //first column --> true
+                }
             }
         }
     }
@@ -140,27 +147,22 @@ public class NeedlemanWunsch extends AlignmentProcessor {
         String targetAlignment = "";
         int x = xSize - 1;
         int y = ySize - 1;
-//        System.out.println("start: "+x+", "+y);
         while (x >= 0 && y >= 0) {
             if (leftTopArrows[x][y]) {
-//                System.out.println("leftTop "+(x-1)+", "+(y-1));
                 queryAlignment += querySequence.charAt(x - 1);
                 targetAlignment += targetSequence.charAt(y - 1);
                 x--;
                 y--;
             } else if (leftArrows[x][y]) {
-//                System.out.println("left "+(x-1)+", "+y);
                 queryAlignment += querySequence.charAt(x - 1);
                 targetAlignment += '-';
                 x--;
             } else if (topArrows[x][y]) {
-//                System.out.println("top "+x+", "+(y-1));
                 queryAlignment += '-';
                 targetAlignment += targetSequence.charAt(y - 1);
                 y--;
             } else if (x == 0) {
                 while (y > 0) {
-//                    System.out.println("top0 "+x+", "+(y-1));
                     queryAlignment += '-';
                     targetAlignment += targetSequence.charAt(y - 1);
                     y--;
@@ -168,7 +170,6 @@ public class NeedlemanWunsch extends AlignmentProcessor {
                 break;
             } else if (y == 0) {
                 while (x > 0) {
-//                    System.out.println("left0 "+(x-1)+", "+y);
                     queryAlignment += querySequence.charAt(x - 1);
                     targetAlignment += '-';
                     x--;
@@ -180,7 +181,7 @@ public class NeedlemanWunsch extends AlignmentProcessor {
         SequencePairAlignment spa = new SequencePairAlignment();
         spa.setQueryAlignment(new StringBuffer(queryAlignment).reverse().toString());
         spa.setTargetAlignment(new StringBuffer(targetAlignment).reverse().toString());
-        return spa;//new SequencePairAlignment(new StringBuffer().reverse().toString(), new StringBuffer(spa.targetAlignment).reverse().toString());
+        return spa;
     }
 
     public boolean setFreeShift(boolean freeShift) {
@@ -189,7 +190,7 @@ public class NeedlemanWunsch extends AlignmentProcessor {
     }
 
     @Override
-    public void writeMatrices(DPMatrixExporter exporter) {
+    public void writeMatrices(IDPMatrixExporter exporter) {
         DPMatrixExporter.DPMatrixInfo info = new DPMatrixExporter.DPMatrixInfo();
         //Set sequences
         info.query = querySequence;
@@ -198,6 +199,8 @@ public class NeedlemanWunsch extends AlignmentProcessor {
         info.queryId = querySequenceId;
         info.targetId = targetSequenceId;
         info.matrix = matrix;
+        info.xSize = xSize;
+        info.ySize = ySize;
         info.matrixPostfix = "matrix";
         info.leftArrows = leftArrows;
         info.topArrows = topArrows;

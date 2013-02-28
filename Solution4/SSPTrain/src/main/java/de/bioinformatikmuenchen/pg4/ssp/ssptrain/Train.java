@@ -28,7 +28,7 @@
  * these help texts. The output of predict.jar must be written to stdout in all
  * cases.
  */
-package de.bioinformaikmuenchen.pg4.ssp.ssptrain;
+package de.bioinformatikmuenchen.pg4.ssp.ssptrain;
 
 import java.io.File;
 import java.io.IOException;
@@ -96,7 +96,7 @@ public class Train {
             String inputModel = commandLine.getOptionValue("model");
             if(IO.isValidFilePathOrName(inputModel)) modelFile = inputModel;
             else {
-                System.err.println("Invalid Model file given!");
+                System.err.println("Invalid model file given!");
                 printUsageAndQuit();
             }
         } else {
@@ -127,13 +127,13 @@ public class Train {
         }
 
         // create a new trainer and let him do his job
-        Trainer myTrainer = new TrainerGor1();
+        Trainer myTrainer;
         if (tmethod == Train.TrainingMethods.GOR1) {
             myTrainer = new TrainerGor1();
         } else if (tmethod == Train.TrainingMethods.GOR3) {
-            //myTrainer = new TrainerGor3();
+            myTrainer = new TrainerGor3();
         } else {
-            //myTrainer = new TrainerGor4();
+            myTrainer = new TrainerGor4();
         }
 
         // let the Trainer train
@@ -157,4 +157,5 @@ public class Train {
                 + "  --model < model file>\tmodel file output\n");
         System.exit(1);
     }
+    
 }

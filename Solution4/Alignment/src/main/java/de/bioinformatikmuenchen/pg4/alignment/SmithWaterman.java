@@ -7,6 +7,7 @@ import de.bioinformatikmuenchen.pg4.alignment.gap.ConstantGapCost;
 import de.bioinformatikmuenchen.pg4.alignment.gap.IGapCost;
 import de.bioinformatikmuenchen.pg4.alignment.io.DPMatrixExporter;
 import de.bioinformatikmuenchen.pg4.alignment.io.IAlignmentOutputFormatter;
+import de.bioinformatikmuenchen.pg4.alignment.io.IDPMatrixExporter;
 import de.bioinformatikmuenchen.pg4.common.Sequence;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -157,7 +158,7 @@ public class SmithWaterman extends AlignmentProcessor {
     }
 
     @Override
-    public void writeMatrices(DPMatrixExporter exporter) {
+    public void writeMatrices(IDPMatrixExporter exporter) {
         DPMatrixExporter.DPMatrixInfo info = new DPMatrixExporter.DPMatrixInfo();
         //Set sequences
         info.query = querySequence;
@@ -166,6 +167,8 @@ public class SmithWaterman extends AlignmentProcessor {
         info.queryId = querySequenceId;
         info.targetId = targetSequenceId;
         info.matrix = matrix;
+        info.xSize = xSize;
+        info.ySize = ySize;
         info.matrixPostfix = "matrix";
         info.leftArrows = leftArrows;
         info.topArrows = topArrows;
@@ -176,5 +179,9 @@ public class SmithWaterman extends AlignmentProcessor {
         } catch (IOException ex) {
             throw new RuntimeException(ex);
         }
+    }
+
+    public double[][] getMatrix() {
+        return matrix;
     }
 }
