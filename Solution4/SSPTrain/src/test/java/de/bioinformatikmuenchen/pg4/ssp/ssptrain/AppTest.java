@@ -1,4 +1,4 @@
-package de.bioinformaikmuenchen.pg4.ssp.ssptrain;
+package de.bioinformatikmuenchen.pg4.ssp.ssptrain;
 
 import junit.framework.Test;
 import junit.framework.TestCase;

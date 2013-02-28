@@ -1,10 +1,14 @@
-package de.bioinformaikmuenchen.pg4.ssp.ssptrain;
+package de.bioinformatikmuenchen.pg4.ssp.ssptrain;
 
 /**
  * 
  * @author spoeri
  */
-public class AminoAcid {
+public class Data {
+    
+    
+    public static final int triaingWindowSize = 17;
+    public static final int prevInWindow = 8;
     
     /**
      * one letter code of all AA
@@ -14,6 +18,10 @@ public class AminoAcid {
         'G', 'H', 'I', 'K', 'L',
         'M', 'N', 'P', 'Q', 'R',
         'S', 'T', 'V', 'W', 'Y',
+    };
+    
+    final public static char[] secStruct = {
+        'C', 'E', 'H'
     };
     
 }

@@ -28,7 +28,7 @@
  * these help texts. The output of predict.jar must be written to stdout in all
  * cases.
  */
-package de.bioinformaikmuenchen.pg4.ssp.ssptrain;
+package de.bioinformatikmuenchen.pg4.ssp.ssptrain;
 
 import java.io.File;
 import java.io.IOException;
@@ -96,7 +96,7 @@ public class Train {
             String inputModel = commandLine.getOptionValue("model");
             if(IO.isValidFilePathOrName(inputModel)) modelFile = inputModel;
             else {
-                System.err.println("Invalid Model file given!");
+                System.err.println("Invalid model file given!");
                 printUsageAndQuit();
             }
         } else {
@@ -131,7 +131,7 @@ public class Train {
         if (tmethod == Train.TrainingMethods.GOR1) {
             myTrainer = new TrainerGor1();
         } else if (tmethod == Train.TrainingMethods.GOR3) {
-            //myTrainer = new TrainerGor3();
+            myTrainer = new TrainerGor3();
         } else {
             //myTrainer = new TrainerGor4();
         }
@@ -156,5 +156,23 @@ public class Train {
                 + "  --method <gor1|gor3|gor4>\tmethod\n"
                 + "  --model < model file>\tmodel file output\n");
         System.exit(1);
+    }
+    
+    public static int convertStructureCharToMatrixId(char x) {
+        for (int i = 0; i < Data.secStruct.length; i++) {
+            if (Data.secStruct[i] == x) {
+                return i;
+            }
+        }
+        throw new RuntimeException("invalid character in structure sequence (" + x + ")!");
+    }
+
+    public static int convertASCharToMatrixId(char x) {
+        for (int i = 0; i < Data.AcTable.length; i++) {
+            if (Data.AcTable[i] == x) {
+                return i;
+            }
+        }
+        throw new RuntimeException("invalid character in amino acid sequence (" + x + ")!");
     }
 }
