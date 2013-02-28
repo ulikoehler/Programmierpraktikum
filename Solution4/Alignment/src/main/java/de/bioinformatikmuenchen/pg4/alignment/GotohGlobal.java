@@ -92,7 +92,6 @@ public class GotohGlobal extends AlignmentProcessor {
                 matrixDel[x][y] = Math.max(matrixA[x - 1][y] + gapCost.getGapCost(1), matrixDel[x - 1][y] + gapCost.getGapExtensionPenalty(0, 1));
                 matrixA[x][y] = Math.max(Math.max(matrixIn[x][y], matrixDel[x][y]), matrixA[x - 1][y - 1] + distanceMatrix.distance(seq1.charAt(x - 1), seq2.charAt(y - 1)));
             }
-            //######!!!!!!!set boolean matrices like in NW
         }
     }
 
@@ -121,17 +120,39 @@ public class GotohGlobal extends AlignmentProcessor {
                     queryLine.append(querySequence.charAt(i));
                     targetLine.append('-');
                 }
+                y -= shift;
+            }
+            else{
+                System.out.println("No possibility found to move on (indicates a sure failure)");
             }
         }
     }
     
     private int findK(double entry, int x, int y, boolean insertion){
+        int shift = 0;
         if(insertion){
-            
+            while(x != 0){
+                if((matrixA[x-1][y] + gapCost.getGapCost(shift+1)) == entry){
+                    shift++;
+                    break;
+                }
+                else{
+                    shift++; x--;
+                }
+            }
         }
         else{//Deletion
-            
+            while(x != 0){
+                if((matrixA[x][y-1] + gapCost.getGapCost(shift+1)) == entry){
+                    shift++; break;
+                }
+                else{
+                    shift++; y--;
+                }
+            }
         }
+        assert shift > 0;
+        return shift;
     }
 
     public boolean setFreeshift(boolean freeshift) {
