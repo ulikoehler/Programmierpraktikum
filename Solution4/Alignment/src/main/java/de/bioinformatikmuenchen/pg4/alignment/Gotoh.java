@@ -131,6 +131,8 @@ public class Gotoh extends AlignmentProcessor {
             char A = querySequence.charAt(x - 1);
             char B = targetSequence.charAt(y - 1);
             if(matrixA[x][y] == matrixA[x-1][y-1] + distanceMatrix.distance(A, B)){
+                leftTopPath[x][y] = true;
+                hasPath[x][y] = true;
                 queryLine.append(A);
                 targetLine.append(B);
                 x--; y--;
@@ -138,6 +140,8 @@ public class Gotoh extends AlignmentProcessor {
             else if(matrixA[x][y] == matrixIn[x][y]){
                 int shift = findK(matrixA[x][y], x, y, true);
                 for (int i = x; i >= (x-shift); i--) {
+                    leftPath[i][y] = true;
+                    hasPath[i][y] = true;
                     queryLine.append(querySequence.charAt(i-1));
                     targetLine.append('-');
                 }
@@ -146,6 +150,8 @@ public class Gotoh extends AlignmentProcessor {
             else if(matrixA[x][y] == matrixDel[x][y]){
                 int shift = findK(matrixA[x][y], x, y, false);
                 for (int i = y; i >= (y-shift); i--) {
+                    topPath[x][i] = true;
+                    hasPath[x][i] = true;
                     queryLine.append(querySequence.charAt(i));
                     targetLine.append('-');
                 }
@@ -165,6 +171,8 @@ public class Gotoh extends AlignmentProcessor {
             char A = querySequence.charAt(x - 1);
             char B = targetSequence.charAt(y - 1);
             if(matrixA[x][y] == matrixA[x-1][y-1] + distanceMatrix.distance(A, B)){
+                leftTopPath[x][y] = true;
+                hasPath[x][y] = true;
                 queryLine.append(A);
                 targetLine.append(B);
                 x--; y--;
@@ -172,6 +180,8 @@ public class Gotoh extends AlignmentProcessor {
             else if(matrixA[x][y] == matrixIn[x][y]){
                 int shift = findK(matrixA[x][y], x, y, true);
                 for (int i = x; i >= (x-shift); i--) {
+                    leftPath[i][y] = true;
+                    hasPath[i][y] = true;
                     queryLine.append(querySequence.charAt(i-1));
                     targetLine.append('-');
                 }
@@ -180,6 +190,8 @@ public class Gotoh extends AlignmentProcessor {
             else if(matrixA[x][y] == matrixDel[x][y]){
                 int shift = findK(matrixA[x][y], x, y, false);
                 for (int i = y; i >= (y-shift); i--) {
+                    topPath[x][i] = true;
+                    hasPath[x][i] = true;
                     queryLine.append(querySequence.charAt(i));
                     targetLine.append('-');
                 }

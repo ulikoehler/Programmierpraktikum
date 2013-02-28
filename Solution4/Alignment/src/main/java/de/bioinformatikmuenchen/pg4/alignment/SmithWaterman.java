@@ -130,17 +130,23 @@ public class SmithWaterman extends AlignmentProcessor {
         String targetAlignment = "";
         while (x >= 0 && y >= 0 && matrix[x][y] != 0) {
             if (leftTopArrows[x][y]) {
+                leftTopPath[x][y] = true;
+                hasPath[x][y] = true;
                 queryAlignment += querySequence.charAt(x - 1);
                 targetAlignment += targetSequence.charAt(y - 1);
                 x--;
                 y--;
             }
             if (leftArrows[x][y]) {
+                topPath[x][y] = true;
+                hasPath[x][y] = true;
                 queryAlignment += querySequence.charAt(x - 1);
                 targetAlignment += '-';
                 y--;
             }
             if (topArrows[x][y]) {
+                leftPath[x][y] = true;
+                hasPath[x][y] = true;
                 queryAlignment += '-';
                 targetAlignment += targetSequence.charAt(y - 1);
                 x--;
