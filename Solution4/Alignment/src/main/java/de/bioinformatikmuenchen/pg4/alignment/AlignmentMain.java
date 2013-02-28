@@ -16,6 +16,7 @@ import de.bioinformatikmuenchen.pg4.alignment.pairfile.PairfileEntry;
 import de.bioinformatikmuenchen.pg4.alignment.pairfile.PairfileParser;
 import de.bioinformatikmuenchen.pg4.alignment.recursive.RecursiveNWAlignmentProcessor;
 import de.bioinformatikmuenchen.pg4.common.Sequence;
+import de.bioinformatikmuenchen.pg4.common.alignment.SequencePairAlignment;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
@@ -53,7 +54,7 @@ public class AlignmentMain {
                 .addOption("u", "nw", false, "Use Needleman-Wunsch")
                 .addOption("b", "benchmark", false, "Benchmark the selected algorithm versus the recursive Needleman-Wunsch")
                 .addOption("v", "verbose", false, "Print verbose status reports (on stderr)")
-                .addOption("c", "check", true, "Calculate checkscores")
+                .addOption("c", "check", false, "Calculate checkscores")
                 .addOption("f", "format", true, "format");
         //Parse the opts
         final CommandLineParser cmdLinePosixParser = new PosixParser();
@@ -212,6 +213,7 @@ public class AlignmentMain {
         boolean benchmark = commandLine.hasOption("benchmark");
         //verbose
         boolean verbose = commandLine.hasOption("verbose");
+        boolean calculateCheckscores = commandLine.hasOption("check");
         //
         //Inter-argument cheks
         //
@@ -258,9 +260,19 @@ public class AlignmentMain {
             }
             //Calculate the alignment
             AlignmentResult result = proc.align(seq1, seq2);
-            //
-            //Print all alignments (usually one)
-            formatter.formatAndPrint(result);
+            //Either --check and print only incorrect alignment or print all
+            if (calculateCheckscores) {
+                for(SequencePairAlignment alignment : result.getAlignments()) {
+                    double checkScore = CheckScoreCalculator.calculateCheckScoreAffine(mode, alignment, matrix, gapCost);
+                    if(Math.abs(checkScore - result.getScore()) > 0.000000001) {
+                        //Check failed, print failed sequences
+                        formatter.formatAndPrint(result);
+                    }
+                }
+            } else {
+                //Print all alignments (usually one)
+                formatter.formatAndPrint(result);
+            }
             //Write the dynamic programming matrix if applicable 
             if (dpMatrixDir != null) {
                 proc.writeMatrices(matrixExporter);
