@@ -37,6 +37,7 @@ import org.apache.commons.cli.CommandLineParser;
 import org.apache.commons.cli.PosixParser;
 import org.apache.commons.cli.Options;
 import org.apache.commons.cli.ParseException;
+import de.bioinformatikmuenchen.pg4.common.util.IO;
 
 /**
  * SSP Train
@@ -81,60 +82,25 @@ public class Train {
             printUsageAndQuit();
         }
 
-        // 
-        // check for valid options
-        // 
-
-        // first the database
-        String db = "";
-        File dbFile = new File("");
-        if (commandLine.hasOption("db")) {
-            // option db has been declared => check if valid
-            db = commandLine.getOptionValue("db");
-            // check if db is valid path
-            dbFile = new File(db);
-            try {
-                dbFile.getCanonicalPath();
-            } catch (IOException e) {
-                System.err.println("ERROR INVALID PATH @OPTION DB!");
-                printUsageAndQuit();
-            }
-            // file exists
-            if (!dbFile.exists()) {
-                System.err.println("ERROR DB FILE DOESN'T EXISTS!");
-                printUsageAndQuit();
-            }
-            // file readable
-            if (!dbFile.canRead()) {
-                System.err.println("ERROR CAN'T READ FROM DB FILE!");
-                printUsageAndQuit();
-            }
+        String dbFile = "";
+        if(commandLine.hasOption("db")) {
+            String inputDb = commandLine.getOptionValue("db");
+            dbFile = IO.isExistingReadableFileOrQuit(inputDb, "File " + inputDb + " isn't a valid File or doesn't exist!");
         } else {
-            System.err.println("ERROR DB FILE NOT SPEC!");
+            System.err.println("No db File spec!");
             printUsageAndQuit();
         }
-
-        String model = "";
-        File modelFile = new File("");
-        // second check if method is valid
-        if (commandLine.hasOption("model")) {
-            // option model has been declared => check if valid
-            model = commandLine.getOptionValue("model");
-            // check if db is valid path
-            modelFile = new File(model);
-            try {
-                modelFile.getCanonicalPath();
-            } catch (IOException e) {
-                System.err.println("ERROR INVALID PATH @OPTION MODEL!");
-                printUsageAndQuit();
-            }
-            // check if accessable
-            if (modelFile.exists() && !modelFile.canWrite()) {
-                System.err.println("ERROR CAN'T WRITE TO MODEL FILE!");
+        
+        String modelFile = "";
+        if(commandLine.hasOption("model")) {
+            String inputModel = commandLine.getOptionValue("model");
+            if(IO.isValidFilePathOrName(inputModel)) modelFile = inputModel;
+            else {
+                System.err.println("Invalid Model file given!");
                 printUsageAndQuit();
             }
         } else {
-            System.err.println("ERROR MODEL FILE NOT SPEC!");
+            System.err.println("No model File spec!");
             printUsageAndQuit();
         }
 
@@ -161,22 +127,24 @@ public class Train {
         }
 
         // create a new trainer and let him do his job
-        Trainer myTrainer;
+        Trainer myTrainer = new TrainerGor1();
         if (tmethod == Train.TrainingMethods.GOR1) {
             myTrainer = new TrainerGor1();
         } else if (tmethod == Train.TrainingMethods.GOR3) {
-            myTrainer = new TrainerGor3();
+            //myTrainer = new TrainerGor3();
         } else {
-            myTrainer = new TrainerGor4();
+            //myTrainer = new TrainerGor4();
         }
 
-        // give the trainer the data he requires
-        myTrainer.inputFile = dbFile;
-        myTrainer.outputFile = modelFile;
-
         // let the Trainer train
-        myTrainer.trainMatrix();
-        myTrainer.printMatrixToBash();
+        try {
+            myTrainer.init();
+            myTrainer.parseFileAndTrain(new File(dbFile));  // give the trainer the data he requires
+            myTrainer.writeMatrixToFile(new File(modelFile));
+        } catch(RuntimeException e) {
+            System.err.println("Trainingerror: " + e.getMessage());
+            System.exit(1);
+        }
 
     }
 

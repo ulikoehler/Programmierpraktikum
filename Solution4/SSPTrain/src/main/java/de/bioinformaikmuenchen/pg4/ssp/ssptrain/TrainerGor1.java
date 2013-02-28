@@ -2,6 +2,7 @@
  * GOR1 Trainer
  */
 package de.bioinformaikmuenchen.pg4.ssp.ssptrain;
+import java.io.File;
 
 /**
  *
@@ -9,17 +10,40 @@ package de.bioinformaikmuenchen.pg4.ssp.ssptrain;
  */
 public class TrainerGor1 extends Trainer {
 
-    public int[][][] matrix = new int[3][19][20];
+    private int[][][] matrix = new int[3][17][20];
+
+    private static int convertStructureCharToMatrixId(char x) {
+        if (x == 'C') {
+            return 0;
+        } else if (x == 'E') {
+            return 1;
+        } else if (x == 'H') {
+            return 2;
+        }
+        throw new RuntimeException("invalid character in structure sequence!");
+    }
     
+    private static int convertASCharToMatrixId(char x) {
+        for(int i = 0; i < AminoAcid.AcTable.length; i++) {
+            if(AminoAcid.AcTable[i] == x)
+                return i;
+        }
+        throw new RuntimeException("invalid character in amino acid sequence!");
+    }
+
     @Override
-    public void trainMatrix() {
+    public void init() {
         
     }
 
     @Override
-    public void parseAminoSeq(String id, String aminoSeq, String SecStruct) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    public void train1Example(String aminoSeq, String secStruct) {
+        System.out.println(aminoSeq + " <-> " + secStruct);
     }
 
-    
+    @Override
+    public void writeMatrixToFile(File f) {
+        
+    }
+
 }

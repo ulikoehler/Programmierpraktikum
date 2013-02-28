@@ -35,7 +35,7 @@
  */
 package de.bioinformaikmuenchen.pg4.ssp.ssppredict;
 
-import de.bioinformatikmuenchen.pg4.common.AminoAcid;
+import de.bioinformaikmuenchen.pg4.ssp.ssptrain.AminoAcid;
 
 /**
  * SSP Prediction
