@@ -1,7 +1,7 @@
 package de.bioinformatikmuenchen.pg4.alignment;
 
+import com.google.common.collect.Lists;
 import de.bioinformatikmuenchen.pg4.common.alignment.AlignmentResult;
-import de.bioinformatikmuenchen.pg4.common.alignment.SequencePairAlignment;
 import de.bioinformatikmuenchen.pg4.common.distance.IDistanceMatrix;
 import de.bioinformatikmuenchen.pg4.common.distance.QUASARDistanceMatrixFactory;
 import de.bioinformatikmuenchen.pg4.common.sequencesource.ISequenceSource;
@@ -14,16 +14,21 @@ import de.bioinformatikmuenchen.pg4.alignment.io.DPMatrixExporter;
 import de.bioinformatikmuenchen.pg4.alignment.io.IAlignmentOutputFormatter;
 import de.bioinformatikmuenchen.pg4.alignment.pairfile.PairfileEntry;
 import de.bioinformatikmuenchen.pg4.alignment.pairfile.PairfileParser;
+import de.bioinformatikmuenchen.pg4.alignment.recursive.RecursiveNWAlignmentProcessor;
 import de.bioinformatikmuenchen.pg4.common.Sequence;
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.Collection;
+import java.util.List;
 import org.apache.commons.cli.CommandLine;
 import org.apache.commons.cli.CommandLineParser;
 import org.apache.commons.cli.HelpFormatter;
 import org.apache.commons.cli.Options;
 import org.apache.commons.cli.ParseException;
 import org.apache.commons.cli.PosixParser;
+import org.apache.commons.io.FileUtils;
+import org.apache.commons.io.IOUtils;
 
 /**
  * Hello world!
@@ -47,6 +52,8 @@ public class AlignmentMain {
                 .addOption("m", "matrixname", true, "matrixname")
                 .addOption("s", "mode", true, "mode")
                 .addOption("u", "nw", false, "Use Needleman-Wunsch")
+                .addOption("b", "benchmark", false, "Benchmark the selected algorithm versus the recursive Needleman-Wunsch")
+                .addOption("v", "verbose", false, "Print verbose status reports (on stderr)")
                 .addOption("c", "check", true, "Calculate checkscores")
                 .addOption("f", "format", true, "format");
         //Parse the opts
@@ -202,12 +209,26 @@ public class AlignmentMain {
         } else {
             algorithm = AlignmentAlgorithm.GOTOH;
         }
+        //benchmark
+        boolean benchmark = commandLine.hasOption("benchmark");
+        //verbose
+        boolean verbose = commandLine.hasOption("verbose");
         //
         //Inter-argument cheks
         //
         boolean haveAffineGapCost = (gapOpen - gapExtend) > 0.00000001;
         //TODO TEMPORARY assertion until it's impl
         assert !haveAffineGapCost;
+        //If a DP matrix dir is set, we need to copy the SVG graphics there
+        if (dpMatrixDir != null) {
+            for (String filename : Lists.newArrayList("T.svg", "L.svg", "LT.svg")) {
+                InputStream istream = AlignmentMain.class.getResourceAsStream("/graphics/" + filename);
+                //Read it...
+                List<String> lines = IOUtils.readLines(istream);
+                //And write it right away
+                FileUtils.writeLines(new File(dpMatrixDir, filename), lines);
+            }
+        }
         //
         // Read & Collect helper objects
         //
@@ -220,17 +241,40 @@ public class AlignmentMain {
         DPMatrixExporter matrixExporter = new DPMatrixExporter(dpMatrixDir, outputFormat);
         //Create the processor
         AlignmentProcessor proc = AlignmentProcessorFactory.factorize(mode, algorithm, matrix, gapCost);
+        //Handle possible benchmarks if applicable -- benchmark to recursive NW
+        if (benchmark) {
+            if (verbose) {
+                System.err.println("Benchmarking...");
+            }
+            proc = new AlignmentProcessorBenchmarkController(proc, new RecursiveNWAlignmentProcessor(mode, algorithm, matrix, gapCost));
+            ((AlignmentProcessorBenchmarkController) proc).setVerbose(verbose);
+        }
         for (PairfileEntry entry : pairfileEntries) {
             //Get the sequences
             Sequence seq1 = sequenceSource.getSequence(entry.first);
             Sequence seq2 = sequenceSource.getSequence(entry.second);
+            //Print status if in verbose mode
+            if (verbose) {
+                System.err.println("Aligning " + seq1.getId() + " and " + seq2.getId() + "...");
+            }
+            //Calculate the alignment
             AlignmentResult result = proc.align(seq1, seq2);
+            //
             //Print all alignments (usually one)
             formatter.formatAndPrint(result);
             //Write the dynamic programming matrix if applicable 
             if (dpMatrixDir != null) {
                 proc.writeMatrices(matrixExporter);
             }
+        }
+        //Print the benchmark results if there are any benchmarks
+        if (benchmark) {
+            AlignmentProcessorBenchmarkController benchmarkController = ((AlignmentProcessorBenchmarkController) proc);
+            long align1Time = benchmarkController.getAp1AlignTime();
+            long align2Time = benchmarkController.getAp1AlignTime();
+            System.err.println("Main algorithm " + benchmarkController.getAp1ClassName() + " vs Recursive Needleman Wunsch:");
+            System.err.println("\t" + benchmarkController.getAp1ClassName() + " took " + align1Time + " ms");
+            System.err.println("\t Recursive Needleman Wunsch took " + align2Time + " ms");
         }
     }
 

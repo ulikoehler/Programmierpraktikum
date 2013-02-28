@@ -11,6 +11,8 @@ import de.bioinformatikmuenchen.pg4.common.alignment.AlignmentResult;
  * @author koehleru
  */
 public interface IAlignmentOutputFormatter {
+
     String format(AlignmentResult result);
+
     void formatAndPrint(AlignmentResult result);
 }
