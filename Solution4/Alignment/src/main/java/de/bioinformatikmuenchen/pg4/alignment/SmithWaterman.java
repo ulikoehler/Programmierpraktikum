@@ -8,6 +8,7 @@ import de.bioinformatikmuenchen.pg4.alignment.gap.IGapCost;
 import de.bioinformatikmuenchen.pg4.alignment.io.DPMatrixExporter;
 import de.bioinformatikmuenchen.pg4.alignment.io.IAlignmentOutputFormatter;
 import de.bioinformatikmuenchen.pg4.common.Sequence;
+import java.io.IOException;
 import java.util.ArrayList;
 
 public class SmithWaterman extends AlignmentProcessor {
@@ -170,5 +171,10 @@ public class SmithWaterman extends AlignmentProcessor {
         info.topArrows = topArrows;
         info.topLeftArrows = leftTopArrows;
         info.score = score;
+        try {
+            exporter.write(info);
+        } catch (IOException ex) {
+            throw new RuntimeException(ex);
+        }
     }
 }
