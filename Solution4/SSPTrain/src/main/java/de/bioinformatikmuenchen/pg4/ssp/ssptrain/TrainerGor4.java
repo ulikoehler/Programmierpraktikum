@@ -73,7 +73,7 @@ public class TrainerGor4 extends Trainer {
             }
         }
 
-        result.append("+++++++++++++++++++++++++++\n\n/");
+        result.append("+++++++++++++++++++++++++++\n\n");
         result.append(train.getMatrixRepresentation());
 
         return result.toString();

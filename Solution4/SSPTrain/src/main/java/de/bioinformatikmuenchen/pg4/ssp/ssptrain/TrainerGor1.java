@@ -35,7 +35,7 @@ public class TrainerGor1 extends Trainer {
 
     @Override
     public String getMatrixRepresentation() {
-
+        
         StringBuilder result = new StringBuilder("// Matrix3D\n\n");
         for (int m = 0; m < Data.secStruct.length; m++) {
             result.append("=").append(Data.secStruct[m]).append("=\n\n");
