@@ -32,6 +32,10 @@ public class Gotoh extends AlignmentProcessor {
     private String targetSequenceId;
     private boolean freeshift = false;
     private boolean local = false;
+    boolean[][] leftPath;
+    boolean[][] leftTopPath;
+    boolean[][] topPath;
+    boolean[][] hasPath;
 
     public Gotoh(AlignmentMode mode, AlignmentAlgorithm algorithm, IDistanceMatrix distanceMatrix, IGapCost gapCost) {
         super(mode, algorithm, distanceMatrix, gapCost);
@@ -86,6 +90,15 @@ public class Gotoh extends AlignmentProcessor {
         for (int i = 1  ; i < ySize; i++) {
             matrixIn[0][i] = Double.NaN;
             matrixDel[0][i] = Double.NEGATIVE_INFINITY;
+        }
+        //init the boolean[][] arrays which store the path taken by the backtracking algorithm
+        for (int x = 0; x < xSize; x++) {
+            for (int y = 0; y < ySize; y++) {
+                leftPath[x][y] = false;
+                leftTopPath[x][y] = false;
+                topPath[x][y] = false;
+                hasPath[x][y] = false;
+            }
         }
     }
 
