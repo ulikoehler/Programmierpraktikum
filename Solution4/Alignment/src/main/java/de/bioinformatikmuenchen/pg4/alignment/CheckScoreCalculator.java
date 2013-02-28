@@ -66,7 +66,7 @@ public class CheckScoreCalculator {
         String ta = alignment.getTargetAlignment();
         double score = 0;
         //Remove gaps at the beginning/end for local & freeshift
-        if (mode == AlignmentMode.LOCAL || mode == AlignmentMode.FREESHIFT) {
+        if (mode == AlignmentMode.LOCAL) {
             String[] vals = stripStartAndEndGaps(qa, ta);
             qa = vals[0];
             ta = vals[1];
