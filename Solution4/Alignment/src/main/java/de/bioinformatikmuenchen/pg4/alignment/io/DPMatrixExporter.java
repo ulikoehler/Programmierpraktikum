@@ -39,6 +39,11 @@ public class DPMatrixExporter implements IDPMatrixExporter {
 
         public DPMatrixInfo() {
         }
+
+        @Override
+        public String toString() {
+            return "DPMatrixInfo{" + "query=" + query + ", queryId=" + queryId + ", target=" + target + ", targetId=" + targetId + ", xSize=" + xSize + ", ySize=" + ySize + ", matrixPostfix=" + matrixPostfix + ", score=" + score + ", matrix=" + matrix + ", topLeftArrows=" + topLeftArrows + ", leftArrows=" + leftArrows + ", topArrows=" + topArrows + '}';
+        }
     }
     private AlignmentOutputFormat outputFormat; //HTML or 'something else'
     private File matrixDirectory = null;
@@ -107,6 +112,7 @@ public class DPMatrixExporter implements IDPMatrixExporter {
         StringBuilder builder = new StringBuilder();
         if (writeHead) {
             builder.append("<html><head>");
+            builder.append("<meta name=\"viewport\" content=\"width=device-width;minimum-scale=0.5,maximum-scale=1.0; user-scalable=1;\" />");
             builder.append("<style type=\"text/css\">");
             builder.append(".container {border: thin;border-style:solid;width:80px !important;height:80px !important;position:relative;display:inline-block;}\n");
             builder.append(".matrix-element {font-size:130%;text-align: center;display:table-cell;vertical-align: middle;}\n");

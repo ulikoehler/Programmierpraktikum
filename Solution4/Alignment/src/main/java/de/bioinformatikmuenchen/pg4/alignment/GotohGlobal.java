@@ -175,6 +175,8 @@ public class GotohGlobal extends AlignmentProcessor {
         //Set IDs
         info.queryId = querySequenceId;
         info.targetId = targetSequenceId;
+        info.xSize = xSize;
+        info.ySize = ySize;
         info.matrix = this.matrixA;
         info.matrixPostfix = "Gotoh alignment matrix";
         try {

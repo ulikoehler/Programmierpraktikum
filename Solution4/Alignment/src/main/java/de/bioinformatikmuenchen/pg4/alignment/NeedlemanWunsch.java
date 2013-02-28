@@ -86,12 +86,18 @@ public class NeedlemanWunsch extends AlignmentProcessor {
                 matrix[0][i] = gapCost.getGapCost(i);
             }
         }
-        //EXPLICITLY init the matrices
+        //EXPLICITLY init the arrow matrices
         for (int x = 0; x < xSize; x++) {
             for (int y = 0; y < ySize; y++) {
-                leftArrows[x][y] = false;
-                leftTopArrows[x][y] = false;
-                topArrows[x][y] = false;
+                leftArrows[x][y] = (y == 0);//first row --> true
+                leftTopArrows[x][y] = false;//true
+                topArrows[x][y] = (x == 0); //first column --> true
+                //Handle the topleft corner
+                if (x == 0 && y == 0) {
+                    leftArrows[x][y] = false;//first row --> true
+                    leftTopArrows[x][y] = false;//true
+                    topArrows[x][y] = false; //first column --> true
+                }
             }
         }
     }
@@ -193,6 +199,8 @@ public class NeedlemanWunsch extends AlignmentProcessor {
         info.queryId = querySequenceId;
         info.targetId = targetSequenceId;
         info.matrix = matrix;
+        info.xSize = xSize;
+        info.ySize = ySize;
         info.matrixPostfix = "matrix";
         info.leftArrows = leftArrows;
         info.topArrows = topArrows;

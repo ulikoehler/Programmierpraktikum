@@ -167,6 +167,8 @@ public class SmithWaterman extends AlignmentProcessor {
         info.queryId = querySequenceId;
         info.targetId = targetSequenceId;
         info.matrix = matrix;
+        info.xSize = xSize;
+        info.ySize = ySize;
         info.matrixPostfix = "matrix";
         info.leftArrows = leftArrows;
         info.topArrows = topArrows;
@@ -177,5 +179,9 @@ public class SmithWaterman extends AlignmentProcessor {
         } catch (IOException ex) {
             throw new RuntimeException(ex);
         }
+    }
+
+    public double[][] getMatrix() {
+        return matrix;
     }
 }
