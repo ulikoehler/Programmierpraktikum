@@ -9,6 +9,7 @@ import de.bioinformatikmuenchen.pg4.alignment.gap.ConstantGapCost;
 import de.bioinformatikmuenchen.pg4.alignment.gap.IGapCost;
 import de.bioinformatikmuenchen.pg4.common.Sequence;
 import de.bioinformatikmuenchen.pg4.common.alignment.AlignmentResult;
+import de.bioinformatikmuenchen.pg4.common.alignment.SequencePairAlignment;
 import de.bioinformatikmuenchen.pg4.common.distance.IDistanceMatrix;
 import de.bioinformatikmuenchen.pg4.common.distance.QUASARDistanceMatrixFactory;
 import java.io.IOException;
@@ -75,6 +76,7 @@ public class GotohTest {
         AlignmentResult result = instance.align(seq1Obj, seq2Obj);
         assertEquals(4.70, result.getScore(), 0.00000001);
     }
+
     /**
      * Real world example from sanity.pairs that hasn't worked somewhen -- Not
      * sure if this is for Goto, so doublechekc
@@ -89,6 +91,65 @@ public class GotohTest {
         Gotoh instance = new Gotoh(AlignmentMode.GLOBAL, AlignmentAlgorithm.GOTOH, matrix, gapCost);
         AlignmentResult result = instance.align(seq1Obj, seq2Obj);
         assertEquals(-19.2, result.getScore(), 0.00000001);
+    }
+
+    /**
+     * Real world example from sanity.pairs that hasn't worked somewhen -- Not
+     * sure if this is for Goto, so doublechekc
+     */
+    @Test
+    public void testAlignmentResult() throws IOException {
+        //1m9sA02  1p9mC01
+        IDistanceMatrix matrix = QUASARDistanceMatrixFactory.factorize(new InputStreamReader(NeedlemanWunschTest.class.getResourceAsStream("/matrices/dayhoff.mat")));
+        Sequence seq1Obj = new Sequence("GPLDVQVTEDAVRRYLTRKPMTTKDLLKKFQTKKTGLSSEQTVNVLAQILKRLNPERKMINDKMHFSLK");
+        Sequence seq2Obj = new Sequence("MEEAKQKVVDFLNSKSKSKFYFNDFTDLFPDMKQREVKKILTALVNDEVLEYWSSGSTTMYGLKG");
+        IGapCost gapCost = new AffineGapCost(-12, -1);
+        int correctAlignmentLength = "GPLDVQVTEDAVRRYLTRKPMTTKDLLKKFQTKKTGLSSEQTVNVLAQILKRLNPERKMINDKMHFSLK-".length();
+        Gotoh instance = new Gotoh(AlignmentMode.GLOBAL, AlignmentAlgorithm.GOTOH, matrix, gapCost);
+        AlignmentResult result = instance.align(seq1Obj, seq2Obj);
+        SequencePairAlignment alignment = result.getFirstAlignment();
+        assertEquals(4.900, result.getScore(), 0.00000001);
+        String exp1 = "GPLDVQVTEDAVRRYLTRKPMTTKDLLKKFQTKKTGLSSEQTVNVLAQILKRLNPERKMINDKMHFSLK-";
+        String exp2 = "----MEEAKQKVVDFLNSKSK-SKFYFNDFTDLFPDMKQREVKKILTALVNDEVLEYWSSGSTTMYGLKG";
+        System.out.println("A1: " + alignment.queryAlignment);
+        System.out.println("E1: " + exp1);
+        System.out.println("A2: " + alignment.targetAlignment);
+        System.out.println("E2: " + exp2);
+        assertEquals(correctAlignmentLength, alignment.queryAlignment.length());
+        assertEquals(correctAlignmentLength, alignment.targetAlignment.length());
+        assertEquals(4.900, CheckScoreCalculator.calculateCheckScoreAffine(AlignmentMode.GLOBAL, alignment, matrix, gapCost), 0.00000001);
+        assertEquals(exp1, alignment.queryAlignment);
+        assertEquals(exp2, alignment.targetAlignment);
+    }
+
+    /**
+     * Real world example from sanity.pairs that hasn't worked somewhen -- Not
+     * sure if this is for Goto, so doublechekc
+     */
+    @Test
+    public void testAlignmentResult2() throws IOException {
+        //1m9sA02  1p9mC01
+        IDistanceMatrix matrix = QUASARDistanceMatrixFactory.factorize(new InputStreamReader(NeedlemanWunschTest.class.getResourceAsStream("/matrices/dayhoff.mat")));
+        Sequence seq1Obj = new Sequence("TPSMEDYIEQIYMLIEEKGYARVSDIAEALAVHPSSVTKMVQKLDKDEYLIYGLVLTSKGKKIGKR");
+        Sequence seq2Obj = new Sequence("MKYNNHDKIRDFIIIEAYMFRFKKKVKPEVDMTIKEFILLTYLFHQQENTLPFKKIVSDLCYKQSDLVQHIKVLVKHSYISKVRSKIDERNTYISISEEQREKIAERVTLFDQIIKQFNLADQSES");
+        IGapCost gapCost = new AffineGapCost(-12, -1);
+        int correctAlignmentLength = "TP------------------------------SMEDYIEQIYMLIEEKGYARVSDIAEALAVHPSSVTKMVQKLDKDEYL-----------IYGLVLTSKGKKIGKR-------------------".length();
+        Gotoh instance = new Gotoh(AlignmentMode.GLOBAL, AlignmentAlgorithm.GOTOH, matrix, gapCost);
+        AlignmentResult result = instance.align(seq1Obj, seq2Obj);
+        SequencePairAlignment alignment = result.getFirstAlignment();
+        assertEquals(-19.2, result.getScore(), 0.00000001);
+        String exp1 = "TP------------------------------SMEDYIEQIYMLIEEKGYARVSDIAEALAVHPSSVTKMVQKLDKDEYL-----------IYGLVLTSKGKKIGKR-------------------";
+        String exp2 = "MKYNNHDKIRDFIIIEAYMFRFKKKVKPEVDMTIKEFILLTYLFHQQENTLPFKKIVSDLCYKQSDLVQHIKVLVKHSYISKVRSKIDERNTYISISEEQREKIAERVTLFDQIIKQFNLADQSES";
+        System.out.println();
+        System.out.println("A1: " + alignment.queryAlignment);
+        System.out.println("E1: " + exp1);
+        System.out.println("A2: " + alignment.targetAlignment);
+        System.out.println("E2: " + exp2);
+        assertEquals(correctAlignmentLength, alignment.queryAlignment.length());
+        assertEquals(correctAlignmentLength, alignment.targetAlignment.length());
+        assertEquals(-19.200, CheckScoreCalculator.calculateCheckScoreAffine(AlignmentMode.GLOBAL, alignment, matrix, gapCost), 0.00000001);
+        assertEquals(exp1, alignment.queryAlignment);
+        assertEquals(exp2, alignment.targetAlignment);
     }
 
 //    @Test
