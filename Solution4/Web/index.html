@@ -63,7 +63,7 @@
 			});
 		});
 		function showAddMatrixDialog() {
-		    $("#addMatrixDialog").dialog({autoOpen: false,modal: true,bgiframe: true,width:500,height:150});
+		    $("#addMatrixDialog").dialog({autoOpen: false,modal: true,bgiframe: true,width:500,height:250});
 		    $('#addMatrixDialog').dialog('open');
 		}
 		function hideAddMatrixDialog() {
@@ -126,7 +126,7 @@
 		<div id="addMatrixDialog" title="Upload substitution matrix" style="display: none;">
 		  <form action="matrix/insert_matrix.cgi" method="post" enctype="multipart/form-data">
 			Matrix name: <input type="text" name="name" cols="50" rows="20"></input><br/>
-			Matrix data in QUASAR format: <input type="file" name="database"><br/><br/>
+			Matrix data in QUASAR format: <input type="file" name="quasar"><br/><br/>
 			<input type="submit" value="Submit">
 		  </form>
 		</div>
