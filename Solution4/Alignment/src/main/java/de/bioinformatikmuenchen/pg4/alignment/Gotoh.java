@@ -196,29 +196,34 @@ public class Gotoh extends AlignmentProcessor {
         StringBuilder queryLine = new StringBuilder();
         StringBuilder targetLine = new StringBuilder();
         while (x >= 0 && y >= 0) {//while the rim of the matrix or its left upper corner is not reached
-            if(x == 0){
-                while(y > 0){
+//            System.out.println("Stuff " + x);
+            // => ab hier: x > 0  &&  y > 0
+            char A = (x == 0 ? '?' : querySequence.charAt(x - 1));
+            char B = (y == 0 ? '?' : targetSequence.charAt(y - 1));
+            if (x == 0) {
+                //System.out.println("x==0");
+                while (y > 0) {
+                    //System.out.println("x==0 x,y: " + x + ", " + y);
                     topPath[x][y] = true;
                     hasPath[x][y] = true;
                     queryLine.append('-');
-                    targetLine.append(targetSequence.charAt(y-1));
+                    targetLine.append(targetSequence.charAt(y - 1));
                     y--;
                 }
                 break;
-            }
-            else if(y == 0){
-                while(x > 0){
+            } else if (y == 0) {
+                //System.out.println("y==0");
+                while (x > 0) {
+                    //System.out.println("y==0 left x,y: " + x + ", " + y);
                     leftPath[x][y] = true;
                     hasPath[x][y] = true;
-                    queryLine.append(querySequence.charAt(x-1));
+                    queryLine.append(querySequence.charAt(x - 1));
                     targetLine.append('-');
                     x--;
                 }
                 break;
-            }
-            char A = querySequence.charAt(x - 1);
-            char B = targetSequence.charAt(y - 1);
-            if (matrixA[x][y] == matrixA[x - 1][y - 1] + distanceMatrix.distance(A, B)) {
+            } else if (matrixA[x][y] == matrixA[x - 1][y - 1] + distanceMatrix.distance(A, B)) {//leftTop
+                //System.out.println("leftTOP x,y: " + x + ", " + y);
                 leftTopPath[x][y] = true;
                 hasPath[x][y] = true;
                 queryLine.append(A);
@@ -226,26 +231,32 @@ public class Gotoh extends AlignmentProcessor {
                 x--;
                 y--;
             } else if (matrixA[x][y] == matrixIn[x][y]) {
-                while((x>0 && y>0) && (matrixA[x][y] == (matrixA[x-1][y] + gapCost.getGapExtensionPenalty(0, 1)))){
+                int xShift = 1;
+                while (matrixA[x][y] == (matrixA[x - xShift][y] + gapCost.getGapExtensionPenalty(0, xShift))) {
+                    //System.out.println("left x,y: " + x + ", " + y);
                     leftPath[x][y] = true;
                     hasPath[x][y] = true;
                     queryLine.append(querySequence.charAt(x - 1));
                     targetLine.append('-');
-                    x--;
+                    xShift++;
                 }
+                x -= xShift;
             } else if (matrixA[x][y] == matrixDel[x][y]) {
-                while((x>0 && y>0) && (matrixA[x][y] == (matrixA[x][y-1] + gapCost.getGapExtensionPenalty(0, 1)))) {
+                int yShift = 1;
+                while (matrixA[x][y] == (matrixA[x][y - yShift] + gapCost.getGapExtensionPenalty(0, yShift))) {
+                    //System.out.println("top x,y: " + x + ", " + y);
                     topPath[x][y] = true;
                     hasPath[x][y] = true;
                     queryLine.append('-');
                     targetLine.append(targetSequence.charAt(y - 1));
+                    yShift++;
                 }
-                y--;
-            }
-            else {
+                y -= yShift;
+            } else {
                 throw new AlignmentException("No possibility found to move on (indicates a sure failure)");
             }
         }
+        //System.out.println("Finished");
         return new SequencePairAlignment(queryLine.reverse().toString(), targetLine.reverse().toString());
     }
 
