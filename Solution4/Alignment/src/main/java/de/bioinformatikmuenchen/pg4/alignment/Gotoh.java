@@ -196,6 +196,26 @@ public class Gotoh extends AlignmentProcessor {
         StringBuilder queryLine = new StringBuilder();
         StringBuilder targetLine = new StringBuilder();
         while (x >= 0 && y >= 0) {//while the rim of the matrix or its left upper corner is not reached
+            if(x == 0){
+                while(y > 0){
+                    topPath[x][y] = true;
+                    hasPath[x][y] = true;
+                    queryLine.append('-');
+                    targetLine.append(targetSequence.charAt(y-1));
+                    y--;
+                }
+                break;
+            }
+            else if(y == 0){
+                while(x > 0){
+                    leftPath[x][y] = true;
+                    hasPath[x][y] = true;
+                    queryLine.append(querySequence.charAt(x-1));
+                    targetLine.append('-');
+                    x--;
+                }
+                break;
+            }
             char A = querySequence.charAt(x - 1);
             char B = targetSequence.charAt(y - 1);
             if (matrixA[x][y] == matrixA[x - 1][y - 1] + distanceMatrix.distance(A, B)) {
@@ -225,26 +245,6 @@ public class Gotoh extends AlignmentProcessor {
                     targetLine.append(targetSequence.charAt(i - 1));
                 }
                 y -= shift;
-            }
-            else if(x == 0){
-                while(y > 0){
-                    topPath[x][y] = true;
-                    hasPath[x][y] = true;
-                    queryLine.append('-');
-                    targetLine.append(targetSequence.charAt(y-1));
-                    y--;
-                }
-                break;
-            }
-            else if(y == 0){
-                while(x > 0){
-                    leftPath[x][y] = true;
-                    hasPath[x][y] = true;
-                    queryLine.append(querySequence.charAt(x-1));
-                    targetLine.append('-');
-                    x--;
-                }
-                break;
             }
             else {
                 throw new AlignmentException("No possibility found to move on (indicates a sure failure)");
