@@ -207,8 +207,8 @@ public class Gotoh extends AlignmentProcessor {
     }
 
     public SequencePairAlignment backTrackingGlobal() {
-        int x = xSize++;
-        int y = ySize++;
+        int x = xSize;
+        int y = ySize;
         StringBuilder queryLine = new StringBuilder();
         StringBuilder targetLine = new StringBuilder();
         while (x >= 0 && y >= 0) {//while the rim of the matrix or its left upper corner is not reached
@@ -234,7 +234,7 @@ public class Gotoh extends AlignmentProcessor {
                     leftPath[x][y] = true;
                     hasPath[x][y] = true;
                     queryLine.append(querySequence.charAt(x - 1));
-                    targetLine.append('-');
+                     targetLine.append('-');
                     x--;
                 }
                 break;
