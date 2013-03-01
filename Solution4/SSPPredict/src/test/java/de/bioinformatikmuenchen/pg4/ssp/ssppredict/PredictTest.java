@@ -4,7 +4,11 @@
  */
 package de.bioinformatikmuenchen.pg4.ssp.ssppredict;
 
-import java.io.File;
+import java.io.*;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import static junit.framework.Assert.assertEquals;
+import static junit.framework.Assert.fail;
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
@@ -39,6 +43,45 @@ public class PredictTest {
 
     @Test
     public void testMain() {
+        java.io.PrintStream sysOut = System.out;
+        System.out.println("Testing main method ...");
+        String defaultOutputfile = "src/test/resources/testOutput.txt";
+        String[][] args = new String[][] {
+            {"--model", "src/test/resources/Ugor1CB513DSSP.db.txt", "--seq", "src/test/resources/1C0T/1C0T.fasta"},
+            {"--model", "src/test/resources/Ugor1CB513DSSP.db.txt", "--seq", "src/test/resources/1C0T/1C0T.fasta", "--format", "html"},
+            {"--model", "src/test/resources/Ugor3CB513DSSP.db.txt", "--seq", "src/test/resources/1C0T/1C0T.fasta"},
+            {"--model", "src/test/resources/Ugor4CB513DSSP.db.txt", "--seq", "src/test/resources/1C0T/1C0T.fasta"},
+        };
+        String expectedFilePath = "src/test/resources/tests";
+        String expectedOutputFiles[] = new String[] {
+            "TestMain1", "TestMain2", "TestMain3", "TestMain4", "TestMain5", "TestMain6"
+        };
+        for (int i = 0; i <args.length; i++) {
+            try {
+                PrintStream p = new PrintStream(new java.io.FileOutputStream(new File(defaultOutputfile)));
+                System.setOut(p);
+                Predict.main(args[i]);
+                p.close();
+            } catch (FileNotFoundException ex) {
+                fail("Couldn't test");
+                sysOut.append("Test failed!");
+            }
+
+            // cmp defaultOutputFile (f) to expected output
+            try {
+
+                File f = new File(defaultOutputfile);
+                BufferedReader r = new BufferedReader(new FileReader(f));
+                String line = null;
+                while ((line = r.readLine()) != null) {// TODO
+                }
+
+
+            } catch (IOException ex) {
+                System.out.println("---");
+                fail("Unexpected Exception in Test!");
+            }
+        }
     }
 
     @Test

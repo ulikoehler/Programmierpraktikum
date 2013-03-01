@@ -17,7 +17,7 @@ public class ScoreOnlyAlignmentOutputFormatter extends AbstractAlignmentOutputFo
         dfs.setDecimalSeparator('.');
         numberFormat.setGroupingUsed(false);
         numberFormat.setMinimumFractionDigits(4);
-        numberFormat.setMinimumFractionDigits(4);
+        numberFormat.setMaximumFractionDigits(4);
         numberFormat.setDecimalSeparatorAlwaysShown(false);
         numberFormat.setDecimalFormatSymbols(dfs);
     }

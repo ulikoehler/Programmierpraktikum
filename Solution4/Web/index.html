@@ -27,51 +27,7 @@
 		<!-- JS -->
 		<script type="text/javascript" src="js/jquery.js"></script>
 		<script type="text/javascript" src="js/jquery-ui.js"></script>
-		<script type="text/javascript">
-		$(function() {
-			$( ".accordion" ).accordion();
-			$( ".tabs" ).tabs();
-			$(".button").button();
-			$("#available-sequences").resizable({containment: "#body"});
-			$("#align-from").resizable({containment: "#body"});
-			$("#align-to").resizable({containment: "#body"});
-			$( "#align-from-list, #align-to-list, #available-sequences" ).sortable({
-			      connectWith: ".dropList"
-			}).disableSelection();
-			//$('.nodrag').draggable( "disable" )
-			$("#droppable").droppable({
-			      drop: function( event, ui ) {
-				$( this )
-				  .addClass( "ui-state-highlight" )
-				  .find( "p" )
-				    .html( "Dropped!" );
-			      }
-			    });
-			$(".uibtn").button();
-			$( "#proteinId" ).autocomplete({
-				source: function( request, response ) {
-				  $.getJSON( "get_autocomplete_ids.cgi", {
-				    limit:10,
-				     prefix: request.term,
-				     db: $("#dbselect").val()
-				  }, response);
-				},
-			      select: function( event, ui ) {
-				   //"Selected: " + ui.item.value + " aka " + ui.item.id :
-				  //"Nothing selected, input was " + this.value );
-			    }
-			});
-		});
-		function showAddMatrixDialog() {
-		    $("#addMatrixDialog").dialog({autoOpen: false,modal: true,bgiframe: true,width:500,height:250});
-		    $('#addMatrixDialog').dialog('open');
-		}
-		function hideAddMatrixDialog() {
-		    if ($('#addMatrixDialog').dialog('isOpen')) {
-			$('#addMatrixDialog').dialog('close');
-		    }
-		}
-		</script>
+		<script type="text/javascript" src="ws.js"></script>
 	</head>
 	<body>
 		<div id="page" />
@@ -114,12 +70,19 @@
 				</div>
 				<div id="upload-fastainput">
 					Query sequence (FASTA):<br />
-					<textarea name="query" cols="50" rows="20"></textarea>
-					<br />
-					<div class="uibtn">Add </div>
+	 				<form action="sequences/insert_sequence_string.cgi" method="post" enctype="multipart/form-data">
+						<b>Single</b> sequence as Plaintext or as FASTA
+						<textarea name="seq" cols="50" rows="20"></textarea><br/>
+						<input type="submit" value="Add sequence" class="button"/>
+					</form>
 				</div>
 				<div id="upload-fileinput">
-					<input type="file" name="database" /><br />
+	 				<form action="sequences/insert_sequence_file.cgi" method="post" enctype="multipart/form-data">
+						<b>Single</b> sequence in FASTA format (multiple sequences are concatenated together!):
+						<input type="file" name="seqfile" /><br />
+						<input type="submit" value="Add sequence" class="button"/>
+					</form>
+
 				</div>
 			</div>
 		</div>
