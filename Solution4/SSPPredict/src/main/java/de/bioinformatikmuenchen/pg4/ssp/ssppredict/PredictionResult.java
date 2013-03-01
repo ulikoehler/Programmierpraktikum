@@ -36,7 +36,8 @@ public class PredictionResult {
     public void getHTMLRepresentation(boolean printProbabilities, PrintStream out) {// TODO
         initArrays();
 
-        out.append("<html><head><title>secondary structure prediction</title></head><body><div style=\"font-family: Courier New\">");
+        out.append("<html><head><title>secondary structure prediction</title></head><body><nobr><div style=\"font-family: Courier New\">");
+        // I know nobr is also deprecated!
 
         for (int i = 0; i < s.length; i++) {
             out.append("&gt;").append(s[i][0]).append("<br>");   // append id
@@ -51,7 +52,7 @@ public class PredictionResult {
                     }
                     System.out.println(" => max: " + GORPredicter.predictionArgMax(p[i][z]));
                 }
-                out.append(GORPredicter.predictionArgMax(p[i][z]));
+                out.append(color(GORPredicter.predictionArgMax(p[i][z])));
             }
             out.append(concatN('-', Data.trainingWindowSize - (Data.prevInWindow + 1))).append("<br>");
             // probabilities
@@ -60,7 +61,7 @@ public class PredictionResult {
                     out.append("P").append(Data.secStruct[stateProb]).append(" "); // concat the other way round
                     out.append(concatN('-', Data.prevInWindow));
                     for (int z = 0; z < p[i].length; z++) {
-                        out.append(color(GORPredicter.p2Int(p[i][z][stateProb])));
+                        out.append(color((char) (GORPredicter.p2Int(p[i][z][stateProb]) + 48)));
                     }
                     out.append(concatN('-', Data.trainingWindowSize - (Data.prevInWindow + 1))).append("<br>");
                 }
@@ -68,7 +69,7 @@ public class PredictionResult {
             out.append("<br>");
         }
 
-        out.append("</div></body></html>");
+        out.append("</div></nobr></body></html>");
     }
 
     public void getTXTRepresentation(boolean printProbabilities, PrintStream out) {
@@ -96,7 +97,7 @@ public class PredictionResult {
                     out.append("P").append(Data.secStruct[stateProb]).append(" "); // concat the other way round
                     out.append(concatN('-', Data.prevInWindow));
                     for (int z = 0; z < p[i].length; z++) {
-                        out.write(GORPredicter.p2Int(p[i][z][stateProb]));
+                        out.append((char) (GORPredicter.p2Int(p[i][z][stateProb]) + 48));
                     }
                     out.append(concatN('-', Data.trainingWindowSize - (Data.prevInWindow + 1))).append("\n");
                 }
@@ -112,8 +113,9 @@ public class PredictionResult {
         return s.toString();
     }
 
-    private String color(int n) {
+    private String color(char x) {
+        int n = (int) x;
         n = (n > 0) ? n : -n;
-        return "<font color=\'" + Data.colors[n % Data.colors.length] + "\'>" + n + "</font>";   // I know font is depricated (IE also)
+        return "<font color=\'" + Data.colors[n % Data.colors.length] + "\'>" + x + "</font>";   // I know font is depricated (IE also)
     }
 }

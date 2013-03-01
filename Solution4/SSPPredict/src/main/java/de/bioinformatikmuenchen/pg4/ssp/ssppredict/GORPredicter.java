@@ -183,7 +183,7 @@ public abstract class GORPredicter {
                 if (Predict.debug) {
                     System.out.println("Process line: " + line);
                 }
-                if (line.startsWith(";") || line.trim().isEmpty()) {
+                if (line.startsWith(";") || line.startsWith("//") || line.trim().isEmpty() || (line.charAt(2) == ' ' && !line.startsWith("AS"))) {
                     continue;
                 }
                 if (line.startsWith(">")) {

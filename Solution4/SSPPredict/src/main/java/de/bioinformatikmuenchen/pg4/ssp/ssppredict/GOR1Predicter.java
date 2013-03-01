@@ -20,7 +20,6 @@ public class GOR1Predicter extends GORPredicter {
     long[] fNS;
     long[][][] cMatrix;
     double[][][] iMatrix;
-    double[] pS;
 
     @Override
     public void init() {
@@ -33,7 +32,6 @@ public class GOR1Predicter extends GORPredicter {
     @Override
     public void readModelFile(File f) {
         Pattern gor1Header = Pattern.compile("=\\s*([a-zA-Z])\\s*=");
-        Pattern matrixContentLine = Pattern.compile("\\s\\d*\\s*");
 
         try {
             BufferedReader br = new BufferedReader(new FileReader(f));
