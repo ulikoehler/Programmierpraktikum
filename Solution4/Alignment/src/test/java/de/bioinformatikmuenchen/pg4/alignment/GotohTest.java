@@ -111,7 +111,7 @@ public class GotohTest {
         assertEquals(4.900, result.getScore(), 0.00000001);
         String exp1 = "GPLDVQVTEDAVRRYLTRKPMTTKDLLKKFQTKKTGLSSEQTVNVLAQILKRLNPERKMINDKMHFSLK-";
         String exp2 = "----MEEAKQKVVDFLNSKSK-SKFYFNDFTDLFPDMKQREVKKILTALVNDEVLEYWSSGSTTMYGLKG";
-        System.out.println(); 
+        System.out.println();
         System.out.println("A1Q: " + alignment.queryAlignment);
         System.out.println("E1Q: " + exp1);
         System.out.println("A1T: " + alignment.targetAlignment);
@@ -153,6 +153,33 @@ public class GotohTest {
         assertEquals(exp2, alignment.targetAlignment);
     }
 
+    /**
+     * Real world example from sanity.pairs that hasn't worked somewhen -- Not
+     * sure if this is for Goto, so doublechekc
+     */
+    @Test
+    public void testLocalAlignmentResult() throws IOException {
+        //1m9sA02  1p9mC01
+        IDistanceMatrix matrix = QUASARDistanceMatrixFactory.factorize(new InputStreamReader(NeedlemanWunschTest.class.getResourceAsStream("/matrices/dayhoff.mat")));
+        Sequence seq1Obj = new Sequence("ECLNKPINHQSNLVVPNTVKNTDGSLVTPEIISDDGDYEKPNVKWHLPEFTNEVSFIFYQPVTIGKAKARFHGRVTQP");
+        Sequence seq2Obj = new Sequence("EEPQLSCFRKSPLSNVVCEWGPRSTPSLTTKAVLLVRKFQNSPAEDFQEPCQYSQESQKFSCQLAVPEGDSSFYIVSMCVASSVGSKFSKTQTFQGCGI");
+        IGapCost gapCost = new AffineGapCost(-12, -1);
+        Gotoh instance = new Gotoh(AlignmentMode.LOCAL, AlignmentAlgorithm.GOTOH, matrix, gapCost);
+        AlignmentResult result = instance.align(seq1Obj, seq2Obj);
+        SequencePairAlignment alignment = result.getFirstAlignment();
+        assertEquals(31.800, result.getScore(), 0.00000001);
+        String exp1 = "ECLNKPINHQSNLVVPNTVKNTDGSLVTPEIISDDGDYEKPNVKWH-----------------------------------LPEFTNEVSFIFYQPVTIGKAKARFHGRVTQP--------------------------------";
+        String exp2 = "----------------------------------------------EEPQLSCFRKSPLSNVVCEWGPRSTPSLTTKAVLLVRKFQNSPAEDFQEPCQYSQESQKFSCQLAVPEGDSSFYIVSMCVASSVGSKFSKTQTFQGCGI";
+        System.out.println();
+        System.out.println("(L)A1Q: " + alignment.queryAlignment);
+        System.out.println("(L)E1Q: " + exp1);
+        System.out.println("(L)A1T: " + alignment.targetAlignment);
+        System.out.println("(L)E1T: " + exp2);
+        assertEquals(31.800, CheckScoreCalculator.calculateCheckScoreAffine(AlignmentMode.GLOBAL, alignment, matrix, gapCost), 0.00000001);
+        assertEquals(exp1, alignment.queryAlignment);
+        assertEquals(exp2, alignment.targetAlignment);
+    }
+
 //    /**
 //     * Real world example from sanity.pairs that hasn't worked somewhen -- Not
 //     * sure if this is for Goto, so doublechekc
@@ -183,7 +210,6 @@ public class GotohTest {
 //        assertEquals(exp1, alignment.queryAlignment);
 //        assertEquals(exp2, alignment.targetAlignment);
 //    }
-
 //    @Test
     public void testAlignHay() throws IOException {
         IDistanceMatrix matrix = QUASARDistanceMatrixFactory.factorize(new InputStreamReader(NeedlemanWunschTest.class.getResourceAsStream("/matrices/dayhoff.mat")));
