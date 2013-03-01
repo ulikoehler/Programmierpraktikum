@@ -165,7 +165,12 @@ public class Gotoh extends AlignmentProcessor {
             for (int y = 1; y < ySize + 1; y++) {
                 matrixIn[x][y] = Math.max(matrixA[x - 1][y] + gapCost.getGapCost(1), matrixIn[x - 1][y] + gapCost.getGapExtensionPenalty(0, 1));
                 matrixDel[x][y] = Math.max(matrixA[x][y - 1] + gapCost.getGapCost(1), matrixDel[x][y - 1] + gapCost.getGapExtensionPenalty(0, 1));
-                matrixA[x][y] = Math.max(Math.max(matrixIn[x][y], matrixDel[x][y]), matrixA[x - 1][y - 1] + distanceMatrix.distance(seq1.charAt(x - 1), seq2.charAt(y - 1)));
+                if(mode == AlignmentMode.LOCAL){
+                    matrixA[x][y] = Math.max(0, Math.max(Math.max(matrixIn[x][y], matrixDel[x][y]), matrixA[x - 1][y - 1] + distanceMatrix.distance(seq1.charAt(x - 1), seq2.charAt(y - 1))));
+                }
+                else{   
+                    matrixA[x][y] = Math.max(Math.max(matrixIn[x][y], matrixDel[x][y]), matrixA[x - 1][y - 1] + distanceMatrix.distance(seq1.charAt(x - 1), seq2.charAt(y - 1)));
+                }
             }
         }
         if (mode == AlignmentMode.GLOBAL) {
@@ -241,6 +246,7 @@ public class Gotoh extends AlignmentProcessor {
         int y = ySize;
         if(maxIsInLastColumn){
             for(y = ySize; y >= maxEntry[1];y--){
+                
                 queryLineFreeShift.append('-');
                 targetLineFreeShift.append(targetSequence.charAt(y-1));
             }
