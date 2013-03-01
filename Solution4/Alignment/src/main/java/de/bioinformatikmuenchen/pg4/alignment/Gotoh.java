@@ -269,13 +269,16 @@ public class Gotoh extends AlignmentProcessor {
         int y = ySize;
         if(maxIsInLastColumn){
             for(y = ySize; y >= maxEntry[1];y--){
-                
+                topPath[x][y] = true;
+                hasPath[x][y] = true;
                 queryLineFreeShift.append('-');
                 targetLineFreeShift.append(targetSequence.charAt(y-1));
             }
         }
         else{//maxEntry is in the last line
             for(x = xSize; x >= maxEntry[0]; x--){
+                leftPath[x][y] = true;
+                hasPath[x][y] = true;
                 queryLineFreeShift.append(queryLineFreeShift.charAt(x-1));
                 targetLineFreeShift.append('-');
             }
