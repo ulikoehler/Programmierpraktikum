@@ -196,7 +196,11 @@ public abstract class GORPredicter {
                     id = line.substring(1);
                     seq = "";
                 } else {
-                    seq += line;
+                    if (line.charAt(2) == ' ' || line.charAt(2) == '\t') {
+                        seq += line.substring(3);
+                    } else {
+                        seq += line;
+                    }
                 }
             }
             if (id != null && seq != null) {

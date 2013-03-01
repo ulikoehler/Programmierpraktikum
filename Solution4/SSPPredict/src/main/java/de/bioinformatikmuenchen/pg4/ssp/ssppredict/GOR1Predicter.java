@@ -110,6 +110,9 @@ public class GOR1Predicter extends GORPredicter {
             for (int pos = 0; pos < Data.trainingWindowSize; pos++) {
                 for (int aa = 0; aa < Data.aaTable.length; aa++) {
                     fS[st] += cMatrix[st][pos][aa];
+                    if (Predict.debug) {
+                        System.out.println("calculated fs for " + st + ": " + fS[st]);
+                    }
                 }
             }
         }
@@ -121,6 +124,9 @@ public class GOR1Predicter extends GORPredicter {
                     continue;
                 }
                 fNS[st] += fS[nSt];
+                if (Predict.debug) {
+                    System.out.println("calculated nfs for " + st + ": " + fNS[st]);
+                }
             }
         }
 
@@ -135,12 +141,14 @@ public class GOR1Predicter extends GORPredicter {
                         }
                         otherStruct += cMatrix[nSt][pos][aa];
                     }
-                    iMatrix[st][pos][aa] = Math.log(
-                            ((double) cMatrix[st][pos][aa])
-                            / ((double) otherStruct))
-                            + Math.log(
-                            ((double) fNS[st])
-                            / ((double) fS[st]));
+                    double firstTerm = Math.log((double) cMatrix[st][pos][aa]
+                            / (double) otherStruct);
+                    double secTerm = Math.log((double) fNS[st] / (double) fS[st]);
+                    iMatrix[st][pos][aa] = firstTerm + secTerm;
+                    
+                    if (Predict.debug) {
+                        System.out.println("calculated iMatrix for " + st + ", " + pos + ", " + aa + ": " + iMatrix[st][pos][aa]);
+                    }
                 }
             }
         }
@@ -151,9 +159,9 @@ public class GOR1Predicter extends GORPredicter {
         try {
             double[] result = new double[Data.secStruct.length];
             for (int st = 0; st < Data.secStruct.length; st++) {             // for each state to fillout
-                long windowSum = 0;
+                double windowSum = 0;
                 for (int pos = 0; pos < Data.trainingWindowSize; pos++) {    // for each window position
-                    if(GORPredicter.convertASCharToMatrixId(aaSeq.charAt(pos)) == -1) {
+                    if (GORPredicter.convertASCharToMatrixId(aaSeq.charAt(pos)) == -1) {
                         continue;
                     }
                     windowSum += iMatrix[st][pos][GORPredicter.convertASCharToMatrixId(aaSeq.charAt(pos))];
