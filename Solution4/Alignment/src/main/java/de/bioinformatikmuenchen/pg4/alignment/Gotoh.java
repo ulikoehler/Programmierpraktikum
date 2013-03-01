@@ -220,6 +220,10 @@ public class Gotoh extends AlignmentProcessor {
                     targetLine.append(targetSequence.charAt(y-yShift));
                     yShift++;
                 }
+                topPath[x][y-yShift] = true;
+                hasPath[x][y-yShift] = true;
+                queryLine.append('-');
+                targetLine.append(targetSequence.charAt(y-yShift));
                 y -= yShift;
             } else {
                 throw new AlignmentException("No possibility found to move on (indicates a sure failure)");
