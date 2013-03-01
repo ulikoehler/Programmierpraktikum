@@ -46,6 +46,7 @@ import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.LinkedList;
+import de.bioinformatikmuenchen.pg4.common.util.IO;
 
 /**
  * SSP Prediction
@@ -91,36 +92,70 @@ public class Predict {
         }
 
         String model = "";
-        File f = new File(model);
-        simpleGorMethods method = null;
-
-
+        File f = null;
+        simpleGorMethods method = simpleGorMethods.gor1;
+        if (commandLine.hasOption("m")) {
+            model = commandLine.getOptionValue("model");
+            IO.isExistingReadableFileOrQuit(model, "Can't read file: " + model + "!");
+            f = new File(model);
+            method = GORPredicter.getGorFromFile(f);
+        } else {
+            System.err.println("missing model file!");
+            printUsageAndQuit();
+        }
 
         String seq = "";
-        File g = new File(seq);
+        File g = null;
+        if (commandLine.hasOption("s")) {
+            seq = commandLine.getOptionValue("s");
+            seq = IO.isExistingReadableFileOrQuit(seq, "Can't read file " + seq + "!");
+            g = new File(seq);
+        } else {
+            if (!commandLine.hasOption("a")) {
+                System.err.println("Please spec --seq or --maf");
+                printUsageAndQuit();
+            }
+        }
 
+        String maf = "";  // TODO
+        File h = null;
+        if (!commandLine.hasOption("a")) {
+            maf = commandLine.getOptionValue("a");
 
-
-        String maf = "";
-        // GOR V
-
+        }
 
         outputMethod format = outputMethod.txt;
-
+        if (commandLine.hasOption("f")) {
+            String s = commandLine.getOptionValue("f");
+            if (s.equalsIgnoreCase("txt")) {
+                format = outputMethod.txt;
+            } else if (s.equalsIgnoreCase("html")) {
+                format = outputMethod.html;
+            } else {
+                System.err.println("Invalid --format argument!");
+                printUsageAndQuit();
+            }
+        }
 
         boolean probabilities = false;
-
-
+        if (commandLine.hasOption("p")) {
+            probabilities = true;
+        }
 
         boolean postprocessing = false;
-
+        if (commandLine.hasOption("p")) {
+            postprocessing = true;
+        }
 
         boolean debug = false;
+        if (commandLine.hasOption("p")) {
+            debug = true;
+        }
 
         GORPredicter predicter =
-                (method.gor1.name() == simpleGorMethods.gor1.name())
+                (method.name().equals(simpleGorMethods.gor1.name()))
                 ? new GOR1Predicter()
-                : (method.gor3.name() == simpleGorMethods.gor3.name())
+                : (method.name().equals(simpleGorMethods.gor3.name()))
                 ? null : null;// Gor3, Gor4
 
         try {
@@ -153,7 +188,7 @@ public class Predict {
                 res = GORPredicter.postprocess(res);
             }
             if (debug) {
-                System.out.println("Format and write results (" + format.name() + "," + ((probabilities)?"":" no") + " probabilities) ...");
+                System.out.println("Format and write results (" + format.name() + "," + ((probabilities) ? "" : " no") + " probabilities) ...");
             }
             if (format.name().equals(outputMethod.html.name())) {
                 System.out.println(res.getHTMLRepresentation(probabilities));
@@ -168,7 +203,7 @@ public class Predict {
 
     public static void printUsageAndQuit() {
         System.err.println(
-                "Usage: java -jar predict.jar [--probabilities][--postprocessing]--model <model file> --format <text|html>{--seq <fasta file> --format <multiple-alignment-folder>}\n"
+                "Usage: java -jar predict.jar [--probabilities][--postprocessing]--model <model file>--format <text|html>{--seq <fasta file>--format <multiple-alignment-folder>}\n"
                 + " Options:\n"
                 + "  --model <model file> trained model file\n"
                 + "  --seq <fasta file>   input file in Fasta format (GOR I-IV)\n"

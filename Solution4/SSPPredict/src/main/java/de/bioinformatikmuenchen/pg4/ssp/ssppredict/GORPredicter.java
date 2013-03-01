@@ -161,7 +161,7 @@ public abstract class GORPredicter {
     }
 
     public static int p2Int(double p) {
-        int nr = (int) Math.round(p * 10);
+        int nr = (int) Math.max(Math.round(p * 10), 0);
         return (nr > 9) ? 9 : nr;
     }
 
