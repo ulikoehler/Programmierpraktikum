@@ -126,9 +126,19 @@ public class Predict {
             BufferedReader br = new BufferedReader(new FileReader(model));
             String line = "";
             while ((line = br.readLine()) != null) {
-                if(gor1.matcher(line).find()) return simpleGorMethods.gor1;
-                if(gor3.matcher(line).find()) return simpleGorMethods.gor3;
-                if(gor4.matcher(line).find()) return simpleGorMethods.gor4;
+                if (line.trim().startsWith("//") || line.trim().isEmpty()) {
+                    continue;
+                }
+                if (gor1.matcher(line).find()) {
+                    return simpleGorMethods.gor1;
+                }
+                if (gor3.matcher(line).find()) {
+                    return simpleGorMethods.gor3;
+                }
+                if (gor4.matcher(line).find()) {
+                    return simpleGorMethods.gor4;
+                }
+                break;  // no valid model file
             }
             br.close();
         } catch (Exception e) {
@@ -138,6 +148,46 @@ public class Predict {
         System.err.println("invalid model file!");
         System.exit(1);
         return simpleGorMethods.gor1;
+    }
+
+    public static int getWindowSizeFromFile(File model) {
+        Pattern matrixLine = Pattern.compile("\\s*\\w\\s*(\\d*\\s*)*");
+
+        try {
+            BufferedReader br = new BufferedReader(new FileReader(model));
+            String line = "";
+            while ((line = br.readLine()) != null) {
+                if (line.trim().startsWith("//") || line.trim().startsWith("=") || line.trim().isEmpty()) {
+                    continue;
+                }
+                if (matrixLine.matcher(line).find()) {
+                    // amino acid spaces or tabs value1 spaces or tabs ... value n => get number n
+                    int count = 0;
+                    boolean state = false;   // in numeric state
+
+                    for (int i = 0; i < line.length(); i++) {
+                        int cur = (int) line.charAt(i);
+                        if (48 <= cur && cur <= 57) { // numeric
+                            if (!state) {
+                                count++;
+                            }
+                            state = true;
+                        } else {
+                            state = false;
+                        }
+                    }
+
+                    return count;
+                }
+                break;  // no valid model file
+            }
+        } catch (Exception e) {
+            System.err.println("Error reading model file! " + e.toString());
+            System.exit(1);
+        }
+        System.err.println("invalid model file!");
+        System.exit(1);
+        return -1;
     }
 
     public static void printUsageAndQuit() {

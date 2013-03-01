@@ -22,7 +22,7 @@ public class GOR1Predicter extends GORPredicter {
     int trainingWindowSize;
     
     public void init() {
-        cMatrix = new long[Data.secStruct.length][trainingWindowSize][Data.aaTable.length];
+        cMatrix = new long[3][trainingWindowSize][20];
     }
     
     public void readModelFile(File f) {
