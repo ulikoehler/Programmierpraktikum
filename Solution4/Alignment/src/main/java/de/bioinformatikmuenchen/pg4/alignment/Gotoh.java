@@ -140,25 +140,28 @@ public class Gotoh extends AlignmentProcessor {
         assert (x >= 0 && y >= 0 && maxValue > Double.NEGATIVE_INFINITY);
         return new double[]{x, y, maxValue};
     }
-    
-    public double[] findMaxInMatrixFreeShift(){//look for maxEntry only in last column and line
+
+    public double[] findMaxInMatrixFreeShift() {//look for maxEntry only in last column and line
         int x = -1;
         int y = -1;
-        double maxCell = Double.NEGATIVE_INFINITY; 
-        for (int i = 0; i < xSize; i++) {
-            if(matrixA[i][0] > maxCell){
-                maxCell = matrixA[i][0];
+        double maxValue = Double.NEGATIVE_INFINITY;
+        for (int i = 0; i <= xSize; i++) {
+            if (matrixA[i][ySize] > maxValue) {
+                maxValue = matrixA[i][ySize];
                 x = i;
+                y = -1;
             }
         }
-        for (int i = 0; i < ySize; i++) {
-            if(matrixA[0][i] > maxCell){
-                maxCell = matrixA[0][i];
+        //calc last column
+        for (int i = 0; i <= ySize; i++) {
+            if (matrixA[xSize][i] >  maxValue) {
+                maxValue = matrixA[xSize][i];
                 y = i;
+                x = -1;
             }
         }
-        assert (((x>-1) || (y>-1)) && (maxCell > Double.NEGATIVE_INFINITY));
-        return new double[]{x, y, maxCell};
+        assert (((x > -1) || (y > -1)) && (maxValue > Double.NEGATIVE_INFINITY));
+        return new double[]{x, y, maxValue};
     }
 
     public void fillMatrix(String seq1, String seq2, AlignmentResult result) {
@@ -167,10 +170,9 @@ public class Gotoh extends AlignmentProcessor {
             for (int y = 1; y < ySize + 1; y++) {
                 matrixIn[x][y] = Math.max(matrixA[x - 1][y] + gapCost.getGapCost(1), matrixIn[x - 1][y] + gapCost.getGapExtensionPenalty(0, 1));
                 matrixDel[x][y] = Math.max(matrixA[x][y - 1] + gapCost.getGapCost(1), matrixDel[x][y - 1] + gapCost.getGapExtensionPenalty(0, 1));
-                if(mode == AlignmentMode.LOCAL){
+                if (mode == AlignmentMode.LOCAL) {
                     matrixA[x][y] = Math.max(0, Math.max(Math.max(matrixIn[x][y], matrixDel[x][y]), matrixA[x - 1][y - 1] + distanceMatrix.distance(seq1.charAt(x - 1), seq2.charAt(y - 1))));
-                }
-                else{   
+                } else {
                     matrixA[x][y] = Math.max(Math.max(matrixIn[x][y], matrixDel[x][y]), matrixA[x - 1][y - 1] + distanceMatrix.distance(seq1.charAt(x - 1), seq2.charAt(y - 1)));
                 }
             }
@@ -179,8 +181,7 @@ public class Gotoh extends AlignmentProcessor {
             result.setScore(matrixA[xSize][ySize]);
         } else if (mode == AlignmentMode.LOCAL) {
             result.setScore(findMaxInMatrixLocal()[2]);
-        }
-        else if(mode == AlignmentMode.FREESHIFT){
+        } else if (mode == AlignmentMode.FREESHIFT) {
             result.setScore(findMaxInMatrixFreeShift()[2]);
         }
     }
@@ -195,20 +196,20 @@ public class Gotoh extends AlignmentProcessor {
         double maxCell = maxEntry[2];
         int yStart = ySize;
         int xStart = xSize;
-        while(yStart > y) {
+        while (yStart > y) {
             queryLine.append('-');
-            targetLine.append(targetSequence.charAt(yStart-1));
+            targetLine.append(targetSequence.charAt(yStart - 1));
             yStart--;
         }
-        while(xStart > x) {
+        while (xStart > x) {
             targetLine.append('-');
-            queryLine.append(querySequence.charAt(xStart-1));
+            queryLine.append(querySequence.charAt(xStart - 1));
             xStart--;
         }
-        while (matrixA[x][y] > 0.0000000001 ) {//&& x > 0 && y > 0
-            char A = (x==0 ? '?' : querySequence.charAt(x-1));//;querySequence.charAt(x - 1);
-            char B = (y==0 ? '?' : targetSequence.charAt(y-1));
-            if (Math.abs(matrixA[x][y] - (matrixA[x - 1][y - 1] + distanceMatrix.distance(A, B))) < 0.0000000001 ) {//leftTop
+        while (matrixA[x][y] > 0.0000000001) {//&& x > 0 && y > 0
+            char A = (x == 0 ? '?' : querySequence.charAt(x - 1));//;querySequence.charAt(x - 1);
+            char B = (y == 0 ? '?' : targetSequence.charAt(y - 1));
+            if (Math.abs(matrixA[x][y] - (matrixA[x - 1][y - 1] + distanceMatrix.distance(A, B))) < 0.0000000001) {//leftTop
                 leftTopPath[x][y] = true;
                 hasPath[x][y] = true;
                 queryLine.append(A);
@@ -217,44 +218,44 @@ public class Gotoh extends AlignmentProcessor {
                 y--;
             } else if (Math.abs(matrixA[x][y] - matrixIn[x][y]) < 0.0000000001) {//Insertion -> left
                 int xShift = 1;
-                while(Math.abs(matrixA[x][y] - (matrixA[x-xShift][y] + gapCost.getGapCost(xShift))) > 0.0000000001) {
-                    leftPath[x-xShift][y] = true;
-                    hasPath[x-xShift][y] = true;
-                    queryLine.append(querySequence.charAt(x-xShift));
+                while (Math.abs(matrixA[x][y] - (matrixA[x - xShift][y] + gapCost.getGapCost(xShift))) > 0.0000000001) {
+                    leftPath[x - xShift][y] = true;
+                    hasPath[x - xShift][y] = true;
+                    queryLine.append(querySequence.charAt(x - xShift));
                     targetLine.append('-');
                     xShift++;
                 }
-                leftPath[x-xShift][y] = true;
-                hasPath[x-xShift][y] = true;
-                queryLine.append(querySequence.charAt(x-xShift));
+                leftPath[x - xShift][y] = true;
+                hasPath[x - xShift][y] = true;
+                queryLine.append(querySequence.charAt(x - xShift));
                 targetLine.append('-');
                 x -= xShift;
             } else if (Math.abs(matrixA[x][y] - matrixDel[x][y]) < 0.0000000001) {//Deletion -> right
                 int yShift = 1;
-                while(Math.abs(matrixA[x][y] - (matrixA[x][y-yShift] + gapCost.getGapCost(yShift))) > 0.0000000001) {
-                    topPath[x][y-yShift] = true;
-                    hasPath[x][y-yShift] = true;
+                while (Math.abs(matrixA[x][y] - (matrixA[x][y - yShift] + gapCost.getGapCost(yShift))) > 0.0000000001) {
+                    topPath[x][y - yShift] = true;
+                    hasPath[x][y - yShift] = true;
                     queryLine.append('-');
-                    targetLine.append(targetSequence.charAt(y-yShift));
+                    targetLine.append(targetSequence.charAt(y - yShift));
                     yShift++;
                 }
-                topPath[x][y-yShift] = true;
-                hasPath[x][y-yShift] = true;
+                topPath[x][y - yShift] = true;
+                hasPath[x][y - yShift] = true;
                 queryLine.append('-');
-                targetLine.append(targetSequence.charAt(y-yShift));
+                targetLine.append(targetSequence.charAt(y - yShift));
                 y -= yShift;
             } else {
                 throw new AlignmentException("No possibility found to move on (indicates a sure failure)");
             }
         }
-        while(y > 0) {
+        while (y > 0) {
             queryLine.append('-');
-            targetLine.append(targetSequence.charAt(y-1));
+            targetLine.append(targetSequence.charAt(y - 1));
             y--;
         }
-        while(x > 0) {
+        while (x > 0) {
             targetLine.append('-');
-            queryLine.append(querySequence.charAt(x-1));
+            queryLine.append(querySequence.charAt(x - 1));
             x--;
         }
         return new SequencePairAlignment(queryLine.reverse().toString(), targetLine.reverse().toString());
@@ -264,27 +265,26 @@ public class Gotoh extends AlignmentProcessor {
         StringBuilder queryLineFreeShift = new StringBuilder();
         StringBuilder targetLineFreeShift = new StringBuilder();
         double[] maxEntry = findMaxInMatrixFreeShift();
-        boolean maxIsInLastColumn = (maxEntry[0] < maxEntry[1]);
+        boolean maxIsInLastColumn = (maxEntry[1] != -1);
         int x = xSize;
         int y = ySize;
-        if(maxIsInLastColumn){
-            for(y = ySize; y >= maxEntry[1];y--){
+         if (maxIsInLastColumn) {
+            for (y = ySize; y > maxEntry[1]; y--) {
                 topPath[x][y] = true;
                 hasPath[x][y] = true;
                 queryLineFreeShift.append('-');
-                targetLineFreeShift.append(targetSequence.charAt(y-1));
+                targetLineFreeShift.append(targetSequence.charAt(y - 1));
             }
-        }
-        else{//maxEntry is in the last line
-            for(x = xSize; x >= maxEntry[0]; x--){
+        } else {//maxEntry is in the last line
+            for (x = xSize; x > maxEntry[0]; x--) {
                 leftPath[x][y] = true;
                 hasPath[x][y] = true;
-                queryLineFreeShift.append(queryLineFreeShift.charAt(x-1));
+                queryLineFreeShift.append(querySequence.charAt(x - 1));
                 targetLineFreeShift.append('-');
             }
         }
         SequencePairAlignment remainingGlobal = backTrackingGlobal(x, y);
-        return new SequencePairAlignment(remainingGlobal.queryAlignment+queryLineFreeShift.reverse().toString(), remainingGlobal.targetAlignment+targetLineFreeShift.reverse().toString());
+        return new SequencePairAlignment(remainingGlobal.queryAlignment + queryLineFreeShift.reverse().toString(), remainingGlobal.targetAlignment + targetLineFreeShift.reverse().toString());
     }
 
     public SequencePairAlignment backTrackingGlobal(int x, int y) {
