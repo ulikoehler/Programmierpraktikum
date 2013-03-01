@@ -68,8 +68,7 @@ public class Train {
         opts.addOption("d", "db", true, "dssp path to train method (database)")
                 .addOption("m", "method", true, "method to train <gor1|gor3|gor4>")
                 .addOption("l", "model", true, "output file")
-                .addOption("w", "window", true, "windowSize")
-                .addOption("p", "splitWindow", true, "split window at position");
+                .addOption("w", "window", true, "windowSize");
         // 
         // Parse these options with PosixParser
         // 
@@ -131,10 +130,7 @@ public class Train {
         if(commandLine.hasOption("window")) {
             Data.trainingWindowSize = Integer.parseInt(commandLine.getOptionValue("window"));
         }
-        
-        if(commandLine.hasOption("splitWindow")) {
-            Data.prevInWindow = Integer.parseInt(commandLine.getOptionValue("splitWindow"));
-        }
+        Data.prevInWindow = Data.trainingWindowSize / 2;
 
         // create a new trainer and let him do his job
         Trainer myTrainer;

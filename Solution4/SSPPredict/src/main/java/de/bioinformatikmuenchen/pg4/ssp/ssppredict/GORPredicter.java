@@ -29,7 +29,7 @@ public abstract class GORPredicter {
         return (nr > 9)?9:nr;
     }
     
-    public abstract void init();
+    public abstract void init(int windowSize);
 
     /**
      *

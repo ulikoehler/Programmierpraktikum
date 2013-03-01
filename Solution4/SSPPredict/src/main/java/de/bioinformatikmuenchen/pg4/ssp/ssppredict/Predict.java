@@ -130,12 +130,15 @@ public class Predict {
                     continue;
                 }
                 if (gor1.matcher(line).find()) {
+                    br.close();
                     return simpleGorMethods.gor1;
                 }
                 if (gor3.matcher(line).find()) {
+                    br.close();
                     return simpleGorMethods.gor3;
                 }
                 if (gor4.matcher(line).find()) {
+                    br.close();
                     return simpleGorMethods.gor4;
                 }
                 break;  // no valid model file
@@ -176,7 +179,7 @@ public class Predict {
                             state = false;
                         }
                     }
-
+                    br.close();
                     return count;
                 }
                 break;  // no valid model file
