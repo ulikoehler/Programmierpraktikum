@@ -266,13 +266,8 @@ public class Gotoh extends AlignmentProcessor {
         StringBuilder targetLineFreeShift = new StringBuilder();
         double[] maxEntry = findMaxInMatrixFreeShift();
         boolean maxIsInLastColumn = (maxEntry[1] != -1);
-        System.out.println("maxIsInLastColumn = " + maxIsInLastColumn);
-        System.out.println("maxEntry[0] = " + maxEntry[0]);
-        System.out.println("maxEntry[1] = " + maxEntry[1]);
         int x = xSize;
         int y = ySize;
-        System.out.println("x = " + x);
-        System.out.println("y = " + y);
         if (maxIsInLastColumn) {
             for (y = ySize; y > maxEntry[1]; y--) {
                 topPath[x][y] = true;
