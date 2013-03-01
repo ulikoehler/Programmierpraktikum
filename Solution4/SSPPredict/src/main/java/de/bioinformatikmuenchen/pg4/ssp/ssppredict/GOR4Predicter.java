@@ -14,13 +14,13 @@ import java.util.regex.Pattern;
  *
  * @author spoeri
  */
-public class GOR1Predicter extends GORPredicter {
+public class GOR4Predicter extends GORPredicter {// TODO
 
     long[] fS;
     long[] fNS;
     long[][][] cMatrix;
     double[][][] iMatrix;
-    double[] pS;
+    double[] pSt;
 
     @Override
     public void init() {
@@ -28,6 +28,7 @@ public class GOR1Predicter extends GORPredicter {
         iMatrix = new double[Data.secStruct.length][Data.trainingWindowSize][Data.aaTable.length];
         fS = new long[Data.secStruct.length];
         fNS = new long[Data.secStruct.length];
+        pSt = new double[Data.secStruct.length];
     }
 
     @Override
@@ -97,7 +98,7 @@ public class GOR1Predicter extends GORPredicter {
         } catch (Exception e) {
             e.printStackTrace();
             throw new RuntimeException("Error reading model file! Error Type: " + e.toString() + " Error Message: " + e.getMessage() + " Stacktrace see above!");
-
+            
         }
     }
 
@@ -105,11 +106,13 @@ public class GOR1Predicter extends GORPredicter {
     public void initPrediction() {
 
         // calc f_S and allAA
+        long allAA = 0;
         for (int st = 0; st < Data.secStruct.length; st++) {
             fS[st] = 0;
             for (int pos = 0; pos < Data.trainingWindowSize; pos++) {
                 for (int aa = 0; aa < Data.aaTable.length; aa++) {
                     fS[st] += cMatrix[st][pos][aa];
+                    allAA += cMatrix[st][pos][aa];
                 }
             }
         }
@@ -121,6 +124,8 @@ public class GOR1Predicter extends GORPredicter {
                     continue;
                 }
                 fNS[st] += fS[nSt];
+                pSt[st] = (((double) (fS[st]))
+                        / ((double) allAA));
             }
         }
 
@@ -148,29 +153,22 @@ public class GOR1Predicter extends GORPredicter {
 
     @Override
     public double[] predict1Example(String aaSeq) {
-        try {
-            double[] result = new double[Data.secStruct.length];
-            for (int st = 0; st < Data.secStruct.length; st++) {             // for each state to fillout
-                long windowSum = 0;
-                for (int pos = 0; pos < Data.trainingWindowSize; pos++) {    // for each window position
-                    if(GORPredicter.convertASCharToMatrixId(aaSeq.charAt(pos)) == -1) {
-                        continue;
-                    }
-                    windowSum += iMatrix[st][pos][GORPredicter.convertASCharToMatrixId(aaSeq.charAt(pos))];
-                }
-                double expWS = Math.exp(windowSum) * ((double) fS[st] / (double) fNS[st]);
-                result[st] = (expWS / (expWS + 1));
+        double[] result = new double[Data.secStruct.length];
+        for (int st = 0; st < Data.secStruct.length; st++) {             // for each state to fillout
+            long windowSum = 0;
+            for (int pos = 0; pos < Data.trainingWindowSize; pos++) {    // for each window position
+                windowSum += iMatrix[st][pos][GORPredicter.convertASCharToMatrixId(aaSeq.charAt(pos))];
             }
-            if (Predict.debug) {
-                System.out.println("Prediction for: " + aaSeq);
-                for (int i = 0; i < Data.secStruct.length; i++) {
-                    System.out.println("Prediction for " + Data.secStruct[i] + ": " + result[i]);
-                }
-            }
-            return result;
-        } catch (Exception e) {
-            e.printStackTrace();
-            throw new RuntimeException("Error executing predict1Example: called with: '" + aaSeq + "'" + e.getMessage() + " - " + e.getLocalizedMessage() + " - " + e.toString());
+            result[st] = ((Math.exp(windowSum) * pSt[st])
+                    / ((Math.exp(windowSum) * pSt[st])
+                    - (pSt[st])));
         }
+        if (Predict.debug) {
+            System.out.println("Prediction for: " + aaSeq);
+            for (int i = 0; i < Data.secStruct.length; i++) {
+                System.out.println("Prediction for " + Data.secStruct[i] + ": " + result[i]);
+            }
+        }
+        return result;
     }
 }

@@ -145,7 +145,6 @@ public abstract class GORPredicter {
             System.exit(1);
         }
         System.err.println("invalid model file!");
-        System.exit(1);
         return -1;
     }
 
@@ -227,6 +226,7 @@ public abstract class GORPredicter {
         } catch (Exception e) {
             e.printStackTrace();
             System.out.println("Error while predicting single Sequnece! Stacktrace see above!");
+            System.exit(1);
         }
         return result;
     }

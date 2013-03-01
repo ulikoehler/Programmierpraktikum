@@ -72,6 +72,8 @@ public class Predict {
     }
 
     public static void main(String[] args) {
+        System.gc();
+        
         // get command options
         final Options opts = new Options();
         opts.addOption("m", "model", true, "path to the model file")
@@ -157,7 +159,7 @@ public class Predict {
                 (method.name().equals(simpleGorMethods.gor1.name()))
                 ? new GOR1Predicter()
                 : (method.name().equals(simpleGorMethods.gor3.name()))
-                ? null : null;// Gor3, Gor4
+                ? new GOR3Predicter() : new GOR4Predicter();// Gor3, Gor4
 
         try {
             if (debug) {
@@ -192,9 +194,9 @@ public class Predict {
                 System.out.println("Format and write results (" + format.name() + "," + ((probabilities) ? "" : " no") + " probabilities) ...");
             }
             if (format.name().equals(outputMethod.html.name())) {
-                System.out.println(res.getHTMLRepresentation(probabilities));
+                res.getHTMLRepresentation(probabilities, System.out);
             } else {
-                System.out.println(res.getTXTRepresentation(probabilities));
+                res.getTXTRepresentation(probabilities, System.out);
             }
             if (debug) {
                 System.out.println("programdata: ");
