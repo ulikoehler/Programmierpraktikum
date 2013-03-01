@@ -274,6 +274,7 @@ public class AlignmentMain {
                     if (Math.abs(checkScore - result.getScore()) > 0.000000001) {
                         //Check failed, print failed sequences
                         formatter.formatAndPrint(result);
+                        System.err.println("Score " + result.getScore() + " vs " + checkScore);
                     }
                 }
             } else {

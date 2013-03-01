@@ -130,7 +130,9 @@ public class CheckScoreCalculator {
     }
 
     public static double calculateCheckScoreAffine(AlignmentMode mode, SequencePairAlignment alignment, IDistanceMatrix distanceMatrix, IGapCost gapCost) {
-        assert alignment.getQueryAlignment().length() == alignment.getTargetAlignment().length();
+        if (alignment.getQueryAlignment().length() != alignment.getTargetAlignment().length()) {
+            throw new IllegalArgumentException("Alignment parts have different lengths");
+        }
         String qa = alignment.getQueryAlignment();
         String ta = alignment.getTargetAlignment();
         double score = 0;
@@ -140,12 +142,12 @@ public class CheckScoreCalculator {
             qa = vals[0];
             ta = vals[1];
         } else if (mode == AlignmentMode.LOCAL) {
-            String[] vals = stripStartAndEndGapsFreeshift(qa, ta);
+            String[] vals = stripStartAndEndGapsLocal(qa, ta);
             qa = vals[0];
             ta = vals[1];
         }
         //Calculate the substitution-only score!
-        for (int i = 0; i < alignment.getQueryAlignment().length(); i++) {
+        for (int i = 0; i < qa.length(); i++) {
             //Ignore gaps
             if (qa.charAt(i) == '-' || ta.charAt(i) == '-') {
                 continue;
