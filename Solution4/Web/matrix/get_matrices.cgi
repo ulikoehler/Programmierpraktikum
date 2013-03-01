@@ -9,8 +9,8 @@ my $findAllMatrices = $db->prepare("SELECT Name FROM Matrices;");
 #Write header
 print "[";
 my $isFirstLine = 1;
-$query->execute($prefix."%",$database,$limit);
-while (my $row = $query->fetchrow_hashref()) {
+$findAllMatrices->execute();
+while (my $row = $findAllMatrices->fetchrow_hashref()) {
 	print "," unless $isFirstLine;
 	$isFirstLine = 0;
 	print "\"" . $row->{Name} . "\"";

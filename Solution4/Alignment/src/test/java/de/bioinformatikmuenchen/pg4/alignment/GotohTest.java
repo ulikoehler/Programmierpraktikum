@@ -109,8 +109,10 @@ public class GotohTest {
         AlignmentResult result = instance.align(seq1Obj, seq2Obj);
         SequencePairAlignment alignment = result.getFirstAlignment();
         assertEquals(4.900, result.getScore(), 0.00000001);
-        assertEquals(correctAlignmentLength, alignment.queryAlignment);
-        assertEquals(correctAlignmentLength, alignment.targetAlignment);
+        System.out.println("A1: " + alignment.queryAlignment);
+        System.out.println("A2: " + alignment.targetAlignment);
+        assertEquals(correctAlignmentLength, alignment.queryAlignment.length());
+        assertEquals(correctAlignmentLength, alignment.targetAlignment.length());
         assertEquals(4.900, CheckScoreCalculator.calculateCheckScoreAffine(AlignmentMode.GLOBAL, alignment, matrix, gapCost), 0.00000001);
         assertEquals("GPLDVQVTEDAVRRYLTRKPMTTKDLLKKFQTKKTGLSSEQTVNVLAQILKRLNPERKMINDKMHFSLK-", alignment.queryAlignment);
         assertEquals("----MEEAKQKVVDFLNSKSK-SKFYFNDFTDLFPDMKQREVKKILTALVNDEVLEYWSSGSTTMYGLKG", alignment.targetAlignment);
