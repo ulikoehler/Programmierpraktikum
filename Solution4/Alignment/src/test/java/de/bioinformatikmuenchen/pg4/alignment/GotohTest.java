@@ -14,6 +14,7 @@ import de.bioinformatikmuenchen.pg4.common.distance.IDistanceMatrix;
 import de.bioinformatikmuenchen.pg4.common.distance.QUASARDistanceMatrixFactory;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.util.Collections;
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
@@ -163,9 +164,10 @@ public class GotohTest {
         IDistanceMatrix matrix = QUASARDistanceMatrixFactory.factorize(new InputStreamReader(NeedlemanWunschTest.class.getResourceAsStream("/matrices/dayhoff.mat")));
         Sequence seq1Obj = new Sequence("ECLNKPINHQSNLVVPNTVKNTDGSLVTPEIISDDGDYEKPNVKWHLPEFTNEVSFIFYQPVTIGKAKARFHGRVTQP");
         Sequence seq2Obj = new Sequence("EEPQLSCFRKSPLSNVVCEWGPRSTPSLTTKAVLLVRKFQNSPAEDFQEPCQYSQESQKFSCQLAVPEGDSSFYIVSMCVASSVGSKFSKTQTFQGCGI");
-        IGapCost gapCost = new AffineGapCost(-12, -1);
+        IGapCost gapCost = new AffineGapCost(-12, -1);  
         Gotoh instance = new Gotoh(AlignmentMode.LOCAL, AlignmentAlgorithm.GOTOH, matrix, gapCost);
         AlignmentResult result = instance.align(seq1Obj, seq2Obj);
+        System.out.println(instance.printMatrix());
         SequencePairAlignment alignment = result.getFirstAlignment();
         assertEquals(31.800, result.getScore(), 0.00000001);
         String exp1 = "ECLNKPINHQSNLVVPNTVKNTDGSLVTPEIISDDGDYEKPNVKWH-----------------------------------LPEFTNEVSFIFYQPVTIGKAKARFHGRVTQP--------------------------------";
@@ -175,7 +177,7 @@ public class GotohTest {
         System.out.println("(L)E1Q: " + exp1);
         System.out.println("(L)A1T: " + alignment.targetAlignment);
         System.out.println("(L)E1T: " + exp2);
-        assertEquals(31.800, CheckScoreCalculator.calculateCheckScoreAffine(AlignmentMode.GLOBAL, alignment, matrix, gapCost), 0.00000001);
+        assertEquals(31.800, CheckScoreCalculator.calculateCheckScoreAffine(AlignmentMode.LOCAL, alignment, matrix, gapCost), 0.00000001);
         assertEquals(exp1, alignment.queryAlignment);
         assertEquals(exp2, alignment.targetAlignment);
     }

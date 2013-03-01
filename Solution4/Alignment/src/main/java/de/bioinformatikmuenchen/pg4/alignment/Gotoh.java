@@ -10,6 +10,8 @@ import de.bioinformatikmuenchen.pg4.common.alignment.AlignmentResult;
 import de.bioinformatikmuenchen.pg4.common.alignment.SequencePairAlignment;
 import de.bioinformatikmuenchen.pg4.common.distance.IDistanceMatrix;
 import java.io.IOException;
+import java.text.DecimalFormat;
+import java.text.DecimalFormatSymbols;
 import java.util.Collections;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -341,6 +343,12 @@ public class Gotoh extends AlignmentProcessor {
     }
 
     public String printMatrix() {
+        DecimalFormat numberFormat = new DecimalFormat();
+        DecimalFormatSymbols dfs = new DecimalFormatSymbols();
+        dfs.setDecimalSeparator('.');
+        numberFormat.setMinimumFractionDigits(2);
+        numberFormat.setMaximumFractionDigits(2);
+        numberFormat.setDecimalFormatSymbols(dfs);
         StringBuilder builder = new StringBuilder();
         builder.append("\t\t");
         for (int x = 0; x < querySequence.length(); x++) {
@@ -350,7 +358,7 @@ public class Gotoh extends AlignmentProcessor {
         for (int y = 0; y <= targetSequence.length(); y++) {
             builder.append(y == 0 ? ' ' : targetSequence.charAt(y - 1)).append("\t");
             for (int x = 0; x <= querySequence.length(); x++) {
-                builder.append(matrixA[x][y]).append("\t");
+                builder.append(numberFormat.format(matrixA[x][y])).append("\t");
             }
             builder.append("\n");
         }
