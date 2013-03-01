@@ -226,25 +226,21 @@ public class Gotoh extends AlignmentProcessor {
                 x--;
                 y--;
             } else if (matrixA[x][y] == matrixIn[x][y]) {
-                int shift = findK(matrixA[x][y], x, y, true);
-//                System.out.println("shiftX: "+(shift-x));
-                for (int i = x; i >= (x - shift) && i > 0; i--) {
-                    leftPath[i][y] = true;
-                    hasPath[i][y] = true;
-                    queryLine.append(querySequence.charAt(i - 1));
+                while((x>0 && y>0) && (matrixA[x][y] == (matrixA[x-1][y] + gapCost.getGapExtensionPenalty(0, 1)))){
+                    leftPath[x][y] = true;
+                    hasPath[x][y] = true;
+                    queryLine.append(querySequence.charAt(x - 1));
                     targetLine.append('-');
+                    x--;
                 }
-                x -= shift;
             } else if (matrixA[x][y] == matrixDel[x][y]) {
-                int shift = findK(matrixA[x][y], x, y, false);
-//                System.out.println("shiftY: "+(shift-y));
-                for (int i = y; i >= (y - shift) && i > 0; i--) {
-                    topPath[x][i] = true;
-                    hasPath[x][i] = true;
+                while((x>0 && y>0) && (matrixA[x][y] == (matrixA[x][y-1] + gapCost.getGapExtensionPenalty(0, 1)))) {
+                    topPath[x][y] = true;
+                    hasPath[x][y] = true;
                     queryLine.append('-');
-                    targetLine.append(targetSequence.charAt(i - 1));
+                    targetLine.append(targetSequence.charAt(y - 1));
                 }
-                y -= shift;
+                y--;
             }
             else {
                 throw new AlignmentException("No possibility found to move on (indicates a sure failure)");
@@ -253,7 +249,7 @@ public class Gotoh extends AlignmentProcessor {
         return new SequencePairAlignment(queryLine.reverse().toString(), targetLine.reverse().toString());
     }
 
-    private int findK(double entry, int x, int y, boolean insertion) {
+    private int findK(double entry, int x, int y, boolean insertion) {//not neccessary anymore
         int shift = 0;
         if (insertion) {
             while (x != 0) {
