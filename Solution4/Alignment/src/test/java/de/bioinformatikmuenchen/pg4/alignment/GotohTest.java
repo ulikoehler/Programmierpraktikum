@@ -117,6 +117,31 @@ public class GotohTest {
         assertEquals("GPLDVQVTEDAVRRYLTRKPMTTKDLLKKFQTKKTGLSSEQTVNVLAQILKRLNPERKMINDKMHFSLK-", alignment.queryAlignment);
         assertEquals("----MEEAKQKVVDFLNSKSK-SKFYFNDFTDLFPDMKQREVKKILTALVNDEVLEYWSSGSTTMYGLKG", alignment.targetAlignment);
     }
+    /**
+     * Real world example from sanity.pairs that hasn't worked somewhen -- Not
+     * sure if this is for Goto, so doublechekc
+     */
+    @Test
+    public void testAlignmentResult2() throws IOException {
+        //1m9sA02  1p9mC01
+        IDistanceMatrix matrix = QUASARDistanceMatrixFactory.factorize(new InputStreamReader(NeedlemanWunschTest.class.getResourceAsStream("/matrices/dayhoff.mat")));
+        Sequence seq1Obj = new Sequence("TPSMEDYIEQIYMLIEEKGYARVSDIAEALAVHPSSVTKMVQKLDKDEYLIYGLVLTSKGKKIGKR");
+        Sequence seq2Obj = new Sequence("MKYNNHDKIRDFIIIEAYMFRFKKKVKPEVDMTIKEFILLTYLFHQQENTLPFKKIVSDLCYKQSDLVQHIKVLVKHSYISKVRSKIDERNTYISISEEQREKIAERVTLFDQIIKQFNLADQSES");
+        IGapCost gapCost = new AffineGapCost(-12, -1);
+        int correctAlignmentLength = "TP------------------------------SMEDYIEQIYMLIEEKGYARVSDIAEALAVHPSSVTKMVQKLDKDEYL-----------IYGLVLTSKGKKIGKR-------------------".length();
+        Gotoh instance = new Gotoh(AlignmentMode.GLOBAL, AlignmentAlgorithm.GOTOH, matrix, gapCost);
+        AlignmentResult result = instance.align(seq1Obj, seq2Obj);
+        SequencePairAlignment alignment = result.getFirstAlignment();
+        assertEquals(-19.2, result.getScore(), 0.00000001);
+        System.out.println();
+        System.out.println("A1: " + alignment.queryAlignment);
+        System.out.println("A2: " + alignment.targetAlignment);
+        assertEquals(correctAlignmentLength, alignment.queryAlignment.length());
+        assertEquals(correctAlignmentLength, alignment.targetAlignment.length());
+        assertEquals(4.900, CheckScoreCalculator.calculateCheckScoreAffine(AlignmentMode.GLOBAL, alignment, matrix, gapCost), 0.00000001);
+        assertEquals("TP------------------------------SMEDYIEQIYMLIEEKGYARVSDIAEALAVHPSSVTKMVQKLDKDEYL-----------IYGLVLTSKGKKIGKR-------------------", alignment.queryAlignment);
+        assertEquals("MKYNNHDKIRDFIIIEAYMFRFKKKVKPEVDMTIKEFILLTYLFHQQENTLPFKKIVSDLCYKQSDLVQHIKVLVKHSYISKVRSKIDERNTYISISEEQREKIAERVTLFDQIIKQFNLADQSES", alignment.targetAlignment);
+    }
 
 //    @Test
     public void testAlignHay() throws IOException {
