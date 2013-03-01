@@ -217,7 +217,7 @@ public class AlignmentMain {
         //
         //Inter-argument cheks
         //
-        boolean haveAffineGapCost = (gapOpen - gapExtend) > 0.00000001;
+        boolean haveAffineGapCost = Math.abs(gapOpen - gapExtend) > 0.00000001;
         //TODO TEMPORARY assertion until it's impl
         assert !haveAffineGapCost;
         //If a DP matrix dir is set, we need to copy the SVG graphics there
@@ -259,12 +259,19 @@ public class AlignmentMain {
                 System.err.println("Aligning " + seq1.getId() + " and " + seq2.getId() + "...");
             }
             //Calculate the alignment
-            AlignmentResult result = proc.align(seq1, seq2);
+            AlignmentResult result = null;
+            try {
+                result = proc.align(seq1, seq2);
+            } catch (Exception ex) {
+                System.err.println("Error occured while trying to align " + entry.first + " and " + entry.second);
+                System.err.println("Error: " + ex.getLocalizedMessage());
+                ex.printStackTrace();
+            }
             //Either --check and print only incorrect alignment or print all
             if (calculateCheckscores) {
-                for(SequencePairAlignment alignment : result.getAlignments()) {
+                for (SequencePairAlignment alignment : result.getAlignments()) {
                     double checkScore = CheckScoreCalculator.calculateCheckScoreAffine(mode, alignment, matrix, gapCost);
-                    if(Math.abs(checkScore - result.getScore()) > 0.000000001) {
+                    if (Math.abs(checkScore - result.getScore()) > 0.000000001) {
                         //Check failed, print failed sequences
                         formatter.formatAndPrint(result);
                     }

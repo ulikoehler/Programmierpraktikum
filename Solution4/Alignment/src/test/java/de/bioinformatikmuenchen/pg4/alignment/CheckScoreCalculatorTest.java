@@ -102,7 +102,7 @@ public class CheckScoreCalculatorTest {
         String qa = "---ATAGTTAT-";
         String ta = "ATA---G--A--";
         try {
-            String[] result = CheckScoreCalculator.stripStartAndEndGaps(qa, ta);
+            String[] result = CheckScoreCalculator.stripStartAndEndGapsFreeshift(qa, ta);
             fail("No exception");
         } catch (Exception ex) {
         }
@@ -110,7 +110,7 @@ public class CheckScoreCalculatorTest {
         qa = "---ATAGTTAT-";
         ta = "-TA---G--A-A";
         try {
-            String[] result = CheckScoreCalculator.stripStartAndEndGaps(qa, ta);
+            String[] result = CheckScoreCalculator.stripStartAndEndGapsFreeshift(qa, ta);
             fail("No exception");
         } catch (Exception ex) {
         }
@@ -123,7 +123,7 @@ public class CheckScoreCalculatorTest {
         String qa = "A--ATAGTTATA";
         String ta = "ATA---G--A-T";
         String[] expResult = new String[]{qa, ta};
-        String[] result = CheckScoreCalculator.stripStartAndEndGaps(qa, ta);
+        String[] result = CheckScoreCalculator.stripStartAndEndGapsFreeshift(qa, ta);
         assertArrayEquals(expResult, result);
     }
     @Test
@@ -140,12 +140,30 @@ public class CheckScoreCalculatorTest {
      * Test of stripStartAndEndGaps method, of class CheckScoreCalculator.
      */
     @Test
-    public void testStripStartAndEndGaps() {
+    public void testStripStartAndEndGapsFreeshift() {
         System.out.println("stripStartAndEndGaps");
         String qa = "---ATAGTTATA";
         String ta = "ATA---G--A--";
         String[] expResult = new String[]{"ATAGTTA", "---G--A"};
-        String[] result = CheckScoreCalculator.stripStartAndEndGaps(qa, ta);
+        String[] result = CheckScoreCalculator.stripStartAndEndGapsFreeshift(qa, ta);
+        assertArrayEquals(expResult, result);
+        qa = "---ATAGTTATA";
+        ta = "ATA---G--A--";
+        expResult = new String[]{"ATAGTTA", "---G--A"};
+        result = CheckScoreCalculator.stripStartAndEndGapsFreeshift(qa, ta);
+        assertArrayEquals(expResult, result);
+    }
+    
+        /**
+     * Test of stripStartAndEndGaps method, of class CheckScoreCalculator.
+     */
+    @Test
+    public void testStripStartAndEndGapsLocal() {
+        System.out.println("stripStartAndEndGaps");
+        String qa = "x-xxx-x";
+        String ta = "-x-x-x-";
+        String[] expResult = new String[]{"x", "x"};
+        String[] result = CheckScoreCalculator.stripStartAndEndGapsLocal(qa, ta);
         assertArrayEquals(expResult, result);
     }
     /**

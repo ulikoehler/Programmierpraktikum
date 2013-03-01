@@ -66,9 +66,10 @@ public class Gotoh extends AlignmentProcessor {
         AlignmentResult result = new AlignmentResult();
         //Calculate the alignment and add it to the result
         result.setAlignments(Collections.singletonList(backTrackingGlobal()));
-//        result.setScore(matrix[xSize - 1][ySize - 1]);
-//        result.setQuerySequenceId(seq1.getId());
-//        result.setTargetSequenceId(seq2.getId());
+        result.setScore(matrixA[xSize][ySize]);
+        result.setQuerySequenceId(seq1.getId());
+        result.setTargetSequenceId(seq2.getId());
+//        System.out.println(printMatrix());
         return result;
     }
 
@@ -85,8 +86,8 @@ public class Gotoh extends AlignmentProcessor {
         leftTopPath = new boolean[xSize][ySize];
         topPath = new boolean[xSize][ySize];
         hasPath = new boolean[xSize][ySize];
-        matrixDel[0][0] = Double.NaN;
-        matrixIn[0][0] = Double.NaN;
+        matrixDel[0][0] = Double.NEGATIVE_INFINITY;//NaN;
+        matrixIn[0][0] = Double.NEGATIVE_INFINITY;//NaN;
         if (!(this.local || this.freeshift)) {// " == if(global)"
             for (int i = 1; i < xSize; i++) {
                 matrixA[i][0] = gapCost.getGapCost(i);
@@ -97,10 +98,10 @@ public class Gotoh extends AlignmentProcessor {
         }
         for (int i = 1; i < xSize; i++) {
             matrixIn[i][0] = Double.NEGATIVE_INFINITY;
-            matrixDel[i][0] = Double.NaN;
+            matrixDel[i][0] = Double.NEGATIVE_INFINITY;//NaN;
         }
         for (int i = 1; i < ySize; i++) {
-            matrixIn[0][i] = Double.NaN;
+            matrixIn[0][i] = Double.NEGATIVE_INFINITY;//NaN;
             matrixDel[0][i] = Double.NEGATIVE_INFINITY;
         }
         //init the boolean[][] arrays which store the path taken by the backtracking algorithm
@@ -115,13 +116,11 @@ public class Gotoh extends AlignmentProcessor {
     }
 
     public void fillMatrix(String seq1, String seq2) {
-        int inGaps = 0;
-        int delGaps = 0;
-        assert gapCost != null;
-        for (int x = 1; x < xSize; x++) {
-            for (int y = 1; y < ySize; y++) {
-                matrixIn[x][y] = Math.max(matrixA[x][y - 1] + gapCost.getGapCost(1), matrixIn[x][y - 1] + gapCost.getGapExtensionPenalty(0, 1));
-                matrixDel[x][y] = Math.max(matrixA[x - 1][y] + gapCost.getGapCost(1), matrixDel[x - 1][y] + gapCost.getGapExtensionPenalty(0, 1));
+        assert ((gapCost != null) && (distanceMatrix != null));
+        for (int x = 1; x < xSize+1; x++) {
+            for (int y = 1; y < ySize+1; y++) {
+                matrixIn[x][y] = Math.max(matrixA[x-1][y] + gapCost.getGapCost(1), matrixIn[x-1][y] + gapCost.getGapExtensionPenalty(0, 1));
+                matrixDel[x][y] = Math.max(matrixA[x][y-1] + gapCost.getGapCost(1), matrixDel[x][y-1] + gapCost.getGapExtensionPenalty(0, 1));
                 matrixA[x][y] = Math.max(Math.max(matrixIn[x][y], matrixDel[x][y]), matrixA[x - 1][y - 1] + distanceMatrix.distance(seq1.charAt(x - 1), seq2.charAt(y - 1)));
             }
         }
@@ -168,12 +167,12 @@ public class Gotoh extends AlignmentProcessor {
                 for (int i = y; i >= (y - shift); i--) {
                     topPath[x][i] = true;
                     hasPath[x][i] = true;
-                    queryLine.append(querySequence.charAt(i));
-                    targetLine.append('-');
+                    queryLine.append('-');
+                    targetLine.append(targetSequence.charAt(i-1));
                 }
                 y -= shift;
             } else {
-                System.out.println("No possibility found to move on (indicates a sure failure)");
+                throw new AlignmentException("No possibility found to move on (indicates a sure failure)");
             }
         }
         return new SequencePairAlignment(queryLine.reverse().toString(), targetLine.reverse().toString());
@@ -184,7 +183,7 @@ public class Gotoh extends AlignmentProcessor {
         int y = ySize;
         StringBuilder queryLine = new StringBuilder();
         StringBuilder targetLine = new StringBuilder();
-        while (x != 0 || y != 0) {//while the rim of the matrix or its left upper corner is not reached
+        while (x > 0 && y > 0) {//while the rim of the matrix or its left upper corner is not reached
             char A = querySequence.charAt(x - 1);
             char B = targetSequence.charAt(y - 1);
             if (matrixA[x][y] == matrixA[x - 1][y - 1] + distanceMatrix.distance(A, B)) {
@@ -196,24 +195,26 @@ public class Gotoh extends AlignmentProcessor {
                 y--;
             } else if (matrixA[x][y] == matrixIn[x][y]) {
                 int shift = findK(matrixA[x][y], x, y, true);
-                for (int i = x; i >= (x - shift); i--) {
+//                System.out.println("shiftX: "+(shift-x));
+                for (int i = x; i >= (x - shift) && i>0; i--) {
                     leftPath[i][y] = true;
                     hasPath[i][y] = true;
-                    queryLine.append(querySequence.charAt(i - 1));
+                    queryLine.append(querySequence.charAt(i-1));
                     targetLine.append('-');
                 }
                 x -= shift;
             } else if (matrixA[x][y] == matrixDel[x][y]) {
                 int shift = findK(matrixA[x][y], x, y, false);
-                for (int i = y; i >= (y - shift); i--) {
+//                System.out.println("shiftY: "+(shift-y));
+                for (int i = y; i >= (y - shift) && i>0; i--) {
                     topPath[x][i] = true;
                     hasPath[x][i] = true;
-                    queryLine.append(querySequence.charAt(i));
-                    targetLine.append('-');
+                    queryLine.append('-');
+                    targetLine.append(targetSequence.charAt(i-1));
                 }
                 y -= shift;
             } else {
-                System.out.println("No possibility found to move on (indicates a sure failure)");
+                 throw new AlignmentException("No possibility found to move on (indicates a sure failure)");
             }
         }
         return new SequencePairAlignment(queryLine.reverse().toString(), targetLine.reverse().toString());
@@ -232,7 +233,7 @@ public class Gotoh extends AlignmentProcessor {
                 }
             }
         } else {//Deletion
-            while (x != 0) {
+            while (y != 0) {
                 if ((matrixA[x][y - 1] + gapCost.getGapCost(shift + 1)) == entry) {
                     shift++;
                     break;
@@ -254,6 +255,23 @@ public class Gotoh extends AlignmentProcessor {
     public boolean setLocal(boolean local) {
         this.local = local;
         return this.local;
+    }
+    
+    public String printMatrix() {
+        StringBuilder builder = new StringBuilder();
+        builder.append("\t\t");
+        for (int x = 0; x < querySequence.length(); x++) {
+            builder.append(querySequence.charAt(x)).append("\t");
+        }
+        builder.append("\n");
+        for (int y = 0; y <= targetSequence.length(); y++) {
+            builder.append(y == 0 ? ' ' : targetSequence.charAt(y - 1)).append("\t");
+            for (int x = 0; x <= querySequence.length(); x++) {
+                builder.append(matrixA[x][y]).append("\t");
+            }
+            builder.append("\n");
+        }
+        return builder.toString();
     }
 
     @Override
