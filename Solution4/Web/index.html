@@ -79,7 +79,7 @@
 			<h1>Sequence tools (Gr. 4)</h1>
 		</div>
 		<div id="body">
-			<div class="button" onclick="showAddMatrixDialog()">Add matrix</div>
+			<div class="button" onclick="showAddMatrixDialog()">Upload substitution matrix</div>
 			<h3>Select protein ID</h3>
 			<div style="height: 30px;">
 			</div>
@@ -126,8 +126,8 @@
 		<div id="addMatrixDialog" title="Upload substitution matrix" style="display: none;">
 		  <form action="matrix/insert_matrix.cgi" method="post" enctype="multipart/form-data">
 			Matrix name: <input type="text" name="name" cols="50" rows="20"></input><br/>
-			Matrix data in QUASAR format: <input type="file" name="quasar"><br/><br/>
-			<input type="submit" value="Submit">
+			Matrix data in QUASAR format: <input type="file" name="quasar" style="width:100%;"><br/><br/>
+			<input type="submit" value="Submit"/>
 		  </form>
 		</div>
 	</body>
