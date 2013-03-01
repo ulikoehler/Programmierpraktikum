@@ -109,14 +109,19 @@ public class GotohTest {
         AlignmentResult result = instance.align(seq1Obj, seq2Obj);
         SequencePairAlignment alignment = result.getFirstAlignment();
         assertEquals(4.900, result.getScore(), 0.00000001);
+        String exp1 = "GPLDVQVTEDAVRRYLTRKPMTTKDLLKKFQTKKTGLSSEQTVNVLAQILKRLNPERKMINDKMHFSLK-";
+        String exp2 = "----MEEAKQKVVDFLNSKSK-SKFYFNDFTDLFPDMKQREVKKILTALVNDEVLEYWSSGSTTMYGLKG";
         System.out.println("A1: " + alignment.queryAlignment);
+        System.out.println("E1: " + exp1);
         System.out.println("A2: " + alignment.targetAlignment);
+        System.out.println("E2: " + exp2);
         assertEquals(correctAlignmentLength, alignment.queryAlignment.length());
         assertEquals(correctAlignmentLength, alignment.targetAlignment.length());
         assertEquals(4.900, CheckScoreCalculator.calculateCheckScoreAffine(AlignmentMode.GLOBAL, alignment, matrix, gapCost), 0.00000001);
-        assertEquals("GPLDVQVTEDAVRRYLTRKPMTTKDLLKKFQTKKTGLSSEQTVNVLAQILKRLNPERKMINDKMHFSLK-", alignment.queryAlignment);
-        assertEquals("----MEEAKQKVVDFLNSKSK-SKFYFNDFTDLFPDMKQREVKKILTALVNDEVLEYWSSGSTTMYGLKG", alignment.targetAlignment);
+        assertEquals(exp1, alignment.queryAlignment);
+        assertEquals(exp2, alignment.targetAlignment);
     }
+
     /**
      * Real world example from sanity.pairs that hasn't worked somewhen -- Not
      * sure if this is for Goto, so doublechekc
@@ -133,14 +138,18 @@ public class GotohTest {
         AlignmentResult result = instance.align(seq1Obj, seq2Obj);
         SequencePairAlignment alignment = result.getFirstAlignment();
         assertEquals(-19.2, result.getScore(), 0.00000001);
+        String exp1 = "TP------------------------------SMEDYIEQIYMLIEEKGYARVSDIAEALAVHPSSVTKMVQKLDKDEYL-----------IYGLVLTSKGKKIGKR-------------------";
+        String exp2 = "MKYNNHDKIRDFIIIEAYMFRFKKKVKPEVDMTIKEFILLTYLFHQQENTLPFKKIVSDLCYKQSDLVQHIKVLVKHSYISKVRSKIDERNTYISISEEQREKIAERVTLFDQIIKQFNLADQSES";
         System.out.println();
         System.out.println("A1: " + alignment.queryAlignment);
+        System.out.println("E1: " + exp1);
         System.out.println("A2: " + alignment.targetAlignment);
+        System.out.println("E2: " + exp2);
         assertEquals(correctAlignmentLength, alignment.queryAlignment.length());
         assertEquals(correctAlignmentLength, alignment.targetAlignment.length());
-        assertEquals(4.900, CheckScoreCalculator.calculateCheckScoreAffine(AlignmentMode.GLOBAL, alignment, matrix, gapCost), 0.00000001);
-        assertEquals("TP------------------------------SMEDYIEQIYMLIEEKGYARVSDIAEALAVHPSSVTKMVQKLDKDEYL-----------IYGLVLTSKGKKIGKR-------------------", alignment.queryAlignment);
-        assertEquals("MKYNNHDKIRDFIIIEAYMFRFKKKVKPEVDMTIKEFILLTYLFHQQENTLPFKKIVSDLCYKQSDLVQHIKVLVKHSYISKVRSKIDERNTYISISEEQREKIAERVTLFDQIIKQFNLADQSES", alignment.targetAlignment);
+        assertEquals(-19.200, CheckScoreCalculator.calculateCheckScoreAffine(AlignmentMode.GLOBAL, alignment, matrix, gapCost), 0.00000001);
+        assertEquals(exp1, alignment.queryAlignment);
+        assertEquals(exp2, alignment.targetAlignment);
     }
 
 //    @Test

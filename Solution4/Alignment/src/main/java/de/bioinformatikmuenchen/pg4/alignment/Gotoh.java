@@ -249,13 +249,13 @@ public class Gotoh extends AlignmentProcessor {
                 while (Math.abs(matrixA[x][y] - (matrixA[x - xShift][y] + gapCost.getGapCost(xShift))) > 0.0000000001) {
                     leftPath[x - xShift][y] = true;
                     hasPath[x - xShift][y] = true;
-                    queryLine.append(querySequence.charAt(x - xShift - 1));
+                    queryLine.append(querySequence.charAt(x - xShift));
                     targetLine.append('-');
                     xShift++;
                 }
                 leftPath[x - xShift][y] = true;
                 hasPath[x - xShift][y] = true;
-                queryLine.append(querySequence.charAt(x - xShift - 1));
+                queryLine.append(querySequence.charAt(x - xShift));
                 targetLine.append('-');
                 x -= xShift;
             } else if (Math.abs(matrixA[x][y] - matrixDel[x][y]) < 0.0000000001) {// Deletion -> to the right
@@ -264,13 +264,13 @@ public class Gotoh extends AlignmentProcessor {
                     topPath[x][y - yShift] = true;
                     hasPath[x][y - yShift] = true;
                     queryLine.append('-');
-                    targetLine.append(targetSequence.charAt(y - yShift - 1));
+                    targetLine.append(targetSequence.charAt(y - yShift));
                     yShift++;
                 }
                 topPath[x][y - yShift] = true;
                 hasPath[x][y - yShift] = true;
                 queryLine.append('-');
-                targetLine.append(targetSequence.charAt(y - yShift - 1));
+                targetLine.append(targetSequence.charAt(y - yShift));
                 y -= yShift;
             } else {
                 throw new AlignmentException("No possibility found to move on (indicates a sure failure)");
