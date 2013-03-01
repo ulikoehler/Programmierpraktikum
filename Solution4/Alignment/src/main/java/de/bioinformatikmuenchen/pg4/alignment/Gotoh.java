@@ -66,9 +66,10 @@ public class Gotoh extends AlignmentProcessor {
         AlignmentResult result = new AlignmentResult();
         //Calculate the alignment and add it to the result
         result.setAlignments(Collections.singletonList(backTrackingGlobal()));
-//        result.setScore(matrix[xSize - 1][ySize - 1]);
-//        result.setQuerySequenceId(seq1.getId());
-//        result.setTargetSequenceId(seq2.getId());
+        result.setScore(matrixA[xSize - 1][ySize - 1]);
+        result.setQuerySequenceId(seq1.getId());
+        result.setTargetSequenceId(seq2.getId());
+        System.out.println(printMatrix());
         return result;
     }
 
@@ -85,8 +86,8 @@ public class Gotoh extends AlignmentProcessor {
         leftTopPath = new boolean[xSize][ySize];
         topPath = new boolean[xSize][ySize];
         hasPath = new boolean[xSize][ySize];
-        matrixDel[0][0] = Double.NaN;
-        matrixIn[0][0] = Double.NaN;
+        matrixDel[0][0] = Double.NEGATIVE_INFINITY;//NaN;
+        matrixIn[0][0] = Double.NEGATIVE_INFINITY;//NaN;
         if (!(this.local || this.freeshift)) {// " == if(global)"
             for (int i = 1; i < xSize; i++) {
                 matrixA[i][0] = gapCost.getGapCost(i);
@@ -97,10 +98,10 @@ public class Gotoh extends AlignmentProcessor {
         }
         for (int i = 1; i < xSize; i++) {
             matrixIn[i][0] = Double.NEGATIVE_INFINITY;
-            matrixDel[i][0] = Double.NaN;
+            matrixDel[i][0] = Double.NEGATIVE_INFINITY;//NaN;
         }
         for (int i = 1; i < ySize; i++) {
-            matrixIn[0][i] = Double.NaN;
+            matrixIn[0][i] = Double.NEGATIVE_INFINITY;//NaN;
             matrixDel[0][i] = Double.NEGATIVE_INFINITY;
         }
         //init the boolean[][] arrays which store the path taken by the backtracking algorithm
@@ -182,7 +183,7 @@ public class Gotoh extends AlignmentProcessor {
         int y = ySize;
         StringBuilder queryLine = new StringBuilder();
         StringBuilder targetLine = new StringBuilder();
-        while (x != 0 || y != 0) {//while the rim of the matrix or its left upper corner is not reached
+        while (x > 0 && y > 0) {//while the rim of the matrix or its left upper corner is not reached
             char A = querySequence.charAt(x - 1);
             char B = targetSequence.charAt(y - 1);
             if (matrixA[x][y] == matrixA[x - 1][y - 1] + distanceMatrix.distance(A, B)) {
@@ -194,20 +195,20 @@ public class Gotoh extends AlignmentProcessor {
                 y--;
             } else if (matrixA[x][y] == matrixIn[x][y]) {
                 int shift = findK(matrixA[x][y], x, y, true);
-                for (int i = x; i >= (x - shift); i--) {
+                for (int i = x; i >= (x - shift) && i>0; i--) {
                     leftPath[i][y] = true;
                     hasPath[i][y] = true;
-                    queryLine.append(querySequence.charAt(i));
+                    queryLine.append(querySequence.charAt(i-1));
                     targetLine.append('-');
                 }
                 x -= shift;
             } else if (matrixA[x][y] == matrixDel[x][y]) {
                 int shift = findK(matrixA[x][y], x, y, false);
-                for (int i = y; i >= (y - shift); i--) {
+                for (int i = y; i >= (y - shift) && i>0; i--) {
                     topPath[x][i] = true;
                     hasPath[x][i] = true;
                     queryLine.append('-');
-                    targetLine.append(targetSequence.charAt(i));
+                    targetLine.append(targetSequence.charAt(i-1));
                 }
                 y -= shift;
             } else {
@@ -252,6 +253,23 @@ public class Gotoh extends AlignmentProcessor {
     public boolean setLocal(boolean local) {
         this.local = local;
         return this.local;
+    }
+    
+    public String printMatrix() {
+        StringBuilder builder = new StringBuilder();
+        builder.append("\t\t");
+        for (int x = 0; x < querySequence.length(); x++) {
+            builder.append(querySequence.charAt(x)).append("\t");
+        }
+        builder.append("\n");
+        for (int y = 0; y <= targetSequence.length(); y++) {
+            builder.append(y == 0 ? ' ' : targetSequence.charAt(y - 1)).append("\t");
+            for (int x = 0; x <= querySequence.length(); x++) {
+                builder.append(matrixA[x][y]).append("\t");
+            }
+            builder.append("\n");
+        }
+        return builder.toString();
     }
 
     @Override
