@@ -8,7 +8,7 @@ package de.bioinformatikmuenchen.pg4.alignment;
  *
  * @author koehleru
  */
-public class AlignmentException extends Exception {
+public class AlignmentException extends RuntimeException {
 
     /**
      * Creates a new instance of

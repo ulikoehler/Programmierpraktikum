@@ -69,7 +69,7 @@ public class Gotoh extends AlignmentProcessor {
         result.setScore(matrixA[xSize][ySize]);
         result.setQuerySequenceId(seq1.getId());
         result.setTargetSequenceId(seq2.getId());
-        System.out.println(printMatrix());
+//        System.out.println(printMatrix());
         return result;
     }
 
@@ -172,7 +172,7 @@ public class Gotoh extends AlignmentProcessor {
                 }
                 y -= shift;
             } else {
-                System.out.println("No possibility found to move on (indicates a sure failure)");
+                throw new AlignmentException("No possibility found to move on (indicates a sure failure)");
             }
         }
         return new SequencePairAlignment(queryLine.reverse().toString(), targetLine.reverse().toString());
@@ -195,7 +195,7 @@ public class Gotoh extends AlignmentProcessor {
                 y--;
             } else if (matrixA[x][y] == matrixIn[x][y]) {
                 int shift = findK(matrixA[x][y], x, y, true);
-                System.out.println("shiftX: "+(shift-x));
+//                System.out.println("shiftX: "+(shift-x));
                 for (int i = x; i >= (x - shift) && i>0; i--) {
                     leftPath[i][y] = true;
                     hasPath[i][y] = true;
@@ -205,7 +205,7 @@ public class Gotoh extends AlignmentProcessor {
                 x -= shift;
             } else if (matrixA[x][y] == matrixDel[x][y]) {
                 int shift = findK(matrixA[x][y], x, y, false);
-                System.out.println("shiftY: "+(shift-y));
+//                System.out.println("shiftY: "+(shift-y));
                 for (int i = y; i >= (y - shift) && i>0; i--) {
                     topPath[x][i] = true;
                     hasPath[x][i] = true;
@@ -214,7 +214,7 @@ public class Gotoh extends AlignmentProcessor {
                 }
                 y -= shift;
             } else {
-                System.out.println("No possibility found to move on (indicates a sure failure)");
+                 throw new AlignmentException("No possibility found to move on (indicates a sure failure)");
             }
         }
         return new SequencePairAlignment(queryLine.reverse().toString(), targetLine.reverse().toString());
