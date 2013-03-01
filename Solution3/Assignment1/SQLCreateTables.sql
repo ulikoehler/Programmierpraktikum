@@ -61,3 +61,8 @@ CREATE TABLE Source (
   FOREIGN KEY(DBId) references DB(Id),
   FOREIGN KEY(SeqId) references Seq(Id)
 );
+CREATE TABLE Matrices (
+  Id INT AUTO_INCREMENT PRIMARY KEY,
+  Name VARCHAR(255),
+  QUASAR LONGTEXT
+);

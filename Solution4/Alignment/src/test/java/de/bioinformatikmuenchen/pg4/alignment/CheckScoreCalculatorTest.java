@@ -184,6 +184,7 @@ public class CheckScoreCalculatorTest {
         IGapCost gapCost = new AffineGapCost(-12, -1);
         assertEquals(4.9, CheckScoreCalculator.calculateCheckScoreAffine(AlignmentMode.GLOBAL, new SequencePairAlignment(qa, ta), dayhoff, gapCost), 0.0000001);
     }
+
     /**
      * Test of stripStartAndEndGaps method, of class CheckScoreCalculator.
      */
@@ -197,6 +198,7 @@ public class CheckScoreCalculatorTest {
         IGapCost gapCost = new AffineGapCost(-12, -1);
         assertEquals(-35.1, CheckScoreCalculator.calculateCheckScoreAffine(AlignmentMode.GLOBAL, new SequencePairAlignment(qa, ta), dayhoff, gapCost), 0.0000001);
     }
+
     /**
      * Test of stripStartAndEndGaps method, of class CheckScoreCalculator.
      */
@@ -210,6 +212,7 @@ public class CheckScoreCalculatorTest {
         IGapCost gapCost = new AffineGapCost(-12, -1);
         assertEquals(33.9, CheckScoreCalculator.calculateCheckScoreAffine(AlignmentMode.LOCAL, new SequencePairAlignment(qa, ta), dayhoff, gapCost), 0.0000001);
     }
+
     /**
      * Test of stripStartAndEndGaps method, of class CheckScoreCalculator.
      */
