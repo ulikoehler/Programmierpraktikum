@@ -188,6 +188,19 @@ public class CheckScoreCalculatorTest {
      * Test of stripStartAndEndGaps method, of class CheckScoreCalculator.
      */
     @Test
+    public void testCheckScoreRealGlobal2() throws IOException {
+        IDistanceMatrix dayhoff = QUASARDistanceMatrixFactory.factorize(new InputStreamReader(CheckScoreCalculatorTest.class.getResourceAsStream("/matrices/dayhoff.mat")));
+        //1oh1A00 1p9mC02 -35.100
+        System.out.println("testCheckScoreRealGlobal1");
+        String qa = "--GSMEQFELFSIDKFKCNSEAKYYLNIIEGEWH-PQDLNDS--PLKFILSTSDDSDYICKYINTEHKQLTLY---NKNNSSIVIEIFIPNDNKILLTIMNTEALGTSPRM-----TFIKH";
+        String ta = "QPDPPANITVTAVAR-----NPRW----LSVTWQDPHSWNSSFYRLRFEL----------RYRAERSKTFTTWMVKDLQHHCVIHDAW--SGLRHVVQLRAQEEFGQGEWSEWSPEAMGTP";
+        IGapCost gapCost = new AffineGapCost(-12, -1);
+        assertEquals(-35.1, CheckScoreCalculator.calculateCheckScoreAffine(AlignmentMode.GLOBAL, new SequencePairAlignment(qa, ta), dayhoff, gapCost), 0.0000001);
+    }
+    /**
+     * Test of stripStartAndEndGaps method, of class CheckScoreCalculator.
+     */
+    @Test
     public void testCheckScoreRealLocal1() throws IOException {
         IDistanceMatrix dayhoff = QUASARDistanceMatrixFactory.factorize(new InputStreamReader(CheckScoreCalculatorTest.class.getResourceAsStream("/matrices/dayhoff.mat")));
         //2czeB00 1q1gC00
@@ -196,6 +209,19 @@ public class CheckScoreCalculatorTest {
         String ta = "----MEEAKQKVVDFLNSKSK-SKFYFNDFTDLFPDMKQREVKKILTALVNDEVLEYWSSGSTTMYGLKG";
         IGapCost gapCost = new AffineGapCost(-12, -1);
         assertEquals(33.9, CheckScoreCalculator.calculateCheckScoreAffine(AlignmentMode.LOCAL, new SequencePairAlignment(qa, ta), dayhoff, gapCost), 0.0000001);
+    }
+    /**
+     * Test of stripStartAndEndGaps method, of class CheckScoreCalculator.
+     */
+    @Test
+    public void testCheckScoreRealLocal2() throws IOException {
+        IDistanceMatrix dayhoff = QUASARDistanceMatrixFactory.factorize(new InputStreamReader(CheckScoreCalculatorTest.class.getResourceAsStream("/matrices/dayhoff.mat")));
+        //1oh1A00 1p9mC02
+        System.out.println("testCheckScoreRealLocal1");
+        String qa = "GSMEQFELFSIDKFKCNSEAKYYLNIIE-----------------------------------------------------------------------------------------GEWHPQDLNDSPLKFILSTSDDSDYICKYINTEHKQLTLYNKNNSSIVIEIFIPNDNKILLTIMNTEALGTSPRMTFIKH";
+        String ta = "----------------------------QPDPPANITVTAVARNPRWLSVTWQDPHSWNSSFYRLRFELRYRAERSKTFTTWMVKDLQHHCVIHDAWSGLRHVVQLRAQEEFGQGEWSEWSPEAMGTP---------------------------------------------------------------------";
+        IGapCost gapCost = new AffineGapCost(-12, -1);
+        assertEquals(35.1, CheckScoreCalculator.calculateCheckScoreAffine(AlignmentMode.LOCAL, new SequencePairAlignment(qa, ta), dayhoff, gapCost), 0.0000001);
     }
     /**
      * Test of calculateCheckScoreAffine method, of class CheckScoreCalculator.
