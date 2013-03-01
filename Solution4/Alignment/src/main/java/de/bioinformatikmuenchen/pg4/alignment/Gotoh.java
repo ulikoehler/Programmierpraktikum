@@ -268,7 +268,7 @@ public class Gotoh extends AlignmentProcessor {
         boolean maxIsInLastColumn = (maxEntry[1] != -1);
         int x = xSize;
         int y = ySize;
-        if (maxIsInLastColumn) {
+         if (maxIsInLastColumn) {
             for (y = ySize; y > maxEntry[1]; y--) {
                 topPath[x][y] = true;
                 hasPath[x][y] = true;
