@@ -66,7 +66,7 @@ public class Gotoh extends AlignmentProcessor {
         AlignmentResult result = new AlignmentResult();
         //Calculate the alignment and add it to the result
         result.setAlignments(Collections.singletonList(backTrackingGlobal()));
-        result.setScore(matrixA[xSize - 1][ySize - 1]);
+        result.setScore(matrixA[xSize][ySize]);
         result.setQuerySequenceId(seq1.getId());
         result.setTargetSequenceId(seq2.getId());
         System.out.println(printMatrix());
@@ -117,8 +117,8 @@ public class Gotoh extends AlignmentProcessor {
 
     public void fillMatrix(String seq1, String seq2) {
         assert ((gapCost != null) && (distanceMatrix != null));
-        for (int x = 1; x < xSize; x++) {
-            for (int y = 1; y < ySize; y++) {
+        for (int x = 1; x < xSize+1; x++) {
+            for (int y = 1; y < ySize+1; y++) {
                 matrixIn[x][y] = Math.max(matrixA[x-1][y] + gapCost.getGapCost(1), matrixIn[x-1][y] + gapCost.getGapExtensionPenalty(0, 1));
                 matrixDel[x][y] = Math.max(matrixA[x][y-1] + gapCost.getGapCost(1), matrixDel[x][y-1] + gapCost.getGapExtensionPenalty(0, 1));
                 matrixA[x][y] = Math.max(Math.max(matrixIn[x][y], matrixDel[x][y]), matrixA[x - 1][y - 1] + distanceMatrix.distance(seq1.charAt(x - 1), seq2.charAt(y - 1)));
