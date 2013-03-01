@@ -255,7 +255,7 @@ public class Gotoh extends AlignmentProcessor {
                 }
                 leftPath[x - xShift][y] = true;
                 hasPath[x - xShift][y] = true;
-                queryLine.append(querySequence.charAt(x - 1));
+                queryLine.append(querySequence.charAt(x - xShift - 1));
                 targetLine.append('-');
                 x -= xShift;
             } else if (Math.abs(matrixA[x][y] - matrixDel[x][y]) < 0.0000000001) {// Deletion -> to the right
@@ -270,7 +270,7 @@ public class Gotoh extends AlignmentProcessor {
                 topPath[x][y - yShift] = true;
                 hasPath[x][y - yShift] = true;
                 queryLine.append('-');
-                targetLine.append(targetSequence.charAt(y - 1));
+                targetLine.append(targetSequence.charAt(y - yShift - 1));
                 y -= yShift;
             } else {
                 throw new AlignmentException("No possibility found to move on (indicates a sure failure)");
