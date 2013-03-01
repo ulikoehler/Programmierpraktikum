@@ -65,7 +65,15 @@ public class Gotoh extends AlignmentProcessor {
         this.score = matrixA[xSize - 1][ySize - 1];
         AlignmentResult result = new AlignmentResult();
         //Calculate the alignment and add it to the result
-        result.setAlignments(Collections.singletonList(backTrackingGlobal()));
+        if (mode == AlignmentMode.GLOBAL) {
+            result.setAlignments(Collections.singletonList(backTrackingGlobal()));
+        } else if (mode == AlignmentMode.LOCAL) {
+            result.setAlignments(Collections.singletonList(backTrackingLocal()));
+        } else if (mode == AlignmentMode.FREESHIFT) {
+            throw new UnsupportedOperationException();
+        } else {
+            throw new IllegalArgumentException("Unknown alignment mode: " + mode);
+        }
         result.setScore(matrixA[xSize][ySize]);
         result.setQuerySequenceId(seq1.getId());
         result.setTargetSequenceId(seq2.getId());
@@ -77,7 +85,7 @@ public class Gotoh extends AlignmentProcessor {
         this.xSize = xSize;
         this.ySize = ySize;
         xSize++;
-        ySize++;    
+        ySize++;
         //Create the matrices
         matrixA = new double[xSize][ySize];
         matrixIn = new double[xSize][ySize];
@@ -117,10 +125,10 @@ public class Gotoh extends AlignmentProcessor {
 
     public void fillMatrix(String seq1, String seq2) {
         assert ((gapCost != null) && (distanceMatrix != null));
-        for (int x = 1; x < xSize+1; x++) {
-            for (int y = 1; y < ySize+1; y++) {
-                matrixIn[x][y] = Math.max(matrixA[x-1][y] + gapCost.getGapCost(1), matrixIn[x-1][y] + gapCost.getGapExtensionPenalty(0, 1));
-                matrixDel[x][y] = Math.max(matrixA[x][y-1] + gapCost.getGapCost(1), matrixDel[x][y-1] + gapCost.getGapExtensionPenalty(0, 1));
+        for (int x = 1; x < xSize + 1; x++) {
+            for (int y = 1; y < ySize + 1; y++) {
+                matrixIn[x][y] = Math.max(matrixA[x - 1][y] + gapCost.getGapCost(1), matrixIn[x - 1][y] + gapCost.getGapExtensionPenalty(0, 1));
+                matrixDel[x][y] = Math.max(matrixA[x][y - 1] + gapCost.getGapCost(1), matrixDel[x][y - 1] + gapCost.getGapExtensionPenalty(0, 1));
                 matrixA[x][y] = Math.max(Math.max(matrixIn[x][y], matrixDel[x][y]), matrixA[x - 1][y - 1] + distanceMatrix.distance(seq1.charAt(x - 1), seq2.charAt(y - 1)));
             }
         }
@@ -168,7 +176,7 @@ public class Gotoh extends AlignmentProcessor {
                     topPath[x][i] = true;
                     hasPath[x][i] = true;
                     queryLine.append('-');
-                    targetLine.append(targetSequence.charAt(i-1));
+                    targetLine.append(targetSequence.charAt(i - 1));
                 }
                 y -= shift;
             } else {
@@ -200,25 +208,25 @@ public class Gotoh extends AlignmentProcessor {
             } else if (matrixA[x][y] == matrixIn[x][y]) {
                 int shift = findK(matrixA[x][y], x, y, true);
 //                System.out.println("shiftX: "+(shift-x));
-                for (int i = x; i >= (x - shift) && i>0; i--) {
+                for (int i = x; i >= (x - shift) && i > 0; i--) {
                     leftPath[i][y] = true;
                     hasPath[i][y] = true;
-                    queryLine.append(querySequence.charAt(i-1));
+                    queryLine.append(querySequence.charAt(i - 1));
                     targetLine.append('-');
                 }
                 x -= shift;
             } else if (matrixA[x][y] == matrixDel[x][y]) {
                 int shift = findK(matrixA[x][y], x, y, false);
 //                System.out.println("shiftY: "+(shift-y));
-                for (int i = y; i >= (y - shift) && i>0; i--) {
+                for (int i = y; i >= (y - shift) && i > 0; i--) {
                     topPath[x][i] = true;
                     hasPath[x][i] = true;
                     queryLine.append('-');
-                    targetLine.append(targetSequence.charAt(i-1));
+                    targetLine.append(targetSequence.charAt(i - 1));
                 }
                 y -= shift;
             } else {
-                 throw new AlignmentException("No possibility found to move on (indicates a sure failure)");
+                throw new AlignmentException("No possibility found to move on (indicates a sure failure)");
             }
         }
         return new SequencePairAlignment(queryLine.reverse().toString(), targetLine.reverse().toString());
@@ -260,7 +268,7 @@ public class Gotoh extends AlignmentProcessor {
         this.local = local;
         return this.local;
     }
-    
+
     public String printMatrix() {
         StringBuilder builder = new StringBuilder();
         builder.append("\t\t");
