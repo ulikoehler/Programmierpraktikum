@@ -3,3 +3,4 @@ INSERT INTO DB (`Name`) VALUES("NCBI");
 INSERT INTO DB (`Name`) VALUES("HOMSTRAD");
 INSERT INTO DB (`Name`) VALUES("PDB");
 INSERT INTO DB (`Name`) VALUES("Unknown");
+INSERT INTO Organism (`Name`) VALUES("Unknown");
