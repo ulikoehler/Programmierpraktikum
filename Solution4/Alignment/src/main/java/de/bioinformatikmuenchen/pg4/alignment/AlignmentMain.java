@@ -217,7 +217,7 @@ public class AlignmentMain {
         //
         //Inter-argument cheks
         //
-        boolean haveAffineGapCost = (gapOpen - gapExtend) > 0.00000001;
+        boolean haveAffineGapCost = Math.abs(gapOpen - gapExtend) > 0.00000001;
         //TODO TEMPORARY assertion until it's impl
         assert !haveAffineGapCost;
         //If a DP matrix dir is set, we need to copy the SVG graphics there
