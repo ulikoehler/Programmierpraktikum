@@ -163,7 +163,7 @@ public class Gotoh extends AlignmentProcessor {
         int x = (int) maxEntry[0];
         int y = (int) maxEntry[1];
         double maxCell = maxEntry[2];
-        while (matrixA[x][y] != 0 && x > 0 && y > 0) {
+        while (matrixA[x][y] != 0 ) {//&& x > 0 && y > 0
             assert (x >= 0 && y >= 0 && maxCell > Double.NEGATIVE_INFINITY);
             while (matrixA[x][y] != 0 && x > 0 && y > 0) {
                 char A = querySequence.charAt(x - 1);
