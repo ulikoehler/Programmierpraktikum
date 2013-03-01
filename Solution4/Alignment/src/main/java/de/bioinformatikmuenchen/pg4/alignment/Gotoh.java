@@ -61,7 +61,7 @@ public class Gotoh extends AlignmentProcessor {
         this.xSize = querySequence.length();
         this.ySize = targetSequence.length();
         initMatrix(seq1.getSequence().length(), seq2.getSequence().length());
-        fillMatrix(seq1.getSequence(), seq2.getSequence());
+        fillMatrix(seq1.getSequence(), seq2.getSequence(), m);////////////////////// SCORE übergeben!
         this.score = matrixA[xSize - 1][ySize - 1];
         AlignmentResult result = new AlignmentResult();
         //Calculate the alignment and add it to the result
@@ -70,7 +70,7 @@ public class Gotoh extends AlignmentProcessor {
         } else if (mode == AlignmentMode.LOCAL) {
             result.setAlignments(Collections.singletonList(backTrackingLocal()));
         } else if (mode == AlignmentMode.FREESHIFT) {
-            throw new UnsupportedOperationException();
+            result.setAlignments(Collections.singletonList(backTrackingFreeShift()));
         } else {
             throw new IllegalArgumentException("Unknown alignment mode: " + mode);
         }
@@ -96,7 +96,7 @@ public class Gotoh extends AlignmentProcessor {
         hasPath = new boolean[xSize][ySize];
         matrixDel[0][0] = Double.NEGATIVE_INFINITY;//NaN;
         matrixIn[0][0] = Double.NEGATIVE_INFINITY;//NaN;
-        if (!(this.local || this.freeshift)) {// " == if(global)"
+        if (!(mode == AlignmentMode.FREESHIFT || mode == AlignmentMode.LOCAL)) {// " == if(global)"
             for (int i = 1; i < xSize; i++) {
                 matrixA[i][0] = gapCost.getGapCost(i);
             }
@@ -122,22 +122,8 @@ public class Gotoh extends AlignmentProcessor {
             }
         }
     }
-
-    public void fillMatrix(String seq1, String seq2) {
-        assert ((gapCost != null) && (distanceMatrix != null));
-        for (int x = 1; x < xSize + 1; x++) {
-            for (int y = 1; y < ySize + 1; y++) {
-                matrixIn[x][y] = Math.max(matrixA[x - 1][y] + gapCost.getGapCost(1), matrixIn[x - 1][y] + gapCost.getGapExtensionPenalty(0, 1));
-                matrixDel[x][y] = Math.max(matrixA[x][y - 1] + gapCost.getGapCost(1), matrixDel[x][y - 1] + gapCost.getGapExtensionPenalty(0, 1));
-                matrixA[x][y] = Math.max(Math.max(matrixIn[x][y], matrixDel[x][y]), matrixA[x - 1][y - 1] + distanceMatrix.distance(seq1.charAt(x - 1), seq2.charAt(y - 1)));
-            }
-        }
-    }
-
-    public SequencePairAlignment backTrackingLocal() {
-        StringBuilder queryLine = new StringBuilder();
-        StringBuilder targetLine = new StringBuilder();
-        //find the cell with the greatest entry:
+    
+    public double[] findMaximumInMatrix(){//returns the coordinates (x,y) and entry of the cell with the maximum entry (in this order)
         int x = -1;
         int y = -1;
         double maxCell = Double.NEGATIVE_INFINITY;
@@ -151,6 +137,29 @@ public class Gotoh extends AlignmentProcessor {
             }
         }
         assert (x >= 0 && y >= 0 && maxCell > Double.NEGATIVE_INFINITY);
+        return new double[]{x,y,maxCell};
+    }
+
+    public void fillMatrix(String seq1, String seq2, AlignmentMode mode) {
+        assert ((gapCost != null) && (distanceMatrix != null));
+        for (int x = 1; x < xSize + 1; x++) {
+            for (int y = 1; y < ySize + 1; y++) {
+                matrixIn[x][y] = Math.max(matrixA[x - 1][y] + gapCost.getGapCost(1), matrixIn[x - 1][y] + gapCost.getGapExtensionPenalty(0, 1));
+                matrixDel[x][y] = Math.max(matrixA[x][y - 1] + gapCost.getGapCost(1), matrixDel[x][y - 1] + gapCost.getGapExtensionPenalty(0, 1));
+                matrixA[x][y] = Math.max(Math.max(matrixIn[x][y], matrixDel[x][y]), matrixA[x - 1][y - 1] + distanceMatrix.distance(seq1.charAt(x - 1), seq2.charAt(y - 1)));
+            }
+        }
+        result
+    }
+
+    public SequencePairAlignment backTrackingLocal() {
+        StringBuilder queryLine = new StringBuilder();
+        StringBuilder targetLine = new StringBuilder();
+        //find the cell with the greatest entry:
+        double[] maxEntry = findMaximumInMatrix();
+        int x = (int)maxEntry[0];
+        int y = (int)maxEntry[1];
+        double maxCell = maxEntry[2];
         while (matrixA[x][y] != 0 && x>0 && y>0) {
             char A = querySequence.charAt(x - 1);
             char B = targetSequence.charAt(y - 1);
