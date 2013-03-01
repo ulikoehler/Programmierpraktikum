@@ -127,8 +127,8 @@ public class Gotoh extends AlignmentProcessor {
         int x = -1;
         int y = -1;
         double maxValue = Double.NEGATIVE_INFINITY;
-        for (int i = 0; i < xSize; i++) {
-            for (int j = 0; j < ySize; j++) {
+        for (int i = 0; i <= xSize; i++) {
+            for (int j = 0; j <= ySize; j++) {
                 if (matrixA[i][j] > maxValue) {
                     x = i;
                     y = j;
@@ -193,7 +193,18 @@ public class Gotoh extends AlignmentProcessor {
         int x = (int) maxEntry[0];
         int y = (int) maxEntry[1];
         double maxCell = maxEntry[2];
-        assert (x >= 0 && y >= 0 && maxCell > Double.NEGATIVE_INFINITY);
+        int yStart = ySize;
+        int xStart = xSize;
+        while(yStart > y) {
+            queryLine.append('-');
+            targetLine.append(targetSequence.charAt(yStart-1));
+            yStart--;
+        }
+        while(xStart > x) {
+            targetLine.append('-');
+            queryLine.append(querySequence.charAt(xStart-1));
+            xStart--;
+        }
         while (matrixA[x][y] > 0.0000000001 ) {//&& x > 0 && y > 0
             char A = (x==0 ? '?' : querySequence.charAt(x-1));//;querySequence.charAt(x - 1);
             char B = (y==0 ? '?' : targetSequence.charAt(y-1));
@@ -235,6 +246,16 @@ public class Gotoh extends AlignmentProcessor {
             } else {
                 throw new AlignmentException("No possibility found to move on (indicates a sure failure)");
             }
+        }
+        while(y > 0) {
+            queryLine.append('-');
+            targetLine.append(targetSequence.charAt(y-1));
+            y--;
+        }
+        while(x > 0) {
+            targetLine.append('-');
+            queryLine.append(querySequence.charAt(x-1));
+            x--;
         }
         return new SequencePairAlignment(queryLine.reverse().toString(), targetLine.reverse().toString());
     }
