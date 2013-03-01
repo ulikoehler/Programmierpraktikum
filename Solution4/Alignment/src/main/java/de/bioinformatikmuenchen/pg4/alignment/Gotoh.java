@@ -238,7 +238,7 @@ public class Gotoh extends AlignmentProcessor {
                     x--;
                 }
                 break;
-            } else if (matrixA[x][y] == matrixA[x - 1][y - 1] + distanceMatrix.distance(A, B)) {//leftTop
+            } else if (Math.abs((matrixA[x][y])-(matrixA[x - 1][y - 1] + distanceMatrix.distance(A, B))) < 0.0000000001) {//leftTop
                 //System.out.println("leftTOP x,y: " + x + ", " + y);
                 leftTopPath[x][y] = true;
                 hasPath[x][y] = true;
@@ -246,9 +246,9 @@ public class Gotoh extends AlignmentProcessor {
                 targetLine.append(B);
                 x--;
                 y--;
-            } else if (matrixA[x][y] == matrixIn[x][y]) {
+            } else if (Math.abs(matrixA[x][y] - matrixIn[x][y]) <0.0000000001) {
                 int xShift = 1;
-                while (matrixA[x][y] == (matrixA[x - xShift][y] + gapCost.getGapExtensionPenalty(0, xShift))) {
+                while (Math.abs(matrixA[x][y] - (matrixA[x - xShift][y] + gapCost.getGapCost(xShift))) > 0.0000000001) {
                     //System.out.println("left x,y: " + x + ", " + y);
                     leftPath[x][y] = true;
                     hasPath[x][y] = true;
@@ -257,9 +257,10 @@ public class Gotoh extends AlignmentProcessor {
                     xShift++;
                 }
                 x -= xShift;
-            } else if (matrixA[x][y] == matrixDel[x][y]) {
+            }
+            else if (Math.abs(matrixA[x][y] - matrixDel[x][y]) <0.0000000001) {
                 int yShift = 1;
-                while (matrixA[x][y] == (matrixA[x][y - yShift] + gapCost.getGapExtensionPenalty(0, yShift))) {
+                while (Math.abs(matrixA[x][y] - (matrixA[x][y - yShift] + gapCost.getGapCost(yShift))) > 0.0000000001) {
                     //System.out.println("top x,y: " + x + ", " + y);
                     topPath[x][y] = true;
                     hasPath[x][y] = true;
