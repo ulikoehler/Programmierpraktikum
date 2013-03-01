@@ -151,8 +151,11 @@ public abstract class GORPredicter {
 
     // Prediction
     public static char predictionArgMax(double[] pAA) {
+        if (pAA == null) {
+            return '_';
+        }
         int maxPos = 0;
-        for (int i = 1; i < pAA.length; i++) {
+        for (int i = 0; i < pAA.length; i++) {
             if (pAA[maxPos] < pAA[i]) {
                 maxPos = i;
             }
@@ -171,43 +174,60 @@ public abstract class GORPredicter {
 
     public abstract void initPrediction();
 
-    public PredictionResult predictFileSequences(File f) {  // TODO
+    public PredictionResult predictFileSequences(File f) {
         PredictionResult result = new PredictionResult();
         try {
             BufferedReader bf = new BufferedReader(new FileReader(f));
-            String line = null;
+            String line;
             String id = null, seq = null;
             while ((line = bf.readLine()) != null) {
+                if (Predict.debug) {
+                    System.out.println("Process line: " + line);
+                }
                 if (line.startsWith(";") || line.trim().isEmpty()) {
                     continue;
                 }
                 if (line.startsWith(">")) {
                     if (id != null && seq != null) {
+                        if (Predict.debug) {
+                            System.out.println("Found Sequence: ID: '" + id + "'\nseq: " + seq);
+                        }
                         result.add(id, seq, predictSequence(seq));
                     }
                     id = line.substring(1);
+                    seq = "";
                 } else {
-                    seq = line;
+                    seq += line;
                 }
             }
             if (id != null && seq != null) {
+                if (Predict.debug) {
+                    System.out.println("Found Sequence: ID: '" + id + "'\nseq: " + seq);
+                }
                 result.add(id, seq, predictSequence(seq));
             }
             bf.close();
         } catch (Exception e) {
-            throw new RuntimeException("Error reading fasta file! " + e.toString());
+            e.printStackTrace();
+            throw new RuntimeException("Error reading fasta file! " + e.toString() + " see stac trace above!");
         }
         return result;
     }
 
     public double[][] predictSequence(String aaSeq) {
-        double[][] result = new double[aaSeq.length()][];
-
-        for (int startPos = 0; startPos < aaSeq.length() - Data.trainingWindowSize + 1; startPos++) {
-            String subSeq = aaSeq.substring(startPos + Data.prevInWindow, startPos + Data.trainingWindowSize + Data.prevInWindow);
-            result[startPos + Data.secStruct.length] = predict1Example(subSeq);
+        double[][] result = new double[aaSeq.length() - Data.trainingWindowSize + 1][];
+        try {
+            for (int startPos = 0; startPos < aaSeq.length() - Data.trainingWindowSize + 1; startPos++) {
+                String subSeq = aaSeq.substring(startPos, startPos + Data.trainingWindowSize);
+                if (Predict.debug) {
+                    System.out.println("Call prediction for: " + subSeq);
+                }
+                result[startPos] = predict1Example(subSeq);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            System.out.println("Error while predicting single Sequnece! Stacktrace see above!");
         }
-
         return result;
     }
 

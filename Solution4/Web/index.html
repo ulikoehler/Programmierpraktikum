@@ -31,13 +31,14 @@
 		$(function() {
 			$( ".accordion" ).accordion();
 			$( ".tabs" ).tabs();
+			$(".button").button();
 			$("#available-sequences").resizable({containment: "#body"});
 			$("#align-from").resizable({containment: "#body"});
 			$("#align-to").resizable({containment: "#body"});
 			$( "#align-from-list, #align-to-list, #available-sequences" ).sortable({
 			      connectWith: ".dropList"
 			}).disableSelection();
-			$('.nodrag').draggable( "disable" )
+			//$('.nodrag').draggable( "disable" )
 			$("#droppable").droppable({
 			      drop: function( event, ui ) {
 				$( this )
@@ -61,6 +62,15 @@
 			    }
 			});
 		});
+		function showAddMatrixDialog() {
+		    $("#addMatrixDialog").dialog({autoOpen: false,modal: true,bgiframe: true,width:500,height:250});
+		    $('#addMatrixDialog').dialog('open');
+		}
+		function hideAddMatrixDialog() {
+		    if ($('#addMatrixDialog').dialog('isOpen')) {
+			$('#addMatrixDialog').dialog('close');
+		    }
+		}
 		</script>
 	</head>
 	<body>
@@ -69,6 +79,7 @@
 			<h1>Sequence tools (Gr. 4)</h1>
 		</div>
 		<div id="body">
+			<div class="button" onclick="showAddMatrixDialog()">Upload substitution matrix</div>
 			<h3>Select protein ID</h3>
 			<div style="height: 30px;">
 			</div>
@@ -112,7 +123,13 @@
 				</div>
 			</div>
 		</div>
-		<!-- accordion -->
+		<div id="addMatrixDialog" title="Upload substitution matrix" style="display: none;">
+		  <form action="matrix/insert_matrix.cgi" method="post" enctype="multipart/form-data">
+			Matrix name: <input type="text" name="name" cols="50" rows="20"></input><br/>
+			Matrix data in QUASAR format: <input type="file" name="quasar" style="width:100%;"><br/><br/>
+			<input type="submit" value="Submit"/>
+		  </form>
+		</div>
 	</body>
 </html>
 

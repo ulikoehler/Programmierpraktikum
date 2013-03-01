@@ -21,6 +21,7 @@ import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 import org.apache.commons.cli.CommandLine;
 import org.apache.commons.cli.CommandLineParser;
@@ -272,8 +273,9 @@ public class AlignmentMain {
                 for (SequencePairAlignment alignment : result.getAlignments()) {
                     double checkScore = CheckScoreCalculator.calculateCheckScoreAffine(mode, alignment, matrix, gapCost);
                     if (Math.abs(checkScore - result.getScore()) > 0.000000001) {
-                        //Check failed, print failed sequences
-                        formatter.formatAndPrint(result);
+                        //Check failed, print failed alignments ONLY
+                        formatter.formatAndPrint(new AlignmentResult(checkScore, Collections.singletonList(alignment)));
+                        System.err.println("Score " + result.getScore() + " vs " + checkScore);
                     }
                 }
             } else {
