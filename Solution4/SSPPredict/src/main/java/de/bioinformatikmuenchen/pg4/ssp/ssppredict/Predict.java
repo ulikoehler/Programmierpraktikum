@@ -45,6 +45,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import java.util.LinkedList;
 
 /**
  * SSP Prediction
@@ -75,7 +76,8 @@ public class Predict {
                 .addOption("a", "maf", true, "path to .aln file")
                 .addOption("f", "format", true, "output sequence in html or txt format")
                 .addOption("p", "probabilities", false, "include the probabilities in the output (0-9, coloring in html)")
-                .addOption("t", "postprocessing", false, "whether to postprocess results");
+                .addOption("t", "postprocessing", false, "whether to postprocess results")
+                .addOption("d", "debug", false, "output debug informations");
 
         final CommandLineParser cmdLinePosixParser = new PosixParser();
         CommandLine commandLine = null;
@@ -89,14 +91,18 @@ public class Predict {
         }
 
         String model = "";
+        File f = new File(model);
+        simpleGorMethods method = null;
 
 
 
         String seq = "";
+        File g = new File(seq);
 
 
 
         String maf = "";
+        // GOR V
 
 
         outputMethod format = outputMethod.txt;
@@ -109,110 +115,55 @@ public class Predict {
         boolean postprocessing = false;
 
 
+        boolean debug = false;
+
+        GORPredicter predicter =
+                (method.gor1.name() == simpleGorMethods.gor1.name())
+                ? new GOR1Predicter()
+                : (method.gor3.name() == simpleGorMethods.gor3.name())
+                ? null : null;// Gor3, Gor4
 
         try {
+            if (debug) {
+                System.out.println("Preprocessing ...");
+            }
+            Data.secStruct = GORPredicter.getStatesFromFile(f, method);
+            Data.trainingWindowSize = GORPredicter.getWindowSizeFromFile(f);
+            Data.prevInWindow = Data.trainingWindowSize / 2;
+            if (debug) {
+                System.out.println("Init ...");
+            }
+            predicter.init();
+            if (debug) {
+                System.out.println("Parse ...");
+            }
+            predicter.readModelFile(f);
+            if (debug) {
+                System.out.println("Init prediction ...");
+            }
+            predicter.initPrediction();
+            if (debug) {
+                System.out.println("Predict ...");
+            }
+            PredictionResult res = predicter.predictFileSequences(g);
+            if (postprocessing) {
+                if (debug) {
+                    System.out.println("Postprocessing ...");
+                }
+                res = GORPredicter.postprocess(res);
+            }
+            if (debug) {
+                System.out.println("Format and write results (" + format.name() + "," + ((probabilities)?"":" no") + " probabilities) ...");
+            }
+            if (format.name().equals(outputMethod.html.name())) {
+                System.out.println(res.getHTMLRepresentation(probabilities));
+            } else {
+                System.out.println(res.getTXTRepresentation(probabilities));
+            }
         } catch (RuntimeException e) {
             System.err.println("Error predicting sequence! " + e.toString());
             System.exit(1);
         }
-    }
-
-    public static char[] getStatesFromFile(File model, simpleGorMethods method) {
-        
-        // in gor3 the secondary structure state will be saved at the second pos everywhere else at the first pos
-        int pos = ((simpleGorMethods.gor3.name() == method.name())?1:0);
-        System.out.println(pos);
-        try {
-            BufferedReader br = new BufferedReader(new FileReader(model));
-            String line = "";
-            while ((line = br.readLine()) != null) {
-                
-                break;  // no valid model file
-            }
-            br.close();
-        } catch (Exception e) {
-            System.err.println("Error reading model file! " + e.toString());
-            System.exit(1);
-        }
-        System.err.println("invalid model file!");
-        System.exit(1);
-        return new char[] {};
-    }
-    
-    public static simpleGorMethods getGorFromFile(File model) {
-        Pattern gor1 = Pattern.compile("=\\s*[a-zA-Z]\\s*=");
-        Pattern gor3 = Pattern.compile("=\\s*[a-zA-Z]\\s*,\\s*[a-zA-Z]\\s*=");
-        Pattern gor4 = Pattern.compile("=\\s*[a-zA-Z]\\s*,\\s*[a-zA-Z]\\s*,\\s*[a-zA-Z]\\s*,\\s*.\\d*\\s*=");
-
-        try {
-            BufferedReader br = new BufferedReader(new FileReader(model));
-            String line = "";
-            while ((line = br.readLine()) != null) {
-                if (line.trim().startsWith("//") || line.trim().isEmpty()) {
-                    continue;
-                }
-                if (gor1.matcher(line).find()) {
-                    br.close();
-                    return simpleGorMethods.gor1;
-                }
-                if (gor3.matcher(line).find()) {
-                    br.close();
-                    return simpleGorMethods.gor3;
-                }
-                if (gor4.matcher(line).find()) {
-                    br.close();
-                    return simpleGorMethods.gor4;
-                }
-                break;  // no valid model file
-            }
-            br.close();
-        } catch (Exception e) {
-            System.err.println("Error reading model file! " + e.toString());
-            System.exit(1);
-        }
-        System.err.println("invalid model file!");
-        System.exit(1);
-        return simpleGorMethods.gor1;
-    }
-
-    public static int getWindowSizeFromFile(File model) {
-        Pattern matrixLine = Pattern.compile("\\s*\\w\\s*(\\d*\\s*)*");
-
-        try {
-            BufferedReader br = new BufferedReader(new FileReader(model));
-            String line = "";
-            while ((line = br.readLine()) != null) {
-                if (line.trim().startsWith("//") || line.trim().startsWith("=") || line.trim().isEmpty()) {
-                    continue;
-                }
-                if (matrixLine.matcher(line).find()) {
-                    // amino acid spaces or tabs value1 spaces or tabs ... value n => get number n
-                    int count = 0;
-                    boolean state = false;   // in numeric state
-
-                    for (int i = 0; i < line.length(); i++) {
-                        int cur = (int) line.charAt(i);
-                        if (48 <= cur && cur <= 57) { // numeric
-                            if (!state) {
-                                count++;
-                            }
-                            state = true;
-                        } else {
-                            state = false;
-                        }
-                    }
-                    br.close();
-                    return count;
-                }
-                break;  // no valid model file
-            }
-        } catch (Exception e) {
-            System.err.println("Error reading model file! " + e.toString());
-            System.exit(1);
-        }
-        System.err.println("invalid model file!");
-        System.exit(1);
-        return -1;
     }
 
     public static void printUsageAndQuit() {

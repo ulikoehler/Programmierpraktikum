@@ -13,6 +13,8 @@ import org.junit.Test;
 import junit.framework.TestCase;
 import org.junit.*;
 import static junit.framework.Assert.assertEquals;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.fail;
 
 /**
  *
@@ -39,9 +41,68 @@ public class GORPredicterTest {
     public void tearDown() {
     }
 
-    /**
-     * Test of predictionArgMax method, of class GORPredicter.
-     */
+    // Postprocessing
+    String files[] = {
+        "PredictGor1", "PredictGor3", "PredictGor4", "PredictGor1x", "PredictGor3x", "PredictGor4x", "PredictGor4xx",
+        "Ugor1CB513DSSP.db.txt", "Ugor3CB513DSSP.db.txt", "Ugor4CB513DSSP.db.txt",
+        "Ugor1test.db.txt", "Ugor3test.db.txt", "Ugor4test.db.txt"
+    };
+    String eGors[] = {
+        "gor1", "gor3", "gor4", "gor1", "gor3", "gor4", "gor4",
+        "gor1", "gor3", "gor4",
+        "gor1", "gor3", "gor4"
+    };
+    int eWindow[] = {
+        4, 5, 3, 4, 5, 3, 3,
+        17, 17, 17,
+        17, 17, 17
+    };
+    char[][] p = new char[][]{
+        {'A'}, {'C'}, {'A'},
+        {'A'}, {'C'}, {'A'},
+        {'A'},
+        {'C', 'E', 'H'}, {'C', 'E', 'H'}, {'C', 'E', 'H'},
+        {'C', 'E', 'H'}, {'C', 'E', 'H'}, {'C', 'E', 'H'}
+    };
+    String path = "src/test/resources/";
+
+    @Test
+    public void testGetStatesFromFile() {
+        System.out.println("Starting test get states from file ...");
+        for (int i = 0; i < files.length; i++) {
+            File f = new File(path + files[i]);
+            char n[] = GORPredicter.getStatesFromFile(f, GORPredicter.getGorFromFile(f));
+            if (n.length != p[i].length) {
+                fail();
+            }
+            for (int z = 0; z < n.length; z++) {
+                System.out.println("current: " + n[z] + " <-> expected: " + p[i][z] + " @file: " + files[i]);
+                if (n[z] != p[i][z]) {
+                    fail();
+                }
+            }
+        }
+    }
+    
+    @Test
+    public void testGetGorFromFile() {
+        System.out.println("Starting test get gor method from File ...");
+        // Predict.getGorFromFile
+        for (int i = 0; i < files.length; i++) {
+            Predict.simpleGorMethods n = GORPredicter.getGorFromFile(new File(path + files[i]));
+            assertEquals(eGors[i], n.toString());
+        }
+    }
+
+    @Test
+    public void testGetWindowSizeFromFile() {
+        System.out.println("Starting test getWindowSize ...");
+        for (int i = 0; i < files.length; i++) {
+            assertEquals(eWindow[i], GORPredicter.getWindowSizeFromFile(new File(path + files[i])));
+        }
+    }
+    
+    // Prediction
     @Test
     public void testPredictionArgMax() {
         System.out.println("test the predictionArgMax");
@@ -93,5 +154,25 @@ public class GORPredicterTest {
         assertEquals(9, GORPredicter.p2Int(1.0));
         assertEquals(9, GORPredicter.p2Int(1.1));
     }
-
+/*
+    // Postprocessing
+    @Test
+    public void testPreprocess() {
+        String input[] = new String[] {
+            "CCCHCCC",
+            "CHHHCCC"
+        };
+        String[][] prob = new String[][] {  // prob for C, E, H
+            { "9874789", "0003000", "1234321" },
+            { "9333399", "0000000", "1113111" }
+        };
+        String output[] = new String[] {
+            "CCCCCCC",
+            "CHHHHCC"
+        };
+        for(int i = 0; i < input.length; i++) {
+            String r = GORPredicter.preprocess(input[i], prob[i]);
+            assertEquals(output[i], r);
+        }
+    }*/
 }
