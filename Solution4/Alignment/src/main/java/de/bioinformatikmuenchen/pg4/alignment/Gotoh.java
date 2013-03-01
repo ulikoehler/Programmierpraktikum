@@ -244,7 +244,7 @@ public class Gotoh extends AlignmentProcessor {
                 targetLine.append(B);
                 x--;
                 y--;
-            } else if (Math.abs(matrixA[x][y] - matrixIn[x][y]) < 0.0000000001) {// Insertion -> to the left
+            } else if (Math.abs(matrixA[x][y] - matrixIn[x][y]) < 0.0000000001) {// Insertion -> to the left --> Gap in target alignment part
                 int xShift = 1;
                 while (Math.abs(matrixA[x][y] - (matrixA[x - xShift][y] + gapCost.getGapCost(xShift))) > 0.0000000001) {
                     leftPath[x - xShift][y] = true;
@@ -258,7 +258,7 @@ public class Gotoh extends AlignmentProcessor {
                 queryLine.append(querySequence.charAt(x - xShift));
                 targetLine.append('-');
                 x -= xShift;
-            } else if (Math.abs(matrixA[x][y] - matrixDel[x][y]) < 0.0000000001) {// Deletion -> to the right
+            } else if (Math.abs(matrixA[x][y] - matrixDel[x][y]) < 0.0000000001) {// Deletion -> to the right --> Gap in query alignment part
                 int yShift = 1;
                 while (Math.abs(matrixA[x][y] - (matrixA[x][y - yShift] + gapCost.getGapCost(yShift))) > 0.0000000001) {
                     topPath[x][y - yShift] = true;

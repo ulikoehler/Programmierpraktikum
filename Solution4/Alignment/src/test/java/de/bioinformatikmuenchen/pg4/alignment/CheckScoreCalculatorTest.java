@@ -203,6 +203,23 @@ public class CheckScoreCalculatorTest {
      * Test of stripStartAndEndGaps method, of class CheckScoreCalculator.
      */
     @Test
+    public void testCheckScoreRealGlobal3() throws IOException {
+        IDistanceMatrix dayhoff = QUASARDistanceMatrixFactory.factorize(new InputStreamReader(CheckScoreCalculatorTest.class.getResourceAsStream("/matrices/dayhoff.mat")));
+        //1oh1A00 1p9mC02 -35.100
+        System.out.println("testCheckScoreRealGlobal1");
+        String qa1 = "GGGYITGIVAHPKTKDLLYARTDIGGAYRWDAGTSKWIPLNDFIEAQDMNIMGTESIALDPNNPDRLYLAQGRYVGDEWAAFYVSEDRGQSFTIYESPFPMGANDMGRNNGERLAVNPFNSNEVWMGTRTEGIWKSSDRAKTWTNVTSIPDAFTNGIGYTSVIFDPERNGTIYASATAPQGMYVTHDGGVSWEPVAGQPSSWLNRTTGAFPDKKPASIAPQPMKVALTPNFLYVTYADYPGPWGVTFGEVWRQNRTSGAWDDITPRVGNSSPAPYNNQTFPAGGFCGLSVDATNPNRLVVITLDRDPGPALDSIYLSTDAGATWKDVTQLSSPSNLEGNWGHPTNAARYKDGTPVPWLDFNNGPQWGGYGAPHGTPGLTKFGWWMSAVLIDPFNPEHLMYGTGATIWATDTLSRVEKDWAPSWYLQIDGIEEKSTAKCANGQKGTHCY";
+        String qa2 = "GGGYITGIVAHPKTKDLLYARTDIGGAYRWDAGTSKWIPLNDFIEAQDMNIMGTESIALDPNNPDRLYLAQGRYVGDEWAAFYVSEDRGQSFTIYESPFPMGANDMGRNNGERLAVNPFNSNEVWMGTRTEGIWKSSDRAKTWTNVTSIPDAFTNGIGYTSVIFDPERNGTIYASATAPQGMYVTHDGGVSWEPVAGQPSSWLNRTTGAFPDKKPASIAPQPMKVALTPNFLYVTYADYPGPWGVTFGEVWRQNRTSGAWDDITPRVGNSSPAPYNNQTFPAGGFCGLSVDATNPNRLVVITLDRDPGPALDSIYLSTDAGATWKDVTQLSSPSNLEGNWGHPTNAARYKDGTPVPWLDFNNGPQWGGYGAPHGTPGLTKFGWWMSAVLIDPFNPEHLMYGTGATIWATDTLSRVEKDWAPS--WYLQIDGIEEKSTAKCANGQKGTHCY";
+        String ta1 = "KPRAPGNLTVH---DTLLLT---------WS----------------------------NPYPPDNYLYNHLTYAVNIW-----SENDPADFRIYNVTY----------------------------------------------------------------LEP-------------------------------------------------------SLRIAAG-----ISYRARVRAWAQAYNTTW--------------------------------------------------------------------------------------SEWSPSTK-----------------------------------------------------------------------------W-------------------------";
+        String ta2 = "KPRAPGNLTVH---DTLLLT---------WS----------------------------NPYPPDNYLYNHLTYAVNIW-----SENDPADFRIYNVTY----------------------------------------------------------------LEP-------------------------------------------------------SLRIAAG-----ISYRARVRAWAQAYNTTW---------------------------------------------------------------------------------------------------------------------------------------------------------------------SEWSPSTKW-------------------------";
+        IGapCost gapCost = new AffineGapCost(-12, -1);
+        assertEquals(-259.400, CheckScoreCalculator.calculateCheckScoreAffine(AlignmentMode.GLOBAL, new SequencePairAlignment(qa1, ta1), dayhoff, gapCost), 0.0000001);
+        assertEquals(-259.400, CheckScoreCalculator.calculateCheckScoreAffine(AlignmentMode.GLOBAL, new SequencePairAlignment(qa2, ta2), dayhoff, gapCost), 0.0000001);
+    }
+
+    /**
+     * Test of stripStartAndEndGaps method, of class CheckScoreCalculator.
+     */
+    @Test
     public void testCheckScoreRealLocal1() throws IOException {
         IDistanceMatrix dayhoff = QUASARDistanceMatrixFactory.factorize(new InputStreamReader(CheckScoreCalculatorTest.class.getResourceAsStream("/matrices/dayhoff.mat")));
         //2czeB00 1q1gC00
