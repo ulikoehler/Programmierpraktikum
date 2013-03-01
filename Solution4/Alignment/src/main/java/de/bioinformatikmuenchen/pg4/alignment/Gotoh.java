@@ -233,7 +233,7 @@ public class Gotoh extends AlignmentProcessor {
                 }
             }
         } else {//Deletion
-            while (x != 0) {
+            while (y != 0) {
                 if ((matrixA[x][y - 1] + gapCost.getGapCost(shift + 1)) == entry) {
                     shift++;
                     break;
