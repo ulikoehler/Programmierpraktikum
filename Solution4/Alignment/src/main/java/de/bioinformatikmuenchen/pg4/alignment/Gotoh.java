@@ -148,10 +148,9 @@ public class Gotoh extends AlignmentProcessor {
                 matrixA[x][y] = Math.max(Math.max(matrixIn[x][y], matrixDel[x][y]), matrixA[x - 1][y - 1] + distanceMatrix.distance(seq1.charAt(x - 1), seq2.charAt(y - 1)));
             }
         }
-        if(mode == AlignmentMode.GLOBAL){
+        if (mode == AlignmentMode.GLOBAL) {
             result.setScore(matrixA[xSize][ySize]);
-        }
-        else if(mode == AlignmentMode.LOCAL){
+        } else if (mode == AlignmentMode.LOCAL) {
             result.setScore(findMaximumInMatrix()[2]);
         }
     }
@@ -234,11 +233,11 @@ public class Gotoh extends AlignmentProcessor {
                     leftPath[x][y] = true;
                     hasPath[x][y] = true;
                     queryLine.append(querySequence.charAt(x - 1));
-                     targetLine.append('-');
+                    targetLine.append('-');
                     x--;
                 }
                 break;
-            } else if (Math.abs((matrixA[x][y])-(matrixA[x - 1][y - 1] + distanceMatrix.distance(A, B))) < 0.0000000001) {//leftTop
+            } else if (Math.abs((matrixA[x][y]) - (matrixA[x - 1][y - 1] + distanceMatrix.distance(A, B))) < 0.0000000001) {//leftTop
                 //System.out.println("leftTOP x,y: " + x + ", " + y);
                 leftTopPath[x][y] = true;
                 hasPath[x][y] = true;
@@ -246,28 +245,35 @@ public class Gotoh extends AlignmentProcessor {
                 targetLine.append(B);
                 x--;
                 y--;
-            } else if (Math.abs(matrixA[x][y] - matrixIn[x][y]) <0.0000000001) {
+            } else if (Math.abs(matrixA[x][y] - matrixIn[x][y]) < 0.0000000001) {
                 int xShift = 1;
                 while (Math.abs(matrixA[x][y] - (matrixA[x - xShift][y] + gapCost.getGapCost(xShift))) > 0.0000000001) {
                     //System.out.println("left x,y: " + x + ", " + y);
-                    leftPath[x][y] = true;
-                    hasPath[x][y] = true;
+                    leftPath[x - xShift][y] = true;
+                    hasPath[x - xShift][y] = true;
                     queryLine.append(querySequence.charAt(x - 1));
                     targetLine.append('-');
                     xShift++;
                 }
+                leftPath[x - xShift][y] = true;
+                hasPath[x - xShift][y] = true;
+                queryLine.append(querySequence.charAt(x - 1));
+                targetLine.append('-');
                 x -= xShift;
-            }
-            else if (Math.abs(matrixA[x][y] - matrixDel[x][y]) <0.0000000001) {
+            } else if (Math.abs(matrixA[x][y] - matrixDel[x][y]) < 0.0000000001) {
                 int yShift = 1;
                 while (Math.abs(matrixA[x][y] - (matrixA[x][y - yShift] + gapCost.getGapCost(yShift))) > 0.0000000001) {
                     //System.out.println("top x,y: " + x + ", " + y);
-                    topPath[x][y] = true;
-                    hasPath[x][y] = true;
+                    topPath[x][y - yShift] = true;
+                    hasPath[x][y - yShift] = true;
                     queryLine.append('-');
                     targetLine.append(targetSequence.charAt(y - 1));
                     yShift++;
                 }
+                topPath[x][y - yShift] = true;
+                hasPath[x][y - yShift] = true;
+                queryLine.append('-');
+                targetLine.append(targetSequence.charAt(y - 1));
                 y -= yShift;
             } else {
                 throw new AlignmentException("No possibility found to move on (indicates a sure failure)");
