@@ -15,14 +15,19 @@ public class ScoreOnlyAlignmentOutputFormatter extends AbstractAlignmentOutputFo
     public ScoreOnlyAlignmentOutputFormatter() {
         DecimalFormatSymbols dfs = new DecimalFormatSymbols();
         dfs.setDecimalSeparator('.');
+        numberFormat.setGroupingUsed(false);
         numberFormat.setMinimumFractionDigits(4);
         numberFormat.setMinimumFractionDigits(4);
+        numberFormat.setDecimalSeparatorAlwaysShown(false);
         numberFormat.setDecimalFormatSymbols(dfs);
     }
 
     @Override
     public String format(AlignmentResult result) {
         check(result);
+        if(Math.abs(result.getScore()) < 0.0000000001) {
+            result.setScore(0.0);
+        }
         return result.getQuerySequenceId() + " " + result.getTargetSequenceId() + " " + numberFormat.format(result.getScore());
     }
 }
