@@ -10,6 +10,7 @@ import de.bioinformatikmuenchen.pg4.common.alignment.AlignmentResult;
 import de.bioinformatikmuenchen.pg4.common.alignment.SequencePairAlignment;
 import de.bioinformatikmuenchen.pg4.common.distance.IDistanceMatrix;
 import java.io.IOException;
+import java.text.DecimalFormat;
 import java.util.Collections;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -125,18 +126,19 @@ public class Gotoh extends AlignmentProcessor {
     public double[] findMaxInMatrixLocal() {//returns the coordinates (x,y) and entry of the cell with the maximum entry (in this order)
         int x = -1;
         int y = -1;
-        double maxCell = Double.NEGATIVE_INFINITY;
+        double maxValue = Double.NEGATIVE_INFINITY;
         for (int i = 0; i < xSize; i++) {
             for (int j = 0; j < ySize; j++) {
-                if (matrixA[i][j] > maxCell) {
+                if (matrixA[i][j] > maxValue) {
                     x = i;
                     y = j;
-                    maxCell = matrixA[i][j];
+                    maxValue = matrixA[i][j];
                 }
             }
         }
-        assert (x >= 0 && y >= 0 && maxCell > Double.NEGATIVE_INFINITY);
-        return new double[]{x, y, maxCell};
+//        System.out.println("Found max: " + maxValue);
+        assert (x >= 0 && y >= 0 && maxValue > Double.NEGATIVE_INFINITY);
+        return new double[]{x, y, maxValue};
     }
     
     public double[] findMaxInMatrixFreeShift(){//look for maxEntry only in last column and line
@@ -341,6 +343,9 @@ public class Gotoh extends AlignmentProcessor {
     }
 
     public String printMatrix() {
+//        DecimalFormat format = new DecimalFormat();
+//        format.setMaximumFractionDigits(2);
+//        format.setMinimumIntegerDigits(2);
         StringBuilder builder = new StringBuilder();
         builder.append("\t\t");
         for (int x = 0; x < querySequence.length(); x++) {
