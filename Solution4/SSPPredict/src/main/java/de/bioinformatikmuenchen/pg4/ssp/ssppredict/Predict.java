@@ -54,6 +54,8 @@ import de.bioinformatikmuenchen.pg4.common.util.IO;
  */
 public class Predict {
 
+    public static boolean debug = false;
+
     public enum simpleGorMethods {
 
         gor1, gor3, gor4
@@ -143,12 +145,11 @@ public class Predict {
         }
 
         boolean postprocessing = false;
-        if (commandLine.hasOption("p")) {
+        if (commandLine.hasOption("t")) {
             postprocessing = true;
         }
 
-        boolean debug = false;
-        if (commandLine.hasOption("p")) {
+        if (commandLine.hasOption("d")) {
             debug = true;
         }
 
@@ -195,8 +196,23 @@ public class Predict {
             } else {
                 System.out.println(res.getTXTRepresentation(probabilities));
             }
+            if (debug) {
+                System.out.println("programdata: ");
+                System.out.print("AA: ");
+                for (int i = 0; i < Data.aaTable.length; i++) {
+                    System.out.print(Data.aaTable[i]);
+                }
+                System.out.println();
+                System.out.print("ST: ");
+                for (int i = 0; i < Data.secStruct.length; i++) {
+                    System.out.print(Data.secStruct[i]);
+                }
+                System.out.println();
+                System.out.println("window size: " + Data.trainingWindowSize + " - " + Data.prevInWindow);
+            }
         } catch (RuntimeException e) {
-            System.err.println("Error predicting sequence! " + e.toString());
+            e.printStackTrace();
+            System.err.println("Error predicting sequence! " + e.toString() + " See stacktrace above!");
             System.exit(1);
         }
     }

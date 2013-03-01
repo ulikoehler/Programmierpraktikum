@@ -13,8 +13,8 @@ import java.util.ArrayList;
  */
 public class PredictionResult {
 
-    public LinkedList<String[]> sequences;
-    public LinkedList<double[][]> probabilities;
+    public LinkedList<String[]> sequences = new LinkedList<String[]>();
+    public LinkedList<double[][]> probabilities = new LinkedList<double[][]>();
     private String[][] s;
     private double[][][] p;
 
@@ -24,23 +24,34 @@ public class PredictionResult {
     }
 
     public void add(String id, String seq, double[][] probability) {
-        sequences.add(new String[]{id, seq});
+        String[] str = new String[]{id, seq};
+        sequences.add(str);
         probabilities.add(probability);
+        if (Predict.debug) {
+            System.out.println("Prediction Result added! (" + id + ", " + seq + ", " + probability.toString() + ")");
+        }
     }
 
     // convert to
-    public String getHTMLRepresentation(boolean printProbabilities) {
+    public String getHTMLRepresentation(boolean printProbabilities) {// TODO
         initArrays();
 
-        StringBuilder result = new StringBuilder("<html><head><title>secondary structure prediction</title></head><body>");
+        StringBuilder result = new StringBuilder("<html><head><title>secondary structure prediction</title></head><body><div style=\"font-family: Courier New\">");
 
         for (int i = 0; i < s.length; i++) {
-            result.append(">").append(s[i][0]).append("<br>");   // append id
+            result.append("&gt;").append(s[i][0]).append("<br>");   // append id
             result.append("AS ").append(s[i][1]).append("<br>"); // and the seq
             // predicted
             result.append("PS " + concatN('-', Data.prevInWindow));
-            for (int z = 0; z < p.length; z++) {
-                result.append(color(GORPredicter.predictionArgMax(p[i][z])));
+            for (int z = 0; z < p[i].length; z++) {
+                if (Predict.debug) {
+                    System.out.println("Debug position probability:");
+                    for (int st = 0; st < Data.secStruct.length; st++) {
+                        System.out.println("  @pos: " + z + " value fpr " + Data.secStruct[st] + " = " + p[i][z][st]);
+                    }
+                    System.out.println(" => max: " + GORPredicter.predictionArgMax(p[i][z]));
+                }
+                result.append(GORPredicter.predictionArgMax(p[i][z]));
             }
             result.append(concatN('-', Data.trainingWindowSize - (Data.prevInWindow + 1))).append("<br>");
             // probabilities
@@ -48,15 +59,15 @@ public class PredictionResult {
                 for (int stateProb = Data.secStruct.length - 1; stateProb >= 0; stateProb--) {
                     result.append("P").append(Data.secStruct[stateProb]).append(" "); // concat the other way round
                     result.append(concatN('-', Data.prevInWindow));
-                    for (int z = 0; z < p.length; z++) {
-                        result.append(color((char) GORPredicter.p2Int(p[i][z][stateProb])));
+                    for (int z = 0; z < p[i].length; z++) {
+                        result.append(color(GORPredicter.p2Int(p[i][z][stateProb])));
                     }
                     result.append(concatN('-', Data.trainingWindowSize - (Data.prevInWindow + 1))).append("<br>");
                 }
             }
         }
-        
-        result.append("</body></html>");
+
+        result.append("</div></body></html>");
 
         return result.toString();
     }
@@ -71,7 +82,14 @@ public class PredictionResult {
             result.append("AS ").append(s[i][1]).append("\n"); // and the seq
             // predicted
             result.append("PS " + concatN('-', Data.prevInWindow));
-            for (int z = 0; z < p.length; z++) {
+            for (int z = 0; z < p[i].length; z++) {
+                if (Predict.debug) {
+                    System.out.println("Debug position probability:");
+                    for (int st = 0; st < Data.secStruct.length; st++) {
+                        System.out.println("  @pos: " + z + " value fpr " + Data.secStruct[st] + " = " + p[i][z][st]);
+                    }
+                    System.out.println(" => max: " + GORPredicter.predictionArgMax(p[i][z]));
+                }
                 result.append(GORPredicter.predictionArgMax(p[i][z]));
             }
             result.append(concatN('-', Data.trainingWindowSize - (Data.prevInWindow + 1))).append("\n");
@@ -80,8 +98,8 @@ public class PredictionResult {
                 for (int stateProb = Data.secStruct.length - 1; stateProb >= 0; stateProb--) {
                     result.append("P").append(Data.secStruct[stateProb]).append(" "); // concat the other way round
                     result.append(concatN('-', Data.prevInWindow));
-                    for (int z = 0; z < p.length; z++) {
-                        result.append(p[i][z][stateProb]);
+                    for (int z = 0; z < p[i].length; z++) {
+                        result.append(GORPredicter.p2Int(p[i][z][stateProb]));
                     }
                     result.append(concatN('-', Data.trainingWindowSize - (Data.prevInWindow + 1))).append("\n");
                 }
@@ -99,7 +117,8 @@ public class PredictionResult {
         return s.toString();
     }
 
-    private String color(char n) {
-        return "<font color=\'" + Data.colors[((int) n) % Data.colors.length] + "\'>" + n + "</font>";   // I know font is depricated (IE also)
+    private String color(int n) {
+        n = (n > 0) ? n : -n;
+        return "<font color=\'" + Data.colors[n % Data.colors.length] + "\'>" + n + "</font>";   // I know font is depricated (IE also)
     }
 }

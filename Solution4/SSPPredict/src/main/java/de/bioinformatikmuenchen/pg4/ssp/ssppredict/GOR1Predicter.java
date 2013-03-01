@@ -40,9 +40,16 @@ public class GOR1Predicter extends GORPredicter {
             BufferedReader br = new BufferedReader(new FileReader(f));
             String line = null;
             char currentState = ' ';
-            int currentAminoAcidNr = -1, currentWindowPosition = -1;
-            while ((line = br.readLine().trim()) != null) {
+            int currentAminoAcidNr = -1;
+            while ((line = br.readLine()) != null) {
+                line = line.trim();
+                if (Predict.debug) {
+                    System.out.println("Process line: " + line);
+                }
                 if (line.startsWith("//") || line.isEmpty()) {
+                    if (Predict.debug) {
+                        System.out.println(" Skip line!");
+                    }
                     continue;
                 }
                 if (line.startsWith("=")) {
@@ -54,9 +61,16 @@ public class GOR1Predicter extends GORPredicter {
                     } else {
                         throw new Exception("Invalid model file!");
                     }
+                    if (Predict.debug) {
+                        System.out.println(" state line! (now in state: " + currentState + ")");
+                    }
                 } else {
+                    if (Predict.debug) {
+                        System.out.println(" data line!");
+                    }
                     // go through line
                     String value = "";
+                    int currentWindowPosition = -1;
                     line += " ";        // that's no line to remove; think why!
                     currentAminoAcidNr = GORPredicter.convertASCharToMatrixId(line.charAt(0));      // aa first
                     for (int i = 1; i < line.length(); i++) {
@@ -66,7 +80,10 @@ public class GOR1Predicter extends GORPredicter {
                             continue;
                         }
                         if (!value.isEmpty() && currWhite) {
-                            cMatrix[currentState][++currentWindowPosition][currentAminoAcidNr] = Integer.parseInt(value);
+                            if (Predict.debug) {
+                                System.out.println("  input in matrix: state: " + currentState + " currentWindowPosition: " + (currentWindowPosition + 1) + " currentAminoAcid: " + Data.aaTable[currentAminoAcidNr] + " => " + value);
+                            }
+                            cMatrix[GORPredicter.convertStructureCharToMatrixId(currentState)][++currentWindowPosition][currentAminoAcidNr] = Integer.parseInt(value);
                             value = "";
                         } else {
                             value += currChar;
@@ -74,9 +91,14 @@ public class GOR1Predicter extends GORPredicter {
                     }
                 }
             }
+            if (Predict.debug) {
+                System.out.println("Model file parsed! ");
+            }
             br.close();
         } catch (Exception e) {
-            throw new RuntimeException("Error reading model file! " + e.toString());
+            e.printStackTrace();
+            throw new RuntimeException("Error reading model file! Error Type: " + e.toString() + " Error Message: " + e.getMessage() + " Stacktrace see above!");
+            
         }
     }
 
@@ -140,6 +162,12 @@ public class GOR1Predicter extends GORPredicter {
             result[st] = ((Math.exp(windowSum) * pSt[st])
                     / ((Math.exp(windowSum) * pSt[st])
                     - (pSt[st])));
+        }
+        if (Predict.debug) {
+            System.out.println("Prediction for: " + aaSeq);
+            for (int i = 0; i < Data.secStruct.length; i++) {
+                System.out.println("Prediction for " + Data.secStruct[i] + ": " + result[i]);
+            }
         }
         return result;
     }
