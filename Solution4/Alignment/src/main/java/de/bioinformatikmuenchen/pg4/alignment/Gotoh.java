@@ -238,20 +238,18 @@ public class Gotoh extends AlignmentProcessor {
                 }
                 break;
             } else if (Math.abs((matrixA[x][y]) - (matrixA[x - 1][y - 1] + distanceMatrix.distance(A, B))) < 0.0000000001) {//leftTop
-                //System.out.println("leftTOP x,y: " + x + ", " + y);
                 leftTopPath[x][y] = true;
                 hasPath[x][y] = true;
                 queryLine.append(A);
                 targetLine.append(B);
                 x--;
                 y--;
-            } else if (Math.abs(matrixA[x][y] - matrixIn[x][y]) < 0.0000000001) {
+            } else if (Math.abs(matrixA[x][y] - matrixIn[x][y]) < 0.0000000001) {// Insertion -> to the left
                 int xShift = 1;
                 while (Math.abs(matrixA[x][y] - (matrixA[x - xShift][y] + gapCost.getGapCost(xShift))) > 0.0000000001) {
-                    //System.out.println("left x,y: " + x + ", " + y);
                     leftPath[x - xShift][y] = true;
                     hasPath[x - xShift][y] = true;
-                    queryLine.append(querySequence.charAt(x - 1));
+                    queryLine.append(querySequence.charAt(x - xShift - 1));
                     targetLine.append('-');
                     xShift++;
                 }
@@ -260,14 +258,13 @@ public class Gotoh extends AlignmentProcessor {
                 queryLine.append(querySequence.charAt(x - 1));
                 targetLine.append('-');
                 x -= xShift;
-            } else if (Math.abs(matrixA[x][y] - matrixDel[x][y]) < 0.0000000001) {
+            } else if (Math.abs(matrixA[x][y] - matrixDel[x][y]) < 0.0000000001) {// Deletion -> to the right
                 int yShift = 1;
                 while (Math.abs(matrixA[x][y] - (matrixA[x][y - yShift] + gapCost.getGapCost(yShift))) > 0.0000000001) {
-                    //System.out.println("top x,y: " + x + ", " + y);
                     topPath[x][y - yShift] = true;
                     hasPath[x][y - yShift] = true;
                     queryLine.append('-');
-                    targetLine.append(targetSequence.charAt(y - 1));
+                    targetLine.append(targetSequence.charAt(y - yShift - 1));
                     yShift++;
                 }
                 topPath[x][y - yShift] = true;
@@ -279,7 +276,6 @@ public class Gotoh extends AlignmentProcessor {
                 throw new AlignmentException("No possibility found to move on (indicates a sure failure)");
             }
         }
-        //System.out.println("Finished");
         return new SequencePairAlignment(queryLine.reverse().toString(), targetLine.reverse().toString());
     }
 
