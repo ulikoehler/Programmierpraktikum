@@ -68,8 +68,8 @@ public class CheckScoreCalculator {
         // Handle end gaps
         //
         if (qa.endsWith("-")) {
-            for (int i = qa.length() - 1; i < ta.length(); i--) {
-                if (ta.charAt(i) == '-') {
+            for (int i = qa.length() - 1; i > 0; i--) {
+                if (qa.charAt(i) == '-') {
                     endIndex--;
                 } else {
                     break;
@@ -114,7 +114,8 @@ public class CheckScoreCalculator {
         double score = 0;
         //Remove gaps at the beginning/end for local
         if (mode == AlignmentMode.LOCAL) {
-            String[] vals = stripStartAndEndGapsFreeshift(qa, ta);
+//            String[] vals = stripStartAndEndGapsFreeshift(qa, ta);
+            String[] vals = stripStartAndEndGapsLocal(qa, ta);
             qa = vals[0];
             ta = vals[1];
         }

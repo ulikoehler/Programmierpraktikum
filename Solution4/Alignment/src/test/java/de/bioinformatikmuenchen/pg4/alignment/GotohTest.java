@@ -4,6 +4,8 @@
  */
 package de.bioinformatikmuenchen.pg4.alignment;
 
+import com.sun.org.apache.bcel.internal.generic.AALOAD;
+import com.sun.xml.internal.ws.message.saaj.SAAJHeader;
 import de.bioinformatikmuenchen.pg4.alignment.gap.AffineGapCost;
 import de.bioinformatikmuenchen.pg4.alignment.gap.ConstantGapCost;
 import de.bioinformatikmuenchen.pg4.alignment.gap.IGapCost;
@@ -197,7 +199,7 @@ public class GotohTest {
         AlignmentResult result = instance.align(seq1Obj, seq2Obj);
         System.out.println(instance.printMatrix());
         SequencePairAlignment alignment = result.getFirstAlignment();
-        assertEquals(31.800, result.getScore(), 0.00000001);
+        assertEquals(20.900, result.getScore(), 0.00000001);
         String exp1 = "-----ECLNK-PINHQSNLVVPNTVKNTDGSLVTPEIISDDGDYEKPNVKWHLPEFTNEVSFIFYQPVTIGKAKARFHGRVTQP--------------------------------";
         String exp2 = "EEPQLSCFRKSPLSN----VVCEWGPRSTPSLTTKAVL-------------LVRKFQNSPAEDFQEPCQYSQESQKFSCQLAVPEGDSSFYIVSMCVASSVGSKFSKTQTFQGCGI";
         System.out.println();
@@ -205,7 +207,8 @@ public class GotohTest {
         System.out.println("(F)E1Q: " + exp1);
         System.out.println("(F)A1T: " + alignment.targetAlignment);
         System.out.println("(F)E1T: " + exp2);
-        assertEquals(31.800, CheckScoreCalculator.calculateCheckScoreAffine(AlignmentMode.FREESHIFT, alignment, matrix, gapCost), 0.00000001);
+        assertEquals(20.9, CheckScoreCalculator.calculateCheckScoreAffine(AlignmentMode.FREESHIFT, new SequencePairAlignment(exp1, exp2), matrix, gapCost), 0.00000001);
+        assertEquals(20.9, CheckScoreCalculator.calculateCheckScoreAffine(AlignmentMode.FREESHIFT, alignment, matrix, gapCost), 0.00000001);
         assertEquals(exp1, alignment.queryAlignment);
         assertEquals(exp2, alignment.targetAlignment);
     }
