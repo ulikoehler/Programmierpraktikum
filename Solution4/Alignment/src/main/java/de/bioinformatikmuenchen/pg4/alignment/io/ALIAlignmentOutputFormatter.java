@@ -31,7 +31,7 @@ public class ALIAlignmentOutputFormatter extends AbstractAlignmentOutputFormatte
         StringBuilder ret = new StringBuilder();
         ret.append(">").append(result.getQuerySequenceId()).append(" ").append(result.getTargetSequenceId()).append(" ").append(numberFormat.format(result.getScore())).append("\n");
         SequencePairAlignment alignment = result.getFirstAlignment();
-        ret.append(result.getQuerySequenceId()).append(": ").append(alignment.getQueryAlignment());
+        ret.append(result.getQuerySequenceId()).append(": ").append(alignment.getQueryAlignment()).append("\n");
         ret.append(result.getTargetSequenceId()).append(": ").append(alignment.getTargetAlignment());
         return ret.toString();
     }
