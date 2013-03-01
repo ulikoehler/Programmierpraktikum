@@ -10,7 +10,34 @@ import de.bioinformatikmuenchen.pg4.common.distance.IDistanceMatrix;
  */
 public class CheckScoreCalculator {
 
-    public static String[] stripStartAndEndGaps(String qa, String ta) {
+    public static String[] stripStartAndEndGapsLocal(String qa, String ta) {
+        int startIndex = 0;
+        int endIndex = qa.length();
+        if ((qa.startsWith("-") && ta.startsWith("-") || (qa.endsWith("-") && ta.endsWith("-")))) {
+            throw new IllegalArgumentException("Alignment starts or ends with a gap on both parts!");
+        }
+        for (int i = 0; i < qa.length(); i++) {
+            if (qa.charAt(i) == '-' || ta.charAt(i) == '-') {
+                startIndex++;
+            } else {
+                break;
+            }
+        }
+
+        //
+        // Handle end gaps
+        //
+        for (int i = qa.length() - 1; i < ta.length(); i--) {
+            if (ta.charAt(i) == '-' || qa.charAt(i) == '-') {
+                endIndex--;
+            } else {
+                break;
+            }
+        }
+        return new String[]{qa.substring(startIndex, endIndex), ta.substring(startIndex, endIndex)};
+    }
+
+    public static String[] stripStartAndEndGapsFreeshift(String qa, String ta) {
         int startIndex = 0;
         int endIndex = qa.length();
         if ((qa.startsWith("-") && ta.startsWith("-") || (qa.endsWith("-") && ta.endsWith("-")))) {
@@ -87,7 +114,7 @@ public class CheckScoreCalculator {
         double score = 0;
         //Remove gaps at the beginning/end for local
         if (mode == AlignmentMode.LOCAL) {
-            String[] vals = stripStartAndEndGaps(qa, ta);
+            String[] vals = stripStartAndEndGapsFreeshift(qa, ta);
             qa = vals[0];
             ta = vals[1];
         }
@@ -108,8 +135,12 @@ public class CheckScoreCalculator {
         String ta = alignment.getTargetAlignment();
         double score = 0;
         //Remove gaps at the beginning/end for local
-        if (mode == AlignmentMode.LOCAL) {
-            String[] vals = stripStartAndEndGaps(qa, ta);
+        if (mode == AlignmentMode.FREESHIFT) {
+            String[] vals = stripStartAndEndGapsFreeshift(qa, ta);
+            qa = vals[0];
+            ta = vals[1];
+        } else if (mode == AlignmentMode.LOCAL) {
+            String[] vals = stripStartAndEndGapsFreeshift(qa, ta);
             qa = vals[0];
             ta = vals[1];
         }
