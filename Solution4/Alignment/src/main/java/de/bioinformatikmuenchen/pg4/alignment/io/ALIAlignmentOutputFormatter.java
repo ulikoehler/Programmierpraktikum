@@ -18,7 +18,7 @@ public class ALIAlignmentOutputFormatter extends AbstractAlignmentOutputFormatte
         DecimalFormatSymbols dfs = new DecimalFormatSymbols();
         dfs.setDecimalSeparator('.');
         numberFormat.setMinimumFractionDigits(4);
-        numberFormat.setMinimumFractionDigits(4);
+        numberFormat.setMaximumFractionDigits(4);
         numberFormat.setDecimalFormatSymbols(dfs);
     }
 
