@@ -178,6 +178,10 @@ public class Gotoh extends AlignmentProcessor {
         return new SequencePairAlignment(queryLine.reverse().toString(), targetLine.reverse().toString());
     }
 
+    public SequencePairAlignment backTrackingFreeShift(){
+        return backTrackingGlobal();
+    }
+    
     public SequencePairAlignment backTrackingGlobal() {
         int x = xSize;
         int y = ySize;
