@@ -45,9 +45,11 @@ public class GORPredicterTest {
     @Test
     public void testPredictionArgMax() {
         System.out.println("test the predictionArgMax");
-        assertEquals(GORPredicter.predictionArgMax(0.9, 0.2, 0.5), 'C');
-        assertEquals(GORPredicter.predictionArgMax(0.3, 0.7, 0.5), 'E');
-        assertEquals(GORPredicter.predictionArgMax(0.2, 0.2, 0.5), 'H');
+        for(int i = 0; i < Data.secStruct.length; i++) {
+            double test[] = new double[Data.secStruct.length];
+            test[i] = 1;
+            assertEquals(GORPredicter.predictionArgMax(test), Data.secStruct[i]);
+        }
         
     }
 

@@ -1,1 +1,1 @@
-java -jar ssptrain.jar --db test.db --method GOR4 --model model.txt
+java -jar ssptrain.jar --db test.db --method GOR1 --model model.txt --structure CH

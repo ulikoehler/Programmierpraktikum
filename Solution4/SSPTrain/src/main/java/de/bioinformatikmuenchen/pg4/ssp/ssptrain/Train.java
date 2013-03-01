@@ -68,7 +68,8 @@ public class Train {
         opts.addOption("d", "db", true, "dssp path to train method (database)")
                 .addOption("m", "method", true, "method to train <gor1|gor3|gor4>")
                 .addOption("l", "model", true, "output file")
-                .addOption("w", "window", true, "windowSize");
+                .addOption("w", "window", true, "windowSize")
+                .addOption("a", "structure", true, "the secondary structure elements to select");
         // 
         // Parse these options with PosixParser
         // 
@@ -131,6 +132,10 @@ public class Train {
             Data.trainingWindowSize = Integer.parseInt(commandLine.getOptionValue("window"));
         }
         Data.prevInWindow = Data.trainingWindowSize / 2;
+        
+        if(commandLine.hasOption("structure")) {
+            Data.secStruct = commandLine.getOptionValue("structure").toCharArray();
+        }
 
         // create a new trainer and let him do his job
         Trainer myTrainer;

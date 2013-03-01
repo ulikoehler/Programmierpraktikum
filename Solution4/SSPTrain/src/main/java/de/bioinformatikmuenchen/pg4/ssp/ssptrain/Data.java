@@ -24,7 +24,7 @@ public class Data {
         'S', 'T', 'V', 'W', 'Y',
     };
     
-    final public static char[] secStruct = {
+    public static char[] secStruct = {
         'C', 'E', 'H'
     };
     

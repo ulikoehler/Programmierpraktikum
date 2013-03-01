@@ -117,6 +117,28 @@ public class Predict {
         }
     }
 
+    public static char[] getStatesFromFile(File model, simpleGorMethods method) {
+        
+        // in gor3 the secondary structure state will be saved at the second pos everywhere else at the first pos
+        int pos = ((simpleGorMethods.gor3.name() == method.name())?1:0);
+        System.out.println(pos);
+        try {
+            BufferedReader br = new BufferedReader(new FileReader(model));
+            String line = "";
+            while ((line = br.readLine()) != null) {
+                
+                break;  // no valid model file
+            }
+            br.close();
+        } catch (Exception e) {
+            System.err.println("Error reading model file! " + e.toString());
+            System.exit(1);
+        }
+        System.err.println("invalid model file!");
+        System.exit(1);
+        return new char[] {};
+    }
+    
     public static simpleGorMethods getGorFromFile(File model) {
         Pattern gor1 = Pattern.compile("=\\s*[a-zA-Z]\\s*=");
         Pattern gor3 = Pattern.compile("=\\s*[a-zA-Z]\\s*,\\s*[a-zA-Z]\\s*=");

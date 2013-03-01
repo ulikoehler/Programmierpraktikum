@@ -19,10 +19,9 @@ public class GOR1Predicter extends GORPredicter {
     long[][][] cMatrix;
     double[][][] iMatrix;
     
-    int trainingWindowSize;
-    
-    public void init() {
-        cMatrix = new long[3][trainingWindowSize][20];
+    @Override
+    public void init(int windowSize) {
+        cMatrix = new long[3][Data.trainingWindowSize][Data.aaTable.length];
     }
     
     public void readModelFile(File f) {
