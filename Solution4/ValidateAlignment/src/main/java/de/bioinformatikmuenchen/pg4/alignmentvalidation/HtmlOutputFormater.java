@@ -4,6 +4,7 @@
  */
 package de.bioinformatikmuenchen.pg4.alignmentvalidation;
 
+import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
@@ -43,7 +44,7 @@ public class HtmlOutputFormater {
         builder.append("<body>");
         
         builder.append("<h1>Summary:</h1>");
-        builder.append("Validation Value\tMean\tMin\tMax\tQuantil50\tQuantil5\tQuantil95<br>");
+        builder.append("Validation Value\tMean\tMin\tMax\tQuantil50\tQuantil5\tQuantil95<br><br>");
         builder.append(">Sensitivity    \t").append(input.getSensiMean()).append("\t").append(input.getSensiMin()).append("\t")
                 .append(input.getSensiMax()).append("\t").append(input.getSensiQuantil(0.5)).append("\t")
                 .append(input.getSensiQuantil(0.05)).append("\t").append(input.getSensiQuantil(0.95)).append("<br><br>");
@@ -69,7 +70,9 @@ public class HtmlOutputFormater {
     public void print(Detailed input, File detailed) {
         try {
             FileWriter out = new FileWriter(detailed);
-            out.write(format(input));
+            BufferedWriter output = new BufferedWriter(out);
+            output.write(format(input));
+            output.close();
 
         } catch (IOException e) {
             System.err.println(e);
@@ -79,7 +82,9 @@ public class HtmlOutputFormater {
     public void print(Summary input, File summary) {
         try {
             FileWriter out = new FileWriter(summary);
-            out.write(format(input));
+            BufferedWriter output = new BufferedWriter(out);
+            output.write(format(input));
+            output.close();
 
         } catch (IOException e) {
             System.err.println(e);

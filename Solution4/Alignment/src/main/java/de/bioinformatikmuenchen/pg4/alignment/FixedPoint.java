@@ -15,6 +15,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+//import for gnuplot:
 
 /**
  *
@@ -250,5 +251,4 @@ public class FixedPoint extends AlignmentProcessor{
     public void writeMatrices(IDPMatrixExporter exporter) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
-    
 }

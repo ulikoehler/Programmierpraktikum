@@ -16,6 +16,10 @@ import java.io.IOException;
 public class TxtOutputFormater {
 
     public String format(Detailed input) {
+        if (input.results.isEmpty()) {
+            return "No Validation results";
+        }
+
         StringBuilder builder = new StringBuilder();
         for (int i = 0; i < input.results.size(); i++) {
             builder.append(input.results.get(i).att1).append("\n");
@@ -36,7 +40,7 @@ public class TxtOutputFormater {
         StringBuilder builder = new StringBuilder();
 
         builder.append("Summary:\n");
-        builder.append("Validation Value\tMean\tMin\tMax\tQuantil50\tQuantil5\tQuantil95\n");
+        builder.append("Validation Value\tMean\tMin\tMax\tQuan50\tQuan5\tQuan95\n\n");
         builder.append(">Sensitivity    \t").append(input.getSensiMean()).append("\t").append(input.getSensiMin()).append("\t")
                 .append(input.getSensiMax()).append("\t").append(input.getSensiQuantil(0.5)).append("\t")
                 .append(input.getSensiQuantil(0.05)).append("\t").append(input.getSensiQuantil(0.95)).append("\n\n");
@@ -59,7 +63,9 @@ public class TxtOutputFormater {
     public void print(Detailed input, File detailed) {
         try {
             FileWriter out = new FileWriter(detailed);
-            out.write(format(input));
+            BufferedWriter output = new BufferedWriter(out);
+            output.write(format(input));
+            output.close();
 
         } catch (IOException e) {
             System.err.println(e);
@@ -69,7 +75,9 @@ public class TxtOutputFormater {
     public void print(Summary input, File summary) {
         try {
             FileWriter out = new FileWriter(summary);
-            out.write(format(input));
+            BufferedWriter output = new BufferedWriter(out);
+            output.write(format(input));
+            output.close();
 
         } catch (IOException e) {
             System.err.println(e);
