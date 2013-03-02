@@ -43,23 +43,23 @@ public class HtmlOutputFormater {
         builder.append("<head><title> AlignmentValidationSummary </title></head>");
         builder.append("<body>");
         
-        builder.append("<h1>Summary:</h1>");
-        builder.append("Validation Value\tMean\tMin\tMax\tQuantil50\tQuantil5\tQuantil95<br><br>");
-        builder.append(">Sensitivity    \t").append(input.getSensiMean()).append("\t").append(input.getSensiMin()).append("\t")
+        builder.append("Summary:\n");
+        builder.append("Validation Value\tSD\tMean\tMin\tMax\tQuan50\tQuan5\tQuan95\n\n");
+        builder.append(">Sensitivity    \t").append(input.getSensiStanDevi()).append("\t").append(input.getSensiMean()).append("\t").append(input.getSensiMin()).append("\t")
                 .append(input.getSensiMax()).append("\t").append(input.getSensiQuantil(0.5)).append("\t")
-                .append(input.getSensiQuantil(0.05)).append("\t").append(input.getSensiQuantil(0.95)).append("<br><br>");
-        builder.append(">Specitivity    \t").append(input.getSpeciMean()).append("\t").append(input.getSpeciMin()).append("\t")
+                .append(input.getSensiQuantil(0.05)).append("\t").append(input.getSensiQuantil(0.95)).append("\n\n");
+        builder.append(">Specitivity    \t").append(input.getSpeciStanDevi()).append("\t").append(input.getSpeciMean()).append("\t").append(input.getSpeciMin()).append("\t")
                 .append(input.getSpeciMax()).append("\t").append(input.getSpeciQuantil(0.5)).append("\t")
-                .append(input.getSpeciQuantil(0.05)).append("\t").append(input.getSpeciQuantil(0.95)).append("<br><br>");
-        builder.append(">Coverage       \t").append(input.getCoverMean()).append("\t").append(input.getCoverMin()).append("\t")
+                .append(input.getSpeciQuantil(0.05)).append("\t").append(input.getSpeciQuantil(0.95)).append("\n\n");
+        builder.append(">Coverage       \t").append(input.getCoverStanDevi()).append("\t").append(input.getCoverMean()).append("\t").append(input.getCoverMin()).append("\t")
                 .append(input.getCoverMax()).append("\t").append(input.getCoverQuantil(0.5)).append("\t")
-                .append(input.getCoverQuantil(0.05)).append("\t").append(input.getCoverQuantil(0.95)).append("<br><br>");
-        builder.append(">MeanShiftError \t").append(input.getMeansMean()).append("\t").append(input.getMeansMin()).append("\t")
+                .append(input.getCoverQuantil(0.05)).append("\t").append(input.getCoverQuantil(0.95)).append("\n\n");
+        builder.append(">MeanShiftError \t").append(input.getMeansStanDevi()).append("\t").append(input.getMeansMean()).append("\t").append(input.getMeansMin()).append("\t")
                 .append(input.getMeansMax()).append("\t").append(input.getMeansQuantil(0.5)).append("\t")
-                .append(input.getMeansQuantil(0.05)).append("\t").append(input.getMeansQuantil(0.95)).append("<br><br>");
-        builder.append(">InverseMSE     \t").append(input.getInverMean()).append("\t").append(input.getInverMin()).append("\t")
+                .append(input.getMeansQuantil(0.05)).append("\t").append(input.getMeansQuantil(0.95)).append("\n\n");
+        builder.append(">InverseMSE     \t").append(input.getInverStanDevi()).append("\t").append(input.getInverMean()).append("\t").append(input.getInverMin()).append("\t")
                 .append(input.getInverMax()).append("\t").append(input.getInverQuantil(0.5)).append("\t")
-                .append(input.getInverQuantil(0.05)).append("\t").append(input.getInverQuantil(0.95)).append("<br><br>");
+                .append(input.getInverQuantil(0.05)).append("\t").append(input.getInverQuantil(0.95)).append("\n\n");
 
         builder.append("</body>");
         builder.append("</html>");
