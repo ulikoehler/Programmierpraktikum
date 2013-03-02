@@ -4,10 +4,7 @@
  */
 package de.bioinformatikmuenchen.pg4.alignment;
 
-import com.sun.org.apache.bcel.internal.generic.AALOAD;
-import com.sun.xml.internal.ws.message.saaj.SAAJHeader;
 import de.bioinformatikmuenchen.pg4.alignment.gap.AffineGapCost;
-import de.bioinformatikmuenchen.pg4.alignment.gap.ConstantGapCost;
 import de.bioinformatikmuenchen.pg4.alignment.gap.IGapCost;
 import de.bioinformatikmuenchen.pg4.common.Sequence;
 import de.bioinformatikmuenchen.pg4.common.alignment.AlignmentResult;
@@ -16,7 +13,6 @@ import de.bioinformatikmuenchen.pg4.common.distance.IDistanceMatrix;
 import de.bioinformatikmuenchen.pg4.common.distance.QUASARDistanceMatrixFactory;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.util.Collections;
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;

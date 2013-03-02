@@ -223,7 +223,7 @@ public class AlignmentMain {
         assert !haveAffineGapCost;
         //If a DP matrix dir is set, we need to copy the SVG graphics there
         if (dpMatrixDir != null) {
-            for (String filename : Lists.newArrayList("T.svg", "L.svg", "LT.svg")) {
+            for (String filename : Lists.newArrayList("T.svg", "L.svg", "LT.svg","B-T.svg", "B-L.svg", "B-LT.svg")) {
                 InputStream istream = AlignmentMain.class.getResourceAsStream("/graphics/" + filename);
                 //Read it...
                 List<String> lines = IOUtils.readLines(istream);

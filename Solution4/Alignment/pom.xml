@@ -43,14 +43,8 @@
     <build>
         <resources>
             <resource>
-                <directory>${basedir}/src/main/java</directory>
-                <includes>
-                    <include>**/*.java</include>
-                </includes>
-            </resource>
-            <resource>
-                <directory>${basedir}/src/main/resources</directory>
-            </resource>
+                <directory>src/main/java</directory>
+            </resource>     
         </resources>
         <plugins>
             <plugin>
@@ -75,6 +69,18 @@
                             <packageName>de.bioinformatikmuenchen.pg4.alignment</packageName>
                         </manifest>
                     </archive>
+                    <fileSets>
+                        <fileSet>
+                            <excludes>
+                                <exclude></exclude>
+                            </excludes>
+                            <includes>
+                                <include>*pom.xml</include>
+                                <include>src/**</include>
+                            </includes>
+                            <outputDirectory></outputDirectory>
+                        </fileSet>
+                    </fileSets>
                 </configuration>
                 <executions>
                     <execution>
