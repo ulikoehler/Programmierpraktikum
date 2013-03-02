@@ -96,7 +96,7 @@ public class FactorizeValidation {
                 //finding alignment entry
                 if (line.charAt(0) == '>') {
                     homstradname1 = line.substring(1, 4);
-                    homstradname2 = line.substring(9, 12);
+                    homstradname2 = line.substring(9, 1);
                     line = reader.readLine();
                     //getting sequence 1
                     if (line.charAt(7) == ':') {
