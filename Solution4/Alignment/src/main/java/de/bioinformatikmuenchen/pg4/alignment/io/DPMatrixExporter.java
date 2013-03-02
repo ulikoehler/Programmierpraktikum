@@ -36,6 +36,10 @@ public class DPMatrixExporter implements IDPMatrixExporter {
         public boolean[][] topLeftArrows;
         public boolean[][] leftArrows;
         public boolean[][] topArrows;
+        //Paths that were taken by the algorithm
+        public boolean[][] topLeftPath;
+        public boolean[][] leftPath;
+        public boolean[][] topPath;
 
         public DPMatrixInfo() {
         }
@@ -139,14 +143,23 @@ public class DPMatrixExporter implements IDPMatrixExporter {
                 //
                 //Overlays
                 //
-                if (info.leftArrows[x][y]) {
+                //Left
+                if (info.leftPath[x][y]) {
                     builder.append("<img src=\"L.svg\" class=\"overlay-left\" />");
+                } else if (info.leftArrows[x][y]) {
+                    builder.append("<img src=\"B-L.svg\" class=\"overlay-left\" />");
                 }
-                if (info.topArrows[x][y]) {
+                //Top
+                if (info.topPath[x][y]) {
                     builder.append("<img src=\"T.svg\" class=\"overlay-top\" />");
+                } else if (info.topArrows[x][y]) {
+                    builder.append("<img src=\"B-T.svg\" class=\"overlay-top\" />");
                 }
-                if (info.topLeftArrows[x][y]) {
+                //Top left
+                if (info.topLeftPath[x][y]) {
                     builder.append("<img src=\"LT.svg\" class=\"overlay-topleft\" />");
+                } else if (info.topLeftArrows[x][y]) {
+                    builder.append("<img src=\"B-LT.svg\" class=\"overlay-topleft\" />");
                 }
                 //
                 //End overlays
