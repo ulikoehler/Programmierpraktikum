@@ -106,29 +106,56 @@ public class FactorizeValidation {
                     homstradname2 = line.substring(9, 16);
                     line = reader.readLine();
                     //getting sequence 1
-                    if (line != null && line.charAt(7) == ':') {
+                    if (line == null){
+                        break;
+                    }else{
                         candidatetemplate = line.substring(9, line.length() - 1);
                         line = reader.readLine();
-                        while (line != null && line.charAt(7) != ':') {
-                            candidatetemplate += line;
+                        while(line != null){
+                            if(line.equals("")){
+                                line = reader.readLine();
+                                break;
+                            }else{
+                                if(line.charAt(7) != ':'){
+                                    candidatetemplate += line;
+                                }else{
+                                    break;
+                                }
+                            }
+                            line = reader.readLine();
                         }
                     }
+
                     //getting sequence 2
-                    if (line != null && line.charAt(7) == ':') {
+                    if (line == null) {
+                        break;
+                    }else{
                         candidatetarget = line.substring(9, line.length() - 1);
                         line = reader.readLine();
-                        while (line != null && line.charAt(0) != '>') {
-                            candidatetarget += line;
+                        while(line != null){
+                            if(line.equals("")){
+                                line = reader.readLine();
+                                break;
+                            }else{
+                                if(line.charAt(0) != '>'){
+                                    candidatetarget += line;
+                                }else{
+                                    break;
+                                }
+                            }
+                            line = reader.readLine();
                         }
                     }
+                    System.out.println("template: " + candidatetemplate);
+                    System.out.println("target: " + candidatetarget);
                     //safing alignment and reference pair in Arraylist
                     alignmentpair.add(new VTuple(homstradname1, homstradname2, candidatetemplate, candidatetarget));
-                }
+                }else{
                 line = reader.readLine();
+                }
             }
             reader.close();
         } catch (Exception e) {
-            System.out.println("caughth one");
             System.err.println(e);
         }
     }
