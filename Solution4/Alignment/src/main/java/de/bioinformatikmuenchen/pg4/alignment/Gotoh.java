@@ -154,7 +154,7 @@ public class Gotoh extends AlignmentProcessor {
         }
         //calc last column
         for (int i = 0; i <= ySize; i++) {
-            if (matrixA[xSize][i] >  maxValue) {
+            if (matrixA[xSize][i] > maxValue) {
                 maxValue = matrixA[xSize][i];
                 y = i;
                 x = -1;
@@ -268,7 +268,7 @@ public class Gotoh extends AlignmentProcessor {
         boolean maxIsInLastColumn = (maxEntry[1] != -1);
         int x = xSize;
         int y = ySize;
-         if (maxIsInLastColumn) {
+        if (maxIsInLastColumn) {
             for (y = ySize; y > maxEntry[1]; y--) {
                 topPath[x][y] = true;
                 hasPath[x][y] = true;
@@ -397,6 +397,9 @@ public class Gotoh extends AlignmentProcessor {
         info.targetId = targetSequenceId;
         info.xSize = xSize;
         info.ySize = ySize;
+        info.topPath = topPath;
+        info.leftPath = leftPath;
+        info.topLeftPath = leftTopPath;
         info.matrix = this.matrixA;
         info.matrixPostfix = "Gotoh alignment matrix";
         try {
