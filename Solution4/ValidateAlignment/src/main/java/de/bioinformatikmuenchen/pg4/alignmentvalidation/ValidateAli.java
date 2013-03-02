@@ -129,8 +129,11 @@ public class ValidateAli {
             System.exit(1);
         }
         //main part
+        System.out.println("Finished parsing input ");
         FactorizeValidation factory = new FactorizeValidation(alignmentfile, reference);
+        System.out.println("Finished factorising input ");
         ValidationOutputFormater out = new ValidationOutputFormater(factory.getDetail(),factory.getSummary(),format,detailed,summary);
+        System.out.println("Finished formating output ");
         out.print();
 
     }
