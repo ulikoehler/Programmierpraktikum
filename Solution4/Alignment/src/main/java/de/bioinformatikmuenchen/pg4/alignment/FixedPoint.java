@@ -6,6 +6,8 @@ import de.bioinformatikmuenchen.pg4.alignment.io.IDPMatrixExporter;
 import de.bioinformatikmuenchen.pg4.common.Sequence;
 import de.bioinformatikmuenchen.pg4.common.alignment.AlignmentResult;
 import de.bioinformatikmuenchen.pg4.common.distance.IDistanceMatrix;
+//import for gnuplot:
+import de.unidu.is.gnuplot;
 
 /**
  *
@@ -35,12 +37,29 @@ public class FixedPoint extends AlignmentProcessor{
 
     @Override
     public AlignmentResult align(Sequence seq1, Sequence seq2) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+    
+    public void makePlot(Sequence seq1, Sequence seq2){
+        //initialize some of the the declared global variables:
         this.xSize = seq1.getSequence().length();
         this.ySize = seq2.getSequence().length();
         this.querySequence = seq1.getSequence();
         this.targetSequence = seq2.getSequence();
         this.querySequenceId = seq1.getId();
         this.targetSequenceId = seq2.getId();
+        //initialize and fill the matrices A and B, depending on Gotoh or NW:
+        if(algorithm == AlignmentAlgorithm.NEEDLEMAN_WUNSCH){
+            initAndFillNeedlemanWunsch();
+        }
+        else if(algorithm == AlignmentAlgorithm.GOTOH){
+            initAndFillGotoh();
+        }
+        else{
+            throw new UnsupportedOperationException("Fixed point alignments are implemented for global scoring matrices only");
+        }
+        //do the fixed point alignment:
+        fixedPointAlignment();
     }
     
     public void initAndFillNeedlemanWunsch(){
@@ -59,7 +78,7 @@ public class FixedPoint extends AlignmentProcessor{
         String queryReverse = new StringBuilder(querySequence).reverse().toString();
         String targetReverse = new StringBuilder(targetSequence).reverse().toString();
         for (int x = 1; x < xSize; x++) {
-            for (int y = 0; y < ySize; y++) {
+            for (int y = 1; y < ySize; y++) {
                 char A_fwd = querySequence.charAt(x-1);
                 char B_fwd = targetSequence.charAt(x-1);
                 char A_rev = queryReverse.charAt(x-1);
@@ -119,10 +138,11 @@ public class FixedPoint extends AlignmentProcessor{
     }
     
     public void fixedPointAlignment(){
-        fixedPointMatrix = new double[xSize][ySize];
-        for (int i = 0; i < xSize; i++) {
-            double[] ds = matrixA[i];
-            
+        fixedPointMatrix = new double[xSize+1][ySize+1];
+        for (int i = 1; i <= xSize; i++) {
+            for (int j = 1; j <= ySize; j++) {
+                fixedPointMatrix[i][j] = (matrixA[i-1][j-1] + distanceMatrix.distance(querySequence.charAt(i-1), targetSequence.charAt(j-1)) + matrixB[xSize-i][ySize-i]);
+            }
         }
     }
 
