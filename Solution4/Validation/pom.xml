@@ -58,8 +58,8 @@
                     </descriptorRefs>
                     <archive>
                         <manifest>
-                            <mainClass>de.bioinformatikmuenchen.pg4.alignment.AlignmentMain</mainClass>
-                            <packageName>de.bioinformatikmuenchen.pg4.alignment</packageName>
+                            <mainClass>de.bioinformatikmuenchen.pg4.alignmentvalidation.ValidateAli</mainClass>
+                            <packageName>de.bioinformatikmuenchen.pg4.alignmentvalidation</packageName>
                         </manifest>
                     </archive>
                     <fileSets>
