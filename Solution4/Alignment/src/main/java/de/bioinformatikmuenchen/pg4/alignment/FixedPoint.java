@@ -60,6 +60,9 @@ public class FixedPoint extends AlignmentProcessor{
         }
         //do the fixed point alignment:
         fixedPointAlignment();
+        AlignmentResult ret = new AlignmentResult();
+        //return ret;
+
     }
     
     public void initAndFillNeedlemanWunsch(){
