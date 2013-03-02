@@ -41,6 +41,8 @@ public class FixedPoint extends AlignmentProcessor{
         this.targetSequence = seq2.getSequence();
         this.querySequenceId = seq1.getId();
         this.targetSequenceId = seq2.getId();
+        AlignmentResult ret = new AlignmentResult();
+        return ret;
     }
     
     public void initAndFillNeedlemanWunsch(){
