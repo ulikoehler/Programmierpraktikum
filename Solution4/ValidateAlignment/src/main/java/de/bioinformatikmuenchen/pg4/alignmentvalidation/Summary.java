@@ -47,27 +47,27 @@ public class Summary {
         for (Double val : coll) {
             sum += val;
         }
-        return round(sum / coll.size());
+        return sum / coll.size();
     }
 
     public double getSensiMean() {
-        return getMean(sensi);
+        return round(getMean(sensi));
     }
 
     public double getSpeciMean() {
-        return getMean(speci);
+        return round(getMean(speci));
     }
 
     public double getCoverMean() {
-        return getMean(cover);
+        return round(getMean(cover));
     }
 
     public double getMeansMean() {
-        return getMean(means);
+        return round(getMean(means));
     }
 
     public double getInverMean() {
-        return getMean(inver);
+        return round(getMean(inver));
     }
 
     private static double getMin(Collection<Double> coll) {
@@ -138,7 +138,7 @@ public class Summary {
         if (quantil < 0) {
             quan = 0;
         }
-        double number = Math.round(quan * list.size());
+        double number = (quan * list.size());
         return list.get((int) number);
     }
 
@@ -165,6 +165,34 @@ public class Summary {
     public double getInverQuantil(double quantil) {
         Collections.sort(inver);
         return getQuantil(inver, quantil);
+    }
+
+    private static double getStandardDeviation(Collection<Double> coll, double mean) {
+        double number = 0;
+        for (Double val : coll) {
+            number += (mean - val) * (mean - val);
+        }
+        return round(Math.sqrt(number / coll.size()));
+    }
+
+    public double getSensiStanDevi() {
+        return getStandardDeviation(sensi, this.getSensiMean());
+    }
+
+    public double getSpeciStanDevi() {
+        return getStandardDeviation(speci, this.getSpeciMean());
+    }
+
+    public double getCoverStanDevi() {
+        return getStandardDeviation(cover, this.getCoverMean());
+    }
+
+    public double getMeansStanDevi() {
+        return getStandardDeviation(means, this.getMeansMean());
+    }
+
+    public double getInverStanDevi() {
+        return getStandardDeviation(inver, this.getInverMean());
     }
 
     public static double round(double d) {

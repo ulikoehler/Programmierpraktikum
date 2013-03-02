@@ -28,10 +28,14 @@ public class FactorizeValidation {
 
     public FactorizeValidation(File align, File reflist) {
         //safing alignment for each reference sequence in hash
+
+        System.out.println("Filling Hashmap ");
         this.fillhash(reflist);
         //extracting candidate alingment
+        System.out.println("Parsing alignments ");
         this.parsefile(align);
         //validating all candidate alignments
+        System.out.println("Factorizing inputs ");
         this.factorizeInput();
 
     }
@@ -40,10 +44,11 @@ public class FactorizeValidation {
         try {
             FileReader input = new FileReader(reflist);
             BufferedReader paths = new BufferedReader(input);
-            //parsing through reference file list
+            //parsing through reference file list          
             String path = paths.readLine();
             while (path != null) {
                 try {
+                    //System.out.println("path " + path);
                     //homestrad file that is to be opened
                     File onehitwonder1 = new File(path);
                     FileReader onehitwonder2 = new FileReader(onehitwonder1);
@@ -68,9 +73,11 @@ public class FactorizeValidation {
                         line = homestradtext.readLine();
                     }
                     homestradtext.close();
+
                 } catch (Exception e) {
                     System.err.println(e);
                 }
+                path = paths.readLine();
             }
             paths.close();
         } catch (Exception e) {
@@ -95,22 +102,22 @@ public class FactorizeValidation {
             while (line != null) {
                 //finding alignment entry
                 if (line.charAt(0) == '>') {
-                    homstradname1 = line.substring(1, 4);
-                    homstradname2 = line.substring(9, 1);
+                    homstradname1 = line.substring(1, 8);
+                    homstradname2 = line.substring(9, 16);
                     line = reader.readLine();
                     //getting sequence 1
-                    if (line.charAt(7) == ':') {
+                    if (line != null && line.charAt(7) == ':') {
                         candidatetemplate = line.substring(9, line.length() - 1);
                         line = reader.readLine();
-                        while (line.charAt(7) != ':') {
+                        while (line != null && line.charAt(7) != ':') {
                             candidatetemplate += line;
                         }
                     }
                     //getting sequence 2
-                    if (line.charAt(7) == ':') {
+                    if (line != null && line.charAt(7) == ':') {
                         candidatetarget = line.substring(9, line.length() - 1);
                         line = reader.readLine();
-                        while (line.charAt(0) != '>') {
+                        while (line != null && line.charAt(0) != '>') {
                             candidatetarget += line;
                         }
                     }
@@ -121,6 +128,7 @@ public class FactorizeValidation {
             }
             reader.close();
         } catch (Exception e) {
+            System.out.println("caughth one");
             System.err.println(e);
         }
     }
@@ -128,14 +136,20 @@ public class FactorizeValidation {
     private void factorizeInput() {
         //create summary
         summary = new Summary();
+        detailed = new Detailed();
         for (int i = 0; i < alignmentpair.size(); i++) {
             //assembling sequences
-            String seqid1 = alignmentpair.get(i).att1;
-            String seqid2 = alignmentpair.get(i).att2;
+            String seqid1 = alignmentpair.get(i).att1.substring(0,4);
+            String seqid2 = alignmentpair.get(i).att2.substring(0,4);
             String candidatetemplate = alignmentpair.get(i).att3;
             String candidatetarget = alignmentpair.get(i).att4;
             String referencetemplate = hash.get(seqid1);
             String referencetarget = hash.get(seqid2);
+            //checking if reference alignment exists
+            if(referencetemplate == null || referencetarget == null){
+                System.out.println("Reference pair doesnt exist");
+                break;
+            }
             //creating new instance of validation algorithm
             AliValiAlg instance = new AliValiAlg(candidatetemplate, candidatetarget, referencetemplate, referencetarget);
             //getting validation criteria
@@ -145,11 +159,16 @@ public class FactorizeValidation {
             double means = instance.getMeanS();
             double inver = instance.getInver();
             //creating tuple representing validation
-            String header = ">" + seqid1 + " " + seqid2 + " " + round(sensi) + " " + round(speci) + " " + round(cover) + " " + round(means) + " " + round(inver);
+            String header = ">" + alignmentpair.get(i).att1 + " " + alignmentpair.get(i).att2 + " " + round(sensi) + " " + round(speci) + " " + round(cover) + " " + round(means) + " " + round(inver);
             FTuple result = new FTuple(header, candidatetemplate, candidatetarget, referencetemplate, referencetarget);
             //safing result
             detailed.add(result);
             //safing validation criteria for summary file
+            //System.out.println("Sensi " + sensi);
+            //System.out.println("Speci " + speci);
+            //System.out.println("Cover " + cover);
+            //System.out.println("Means " + means);
+            //System.out.println("Inver " + inver);
             summary.addSensi(sensi);
             summary.addSpeci(speci);
             summary.addCover(cover);
