@@ -4,7 +4,6 @@
  */
 package de.bioinformatikmuenchen.pg4.structurevalidation;
 
-import de.bioinformatikmuenchen.pg4.validation.*;
 
 /**
  *

@@ -36,7 +36,7 @@ public class TxtOutputFormater {
         StringBuilder builder = new StringBuilder();
 
         builder.append("Summary:\n");
-        builder.append("Validation Value\tMean\tMin\tMax\tQuantil50\tQuantil5\tQuantil95");
+        builder.append("Validation Value\tMean\tMin\tMax\tQuantil50\tQuantil5\tQuantil95\n");
         builder.append(">Sensitivity    \t").append(input.getSensiMean()).append("\t").append(input.getSensiMin()).append("\t")
                 .append(input.getSensiMax()).append("\t").append(input.getSensiQuantil(0.5)).append("\t")
                 .append(input.getSensiQuantil(0.05)).append("\t").append(input.getSensiQuantil(0.95)).append("\n\n");
