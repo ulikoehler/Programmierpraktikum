@@ -7,7 +7,6 @@ import de.bioinformatikmuenchen.pg4.common.Sequence;
 import de.bioinformatikmuenchen.pg4.common.alignment.AlignmentResult;
 import de.bioinformatikmuenchen.pg4.common.distance.IDistanceMatrix;
 //import for gnuplot:
-import de.unidu.is.gnuplot;
 
 /**
  *
