@@ -57,7 +57,7 @@ public class GotohTest {
         IGapCost gapCost = new AffineGapCost(-12, -1);
         FixedPoint instance = new FixedPoint(AlignmentMode.GLOBAL, AlignmentAlgorithm.GOTOH, matrix, gapCost);
         //AlignmentResult result = instance.align(seq1Obj, seq2Obj);
-        instance.makePlot(seq1Obj, seq2Obj);
+        instance.makePlot(seq1Obj, seq2Obj, true);
         //assertEquals(4.90, result.getScore(), 0.00000001);
     }
     

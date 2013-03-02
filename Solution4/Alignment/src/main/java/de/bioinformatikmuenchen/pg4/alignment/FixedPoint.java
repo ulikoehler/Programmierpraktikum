@@ -48,7 +48,7 @@ public class FixedPoint extends AlignmentProcessor{
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
     
-    public void makePlot(Sequence seq1, Sequence seq2){
+    public void makePlot(Sequence seq1, Sequence seq2, boolean minAsThreshold){
         //initialize some of the the declared global variables:
         this.xSize = seq1.getSequence().length();
         this.ySize = seq2.getSequence().length();
@@ -87,7 +87,7 @@ public class FixedPoint extends AlignmentProcessor{
         "set palette rgbformulae 22,13,10\n" +
         "set palette negative\n" +
         "\n" +
-        "set cbrange ["+minMax[0]+":"+minMax[1]+"]\n" +
+        "set cbrange ["+(minAsThreshold ? minMax[0] : minMax[2])+":"+minMax[1]+"]\n" +//decides the minimum threshold for the plot (min or average value of fpaMatrix)
         "#unset cbtics\n" +
         "\n" +
         "set xrange [0:"+xSize+"]\n" +
@@ -186,7 +186,7 @@ public class FixedPoint extends AlignmentProcessor{
         double [][] fixedPointMatrixTemp = new double[xSize+1][ySize+1];
         for (int i = 1; i <= xSize; i++) {
             for (int j = 1; j <= ySize; j++) {
-                fixedPointMatrixTemp[i][j] = (matrixA[i-1][j-1] + distanceMatrix.distance(querySequence.charAt(i-1), targetSequence.charAt(j-1))+ matrixB[xSize-i][ySize-i]);
+                fixedPointMatrixTemp[i][j] = (matrixA[i-1][j-1] + distanceMatrix.distance(querySequence.charAt(i-1), targetSequence.charAt(j-1))+ matrixB[xSize-i][ySize-j]);
             }
         }
         fixedPointMatrix = new double[xSize][ySize];
