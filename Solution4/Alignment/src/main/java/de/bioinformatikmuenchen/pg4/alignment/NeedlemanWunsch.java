@@ -194,6 +194,61 @@ public class NeedlemanWunsch extends AlignmentProcessor {
         int x = (freeShift ? xStart : xSize - 1);
         int y = (freeShift ? yStart : ySize - 1);
         while (x >= 0 && y >= 0) {
+            System.out.println("x,y: "+x+", "+y);
+            //If we encountered an edge, break
+            if (x == 0) {
+                while (y > 0) {
+                    topPath[x][y] = true;
+                    hasPath[x][y] = true;
+                    queryAlignment.append('-');
+                    targetAlignment.append(targetSequence.charAt(y - 1));
+                    y--;
+                }
+                break;
+            } else if (y == 0) {
+                while (x > 0) {
+                    leftPath[x][y] = true;
+                    hasPath[x][y] = true;
+                    queryAlignment.append(querySequence.charAt(x - 1));
+                    targetAlignment.append('-');
+                    x--;
+                }
+                break;
+            }
+            //x and y must be > 0 if this block is reached:
+            char A = querySequence.charAt(x-1);
+            char B = targetSequence.charAt(y-1);
+            if (Math.abs(matrix[x][y] - (matrix[x-1][y-1] + distanceMatrix.distance(A, B))) < 0.000000001) {
+                leftTopPath[x][y] = true;
+                hasPath[x][y] = true;
+                queryAlignment.append(querySequence.charAt(x - 1));
+                targetAlignment.append(targetSequence.charAt(y - 1));
+                x--;
+                y--;
+            } else if (Math.abs(matrix[x][y] - (matrix[x-1][y] + gapCost.getGapCost(1))) < 0.000000001) {
+                leftPath[x][y] = true;
+                hasPath[x][y] = true;
+                queryAlignment.append(querySequence.charAt(x - 1));
+                targetAlignment.append('-');
+                x--;
+            } else if (Math.abs(matrix[x][y] - (matrix[x][y-1] + gapCost.getGapCost(1))) < 0.000000001) {
+                topPath[x][y] = true;
+                hasPath[x][y] = true;
+                queryAlignment.append('-');
+                targetAlignment.append(targetSequence.charAt(y - 1));
+                y--;
+            }
+        }
+        //reverse the output:
+        return new SequencePairAlignment(queryAlignment.reverse().toString(), targetAlignment.reverse().toString());
+    }
+    
+    public SequencePairAlignment backTrackingArrows(int xStart, int yStart) {
+        StringBuilder queryAlignment = new StringBuilder();
+        StringBuilder targetAlignment = new StringBuilder();
+        int x = (freeShift ? xStart : xSize - 1);
+        int y = (freeShift ? yStart : ySize - 1);
+        while (x >= 0 && y >= 0) {
             if (leftTopArrows[x][y]) {
                 leftTopPath[x][y] = true;
                 hasPath[x][y] = true;
