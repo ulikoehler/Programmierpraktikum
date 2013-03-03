@@ -81,6 +81,8 @@ public class NeedlemanWunschTest {
         //System.out.println("Score: " + result.getScore());
         assertEquals(2, result.getScore(), 0.00000001);
         //assertEquals("G-AATTCAGTTA", currentAlignment.getSequence());
+        assertEquals(2.0, CheckScoreCalculator.calculateCheckScoreNonAffine(AlignmentMode.GLOBAL, result.getFirstAlignment(), new ZeroOneAlignmentMatrix(), new ConstantGapCost(0)), 0.0000000001);
+        
 
     }
 
@@ -99,8 +101,8 @@ public class NeedlemanWunschTest {
         NeedlemanWunsch instance = new NeedlemanWunsch(AlignmentMode.GLOBAL, AlignmentAlgorithm.NEEDLEMAN_WUNSCH, matrix, gapCost);
         AlignmentResult result = instance.align(seq1Obj, seq2Obj);
         assertEquals(24.0, result.getScore(), 0.0000000001);
-        SequencePairAlignment spa = result.getFirstAlignment();
-        System.out.println("##### \n" + spa.queryAlignment + "\n" + spa.matchLine + "\n" + spa.targetAlignment);
+        assertEquals(24.0, CheckScoreCalculator.calculateCheckScoreNonAffine(AlignmentMode.GLOBAL, result.getFirstAlignment(), new ZeroOneAlignmentMatrix(), new ConstantGapCost(0)), 0.0000000001);
+        //System.out.println("##### \n" + spa.queryAlignment + "\n" + spa.matchLine + "\n" + spa.targetAlignment);
     }
 //    @Test
 //    public void testAlignSimple() {

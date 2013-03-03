@@ -11,9 +11,9 @@ import java.util.ArrayList;
  * @author schoeffel
  */
 public class Detailed {
-    public ArrayList<VTupel> results = new ArrayList();
+    public ArrayList<VTupeltxt> results = new ArrayList();
     
-    public void add(VTupel input){
+    public void add(VTupeltxt input){
         results.add(input);
     }
 }

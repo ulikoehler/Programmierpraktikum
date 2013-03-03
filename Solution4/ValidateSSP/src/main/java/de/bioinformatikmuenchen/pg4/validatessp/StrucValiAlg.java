@@ -212,8 +212,7 @@ public class StrucValiAlg {
                         phantom1.add(new VTupel(stao, endo, stap, -1));
                     }
                     //case: no overlapp
-                    if (phantom2.isEmpty()) {
-                        //add to no overlapp list
+                    if (phantom2.isEmpty() && pred.charAt(i) != input) {
                         noover.add(new ZTupel(stao, endo));
                     }
                     for (int j = 0; j < phantom2.size(); j++) {
