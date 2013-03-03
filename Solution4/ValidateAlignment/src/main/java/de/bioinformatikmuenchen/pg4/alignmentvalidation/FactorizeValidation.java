@@ -28,7 +28,6 @@ public class FactorizeValidation {
 
     public FactorizeValidation(File align, File reflist) {
         //safing alignment for each reference sequence in hash
-
         System.out.println("Filling Hashmap ");
         this.fillhash(reflist);
         //extracting candidate alingment
@@ -158,7 +157,7 @@ public class FactorizeValidation {
     }
 
     private void factorizeInput() {
-        //create summary
+        //creating summary and detailed representations
         summary = new Summary();
         detailed = new Detailed();
         for (int i = 0; i < alignmentpair.size(); i++) {
@@ -188,11 +187,6 @@ public class FactorizeValidation {
             //safing result
             detailed.add(result);
             //safing validation criteria for summary file
-            //System.out.println("Sensi " + sensi);
-            //System.out.println("Speci " + speci);
-            //System.out.println("Cover " + cover);
-            //System.out.println("Means " + means);
-            //System.out.println("Inver " + inver);
             summary.addSensi(sensi);
             summary.addSpeci(speci);
             summary.addCover(cover);
@@ -220,4 +214,5 @@ public class FactorizeValidation {
         numberFormat.setDecimalFormatSymbols(dfs);
         return Double.valueOf(numberFormat.format(d));
     }
+    
 }
