@@ -109,6 +109,9 @@ public class AlignmentMain {
         File dpMatrixDir = null;
         if (commandLine.hasOption("dpmatrices")) {
             dpMatrixDir = new File(commandLine.getOptionValue("dpmatrices"));
+            if (!dpMatrixDir.exists()) {
+                dpMatrixDir.mkdirs();
+            }
             if (dpMatrixDir.exists() && !dpMatrixDir.isDirectory()) {
                 System.err.println("Error: --dpmatrices argument exists and is not a directory");
                 System.exit(1);
