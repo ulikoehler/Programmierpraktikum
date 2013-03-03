@@ -179,10 +179,20 @@ public class Gotoh extends AlignmentProcessor {
             for (int y = 1; y < ySize + 1; y++) {
                 matrixIn[x][y] = Math.max(matrixA[x - 1][y] + gapCost.getGapCost(1), matrixIn[x - 1][y] + gapCost.getGapExtensionPenalty(0, 1));
                 matrixDel[x][y] = Math.max(matrixA[x][y - 1] + gapCost.getGapCost(1), matrixDel[x][y - 1] + gapCost.getGapExtensionPenalty(0, 1));
+                double match = matrixA[x - 1][y - 1] + distanceMatrix.distance(seq1.charAt(x - 1), seq2.charAt(y - 1));
+                double in = matrixIn[x][y];
+                double del = matrixDel[x][y];
+                double max = Math.max(Math.max(in, del), match);
                 if (mode == AlignmentMode.LOCAL) {
-                    matrixA[x][y] = Math.max(0, Math.max(Math.max(matrixIn[x][y], matrixDel[x][y]), matrixA[x - 1][y - 1] + distanceMatrix.distance(seq1.charAt(x - 1), seq2.charAt(y - 1))));
+                    matrixA[x][y] = Math.max(0, max);
+                    leftArrows[x][y] = (Math.abs(max - in) < 0.000000001);
+                    leftTopArrows[x][y] = (Math.abs(max - match) < 0.000000001);
+                    topArrows[x][y] = (Math.abs(max - del) < 0.000000001);
                 } else {
-                    matrixA[x][y] = Math.max(Math.max(matrixIn[x][y], matrixDel[x][y]), matrixA[x - 1][y - 1] + distanceMatrix.distance(seq1.charAt(x - 1), seq2.charAt(y - 1)));
+                    matrixA[x][y] = max;
+                    leftArrows[x][y] = (Math.abs(max - in) < 0.000000001);
+                    leftTopArrows[x][y] = (Math.abs(max - match) < 0.000000001);
+                    topArrows[x][y] = (Math.abs(max - del) < 0.000000001);
                 }
             }
         }
