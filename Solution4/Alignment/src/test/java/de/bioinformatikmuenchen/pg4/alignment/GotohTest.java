@@ -56,9 +56,7 @@ public class GotohTest {
         Sequence seq2Obj = new Sequence("id2 test_zyx2","NKLHVIDLHKRYGGHEVLKGVSLQARAGDVISIIGSSGSGKSTFLRCINFLEKPSEGAIIVNGQNINLVRDKDGQLKVADKNQLRLLRTRLTMVFQHFNLWSHMTVLENVMEAPIQVLGLSKHDARERALKYLAKVGIDERAQGKYPVHLSGGQQQRVSIARALAMEPDVLLFDEPTSALDPELVGEVLRIMQQLAEEGKTMVVVTHEMGFARHVSSHVIFLHQGKIEEEGDPEQVFGNPQSPRLQQFLKGSLKKLE");
         IGapCost gapCost = new AffineGapCost(-12, -1);
         FixedPoint instance = new FixedPoint(AlignmentMode.GLOBAL, AlignmentAlgorithm.GOTOH, matrix, gapCost);
-        //AlignmentResult result = instance.align(seq1Obj, seq2Obj);
         instance.makePlot(seq1Obj, seq2Obj, false, null);
-        //assertEquals(4.90, result.getScore(), 0.00000001);
     }
 
     @Test
