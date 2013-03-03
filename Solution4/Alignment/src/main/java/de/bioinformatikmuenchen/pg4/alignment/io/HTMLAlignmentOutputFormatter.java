@@ -30,6 +30,6 @@ public class HTMLAlignmentOutputFormatter extends AbstractAlignmentOutputFormatt
 
             builder.append("</div>");
         }
-        return "Alignment score: " + Double.toString(result.getScore());
+        return builder.toString();
     }
 }

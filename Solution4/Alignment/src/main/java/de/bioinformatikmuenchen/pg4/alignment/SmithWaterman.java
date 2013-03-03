@@ -11,6 +11,7 @@ import de.bioinformatikmuenchen.pg4.alignment.io.IDPMatrixExporter;
 import de.bioinformatikmuenchen.pg4.common.Sequence;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Collections;
 
 public class SmithWaterman extends AlignmentProcessor {
 
@@ -55,12 +56,22 @@ public class SmithWaterman extends AlignmentProcessor {
         initAndFillMatrix(seq1.getSequence(), seq2.getSequence());
         AlignmentResult result = new AlignmentResult();
         //Calculate the alignment and add it to the result
-        ArrayList<SequencePairAlignment> list = new ArrayList<SequencePairAlignment>();
-        list.add(backtracking());
-        result.setAlignments(list);//result.setAlignments(Collections.singletonList(backtracking()));
-        this.score = matrix[xSize][ySize];
+        result.setAlignments(Collections.singletonList(backtracking()));
+        this.score = findMaxScore();
         result.setScore(this.score);
+        result.setQuerySequenceId(querySequence);
+        result.setTargetSequenceId(targetSequence);
         return result;
+    }
+
+    private double findMaxScore() {
+        double max = 0.0;
+        for (int x = 1; x <= xSize; x++) {
+            for (int y = 1; y <= ySize; y++) {
+                max = Math.max(matrix[x][y], max);
+            }
+        }
+        return max;
     }
 
     public void initAndFillMatrix(String s, String t) {
@@ -130,7 +141,6 @@ public class SmithWaterman extends AlignmentProcessor {
                 }
             }
         }
-        System.out.println("maxCell " + x + ", " + y);
         StringBuilder queryAlignment = new StringBuilder();
         StringBuilder targetAlignment = new StringBuilder();
         int yStart = ySize;
