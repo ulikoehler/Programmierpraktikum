@@ -54,25 +54,34 @@ public class GOR5Predicter {
             for (int pos = 0; pos < currP.length; pos++) {
                 // calc the states probability for this position
                 double[] posResult = new double[Data.secStruct.length];
-                int cAlignSeq = align.get(i).size();
+                int cCount = 0;
 
                 // get all alignment sequences
-                for (int j = 0; j < cAlignSeq; j++) {
+                for (int j = 0; j < align.get(i).size(); j++) {
                     // calc alignment with gor for each probability (ignore gaps)
                     String subSeq = align.get(i).get(j).substring(pos, pos + Data.trainingWindowSize);
-                    double predictionForSeqState[] = gor.predict1Example(subSeq);
-                    
-                    // add state count to posResults
-                    for(int z = 0; z < posResult.length; z++) {
-                        posResult[z] += predictionForSeqState[z];
+                    if(GORPredicter.convertASCharToMatrixId(subSeq.charAt(Data.prevInWindow)) != -1) {  // Don't do anything for gaps
+                        double predictionForSeqState[] = gor.predict1Example(subSeq);
+                        cCount++;
+                        
+                        // add state count to posResults
+                        for(int z = 0; z < posResult.length; z++) {
+                            posResult[z] += predictionForSeqState[z];
+                        }
                     }
                 }
-
-                // correct to probability
-                for (int j = 0; j < Data.secStruct.length; j++) {
-                    posResult[j] = posResult[j] / cAlignSeq;
+                
+                if(cCount == 0) {
+                    // undef
+                    for (int j = 0; j < Data.secStruct.length; j++) {
+                        posResult[j] = 0;
+                    }
+                } else {
+                    // correct to probability
+                    for (int j = 0; j < Data.secStruct.length; j++) {
+                        posResult[j] = posResult[j] / cCount;
+                    }
                 }
-
                 // save result for position
                 currP[pos] = posResult;
             }
