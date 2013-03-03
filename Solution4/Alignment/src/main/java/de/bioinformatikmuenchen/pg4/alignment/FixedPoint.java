@@ -1,6 +1,5 @@
 package de.bioinformatikmuenchen.pg4.alignment;
 
-import de.bioinformatikmuenchen.pg4.alignment.gap.ConstantGapCost;
 import de.bioinformatikmuenchen.pg4.alignment.gap.IGapCost;
 import de.bioinformatikmuenchen.pg4.alignment.io.IDPMatrixExporter;
 import de.bioinformatikmuenchen.pg4.common.Sequence;
@@ -38,7 +37,7 @@ public class FixedPoint extends AlignmentProcessor{
     private double[][] fixedPointMatrix;
     
     public FixedPoint(AlignmentMode mode, AlignmentAlgorithm algorithm, IDistanceMatrix distanceMatrix, IGapCost gapCost) {
-        super(AlignmentMode.GLOBAL, algorithm, distanceMatrix, gapCost);
+        super(mode, algorithm, distanceMatrix, gapCost);
         //assert gapCost instanceof ConstantGapCost;
         //AlignmentResult result = new AlignmentResult();
     }
