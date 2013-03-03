@@ -125,7 +125,7 @@ public class DPMatrixExporter implements IDPMatrixExporter {
             builder.append(".overlay-top {z-index: -2;}\n");
             builder.append(".overlay-left {z-index: -3;}\n");
             builder.append(".overlay-topleft {z-index: -4;}\n");
-            builder.append(".line-container {display:inline-block;}\n");
+            builder.append(".line-container {display:inline-block;white-space:nowrap;}\n");
             builder.append("</style>");
             builder.append("</head><body>");
         }

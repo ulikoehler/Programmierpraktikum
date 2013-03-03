@@ -336,6 +336,9 @@ public class NeedlemanWunsch extends AlignmentProcessor {
         info.xSize = xSize;
         info.ySize = ySize;
         info.matrixPostfix = "matrix";
+        info.leftPath = leftPath;
+        info.topPath = topPath;
+        info.topLeftPath = leftTopPath;
         info.leftArrows = leftArrows;
         info.topArrows = topArrows;
         info.topLeftArrows = leftTopArrows;
