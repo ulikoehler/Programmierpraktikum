@@ -81,7 +81,7 @@ public class Predict {
                 .addOption("a", "maf", true, "path to .aln file")
                 .addOption("f", "format", true, "output sequence in html or txt format")
                 .addOption("p", "probabilities", false, "include the probabilities in the output (0-9, coloring in html)")
-                .addOption("t", "postprocessing", false, "whether to postprocess results")
+                .addOption("t", "postprocessing", true, "whether to postprocess results")
                 .addOption("d", "debug", false, "output debug informations");
 
         final CommandLineParser cmdLinePosixParser = new PosixParser();
@@ -150,6 +150,7 @@ public class Predict {
 
         boolean postprocessing = false;
         if (commandLine.hasOption("t")) {
+            Data.postProcessProbabilityBorder = Double.parseDouble(commandLine.getOptionValue("t"));
             postprocessing = true;
         }
 

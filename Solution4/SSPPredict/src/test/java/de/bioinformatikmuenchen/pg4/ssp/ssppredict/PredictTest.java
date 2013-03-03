@@ -45,7 +45,7 @@ public class PredictTest {
     public void testMain() {
         //Predict.main("--probabilities --format HTML --model src/test/resources/Ugor4CB513DSSP.db.txt --seq predict".split(" "));
         //Predict.main("--probabilities --format HTML --model src/test/resources/Ugor3CB513DSSP.db.txt --maf src/test/resources/1chkb.aln".split(" "));
-        Predict.main("--probabilities --postprocessing --format HTML --model src/test/resources/Ugor1CB513DSSP.db.txt --seq predict".split(" "));
+        Predict.main("--probabilities --postprocessing 0.7 --format HTML --model src/test/resources/Ugor1CB513DSSP.db.txt --seq predict".split(" "));
         
         /*
         java.io.PrintStream sysOut = System.out;

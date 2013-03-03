@@ -301,7 +301,7 @@ public abstract class GORPredicter {
     }
 
     public static boolean hasHighProbability(double[] probs) {
-        double probabilityBorder = 0.65;             // There're at least to other state for the rest probability!
+        double probabilityBorder = Data.postProcessProbabilityBorder;             // There're at least to other state for the rest probability!
         for (int i = 0; i < probs.length; i++) {
             if (probs[i] > probabilityBorder) {
                 return true;

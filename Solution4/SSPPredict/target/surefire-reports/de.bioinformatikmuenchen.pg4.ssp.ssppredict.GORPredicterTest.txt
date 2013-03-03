@@ -1,4 +1,4 @@
 -------------------------------------------------------------------------------
 Test set: de.bioinformatikmuenchen.pg4.ssp.ssppredict.GORPredicterTest
 -------------------------------------------------------------------------------
-Tests run: 5, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 2.481 sec
+Tests run: 5, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 2.438 sec

@@ -6,6 +6,7 @@ package de.bioinformatikmuenchen.pg4.ssp.ssppredict;
  */
 public class Data {
     
+    public static double postProcessProbabilityBorder = 0.7;
     
     public static int trainingWindowSize = 17;
     
