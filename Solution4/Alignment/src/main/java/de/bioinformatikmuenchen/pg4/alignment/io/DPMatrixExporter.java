@@ -98,7 +98,7 @@ public class DPMatrixExporter implements IDPMatrixExporter {
         for (int y = 0; y <= info.target.length(); y++) {
             builder.append(y == 0 ? ' ' : info.target.charAt(y - 1)).append("\t");
             for (int x = 0; x <= info.query.length(); x++) {
-                builder.append(info.matrix[x][y]).append("\t");
+                builder.append(numberFormat.format(info.matrix[x][y])).append("\t");
             }
             builder.append("\n");
         }

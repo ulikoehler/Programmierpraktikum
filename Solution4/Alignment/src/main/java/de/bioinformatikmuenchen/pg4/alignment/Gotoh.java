@@ -36,6 +36,9 @@ public class Gotoh extends AlignmentProcessor {
     boolean[][] leftPath;
     boolean[][] leftTopPath;
     boolean[][] topPath;
+    boolean[][] leftArrows;
+    boolean[][] leftTopArrows;
+    boolean[][] topArrows;
     boolean[][] hasPath;
 
     public Gotoh(AlignmentMode mode, AlignmentAlgorithm algorithm, IDistanceMatrix distanceMatrix, IGapCost gapCost) {
@@ -93,6 +96,9 @@ public class Gotoh extends AlignmentProcessor {
         leftPath = new boolean[xSize][ySize];
         leftTopPath = new boolean[xSize][ySize];
         topPath = new boolean[xSize][ySize];
+        leftArrows = new boolean[xSize][ySize];
+        leftTopArrows = new boolean[xSize][ySize];
+        topArrows = new boolean[xSize][ySize];
         hasPath = new boolean[xSize][ySize];
         matrixDel[0][0] = Double.NEGATIVE_INFINITY;//NaN;
         matrixIn[0][0] = Double.NEGATIVE_INFINITY;//NaN;
@@ -118,6 +124,9 @@ public class Gotoh extends AlignmentProcessor {
                 leftPath[x][y] = false;
                 leftTopPath[x][y] = false;
                 topPath[x][y] = false;
+                leftArrows[x][y] = false;
+                leftTopArrows[x][y] = false;
+                topArrows[x][y] = false;
                 hasPath[x][y] = false;
             }
         }
@@ -397,6 +406,9 @@ public class Gotoh extends AlignmentProcessor {
         info.targetId = targetSequenceId;
         info.xSize = xSize;
         info.ySize = ySize;
+        info.leftArrows = leftArrows;
+        info.topArrows = topArrows;
+        info.topLeftArrows = leftTopArrows;
         info.topPath = topPath;
         info.leftPath = leftPath;
         info.topLeftPath = leftTopPath;

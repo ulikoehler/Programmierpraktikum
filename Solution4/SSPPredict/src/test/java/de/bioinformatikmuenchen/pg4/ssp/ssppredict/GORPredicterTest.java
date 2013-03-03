@@ -105,13 +105,39 @@ public class GORPredicterTest {
     // Prediction
     @Test
     public void testPredictionArgMax() {
+        assertEquals(GORPredicter.predictionArgMax(new double[] {1.0, 0.99, 0.99}), Data.secStruct[0]);
         System.out.println("test the predictionArgMax");
         for(int i = 0; i < Data.secStruct.length; i++) {
             double test[] = new double[Data.secStruct.length];
             test[i] = 1;
             assertEquals(GORPredicter.predictionArgMax(test), Data.secStruct[i]);
         }
-        
+        assertEquals(GORPredicter.predictionArgMax(new double[] {0.3, 0.0, 0.0}), Data.secStruct[0]);
+        assertEquals(GORPredicter.predictionArgMax(new double[] {0.7, 0.0, 0.0}), Data.secStruct[0]);
+        assertEquals(GORPredicter.predictionArgMax(new double[] {0.2, 0.0, 0.0}), Data.secStruct[0]);
+        assertEquals(GORPredicter.predictionArgMax(new double[] {0.1, 0.0, 0.0}), Data.secStruct[0]);
+        assertEquals(GORPredicter.predictionArgMax(new double[] {0.0, 0.1, 0.0}), Data.secStruct[1]);
+        for(double x = 1; x >= 0; x -= 0.01) {
+            for(double y = x - 0.01; y >= 0; y -= 0.01) {
+                for(double z = x - 0.01; z >= 0; z -= 0.01) {
+                    assertEquals("failed for: " + x + " " + y + " " + z, GORPredicter.predictionArgMax(new double[] {x, y, z}), Data.secStruct[0]);
+                }
+            }
+        }
+        for(double x = 1; x >= 0; x -= 0.01) {
+            for(double y = x - 0.01; y >= 0; y -= 0.01) {
+                for(double z = x - 0.01; z >= 0; z -= 0.01) {
+                    assertEquals("failed for: " + x + " " + y + " " + z, GORPredicter.predictionArgMax(new double[] {y, x, z}), Data.secStruct[1]);
+                }
+            }
+        }
+        for(double x = 1; x >= 0; x -= 0.01) {
+            for(double y = x - 0.01; y >= 0; y -= 0.01) {
+                for(double z = x - 0.01; z >= 0; z -= 0.01) {
+                    assertEquals("failed for: " + x + " " + y + " " + z, GORPredicter.predictionArgMax(new double[] {z, y, x}), Data.secStruct[2]);
+                }
+            }
+        }
     }
 
     /**
@@ -120,7 +146,17 @@ public class GORPredicterTest {
     @Test
     public void testP2Int() {
         System.out.println("p2Int");
-        assertEquals(0, GORPredicter.p2Int(0));
+        assertEquals(0, GORPredicter.p2Int(-0.1));
+        assertEquals(0, GORPredicter.p2Int(-99));
+        assertEquals(0, GORPredicter.p2Int(-0.9));
+        assertEquals(0, GORPredicter.p2Int(-0.2));
+        assertEquals(0, GORPredicter.p2Int(-0.3));
+        assertEquals(0, GORPredicter.p2Int(-0.7));
+        assertEquals(0, GORPredicter.p2Int(-12));
+        assertEquals(0, GORPredicter.p2Int(-5));
+        assertEquals(0, GORPredicter.p2Int(-1));
+        assertEquals(0, GORPredicter.p2Int(-0.3));
+        assertEquals(0, GORPredicter.p2Int(-0.9));
         assertEquals(0, GORPredicter.p2Int(0.03));
         assertEquals(1, GORPredicter.p2Int(0.05));
         assertEquals(1, GORPredicter.p2Int(0.07));
@@ -153,6 +189,9 @@ public class GORPredicterTest {
         assertEquals(9, GORPredicter.p2Int(0.99));
         assertEquals(9, GORPredicter.p2Int(1.0));
         assertEquals(9, GORPredicter.p2Int(1.1));
+        assertEquals(9, GORPredicter.p2Int(2.1));
+        assertEquals(9, GORPredicter.p2Int(5.1));
+        assertEquals(9, GORPredicter.p2Int(3.1));
     }
 /*
     // Postprocessing
