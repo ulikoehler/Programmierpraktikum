@@ -134,7 +134,7 @@ public class NeedlemanWunschTest {
         IGapCost gapCost = new ConstantGapCost(-5);
         NeedlemanWunsch instance = new NeedlemanWunsch(AlignmentMode.FREESHIFT, AlignmentAlgorithm.NEEDLEMAN_WUNSCH, matrix, gapCost);
         AlignmentResult result = instance.align(seq1Obj, seq2Obj);
-        System.out.println("X");
+        System.out.println("Y");
         System.out.println(result.getFirstAlignment().getQueryAlignment());
         System.out.println(result.getFirstAlignment().getTargetAlignment());
         System.out.println(instance.printMatrix());
