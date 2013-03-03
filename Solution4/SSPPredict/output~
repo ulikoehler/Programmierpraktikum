@@ -1,0 +1,3192 @@
+Preprocessing ...
+Init ...
+Parse ...
+Process line: // Matrix3D
+ Skip line!
+Process line: 
+ Skip line!
+Process line: =C=
+ state line! (now in state: C)
+Process line: 
+ Skip line!
+Process line: A	44564	44062	44646	44570	44076	42866	39880	38439	35510	34871	36548	37871	40192	41863	43455	44706	45034
+ data line!
+  input in matrix: state: C currentWindowPosition: 0 currentAminoAcid: A => 44564
+  input in matrix: state: C currentWindowPosition: 1 currentAminoAcid: A => 44062
+  input in matrix: state: C currentWindowPosition: 2 currentAminoAcid: A => 44646
+  input in matrix: state: C currentWindowPosition: 3 currentAminoAcid: A => 44570
+  input in matrix: state: C currentWindowPosition: 4 currentAminoAcid: A => 44076
+  input in matrix: state: C currentWindowPosition: 5 currentAminoAcid: A => 42866
+  input in matrix: state: C currentWindowPosition: 6 currentAminoAcid: A => 39880
+  input in matrix: state: C currentWindowPosition: 7 currentAminoAcid: A => 38439
+  input in matrix: state: C currentWindowPosition: 8 currentAminoAcid: A => 35510
+  input in matrix: state: C currentWindowPosition: 9 currentAminoAcid: A => 34871
+  input in matrix: state: C currentWindowPosition: 10 currentAminoAcid: A => 36548
+  input in matrix: state: C currentWindowPosition: 11 currentAminoAcid: A => 37871
+  input in matrix: state: C currentWindowPosition: 12 currentAminoAcid: A => 40192
+  input in matrix: state: C currentWindowPosition: 13 currentAminoAcid: A => 41863
+  input in matrix: state: C currentWindowPosition: 14 currentAminoAcid: A => 43455
+  input in matrix: state: C currentWindowPosition: 15 currentAminoAcid: A => 44706
+  input in matrix: state: C currentWindowPosition: 16 currentAminoAcid: A => 45034
+Process line: C	8940	8979	9005	9280	9235	8946	8645	8039	7689	7120	7415	7889	8374	8983	9066	9134	9163
+ data line!
+  input in matrix: state: C currentWindowPosition: 0 currentAminoAcid: C => 8940
+  input in matrix: state: C currentWindowPosition: 1 currentAminoAcid: C => 8979
+  input in matrix: state: C currentWindowPosition: 2 currentAminoAcid: C => 9005
+  input in matrix: state: C currentWindowPosition: 3 currentAminoAcid: C => 9280
+  input in matrix: state: C currentWindowPosition: 4 currentAminoAcid: C => 9235
+  input in matrix: state: C currentWindowPosition: 5 currentAminoAcid: C => 8946
+  input in matrix: state: C currentWindowPosition: 6 currentAminoAcid: C => 8645
+  input in matrix: state: C currentWindowPosition: 7 currentAminoAcid: C => 8039
+  input in matrix: state: C currentWindowPosition: 8 currentAminoAcid: C => 7689
+  input in matrix: state: C currentWindowPosition: 9 currentAminoAcid: C => 7120
+  input in matrix: state: C currentWindowPosition: 10 currentAminoAcid: C => 7415
+  input in matrix: state: C currentWindowPosition: 11 currentAminoAcid: C => 7889
+  input in matrix: state: C currentWindowPosition: 12 currentAminoAcid: C => 8374
+  input in matrix: state: C currentWindowPosition: 13 currentAminoAcid: C => 8983
+  input in matrix: state: C currentWindowPosition: 14 currentAminoAcid: C => 9066
+  input in matrix: state: C currentWindowPosition: 15 currentAminoAcid: C => 9134
+  input in matrix: state: C currentWindowPosition: 16 currentAminoAcid: C => 9163
+Process line: D	30718	30188	29774	29615	30534	31911	35963	39498	45318	41381	39022	36029	32790	32196	32819	32485	32462
+ data line!
+  input in matrix: state: C currentWindowPosition: 0 currentAminoAcid: D => 30718
+  input in matrix: state: C currentWindowPosition: 1 currentAminoAcid: D => 30188
+  input in matrix: state: C currentWindowPosition: 2 currentAminoAcid: D => 29774
+  input in matrix: state: C currentWindowPosition: 3 currentAminoAcid: D => 29615
+  input in matrix: state: C currentWindowPosition: 4 currentAminoAcid: D => 30534
+  input in matrix: state: C currentWindowPosition: 5 currentAminoAcid: D => 31911
+  input in matrix: state: C currentWindowPosition: 6 currentAminoAcid: D => 35963
+  input in matrix: state: C currentWindowPosition: 7 currentAminoAcid: D => 39498
+  input in matrix: state: C currentWindowPosition: 8 currentAminoAcid: D => 45318
+  input in matrix: state: C currentWindowPosition: 9 currentAminoAcid: D => 41381
+  input in matrix: state: C currentWindowPosition: 10 currentAminoAcid: D => 39022
+  input in matrix: state: C currentWindowPosition: 11 currentAminoAcid: D => 36029
+  input in matrix: state: C currentWindowPosition: 12 currentAminoAcid: D => 32790
+  input in matrix: state: C currentWindowPosition: 13 currentAminoAcid: D => 32196
+  input in matrix: state: C currentWindowPosition: 14 currentAminoAcid: D => 32819
+  input in matrix: state: C currentWindowPosition: 15 currentAminoAcid: D => 32485
+  input in matrix: state: C currentWindowPosition: 16 currentAminoAcid: D => 32462
+Process line: E	34261	33809	33762	33223	33139	34088	34880	33099	31781	33674	37949	38858	36037	36233	36645	35770	35287
+ data line!
+  input in matrix: state: C currentWindowPosition: 0 currentAminoAcid: E => 34261
+  input in matrix: state: C currentWindowPosition: 1 currentAminoAcid: E => 33809
+  input in matrix: state: C currentWindowPosition: 2 currentAminoAcid: E => 33762
+  input in matrix: state: C currentWindowPosition: 3 currentAminoAcid: E => 33223
+  input in matrix: state: C currentWindowPosition: 4 currentAminoAcid: E => 33139
+  input in matrix: state: C currentWindowPosition: 5 currentAminoAcid: E => 34088
+  input in matrix: state: C currentWindowPosition: 6 currentAminoAcid: E => 34880
+  input in matrix: state: C currentWindowPosition: 7 currentAminoAcid: E => 33099
+  input in matrix: state: C currentWindowPosition: 8 currentAminoAcid: E => 31781
+  input in matrix: state: C currentWindowPosition: 9 currentAminoAcid: E => 33674
+  input in matrix: state: C currentWindowPosition: 10 currentAminoAcid: E => 37949
+  input in matrix: state: C currentWindowPosition: 11 currentAminoAcid: E => 38858
+  input in matrix: state: C currentWindowPosition: 12 currentAminoAcid: E => 36037
+  input in matrix: state: C currentWindowPosition: 13 currentAminoAcid: E => 36233
+  input in matrix: state: C currentWindowPosition: 14 currentAminoAcid: E => 36645
+  input in matrix: state: C currentWindowPosition: 15 currentAminoAcid: E => 35770
+  input in matrix: state: C currentWindowPosition: 16 currentAminoAcid: E => 35287
+Process line: F	23645	24358	24680	25065	24902	23814	21711	20074	17155	18460	20504	22158	24343	24249	24012	24165	24088
+ data line!
+  input in matrix: state: C currentWindowPosition: 0 currentAminoAcid: F => 23645
+  input in matrix: state: C currentWindowPosition: 1 currentAminoAcid: F => 24358
+  input in matrix: state: C currentWindowPosition: 2 currentAminoAcid: F => 24680
+  input in matrix: state: C currentWindowPosition: 3 currentAminoAcid: F => 25065
+  input in matrix: state: C currentWindowPosition: 4 currentAminoAcid: F => 24902
+  input in matrix: state: C currentWindowPosition: 5 currentAminoAcid: F => 23814
+  input in matrix: state: C currentWindowPosition: 6 currentAminoAcid: F => 21711
+  input in matrix: state: C currentWindowPosition: 7 currentAminoAcid: F => 20074
+  input in matrix: state: C currentWindowPosition: 8 currentAminoAcid: F => 17155
+  input in matrix: state: C currentWindowPosition: 9 currentAminoAcid: F => 18460
+  input in matrix: state: C currentWindowPosition: 10 currentAminoAcid: F => 20504
+  input in matrix: state: C currentWindowPosition: 11 currentAminoAcid: F => 22158
+  input in matrix: state: C currentWindowPosition: 12 currentAminoAcid: F => 24343
+  input in matrix: state: C currentWindowPosition: 13 currentAminoAcid: F => 24249
+  input in matrix: state: C currentWindowPosition: 14 currentAminoAcid: F => 24012
+  input in matrix: state: C currentWindowPosition: 15 currentAminoAcid: F => 24165
+  input in matrix: state: C currentWindowPosition: 16 currentAminoAcid: F => 24088
+Process line: G	41483	39786	38335	38170	39476	42404	48895	60996	69889	61668	49557	43274	37773	37520	38006	39273	40347
+ data line!
+  input in matrix: state: C currentWindowPosition: 0 currentAminoAcid: G => 41483
+  input in matrix: state: C currentWindowPosition: 1 currentAminoAcid: G => 39786
+  input in matrix: state: C currentWindowPosition: 2 currentAminoAcid: G => 38335
+  input in matrix: state: C currentWindowPosition: 3 currentAminoAcid: G => 38170
+  input in matrix: state: C currentWindowPosition: 4 currentAminoAcid: G => 39476
+  input in matrix: state: C currentWindowPosition: 5 currentAminoAcid: G => 42404
+  input in matrix: state: C currentWindowPosition: 6 currentAminoAcid: G => 48895
+  input in matrix: state: C currentWindowPosition: 7 currentAminoAcid: G => 60996
+  input in matrix: state: C currentWindowPosition: 8 currentAminoAcid: G => 69889
+  input in matrix: state: C currentWindowPosition: 9 currentAminoAcid: G => 61668
+  input in matrix: state: C currentWindowPosition: 10 currentAminoAcid: G => 49557
+  input in matrix: state: C currentWindowPosition: 11 currentAminoAcid: G => 43274
+  input in matrix: state: C currentWindowPosition: 12 currentAminoAcid: G => 37773
+  input in matrix: state: C currentWindowPosition: 13 currentAminoAcid: G => 37520
+  input in matrix: state: C currentWindowPosition: 14 currentAminoAcid: G => 38006
+  input in matrix: state: C currentWindowPosition: 15 currentAminoAcid: G => 39273
+  input in matrix: state: C currentWindowPosition: 16 currentAminoAcid: G => 40347
+Process line: H	12981	12810	12873	12901	12935	13435	14128	14065	13867	13438	13141	13006	12695	12779	12768	12850	12853
+ data line!
+  input in matrix: state: C currentWindowPosition: 0 currentAminoAcid: H => 12981
+  input in matrix: state: C currentWindowPosition: 1 currentAminoAcid: H => 12810
+  input in matrix: state: C currentWindowPosition: 2 currentAminoAcid: H => 12873
+  input in matrix: state: C currentWindowPosition: 3 currentAminoAcid: H => 12901
+  input in matrix: state: C currentWindowPosition: 4 currentAminoAcid: H => 12935
+  input in matrix: state: C currentWindowPosition: 5 currentAminoAcid: H => 13435
+  input in matrix: state: C currentWindowPosition: 6 currentAminoAcid: H => 14128
+  input in matrix: state: C currentWindowPosition: 7 currentAminoAcid: H => 14065
+  input in matrix: state: C currentWindowPosition: 8 currentAminoAcid: H => 13867
+  input in matrix: state: C currentWindowPosition: 9 currentAminoAcid: H => 13438
+  input in matrix: state: C currentWindowPosition: 10 currentAminoAcid: H => 13141
+  input in matrix: state: C currentWindowPosition: 11 currentAminoAcid: H => 13006
+  input in matrix: state: C currentWindowPosition: 12 currentAminoAcid: H => 12695
+  input in matrix: state: C currentWindowPosition: 13 currentAminoAcid: H => 12779
+  input in matrix: state: C currentWindowPosition: 14 currentAminoAcid: H => 12768
+  input in matrix: state: C currentWindowPosition: 15 currentAminoAcid: H => 12850
+  input in matrix: state: C currentWindowPosition: 16 currentAminoAcid: H => 12853
+Process line: I	34366	35500	35955	35654	34338	31112	26513	22578	18332	21525	26832	30271	35097	35597	34243	33494	32838
+ data line!
+  input in matrix: state: C currentWindowPosition: 0 currentAminoAcid: I => 34366
+  input in matrix: state: C currentWindowPosition: 1 currentAminoAcid: I => 35500
+  input in matrix: state: C currentWindowPosition: 2 currentAminoAcid: I => 35955
+  input in matrix: state: C currentWindowPosition: 3 currentAminoAcid: I => 35654
+  input in matrix: state: C currentWindowPosition: 4 currentAminoAcid: I => 34338
+  input in matrix: state: C currentWindowPosition: 5 currentAminoAcid: I => 31112
+  input in matrix: state: C currentWindowPosition: 6 currentAminoAcid: I => 26513
+  input in matrix: state: C currentWindowPosition: 7 currentAminoAcid: I => 22578
+  input in matrix: state: C currentWindowPosition: 8 currentAminoAcid: I => 18332
+  input in matrix: state: C currentWindowPosition: 9 currentAminoAcid: I => 21525
+  input in matrix: state: C currentWindowPosition: 10 currentAminoAcid: I => 26832
+  input in matrix: state: C currentWindowPosition: 11 currentAminoAcid: I => 30271
+  input in matrix: state: C currentWindowPosition: 12 currentAminoAcid: I => 35097
+  input in matrix: state: C currentWindowPosition: 13 currentAminoAcid: I => 35597
+  input in matrix: state: C currentWindowPosition: 14 currentAminoAcid: I => 34243
+  input in matrix: state: C currentWindowPosition: 15 currentAminoAcid: I => 33494
+  input in matrix: state: C currentWindowPosition: 16 currentAminoAcid: I => 32838
+Process line: K	31704	31307	30722	30431	30712	32264	33477	32235	31545	32494	31317	29669	28469	28635	29512	29098	29417
+ data line!
+  input in matrix: state: C currentWindowPosition: 0 currentAminoAcid: K => 31704
+  input in matrix: state: C currentWindowPosition: 1 currentAminoAcid: K => 31307
+  input in matrix: state: C currentWindowPosition: 2 currentAminoAcid: K => 30722
+  input in matrix: state: C currentWindowPosition: 3 currentAminoAcid: K => 30431
+  input in matrix: state: C currentWindowPosition: 4 currentAminoAcid: K => 30712
+  input in matrix: state: C currentWindowPosition: 5 currentAminoAcid: K => 32264
+  input in matrix: state: C currentWindowPosition: 6 currentAminoAcid: K => 33477
+  input in matrix: state: C currentWindowPosition: 7 currentAminoAcid: K => 32235
+  input in matrix: state: C currentWindowPosition: 8 currentAminoAcid: K => 31545
+  input in matrix: state: C currentWindowPosition: 9 currentAminoAcid: K => 32494
+  input in matrix: state: C currentWindowPosition: 10 currentAminoAcid: K => 31317
+  input in matrix: state: C currentWindowPosition: 11 currentAminoAcid: K => 29669
+  input in matrix: state: C currentWindowPosition: 12 currentAminoAcid: K => 28469
+  input in matrix: state: C currentWindowPosition: 13 currentAminoAcid: K => 28635
+  input in matrix: state: C currentWindowPosition: 14 currentAminoAcid: K => 29512
+  input in matrix: state: C currentWindowPosition: 15 currentAminoAcid: K => 29098
+  input in matrix: state: C currentWindowPosition: 16 currentAminoAcid: K => 29417
+Process line: L	51106	52363	53197	53940	53524	50782	44669	40662	33636	33752	38137	42078	48278	49539	48710	50200	51304
+ data line!
+  input in matrix: state: C currentWindowPosition: 0 currentAminoAcid: L => 51106
+  input in matrix: state: C currentWindowPosition: 1 currentAminoAcid: L => 52363
+  input in matrix: state: C currentWindowPosition: 2 currentAminoAcid: L => 53197
+  input in matrix: state: C currentWindowPosition: 3 currentAminoAcid: L => 53940
+  input in matrix: state: C currentWindowPosition: 4 currentAminoAcid: L => 53524
+  input in matrix: state: C currentWindowPosition: 5 currentAminoAcid: L => 50782
+  input in matrix: state: C currentWindowPosition: 6 currentAminoAcid: L => 44669
+  input in matrix: state: C currentWindowPosition: 7 currentAminoAcid: L => 40662
+  input in matrix: state: C currentWindowPosition: 8 currentAminoAcid: L => 33636
+  input in matrix: state: C currentWindowPosition: 9 currentAminoAcid: L => 33752
+  input in matrix: state: C currentWindowPosition: 10 currentAminoAcid: L => 38137
+  input in matrix: state: C currentWindowPosition: 11 currentAminoAcid: L => 42078
+  input in matrix: state: C currentWindowPosition: 12 currentAminoAcid: L => 48278
+  input in matrix: state: C currentWindowPosition: 13 currentAminoAcid: L => 49539
+  input in matrix: state: C currentWindowPosition: 14 currentAminoAcid: L => 48710
+  input in matrix: state: C currentWindowPosition: 15 currentAminoAcid: L => 50200
+  input in matrix: state: C currentWindowPosition: 16 currentAminoAcid: L => 51304
+Process line: M	10859	10518	10567	10634	10457	10189	9081	8543	7615	7756	8320	8907	9939	10186	10193	10477	10524
+ data line!
+  input in matrix: state: C currentWindowPosition: 0 currentAminoAcid: M => 10859
+  input in matrix: state: C currentWindowPosition: 1 currentAminoAcid: M => 10518
+  input in matrix: state: C currentWindowPosition: 2 currentAminoAcid: M => 10567
+  input in matrix: state: C currentWindowPosition: 3 currentAminoAcid: M => 10634
+  input in matrix: state: C currentWindowPosition: 4 currentAminoAcid: M => 10457
+  input in matrix: state: C currentWindowPosition: 5 currentAminoAcid: M => 10189
+  input in matrix: state: C currentWindowPosition: 6 currentAminoAcid: M => 9081
+  input in matrix: state: C currentWindowPosition: 7 currentAminoAcid: M => 8543
+  input in matrix: state: C currentWindowPosition: 8 currentAminoAcid: M => 7615
+  input in matrix: state: C currentWindowPosition: 9 currentAminoAcid: M => 7756
+  input in matrix: state: C currentWindowPosition: 10 currentAminoAcid: M => 8320
+  input in matrix: state: C currentWindowPosition: 11 currentAminoAcid: M => 8907
+  input in matrix: state: C currentWindowPosition: 12 currentAminoAcid: M => 9939
+  input in matrix: state: C currentWindowPosition: 13 currentAminoAcid: M => 10186
+  input in matrix: state: C currentWindowPosition: 14 currentAminoAcid: M => 10193
+  input in matrix: state: C currentWindowPosition: 15 currentAminoAcid: M => 10477
+  input in matrix: state: C currentWindowPosition: 16 currentAminoAcid: M => 10524
+Process line: N	23560	22969	22703	22649	23463	24662	28226	31440	35024	30090	26935	24273	22184	21856	22414	22777	23365
+ data line!
+  input in matrix: state: C currentWindowPosition: 0 currentAminoAcid: N => 23560
+  input in matrix: state: C currentWindowPosition: 1 currentAminoAcid: N => 22969
+  input in matrix: state: C currentWindowPosition: 2 currentAminoAcid: N => 22703
+  input in matrix: state: C currentWindowPosition: 3 currentAminoAcid: N => 22649
+  input in matrix: state: C currentWindowPosition: 4 currentAminoAcid: N => 23463
+  input in matrix: state: C currentWindowPosition: 5 currentAminoAcid: N => 24662
+  input in matrix: state: C currentWindowPosition: 6 currentAminoAcid: N => 28226
+  input in matrix: state: C currentWindowPosition: 7 currentAminoAcid: N => 31440
+  input in matrix: state: C currentWindowPosition: 8 currentAminoAcid: N => 35024
+  input in matrix: state: C currentWindowPosition: 9 currentAminoAcid: N => 30090
+  input in matrix: state: C currentWindowPosition: 10 currentAminoAcid: N => 26935
+  input in matrix: state: C currentWindowPosition: 11 currentAminoAcid: N => 24273
+  input in matrix: state: C currentWindowPosition: 12 currentAminoAcid: N => 22184
+  input in matrix: state: C currentWindowPosition: 13 currentAminoAcid: N => 21856
+  input in matrix: state: C currentWindowPosition: 14 currentAminoAcid: N => 22414
+  input in matrix: state: C currentWindowPosition: 15 currentAminoAcid: N => 22777
+  input in matrix: state: C currentWindowPosition: 16 currentAminoAcid: N => 23365
+Process line: P	24683	24392	24149	24222	25390	28045	31282	36350	42718	47534	39859	35280	29701	27008	25829	25348	24993
+ data line!
+  input in matrix: state: C currentWindowPosition: 0 currentAminoAcid: P => 24683
+  input in matrix: state: C currentWindowPosition: 1 currentAminoAcid: P => 24392
+  input in matrix: state: C currentWindowPosition: 2 currentAminoAcid: P => 24149
+  input in matrix: state: C currentWindowPosition: 3 currentAminoAcid: P => 24222
+  input in matrix: state: C currentWindowPosition: 4 currentAminoAcid: P => 25390
+  input in matrix: state: C currentWindowPosition: 5 currentAminoAcid: P => 28045
+  input in matrix: state: C currentWindowPosition: 6 currentAminoAcid: P => 31282
+  input in matrix: state: C currentWindowPosition: 7 currentAminoAcid: P => 36350
+  input in matrix: state: C currentWindowPosition: 8 currentAminoAcid: P => 42718
+  input in matrix: state: C currentWindowPosition: 9 currentAminoAcid: P => 47534
+  input in matrix: state: C currentWindowPosition: 10 currentAminoAcid: P => 39859
+  input in matrix: state: C currentWindowPosition: 11 currentAminoAcid: P => 35280
+  input in matrix: state: C currentWindowPosition: 12 currentAminoAcid: P => 29701
+  input in matrix: state: C currentWindowPosition: 13 currentAminoAcid: P => 27008
+  input in matrix: state: C currentWindowPosition: 14 currentAminoAcid: P => 25829
+  input in matrix: state: C currentWindowPosition: 15 currentAminoAcid: P => 25348
+  input in matrix: state: C currentWindowPosition: 16 currentAminoAcid: P => 24993
+Process line: Q	19994	19834	19763	19382	19278	19644	20000	19334	18408	18613	18818	19346	19165	19479	20107	19817	19629
+ data line!
+  input in matrix: state: C currentWindowPosition: 0 currentAminoAcid: Q => 19994
+  input in matrix: state: C currentWindowPosition: 1 currentAminoAcid: Q => 19834
+  input in matrix: state: C currentWindowPosition: 2 currentAminoAcid: Q => 19763
+  input in matrix: state: C currentWindowPosition: 3 currentAminoAcid: Q => 19382
+  input in matrix: state: C currentWindowPosition: 4 currentAminoAcid: Q => 19278
+  input in matrix: state: C currentWindowPosition: 5 currentAminoAcid: Q => 19644
+  input in matrix: state: C currentWindowPosition: 6 currentAminoAcid: Q => 20000
+  input in matrix: state: C currentWindowPosition: 7 currentAminoAcid: Q => 19334
+  input in matrix: state: C currentWindowPosition: 8 currentAminoAcid: Q => 18408
+  input in matrix: state: C currentWindowPosition: 9 currentAminoAcid: Q => 18613
+  input in matrix: state: C currentWindowPosition: 10 currentAminoAcid: Q => 18818
+  input in matrix: state: C currentWindowPosition: 11 currentAminoAcid: Q => 19346
+  input in matrix: state: C currentWindowPosition: 12 currentAminoAcid: Q => 19165
+  input in matrix: state: C currentWindowPosition: 13 currentAminoAcid: Q => 19479
+  input in matrix: state: C currentWindowPosition: 14 currentAminoAcid: Q => 20107
+  input in matrix: state: C currentWindowPosition: 15 currentAminoAcid: Q => 19817
+  input in matrix: state: C currentWindowPosition: 16 currentAminoAcid: Q => 19629
+Process line: R	26968	27353	27389	26975	26682	27187	27268	25735	24803	25463	25211	24802	25277	25754	26381	26325	26830
+ data line!
+  input in matrix: state: C currentWindowPosition: 0 currentAminoAcid: R => 26968
+  input in matrix: state: C currentWindowPosition: 1 currentAminoAcid: R => 27353
+  input in matrix: state: C currentWindowPosition: 2 currentAminoAcid: R => 27389
+  input in matrix: state: C currentWindowPosition: 3 currentAminoAcid: R => 26975
+  input in matrix: state: C currentWindowPosition: 4 currentAminoAcid: R => 26682
+  input in matrix: state: C currentWindowPosition: 5 currentAminoAcid: R => 27187
+  input in matrix: state: C currentWindowPosition: 6 currentAminoAcid: R => 27268
+  input in matrix: state: C currentWindowPosition: 7 currentAminoAcid: R => 25735
+  input in matrix: state: C currentWindowPosition: 8 currentAminoAcid: R => 24803
+  input in matrix: state: C currentWindowPosition: 9 currentAminoAcid: R => 25463
+  input in matrix: state: C currentWindowPosition: 10 currentAminoAcid: R => 25211
+  input in matrix: state: C currentWindowPosition: 11 currentAminoAcid: R => 24802
+  input in matrix: state: C currentWindowPosition: 12 currentAminoAcid: R => 25277
+  input in matrix: state: C currentWindowPosition: 13 currentAminoAcid: R => 25754
+  input in matrix: state: C currentWindowPosition: 14 currentAminoAcid: R => 26381
+  input in matrix: state: C currentWindowPosition: 15 currentAminoAcid: R => 26325
+  input in matrix: state: C currentWindowPosition: 16 currentAminoAcid: R => 26830
+Process line: S	31663	31717	31686	31874	32682	34341	36996	37838	40769	38668	36932	35397	33394	32876	33264	33228	33024
+ data line!
+  input in matrix: state: C currentWindowPosition: 0 currentAminoAcid: S => 31663
+  input in matrix: state: C currentWindowPosition: 1 currentAminoAcid: S => 31717
+  input in matrix: state: C currentWindowPosition: 2 currentAminoAcid: S => 31686
+  input in matrix: state: C currentWindowPosition: 3 currentAminoAcid: S => 31874
+  input in matrix: state: C currentWindowPosition: 4 currentAminoAcid: S => 32682
+  input in matrix: state: C currentWindowPosition: 5 currentAminoAcid: S => 34341
+  input in matrix: state: C currentWindowPosition: 6 currentAminoAcid: S => 36996
+  input in matrix: state: C currentWindowPosition: 7 currentAminoAcid: S => 37838
+  input in matrix: state: C currentWindowPosition: 8 currentAminoAcid: S => 40769
+  input in matrix: state: C currentWindowPosition: 9 currentAminoAcid: S => 38668
+  input in matrix: state: C currentWindowPosition: 10 currentAminoAcid: S => 36932
+  input in matrix: state: C currentWindowPosition: 11 currentAminoAcid: S => 35397
+  input in matrix: state: C currentWindowPosition: 12 currentAminoAcid: S => 33394
+  input in matrix: state: C currentWindowPosition: 13 currentAminoAcid: S => 32876
+  input in matrix: state: C currentWindowPosition: 14 currentAminoAcid: S => 33264
+  input in matrix: state: C currentWindowPosition: 15 currentAminoAcid: S => 33228
+  input in matrix: state: C currentWindowPosition: 16 currentAminoAcid: S => 33024
+Process line: T	30691	30352	30054	29953	30248	30546	31986	31632	33668	34104	34247	34436	33702	32807	32432	32036	31539
+ data line!
+  input in matrix: state: C currentWindowPosition: 0 currentAminoAcid: T => 30691
+  input in matrix: state: C currentWindowPosition: 1 currentAminoAcid: T => 30352
+  input in matrix: state: C currentWindowPosition: 2 currentAminoAcid: T => 30054
+  input in matrix: state: C currentWindowPosition: 3 currentAminoAcid: T => 29953
+  input in matrix: state: C currentWindowPosition: 4 currentAminoAcid: T => 30248
+  input in matrix: state: C currentWindowPosition: 5 currentAminoAcid: T => 30546
+  input in matrix: state: C currentWindowPosition: 6 currentAminoAcid: T => 31986
+  input in matrix: state: C currentWindowPosition: 7 currentAminoAcid: T => 31632
+  input in matrix: state: C currentWindowPosition: 8 currentAminoAcid: T => 33668
+  input in matrix: state: C currentWindowPosition: 9 currentAminoAcid: T => 34104
+  input in matrix: state: C currentWindowPosition: 10 currentAminoAcid: T => 34247
+  input in matrix: state: C currentWindowPosition: 11 currentAminoAcid: T => 34436
+  input in matrix: state: C currentWindowPosition: 12 currentAminoAcid: T => 33702
+  input in matrix: state: C currentWindowPosition: 13 currentAminoAcid: T => 32807
+  input in matrix: state: C currentWindowPosition: 14 currentAminoAcid: T => 32432
+  input in matrix: state: C currentWindowPosition: 15 currentAminoAcid: T => 32036
+  input in matrix: state: C currentWindowPosition: 16 currentAminoAcid: T => 31539
+Process line: V	43271	44506	44998	44957	43094	39356	34134	29533	24915	29767	37019	41965	46754	46607	44648	43140	42105
+ data line!
+  input in matrix: state: C currentWindowPosition: 0 currentAminoAcid: V => 43271
+  input in matrix: state: C currentWindowPosition: 1 currentAminoAcid: V => 44506
+  input in matrix: state: C currentWindowPosition: 2 currentAminoAcid: V => 44998
+  input in matrix: state: C currentWindowPosition: 3 currentAminoAcid: V => 44957
+  input in matrix: state: C currentWindowPosition: 4 currentAminoAcid: V => 43094
+  input in matrix: state: C currentWindowPosition: 5 currentAminoAcid: V => 39356
+  input in matrix: state: C currentWindowPosition: 6 currentAminoAcid: V => 34134
+  input in matrix: state: C currentWindowPosition: 7 currentAminoAcid: V => 29533
+  input in matrix: state: C currentWindowPosition: 8 currentAminoAcid: V => 24915
+  input in matrix: state: C currentWindowPosition: 9 currentAminoAcid: V => 29767
+  input in matrix: state: C currentWindowPosition: 10 currentAminoAcid: V => 37019
+  input in matrix: state: C currentWindowPosition: 11 currentAminoAcid: V => 41965
+  input in matrix: state: C currentWindowPosition: 12 currentAminoAcid: V => 46754
+  input in matrix: state: C currentWindowPosition: 13 currentAminoAcid: V => 46607
+  input in matrix: state: C currentWindowPosition: 14 currentAminoAcid: V => 44648
+  input in matrix: state: C currentWindowPosition: 15 currentAminoAcid: V => 43140
+  input in matrix: state: C currentWindowPosition: 16 currentAminoAcid: V => 42105
+Process line: W	8347	8610	8864	9074	8852	8287	7293	6426	5910	6906	7854	8402	9007	9095	8969	9055	8835
+ data line!
+  input in matrix: state: C currentWindowPosition: 0 currentAminoAcid: W => 8347
+  input in matrix: state: C currentWindowPosition: 1 currentAminoAcid: W => 8610
+  input in matrix: state: C currentWindowPosition: 2 currentAminoAcid: W => 8864
+  input in matrix: state: C currentWindowPosition: 3 currentAminoAcid: W => 9074
+  input in matrix: state: C currentWindowPosition: 4 currentAminoAcid: W => 8852
+  input in matrix: state: C currentWindowPosition: 5 currentAminoAcid: W => 8287
+  input in matrix: state: C currentWindowPosition: 6 currentAminoAcid: W => 7293
+  input in matrix: state: C currentWindowPosition: 7 currentAminoAcid: W => 6426
+  input in matrix: state: C currentWindowPosition: 8 currentAminoAcid: W => 5910
+  input in matrix: state: C currentWindowPosition: 9 currentAminoAcid: W => 6906
+  input in matrix: state: C currentWindowPosition: 10 currentAminoAcid: W => 7854
+  input in matrix: state: C currentWindowPosition: 11 currentAminoAcid: W => 8402
+  input in matrix: state: C currentWindowPosition: 12 currentAminoAcid: W => 9007
+  input in matrix: state: C currentWindowPosition: 13 currentAminoAcid: W => 9095
+  input in matrix: state: C currentWindowPosition: 14 currentAminoAcid: W => 8969
+  input in matrix: state: C currentWindowPosition: 15 currentAminoAcid: W => 9055
+  input in matrix: state: C currentWindowPosition: 16 currentAminoAcid: W => 8835
+Process line: Y	20206	20597	20888	21441	20993	20131	18983	17494	15458	16726	18393	20099	20839	20748	20537	20632	20373
+ data line!
+  input in matrix: state: C currentWindowPosition: 0 currentAminoAcid: Y => 20206
+  input in matrix: state: C currentWindowPosition: 1 currentAminoAcid: Y => 20597
+  input in matrix: state: C currentWindowPosition: 2 currentAminoAcid: Y => 20888
+  input in matrix: state: C currentWindowPosition: 3 currentAminoAcid: Y => 21441
+  input in matrix: state: C currentWindowPosition: 4 currentAminoAcid: Y => 20993
+  input in matrix: state: C currentWindowPosition: 5 currentAminoAcid: Y => 20131
+  input in matrix: state: C currentWindowPosition: 6 currentAminoAcid: Y => 18983
+  input in matrix: state: C currentWindowPosition: 7 currentAminoAcid: Y => 17494
+  input in matrix: state: C currentWindowPosition: 8 currentAminoAcid: Y => 15458
+  input in matrix: state: C currentWindowPosition: 9 currentAminoAcid: Y => 16726
+  input in matrix: state: C currentWindowPosition: 10 currentAminoAcid: Y => 18393
+  input in matrix: state: C currentWindowPosition: 11 currentAminoAcid: Y => 20099
+  input in matrix: state: C currentWindowPosition: 12 currentAminoAcid: Y => 20839
+  input in matrix: state: C currentWindowPosition: 13 currentAminoAcid: Y => 20748
+  input in matrix: state: C currentWindowPosition: 14 currentAminoAcid: Y => 20537
+  input in matrix: state: C currentWindowPosition: 15 currentAminoAcid: Y => 20632
+  input in matrix: state: C currentWindowPosition: 16 currentAminoAcid: Y => 20373
+Process line: 
+ Skip line!
+Process line: 
+ Skip line!
+Process line: =E=
+ state line! (now in state: E)
+Process line: 
+ Skip line!
+Process line: A	24173	23399	21959	21237	20746	19957	20297	19966	19522	20359	20969	20797	20760	21041	21479	21851	22394
+ data line!
+  input in matrix: state: E currentWindowPosition: 0 currentAminoAcid: A => 24173
+  input in matrix: state: E currentWindowPosition: 1 currentAminoAcid: A => 23399
+  input in matrix: state: E currentWindowPosition: 2 currentAminoAcid: A => 21959
+  input in matrix: state: E currentWindowPosition: 3 currentAminoAcid: A => 21237
+  input in matrix: state: E currentWindowPosition: 4 currentAminoAcid: A => 20746
+  input in matrix: state: E currentWindowPosition: 5 currentAminoAcid: A => 19957
+  input in matrix: state: E currentWindowPosition: 6 currentAminoAcid: A => 20297
+  input in matrix: state: E currentWindowPosition: 7 currentAminoAcid: A => 19966
+  input in matrix: state: E currentWindowPosition: 8 currentAminoAcid: A => 19522
+  input in matrix: state: E currentWindowPosition: 9 currentAminoAcid: A => 20359
+  input in matrix: state: E currentWindowPosition: 10 currentAminoAcid: A => 20969
+  input in matrix: state: E currentWindowPosition: 11 currentAminoAcid: A => 20797
+  input in matrix: state: E currentWindowPosition: 12 currentAminoAcid: A => 20760
+  input in matrix: state: E currentWindowPosition: 13 currentAminoAcid: A => 21041
+  input in matrix: state: E currentWindowPosition: 14 currentAminoAcid: A => 21479
+  input in matrix: state: E currentWindowPosition: 15 currentAminoAcid: A => 21851
+  input in matrix: state: E currentWindowPosition: 16 currentAminoAcid: A => 22394
+Process line: C	4187	4155	4191	4052	4204	4502	4865	5498	5931	6061	5605	5179	4921	4386	4100	4095	4183
+ data line!
+  input in matrix: state: E currentWindowPosition: 0 currentAminoAcid: C => 4187
+  input in matrix: state: E currentWindowPosition: 1 currentAminoAcid: C => 4155
+  input in matrix: state: E currentWindowPosition: 2 currentAminoAcid: C => 4191
+  input in matrix: state: E currentWindowPosition: 3 currentAminoAcid: C => 4052
+  input in matrix: state: E currentWindowPosition: 4 currentAminoAcid: C => 4204
+  input in matrix: state: E currentWindowPosition: 5 currentAminoAcid: C => 4502
+  input in matrix: state: E currentWindowPosition: 6 currentAminoAcid: C => 4865
+  input in matrix: state: E currentWindowPosition: 7 currentAminoAcid: C => 5498
+  input in matrix: state: E currentWindowPosition: 8 currentAminoAcid: C => 5931
+  input in matrix: state: E currentWindowPosition: 9 currentAminoAcid: C => 6061
+  input in matrix: state: E currentWindowPosition: 10 currentAminoAcid: C => 5605
+  input in matrix: state: E currentWindowPosition: 11 currentAminoAcid: C => 5179
+  input in matrix: state: E currentWindowPosition: 12 currentAminoAcid: C => 4921
+  input in matrix: state: E currentWindowPosition: 13 currentAminoAcid: C => 4386
+  input in matrix: state: E currentWindowPosition: 14 currentAminoAcid: C => 4100
+  input in matrix: state: E currentWindowPosition: 15 currentAminoAcid: C => 4095
+  input in matrix: state: E currentWindowPosition: 16 currentAminoAcid: C => 4183
+Process line: D	18826	19495	20195	20528	19574	18276	14978	11485	10255	14410	18323	22043	22848	22588	21573	20879	20079
+ data line!
+  input in matrix: state: E currentWindowPosition: 0 currentAminoAcid: D => 18826
+  input in matrix: state: E currentWindowPosition: 1 currentAminoAcid: D => 19495
+  input in matrix: state: E currentWindowPosition: 2 currentAminoAcid: D => 20195
+  input in matrix: state: E currentWindowPosition: 3 currentAminoAcid: D => 20528
+  input in matrix: state: E currentWindowPosition: 4 currentAminoAcid: D => 19574
+  input in matrix: state: E currentWindowPosition: 5 currentAminoAcid: D => 18276
+  input in matrix: state: E currentWindowPosition: 6 currentAminoAcid: D => 14978
+  input in matrix: state: E currentWindowPosition: 7 currentAminoAcid: D => 11485
+  input in matrix: state: E currentWindowPosition: 8 currentAminoAcid: D => 10255
+  input in matrix: state: E currentWindowPosition: 9 currentAminoAcid: D => 14410
+  input in matrix: state: E currentWindowPosition: 10 currentAminoAcid: D => 18323
+  input in matrix: state: E currentWindowPosition: 11 currentAminoAcid: D => 22043
+  input in matrix: state: E currentWindowPosition: 12 currentAminoAcid: D => 22848
+  input in matrix: state: E currentWindowPosition: 13 currentAminoAcid: D => 22588
+  input in matrix: state: E currentWindowPosition: 14 currentAminoAcid: D => 21573
+  input in matrix: state: E currentWindowPosition: 15 currentAminoAcid: D => 20879
+  input in matrix: state: E currentWindowPosition: 16 currentAminoAcid: D => 20079
+Process line: E	20712	20466	20210	19700	18696	17196	15577	14856	14498	14325	15968	18045	19302	19848	20469	20818	20880
+ data line!
+  input in matrix: state: E currentWindowPosition: 0 currentAminoAcid: E => 20712
+  input in matrix: state: E currentWindowPosition: 1 currentAminoAcid: E => 20466
+  input in matrix: state: E currentWindowPosition: 2 currentAminoAcid: E => 20210
+  input in matrix: state: E currentWindowPosition: 3 currentAminoAcid: E => 19700
+  input in matrix: state: E currentWindowPosition: 4 currentAminoAcid: E => 18696
+  input in matrix: state: E currentWindowPosition: 5 currentAminoAcid: E => 17196
+  input in matrix: state: E currentWindowPosition: 6 currentAminoAcid: E => 15577
+  input in matrix: state: E currentWindowPosition: 7 currentAminoAcid: E => 14856
+  input in matrix: state: E currentWindowPosition: 8 currentAminoAcid: E => 14498
+  input in matrix: state: E currentWindowPosition: 9 currentAminoAcid: E => 14325
+  input in matrix: state: E currentWindowPosition: 10 currentAminoAcid: E => 15968
+  input in matrix: state: E currentWindowPosition: 11 currentAminoAcid: E => 18045
+  input in matrix: state: E currentWindowPosition: 12 currentAminoAcid: E => 19302
+  input in matrix: state: E currentWindowPosition: 13 currentAminoAcid: E => 19848
+  input in matrix: state: E currentWindowPosition: 14 currentAminoAcid: E => 20469
+  input in matrix: state: E currentWindowPosition: 15 currentAminoAcid: E => 20818
+  input in matrix: state: E currentWindowPosition: 16 currentAminoAcid: E => 20880
+Process line: F	12191	11733	11407	11214	11536	12435	14340	16494	18201	16551	14408	12848	11846	11756	11546	11936	12203
+ data line!
+  input in matrix: state: E currentWindowPosition: 0 currentAminoAcid: F => 12191
+  input in matrix: state: E currentWindowPosition: 1 currentAminoAcid: F => 11733
+  input in matrix: state: E currentWindowPosition: 2 currentAminoAcid: F => 11407
+  input in matrix: state: E currentWindowPosition: 3 currentAminoAcid: F => 11214
+  input in matrix: state: E currentWindowPosition: 4 currentAminoAcid: F => 11536
+  input in matrix: state: E currentWindowPosition: 5 currentAminoAcid: F => 12435
+  input in matrix: state: E currentWindowPosition: 6 currentAminoAcid: F => 14340
+  input in matrix: state: E currentWindowPosition: 7 currentAminoAcid: F => 16494
+  input in matrix: state: E currentWindowPosition: 8 currentAminoAcid: F => 18201
+  input in matrix: state: E currentWindowPosition: 9 currentAminoAcid: F => 16551
+  input in matrix: state: E currentWindowPosition: 10 currentAminoAcid: F => 14408
+  input in matrix: state: E currentWindowPosition: 11 currentAminoAcid: F => 12848
+  input in matrix: state: E currentWindowPosition: 12 currentAminoAcid: F => 11846
+  input in matrix: state: E currentWindowPosition: 13 currentAminoAcid: F => 11756
+  input in matrix: state: E currentWindowPosition: 14 currentAminoAcid: F => 11546
+  input in matrix: state: E currentWindowPosition: 15 currentAminoAcid: F => 11936
+  input in matrix: state: E currentWindowPosition: 16 currentAminoAcid: F => 12203
+Process line: G	25120	27570	30321	32002	33045	32796	30359	21248	15521	18913	25428	29524	33111	32347	31007	29013	27773
+ data line!
+  input in matrix: state: E currentWindowPosition: 0 currentAminoAcid: G => 25120
+  input in matrix: state: E currentWindowPosition: 1 currentAminoAcid: G => 27570
+  input in matrix: state: E currentWindowPosition: 2 currentAminoAcid: G => 30321
+  input in matrix: state: E currentWindowPosition: 3 currentAminoAcid: G => 32002
+  input in matrix: state: E currentWindowPosition: 4 currentAminoAcid: G => 33045
+  input in matrix: state: E currentWindowPosition: 5 currentAminoAcid: G => 32796
+  input in matrix: state: E currentWindowPosition: 6 currentAminoAcid: G => 30359
+  input in matrix: state: E currentWindowPosition: 7 currentAminoAcid: G => 21248
+  input in matrix: state: E currentWindowPosition: 8 currentAminoAcid: G => 15521
+  input in matrix: state: E currentWindowPosition: 9 currentAminoAcid: G => 18913
+  input in matrix: state: E currentWindowPosition: 10 currentAminoAcid: G => 25428
+  input in matrix: state: E currentWindowPosition: 11 currentAminoAcid: G => 29524
+  input in matrix: state: E currentWindowPosition: 12 currentAminoAcid: G => 33111
+  input in matrix: state: E currentWindowPosition: 13 currentAminoAcid: G => 32347
+  input in matrix: state: E currentWindowPosition: 14 currentAminoAcid: G => 31007
+  input in matrix: state: E currentWindowPosition: 15 currentAminoAcid: G => 29013
+  input in matrix: state: E currentWindowPosition: 16 currentAminoAcid: G => 27773
+Process line: H	7157	7371	7447	7642	7718	7412	7136	7216	7371	7202	7371	7610	7652	7497	7557	7471	7326
+ data line!
+  input in matrix: state: E currentWindowPosition: 0 currentAminoAcid: H => 7157
+  input in matrix: state: E currentWindowPosition: 1 currentAminoAcid: H => 7371
+  input in matrix: state: E currentWindowPosition: 2 currentAminoAcid: H => 7447
+  input in matrix: state: E currentWindowPosition: 3 currentAminoAcid: H => 7642
+  input in matrix: state: E currentWindowPosition: 4 currentAminoAcid: H => 7718
+  input in matrix: state: E currentWindowPosition: 5 currentAminoAcid: H => 7412
+  input in matrix: state: E currentWindowPosition: 6 currentAminoAcid: H => 7136
+  input in matrix: state: E currentWindowPosition: 7 currentAminoAcid: H => 7216
+  input in matrix: state: E currentWindowPosition: 8 currentAminoAcid: H => 7371
+  input in matrix: state: E currentWindowPosition: 9 currentAminoAcid: H => 7202
+  input in matrix: state: E currentWindowPosition: 10 currentAminoAcid: H => 7371
+  input in matrix: state: E currentWindowPosition: 11 currentAminoAcid: H => 7610
+  input in matrix: state: E currentWindowPosition: 12 currentAminoAcid: H => 7652
+  input in matrix: state: E currentWindowPosition: 13 currentAminoAcid: H => 7497
+  input in matrix: state: E currentWindowPosition: 14 currentAminoAcid: H => 7557
+  input in matrix: state: E currentWindowPosition: 15 currentAminoAcid: H => 7471
+  input in matrix: state: E currentWindowPosition: 16 currentAminoAcid: H => 7326
+Process line: I	16191	15477	15034	15205	16330	18999	23071	27306	30493	27526	21852	17813	15294	14643	14794	15402	15965
+ data line!
+  input in matrix: state: E currentWindowPosition: 0 currentAminoAcid: I => 16191
+  input in matrix: state: E currentWindowPosition: 1 currentAminoAcid: I => 15477
+  input in matrix: state: E currentWindowPosition: 2 currentAminoAcid: I => 15034
+  input in matrix: state: E currentWindowPosition: 3 currentAminoAcid: I => 15205
+  input in matrix: state: E currentWindowPosition: 4 currentAminoAcid: I => 16330
+  input in matrix: state: E currentWindowPosition: 5 currentAminoAcid: I => 18999
+  input in matrix: state: E currentWindowPosition: 6 currentAminoAcid: I => 23071
+  input in matrix: state: E currentWindowPosition: 7 currentAminoAcid: I => 27306
+  input in matrix: state: E currentWindowPosition: 8 currentAminoAcid: I => 30493
+  input in matrix: state: E currentWindowPosition: 9 currentAminoAcid: I => 27526
+  input in matrix: state: E currentWindowPosition: 10 currentAminoAcid: I => 21852
+  input in matrix: state: E currentWindowPosition: 11 currentAminoAcid: I => 17813
+  input in matrix: state: E currentWindowPosition: 12 currentAminoAcid: I => 15294
+  input in matrix: state: E currentWindowPosition: 13 currentAminoAcid: I => 14643
+  input in matrix: state: E currentWindowPosition: 14 currentAminoAcid: I => 14794
+  input in matrix: state: E currentWindowPosition: 15 currentAminoAcid: I => 15402
+  input in matrix: state: E currentWindowPosition: 16 currentAminoAcid: I => 15965
+Process line: K	19629	20123	20555	20554	19977	18460	16559	15755	14347	13287	14047	15059	15740	16730	17413	17715	17714
+ data line!
+  input in matrix: state: E currentWindowPosition: 0 currentAminoAcid: K => 19629
+  input in matrix: state: E currentWindowPosition: 1 currentAminoAcid: K => 20123
+  input in matrix: state: E currentWindowPosition: 2 currentAminoAcid: K => 20555
+  input in matrix: state: E currentWindowPosition: 3 currentAminoAcid: K => 20554
+  input in matrix: state: E currentWindowPosition: 4 currentAminoAcid: K => 19977
+  input in matrix: state: E currentWindowPosition: 5 currentAminoAcid: K => 18460
+  input in matrix: state: E currentWindowPosition: 6 currentAminoAcid: K => 16559
+  input in matrix: state: E currentWindowPosition: 7 currentAminoAcid: K => 15755
+  input in matrix: state: E currentWindowPosition: 8 currentAminoAcid: K => 14347
+  input in matrix: state: E currentWindowPosition: 9 currentAminoAcid: K => 13287
+  input in matrix: state: E currentWindowPosition: 10 currentAminoAcid: K => 14047
+  input in matrix: state: E currentWindowPosition: 11 currentAminoAcid: K => 15059
+  input in matrix: state: E currentWindowPosition: 12 currentAminoAcid: K => 15740
+  input in matrix: state: E currentWindowPosition: 13 currentAminoAcid: K => 16730
+  input in matrix: state: E currentWindowPosition: 14 currentAminoAcid: K => 17413
+  input in matrix: state: E currentWindowPosition: 15 currentAminoAcid: K => 17715
+  input in matrix: state: E currentWindowPosition: 16 currentAminoAcid: K => 17714
+Process line: L	26396	25179	23580	22204	21776	22704	25675	29326	31755	31185	26320	22803	20875	20793	21595	22427	23250
+ data line!
+  input in matrix: state: E currentWindowPosition: 0 currentAminoAcid: L => 26396
+  input in matrix: state: E currentWindowPosition: 1 currentAminoAcid: L => 25179
+  input in matrix: state: E currentWindowPosition: 2 currentAminoAcid: L => 23580
+  input in matrix: state: E currentWindowPosition: 3 currentAminoAcid: L => 22204
+  input in matrix: state: E currentWindowPosition: 4 currentAminoAcid: L => 21776
+  input in matrix: state: E currentWindowPosition: 5 currentAminoAcid: L => 22704
+  input in matrix: state: E currentWindowPosition: 6 currentAminoAcid: L => 25675
+  input in matrix: state: E currentWindowPosition: 7 currentAminoAcid: L => 29326
+  input in matrix: state: E currentWindowPosition: 8 currentAminoAcid: L => 31755
+  input in matrix: state: E currentWindowPosition: 9 currentAminoAcid: L => 31185
+  input in matrix: state: E currentWindowPosition: 10 currentAminoAcid: L => 26320
+  input in matrix: state: E currentWindowPosition: 11 currentAminoAcid: L => 22803
+  input in matrix: state: E currentWindowPosition: 12 currentAminoAcid: L => 20875
+  input in matrix: state: E currentWindowPosition: 13 currentAminoAcid: L => 20793
+  input in matrix: state: E currentWindowPosition: 14 currentAminoAcid: L => 21595
+  input in matrix: state: E currentWindowPosition: 15 currentAminoAcid: L => 22427
+  input in matrix: state: E currentWindowPosition: 16 currentAminoAcid: L => 23250
+Process line: M	5604	5059	4819	4664	4680	4731	5278	6076	6384	6092	5430	5008	4696	4879	4901	5038	5300
+ data line!
+  input in matrix: state: E currentWindowPosition: 0 currentAminoAcid: M => 5604
+  input in matrix: state: E currentWindowPosition: 1 currentAminoAcid: M => 5059
+  input in matrix: state: E currentWindowPosition: 2 currentAminoAcid: M => 4819
+  input in matrix: state: E currentWindowPosition: 3 currentAminoAcid: M => 4664
+  input in matrix: state: E currentWindowPosition: 4 currentAminoAcid: M => 4680
+  input in matrix: state: E currentWindowPosition: 5 currentAminoAcid: M => 4731
+  input in matrix: state: E currentWindowPosition: 6 currentAminoAcid: M => 5278
+  input in matrix: state: E currentWindowPosition: 7 currentAminoAcid: M => 6076
+  input in matrix: state: E currentWindowPosition: 8 currentAminoAcid: M => 6384
+  input in matrix: state: E currentWindowPosition: 9 currentAminoAcid: M => 6092
+  input in matrix: state: E currentWindowPosition: 10 currentAminoAcid: M => 5430
+  input in matrix: state: E currentWindowPosition: 11 currentAminoAcid: M => 5008
+  input in matrix: state: E currentWindowPosition: 12 currentAminoAcid: M => 4696
+  input in matrix: state: E currentWindowPosition: 13 currentAminoAcid: M => 4879
+  input in matrix: state: E currentWindowPosition: 14 currentAminoAcid: M => 4901
+  input in matrix: state: E currentWindowPosition: 15 currentAminoAcid: M => 5038
+  input in matrix: state: E currentWindowPosition: 16 currentAminoAcid: M => 5300
+Process line: N	14861	15666	16200	16552	16159	15398	13021	10137	8732	11444	13754	15763	16755	16730	16277	15597	14884
+ data line!
+  input in matrix: state: E currentWindowPosition: 0 currentAminoAcid: N => 14861
+  input in matrix: state: E currentWindowPosition: 1 currentAminoAcid: N => 15666
+  input in matrix: state: E currentWindowPosition: 2 currentAminoAcid: N => 16200
+  input in matrix: state: E currentWindowPosition: 3 currentAminoAcid: N => 16552
+  input in matrix: state: E currentWindowPosition: 4 currentAminoAcid: N => 16159
+  input in matrix: state: E currentWindowPosition: 5 currentAminoAcid: N => 15398
+  input in matrix: state: E currentWindowPosition: 6 currentAminoAcid: N => 13021
+  input in matrix: state: E currentWindowPosition: 7 currentAminoAcid: N => 10137
+  input in matrix: state: E currentWindowPosition: 8 currentAminoAcid: N => 8732
+  input in matrix: state: E currentWindowPosition: 9 currentAminoAcid: N => 11444
+  input in matrix: state: E currentWindowPosition: 10 currentAminoAcid: N => 13754
+  input in matrix: state: E currentWindowPosition: 11 currentAminoAcid: N => 15763
+  input in matrix: state: E currentWindowPosition: 12 currentAminoAcid: N => 16755
+  input in matrix: state: E currentWindowPosition: 13 currentAminoAcid: N => 16730
+  input in matrix: state: E currentWindowPosition: 14 currentAminoAcid: N => 16277
+  input in matrix: state: E currentWindowPosition: 15 currentAminoAcid: N => 15597
+  input in matrix: state: E currentWindowPosition: 16 currentAminoAcid: N => 14884
+Process line: P	15242	15894	16501	16870	16437	14268	11803	8848	6220	8367	13480	15150	16436	17041	17302	16874	16644
+ data line!
+  input in matrix: state: E currentWindowPosition: 0 currentAminoAcid: P => 15242
+  input in matrix: state: E currentWindowPosition: 1 currentAminoAcid: P => 15894
+  input in matrix: state: E currentWindowPosition: 2 currentAminoAcid: P => 16501
+  input in matrix: state: E currentWindowPosition: 3 currentAminoAcid: P => 16870
+  input in matrix: state: E currentWindowPosition: 4 currentAminoAcid: P => 16437
+  input in matrix: state: E currentWindowPosition: 5 currentAminoAcid: P => 14268
+  input in matrix: state: E currentWindowPosition: 6 currentAminoAcid: P => 11803
+  input in matrix: state: E currentWindowPosition: 7 currentAminoAcid: P => 8848
+  input in matrix: state: E currentWindowPosition: 8 currentAminoAcid: P => 6220
+  input in matrix: state: E currentWindowPosition: 9 currentAminoAcid: P => 8367
+  input in matrix: state: E currentWindowPosition: 10 currentAminoAcid: P => 13480
+  input in matrix: state: E currentWindowPosition: 11 currentAminoAcid: P => 15150
+  input in matrix: state: E currentWindowPosition: 12 currentAminoAcid: P => 16436
+  input in matrix: state: E currentWindowPosition: 13 currentAminoAcid: P => 17041
+  input in matrix: state: E currentWindowPosition: 14 currentAminoAcid: P => 17302
+  input in matrix: state: E currentWindowPosition: 15 currentAminoAcid: P => 16874
+  input in matrix: state: E currentWindowPosition: 16 currentAminoAcid: P => 16644
+Process line: Q	11397	11344	11222	11172	10820	10366	9692	9423	9102	8484	8763	9481	9917	10305	10458	10745	11057
+ data line!
+  input in matrix: state: E currentWindowPosition: 0 currentAminoAcid: Q => 11397
+  input in matrix: state: E currentWindowPosition: 1 currentAminoAcid: Q => 11344
+  input in matrix: state: E currentWindowPosition: 2 currentAminoAcid: Q => 11222
+  input in matrix: state: E currentWindowPosition: 3 currentAminoAcid: Q => 11172
+  input in matrix: state: E currentWindowPosition: 4 currentAminoAcid: Q => 10820
+  input in matrix: state: E currentWindowPosition: 5 currentAminoAcid: Q => 10366
+  input in matrix: state: E currentWindowPosition: 6 currentAminoAcid: Q => 9692
+  input in matrix: state: E currentWindowPosition: 7 currentAminoAcid: Q => 9423
+  input in matrix: state: E currentWindowPosition: 8 currentAminoAcid: Q => 9102
+  input in matrix: state: E currentWindowPosition: 9 currentAminoAcid: Q => 8484
+  input in matrix: state: E currentWindowPosition: 10 currentAminoAcid: Q => 8763
+  input in matrix: state: E currentWindowPosition: 11 currentAminoAcid: Q => 9481
+  input in matrix: state: E currentWindowPosition: 12 currentAminoAcid: Q => 9917
+  input in matrix: state: E currentWindowPosition: 13 currentAminoAcid: Q => 10305
+  input in matrix: state: E currentWindowPosition: 14 currentAminoAcid: Q => 10458
+  input in matrix: state: E currentWindowPosition: 15 currentAminoAcid: Q => 10745
+  input in matrix: state: E currentWindowPosition: 16 currentAminoAcid: Q => 11057
+Process line: R	15848	15637	15442	15293	15105	14733	14142	14397	13747	12870	12959	13217	13448	13878	14459	14636	14379
+ data line!
+  input in matrix: state: E currentWindowPosition: 0 currentAminoAcid: R => 15848
+  input in matrix: state: E currentWindowPosition: 1 currentAminoAcid: R => 15637
+  input in matrix: state: E currentWindowPosition: 2 currentAminoAcid: R => 15442
+  input in matrix: state: E currentWindowPosition: 3 currentAminoAcid: R => 15293
+  input in matrix: state: E currentWindowPosition: 4 currentAminoAcid: R => 15105
+  input in matrix: state: E currentWindowPosition: 5 currentAminoAcid: R => 14733
+  input in matrix: state: E currentWindowPosition: 6 currentAminoAcid: R => 14142
+  input in matrix: state: E currentWindowPosition: 7 currentAminoAcid: R => 14397
+  input in matrix: state: E currentWindowPosition: 8 currentAminoAcid: R => 13747
+  input in matrix: state: E currentWindowPosition: 9 currentAminoAcid: R => 12870
+  input in matrix: state: E currentWindowPosition: 10 currentAminoAcid: R => 12959
+  input in matrix: state: E currentWindowPosition: 11 currentAminoAcid: R => 13217
+  input in matrix: state: E currentWindowPosition: 12 currentAminoAcid: R => 13448
+  input in matrix: state: E currentWindowPosition: 13 currentAminoAcid: R => 13878
+  input in matrix: state: E currentWindowPosition: 14 currentAminoAcid: R => 14459
+  input in matrix: state: E currentWindowPosition: 15 currentAminoAcid: R => 14636
+  input in matrix: state: E currentWindowPosition: 16 currentAminoAcid: R => 14379
+Process line: S	20296	20052	19913	19819	19308	18262	16438	15592	16254	17654	20263	21567	22285	22372	21908	21462	21067
+ data line!
+  input in matrix: state: E currentWindowPosition: 0 currentAminoAcid: S => 20296
+  input in matrix: state: E currentWindowPosition: 1 currentAminoAcid: S => 20052
+  input in matrix: state: E currentWindowPosition: 2 currentAminoAcid: S => 19913
+  input in matrix: state: E currentWindowPosition: 3 currentAminoAcid: S => 19819
+  input in matrix: state: E currentWindowPosition: 4 currentAminoAcid: S => 19308
+  input in matrix: state: E currentWindowPosition: 5 currentAminoAcid: S => 18262
+  input in matrix: state: E currentWindowPosition: 6 currentAminoAcid: S => 16438
+  input in matrix: state: E currentWindowPosition: 7 currentAminoAcid: S => 15592
+  input in matrix: state: E currentWindowPosition: 8 currentAminoAcid: S => 16254
+  input in matrix: state: E currentWindowPosition: 9 currentAminoAcid: S => 17654
+  input in matrix: state: E currentWindowPosition: 10 currentAminoAcid: S => 20263
+  input in matrix: state: E currentWindowPosition: 11 currentAminoAcid: S => 21567
+  input in matrix: state: E currentWindowPosition: 12 currentAminoAcid: S => 22285
+  input in matrix: state: E currentWindowPosition: 13 currentAminoAcid: S => 22372
+  input in matrix: state: E currentWindowPosition: 14 currentAminoAcid: S => 21908
+  input in matrix: state: E currentWindowPosition: 15 currentAminoAcid: S => 21462
+  input in matrix: state: E currentWindowPosition: 16 currentAminoAcid: S => 21067
+Process line: T	17855	18070	18202	18410	18526	19049	18910	20182	20706	20426	20077	20083	20010	20211	20040	19792	19630
+ data line!
+  input in matrix: state: E currentWindowPosition: 0 currentAminoAcid: T => 17855
+  input in matrix: state: E currentWindowPosition: 1 currentAminoAcid: T => 18070
+  input in matrix: state: E currentWindowPosition: 2 currentAminoAcid: T => 18202
+  input in matrix: state: E currentWindowPosition: 3 currentAminoAcid: T => 18410
+  input in matrix: state: E currentWindowPosition: 4 currentAminoAcid: T => 18526
+  input in matrix: state: E currentWindowPosition: 5 currentAminoAcid: T => 19049
+  input in matrix: state: E currentWindowPosition: 6 currentAminoAcid: T => 18910
+  input in matrix: state: E currentWindowPosition: 7 currentAminoAcid: T => 20182
+  input in matrix: state: E currentWindowPosition: 8 currentAminoAcid: T => 20706
+  input in matrix: state: E currentWindowPosition: 9 currentAminoAcid: T => 20426
+  input in matrix: state: E currentWindowPosition: 10 currentAminoAcid: T => 20077
+  input in matrix: state: E currentWindowPosition: 11 currentAminoAcid: T => 20083
+  input in matrix: state: E currentWindowPosition: 12 currentAminoAcid: T => 20010
+  input in matrix: state: E currentWindowPosition: 13 currentAminoAcid: T => 20211
+  input in matrix: state: E currentWindowPosition: 14 currentAminoAcid: T => 20040
+  input in matrix: state: E currentWindowPosition: 15 currentAminoAcid: T => 19792
+  input in matrix: state: E currentWindowPosition: 16 currentAminoAcid: T => 19630
+Process line: V	21824	21158	20964	21366	23480	27432	33032	38651	42130	38008	30456	25422	22125	21070	20998	21626	22080
+ data line!
+  input in matrix: state: E currentWindowPosition: 0 currentAminoAcid: V => 21824
+  input in matrix: state: E currentWindowPosition: 1 currentAminoAcid: V => 21158
+  input in matrix: state: E currentWindowPosition: 2 currentAminoAcid: V => 20964
+  input in matrix: state: E currentWindowPosition: 3 currentAminoAcid: V => 21366
+  input in matrix: state: E currentWindowPosition: 4 currentAminoAcid: V => 23480
+  input in matrix: state: E currentWindowPosition: 5 currentAminoAcid: V => 27432
+  input in matrix: state: E currentWindowPosition: 6 currentAminoAcid: V => 33032
+  input in matrix: state: E currentWindowPosition: 7 currentAminoAcid: V => 38651
+  input in matrix: state: E currentWindowPosition: 8 currentAminoAcid: V => 42130
+  input in matrix: state: E currentWindowPosition: 9 currentAminoAcid: V => 38008
+  input in matrix: state: E currentWindowPosition: 10 currentAminoAcid: V => 30456
+  input in matrix: state: E currentWindowPosition: 11 currentAminoAcid: V => 25422
+  input in matrix: state: E currentWindowPosition: 12 currentAminoAcid: V => 22125
+  input in matrix: state: E currentWindowPosition: 13 currentAminoAcid: V => 21070
+  input in matrix: state: E currentWindowPosition: 14 currentAminoAcid: V => 20998
+  input in matrix: state: E currentWindowPosition: 15 currentAminoAcid: V => 21626
+  input in matrix: state: E currentWindowPosition: 16 currentAminoAcid: V => 22080
+Process line: W	4087	3962	3788	3683	3806	4138	4751	5663	5932	5445	4868	4462	4242	4170	4270	4494	4688
+ data line!
+  input in matrix: state: E currentWindowPosition: 0 currentAminoAcid: W => 4087
+  input in matrix: state: E currentWindowPosition: 1 currentAminoAcid: W => 3962
+  input in matrix: state: E currentWindowPosition: 2 currentAminoAcid: W => 3788
+  input in matrix: state: E currentWindowPosition: 3 currentAminoAcid: W => 3683
+  input in matrix: state: E currentWindowPosition: 4 currentAminoAcid: W => 3806
+  input in matrix: state: E currentWindowPosition: 5 currentAminoAcid: W => 4138
+  input in matrix: state: E currentWindowPosition: 6 currentAminoAcid: W => 4751
+  input in matrix: state: E currentWindowPosition: 7 currentAminoAcid: W => 5663
+  input in matrix: state: E currentWindowPosition: 8 currentAminoAcid: W => 5932
+  input in matrix: state: E currentWindowPosition: 9 currentAminoAcid: W => 5445
+  input in matrix: state: E currentWindowPosition: 10 currentAminoAcid: W => 4868
+  input in matrix: state: E currentWindowPosition: 11 currentAminoAcid: W => 4462
+  input in matrix: state: E currentWindowPosition: 12 currentAminoAcid: W => 4242
+  input in matrix: state: E currentWindowPosition: 13 currentAminoAcid: W => 4170
+  input in matrix: state: E currentWindowPosition: 14 currentAminoAcid: W => 4270
+  input in matrix: state: E currentWindowPosition: 15 currentAminoAcid: W => 4494
+  input in matrix: state: E currentWindowPosition: 16 currentAminoAcid: W => 4688
+Process line: Y	11153	10939	10799	10582	10826	11635	12825	14630	15648	14140	12408	10875	10486	10464	10603	10878	11253
+ data line!
+  input in matrix: state: E currentWindowPosition: 0 currentAminoAcid: Y => 11153
+  input in matrix: state: E currentWindowPosition: 1 currentAminoAcid: Y => 10939
+  input in matrix: state: E currentWindowPosition: 2 currentAminoAcid: Y => 10799
+  input in matrix: state: E currentWindowPosition: 3 currentAminoAcid: Y => 10582
+  input in matrix: state: E currentWindowPosition: 4 currentAminoAcid: Y => 10826
+  input in matrix: state: E currentWindowPosition: 5 currentAminoAcid: Y => 11635
+  input in matrix: state: E currentWindowPosition: 6 currentAminoAcid: Y => 12825
+  input in matrix: state: E currentWindowPosition: 7 currentAminoAcid: Y => 14630
+  input in matrix: state: E currentWindowPosition: 8 currentAminoAcid: Y => 15648
+  input in matrix: state: E currentWindowPosition: 9 currentAminoAcid: Y => 14140
+  input in matrix: state: E currentWindowPosition: 10 currentAminoAcid: Y => 12408
+  input in matrix: state: E currentWindowPosition: 11 currentAminoAcid: Y => 10875
+  input in matrix: state: E currentWindowPosition: 12 currentAminoAcid: Y => 10486
+  input in matrix: state: E currentWindowPosition: 13 currentAminoAcid: Y => 10464
+  input in matrix: state: E currentWindowPosition: 14 currentAminoAcid: Y => 10603
+  input in matrix: state: E currentWindowPosition: 15 currentAminoAcid: Y => 10878
+  input in matrix: state: E currentWindowPosition: 16 currentAminoAcid: Y => 11253
+Process line: 
+ Skip line!
+Process line: 
+ Skip line!
+Process line: =H=
+ state line! (now in state: H)
+Process line: 
+ Skip line!
+Process line: A	41447	42496	43563	44475	45598	47728	50492	52368	55797	55671	53438	52223	49894	47971	45921	44312	43378
+ data line!
+  input in matrix: state: H currentWindowPosition: 0 currentAminoAcid: A => 41447
+  input in matrix: state: H currentWindowPosition: 1 currentAminoAcid: A => 42496
+  input in matrix: state: H currentWindowPosition: 2 currentAminoAcid: A => 43563
+  input in matrix: state: H currentWindowPosition: 3 currentAminoAcid: A => 44475
+  input in matrix: state: H currentWindowPosition: 4 currentAminoAcid: A => 45598
+  input in matrix: state: H currentWindowPosition: 5 currentAminoAcid: A => 47728
+  input in matrix: state: H currentWindowPosition: 6 currentAminoAcid: A => 50492
+  input in matrix: state: H currentWindowPosition: 7 currentAminoAcid: A => 52368
+  input in matrix: state: H currentWindowPosition: 8 currentAminoAcid: A => 55797
+  input in matrix: state: H currentWindowPosition: 9 currentAminoAcid: A => 55671
+  input in matrix: state: H currentWindowPosition: 10 currentAminoAcid: A => 53438
+  input in matrix: state: H currentWindowPosition: 11 currentAminoAcid: A => 52223
+  input in matrix: state: H currentWindowPosition: 12 currentAminoAcid: A => 49894
+  input in matrix: state: H currentWindowPosition: 13 currentAminoAcid: A => 47971
+  input in matrix: state: H currentWindowPosition: 14 currentAminoAcid: A => 45921
+  input in matrix: state: H currentWindowPosition: 15 currentAminoAcid: A => 44312
+  input in matrix: state: H currentWindowPosition: 16 currentAminoAcid: A => 43378
+Process line: C	6104	6164	6158	6004	5918	5895	5830	5794	5678	6131	6269	6192	5980	5966	6167	6134	6020
+ data line!
+  input in matrix: state: H currentWindowPosition: 0 currentAminoAcid: C => 6104
+  input in matrix: state: H currentWindowPosition: 1 currentAminoAcid: C => 6164
+  input in matrix: state: H currentWindowPosition: 2 currentAminoAcid: C => 6158
+  input in matrix: state: H currentWindowPosition: 3 currentAminoAcid: C => 6004
+  input in matrix: state: H currentWindowPosition: 4 currentAminoAcid: C => 5918
+  input in matrix: state: H currentWindowPosition: 5 currentAminoAcid: C => 5895
+  input in matrix: state: H currentWindowPosition: 6 currentAminoAcid: C => 5830
+  input in matrix: state: H currentWindowPosition: 7 currentAminoAcid: C => 5794
+  input in matrix: state: H currentWindowPosition: 8 currentAminoAcid: C => 5678
+  input in matrix: state: H currentWindowPosition: 9 currentAminoAcid: C => 6131
+  input in matrix: state: H currentWindowPosition: 10 currentAminoAcid: C => 6269
+  input in matrix: state: H currentWindowPosition: 11 currentAminoAcid: C => 6192
+  input in matrix: state: H currentWindowPosition: 12 currentAminoAcid: C => 5980
+  input in matrix: state: H currentWindowPosition: 13 currentAminoAcid: C => 5966
+  input in matrix: state: H currentWindowPosition: 14 currentAminoAcid: C => 6167
+  input in matrix: state: H currentWindowPosition: 15 currentAminoAcid: C => 6134
+  input in matrix: state: H currentWindowPosition: 16 currentAminoAcid: C => 6020
+Process line: D	30007	30079	29818	29706	29815	29754	29068	29013	24419	24185	22537	21724	23995	24680	24923	25831	26540
+ data line!
+  input in matrix: state: H currentWindowPosition: 0 currentAminoAcid: D => 30007
+  input in matrix: state: H currentWindowPosition: 1 currentAminoAcid: D => 30079
+  input in matrix: state: H currentWindowPosition: 2 currentAminoAcid: D => 29818
+  input in matrix: state: H currentWindowPosition: 3 currentAminoAcid: D => 29706
+  input in matrix: state: H currentWindowPosition: 4 currentAminoAcid: D => 29815
+  input in matrix: state: H currentWindowPosition: 5 currentAminoAcid: D => 29754
+  input in matrix: state: H currentWindowPosition: 6 currentAminoAcid: D => 29068
+  input in matrix: state: H currentWindowPosition: 7 currentAminoAcid: D => 29013
+  input in matrix: state: H currentWindowPosition: 8 currentAminoAcid: D => 24419
+  input in matrix: state: H currentWindowPosition: 9 currentAminoAcid: D => 24185
+  input in matrix: state: H currentWindowPosition: 10 currentAminoAcid: D => 22537
+  input in matrix: state: H currentWindowPosition: 11 currentAminoAcid: D => 21724
+  input in matrix: state: H currentWindowPosition: 12 currentAminoAcid: D => 23995
+  input in matrix: state: H currentWindowPosition: 13 currentAminoAcid: D => 24680
+  input in matrix: state: H currentWindowPosition: 14 currentAminoAcid: D => 24923
+  input in matrix: state: H currentWindowPosition: 15 currentAminoAcid: D => 25831
+  input in matrix: state: H currentWindowPosition: 16 currentAminoAcid: D => 26540
+Process line: E	34815	35734	36153	37318	38582	39221	40090	42637	44406	42817	36989	33997	35602	34908	33910	34444	34886
+ data line!
+  input in matrix: state: H currentWindowPosition: 0 currentAminoAcid: E => 34815
+  input in matrix: state: H currentWindowPosition: 1 currentAminoAcid: E => 35734
+  input in matrix: state: H currentWindowPosition: 2 currentAminoAcid: E => 36153
+  input in matrix: state: H currentWindowPosition: 3 currentAminoAcid: E => 37318
+  input in matrix: state: H currentWindowPosition: 4 currentAminoAcid: E => 38582
+  input in matrix: state: H currentWindowPosition: 5 currentAminoAcid: E => 39221
+  input in matrix: state: H currentWindowPosition: 6 currentAminoAcid: E => 40090
+  input in matrix: state: H currentWindowPosition: 7 currentAminoAcid: E => 42637
+  input in matrix: state: H currentWindowPosition: 8 currentAminoAcid: E => 44406
+  input in matrix: state: H currentWindowPosition: 9 currentAminoAcid: E => 42817
+  input in matrix: state: H currentWindowPosition: 10 currentAminoAcid: E => 36989
+  input in matrix: state: H currentWindowPosition: 11 currentAminoAcid: E => 33997
+  input in matrix: state: H currentWindowPosition: 12 currentAminoAcid: E => 35602
+  input in matrix: state: H currentWindowPosition: 13 currentAminoAcid: E => 34908
+  input in matrix: state: H currentWindowPosition: 14 currentAminoAcid: E => 33910
+  input in matrix: state: H currentWindowPosition: 15 currentAminoAcid: E => 34444
+  input in matrix: state: H currentWindowPosition: 16 currentAminoAcid: E => 34886
+Process line: F	18844	18743	18784	18606	18384	18531	18668	18130	19402	19783	19900	19861	18743	18967	19450	18887	18718
+ data line!
+  input in matrix: state: H currentWindowPosition: 0 currentAminoAcid: F => 18844
+  input in matrix: state: H currentWindowPosition: 1 currentAminoAcid: F => 18743
+  input in matrix: state: H currentWindowPosition: 2 currentAminoAcid: F => 18784
+  input in matrix: state: H currentWindowPosition: 3 currentAminoAcid: F => 18606
+  input in matrix: state: H currentWindowPosition: 4 currentAminoAcid: F => 18384
+  input in matrix: state: H currentWindowPosition: 5 currentAminoAcid: F => 18531
+  input in matrix: state: H currentWindowPosition: 6 currentAminoAcid: F => 18668
+  input in matrix: state: H currentWindowPosition: 7 currentAminoAcid: F => 18130
+  input in matrix: state: H currentWindowPosition: 8 currentAminoAcid: F => 19402
+  input in matrix: state: H currentWindowPosition: 9 currentAminoAcid: F => 19783
+  input in matrix: state: H currentWindowPosition: 10 currentAminoAcid: F => 19900
+  input in matrix: state: H currentWindowPosition: 11 currentAminoAcid: F => 19861
+  input in matrix: state: H currentWindowPosition: 12 currentAminoAcid: F => 18743
+  input in matrix: state: H currentWindowPosition: 13 currentAminoAcid: F => 18967
+  input in matrix: state: H currentWindowPosition: 14 currentAminoAcid: F => 19450
+  input in matrix: state: H currentWindowPosition: 15 currentAminoAcid: F => 18887
+  input in matrix: state: H currentWindowPosition: 16 currentAminoAcid: F => 18718
+Process line: G	35911	34906	33730	32398	30121	27608	23660	20632	17404	22064	27416	29396	31107	31831	32472	33014	33159
+ data line!
+  input in matrix: state: H currentWindowPosition: 0 currentAminoAcid: G => 35911
+  input in matrix: state: H currentWindowPosition: 1 currentAminoAcid: G => 34906
+  input in matrix: state: H currentWindowPosition: 2 currentAminoAcid: G => 33730
+  input in matrix: state: H currentWindowPosition: 3 currentAminoAcid: G => 32398
+  input in matrix: state: H currentWindowPosition: 4 currentAminoAcid: G => 30121
+  input in matrix: state: H currentWindowPosition: 5 currentAminoAcid: G => 27608
+  input in matrix: state: H currentWindowPosition: 6 currentAminoAcid: G => 23660
+  input in matrix: state: H currentWindowPosition: 7 currentAminoAcid: G => 20632
+  input in matrix: state: H currentWindowPosition: 8 currentAminoAcid: G => 17404
+  input in matrix: state: H currentWindowPosition: 9 currentAminoAcid: G => 22064
+  input in matrix: state: H currentWindowPosition: 10 currentAminoAcid: G => 27416
+  input in matrix: state: H currentWindowPosition: 11 currentAminoAcid: G => 29396
+  input in matrix: state: H currentWindowPosition: 12 currentAminoAcid: G => 31107
+  input in matrix: state: H currentWindowPosition: 13 currentAminoAcid: G => 31831
+  input in matrix: state: H currentWindowPosition: 14 currentAminoAcid: G => 32472
+  input in matrix: state: H currentWindowPosition: 15 currentAminoAcid: G => 33014
+  input in matrix: state: H currentWindowPosition: 16 currentAminoAcid: G => 33159
+Process line: H	11407	11326	11193	10945	10844	10621	10172	10164	10190	10774	10926	10871	11112	11196	11161	11178	11362
+ data line!
+  input in matrix: state: H currentWindowPosition: 0 currentAminoAcid: H => 11407
+  input in matrix: state: H currentWindowPosition: 1 currentAminoAcid: H => 11326
+  input in matrix: state: H currentWindowPosition: 2 currentAminoAcid: H => 11193
+  input in matrix: state: H currentWindowPosition: 3 currentAminoAcid: H => 10945
+  input in matrix: state: H currentWindowPosition: 4 currentAminoAcid: H => 10844
+  input in matrix: state: H currentWindowPosition: 5 currentAminoAcid: H => 10621
+  input in matrix: state: H currentWindowPosition: 6 currentAminoAcid: H => 10172
+  input in matrix: state: H currentWindowPosition: 7 currentAminoAcid: H => 10164
+  input in matrix: state: H currentWindowPosition: 8 currentAminoAcid: H => 10190
+  input in matrix: state: H currentWindowPosition: 9 currentAminoAcid: H => 10774
+  input in matrix: state: H currentWindowPosition: 10 currentAminoAcid: H => 10926
+  input in matrix: state: H currentWindowPosition: 11 currentAminoAcid: H => 10871
+  input in matrix: state: H currentWindowPosition: 12 currentAminoAcid: H => 11112
+  input in matrix: state: H currentWindowPosition: 13 currentAminoAcid: H => 11196
+  input in matrix: state: H currentWindowPosition: 14 currentAminoAcid: H => 11161
+  input in matrix: state: H currentWindowPosition: 15 currentAminoAcid: H => 11178
+  input in matrix: state: H currentWindowPosition: 16 currentAminoAcid: H => 11362
+Process line: I	26704	26598	26530	26582	26672	27077	27496	27097	28086	27838	28259	28946	26775	27039	28284	28339	28363
+ data line!
+  input in matrix: state: H currentWindowPosition: 0 currentAminoAcid: I => 26704
+  input in matrix: state: H currentWindowPosition: 1 currentAminoAcid: I => 26598
+  input in matrix: state: H currentWindowPosition: 2 currentAminoAcid: I => 26530
+  input in matrix: state: H currentWindowPosition: 3 currentAminoAcid: I => 26582
+  input in matrix: state: H currentWindowPosition: 4 currentAminoAcid: I => 26672
+  input in matrix: state: H currentWindowPosition: 5 currentAminoAcid: I => 27077
+  input in matrix: state: H currentWindowPosition: 6 currentAminoAcid: I => 27496
+  input in matrix: state: H currentWindowPosition: 7 currentAminoAcid: I => 27097
+  input in matrix: state: H currentWindowPosition: 8 currentAminoAcid: I => 28086
+  input in matrix: state: H currentWindowPosition: 9 currentAminoAcid: I => 27838
+  input in matrix: state: H currentWindowPosition: 10 currentAminoAcid: I => 28259
+  input in matrix: state: H currentWindowPosition: 11 currentAminoAcid: I => 28946
+  input in matrix: state: H currentWindowPosition: 12 currentAminoAcid: I => 26775
+  input in matrix: state: H currentWindowPosition: 13 currentAminoAcid: I => 27039
+  input in matrix: state: H currentWindowPosition: 14 currentAminoAcid: I => 28284
+  input in matrix: state: H currentWindowPosition: 15 currentAminoAcid: I => 28339
+  input in matrix: state: H currentWindowPosition: 16 currentAminoAcid: I => 28363
+Process line: K	26662	26612	26638	26969	27321	27352	28089	30113	32205	32374	32864	33590	34165	33135	31752	32053	31928
+ data line!
+  input in matrix: state: H currentWindowPosition: 0 currentAminoAcid: K => 26662
+  input in matrix: state: H currentWindowPosition: 1 currentAminoAcid: K => 26612
+  input in matrix: state: H currentWindowPosition: 2 currentAminoAcid: K => 26638
+  input in matrix: state: H currentWindowPosition: 3 currentAminoAcid: K => 26969
+  input in matrix: state: H currentWindowPosition: 4 currentAminoAcid: K => 27321
+  input in matrix: state: H currentWindowPosition: 5 currentAminoAcid: K => 27352
+  input in matrix: state: H currentWindowPosition: 6 currentAminoAcid: K => 28089
+  input in matrix: state: H currentWindowPosition: 7 currentAminoAcid: K => 30113
+  input in matrix: state: H currentWindowPosition: 8 currentAminoAcid: K => 32205
+  input in matrix: state: H currentWindowPosition: 9 currentAminoAcid: K => 32374
+  input in matrix: state: H currentWindowPosition: 10 currentAminoAcid: K => 32864
+  input in matrix: state: H currentWindowPosition: 11 currentAminoAcid: K => 33590
+  input in matrix: state: H currentWindowPosition: 12 currentAminoAcid: K => 34165
+  input in matrix: state: H currentWindowPosition: 13 currentAminoAcid: K => 33135
+  input in matrix: state: H currentWindowPosition: 14 currentAminoAcid: K => 31752
+  input in matrix: state: H currentWindowPosition: 15 currentAminoAcid: K => 32053
+  input in matrix: state: H currentWindowPosition: 16 currentAminoAcid: K => 31928
+Process line: L	43870	44211	45072	45769	46624	48429	51578	51999	56644	57132	57648	57367	53273	52148	52274	50060	48121
+ data line!
+  input in matrix: state: H currentWindowPosition: 0 currentAminoAcid: L => 43870
+  input in matrix: state: H currentWindowPosition: 1 currentAminoAcid: L => 44211
+  input in matrix: state: H currentWindowPosition: 2 currentAminoAcid: L => 45072
+  input in matrix: state: H currentWindowPosition: 3 currentAminoAcid: L => 45769
+  input in matrix: state: H currentWindowPosition: 4 currentAminoAcid: L => 46624
+  input in matrix: state: H currentWindowPosition: 5 currentAminoAcid: L => 48429
+  input in matrix: state: H currentWindowPosition: 6 currentAminoAcid: L => 51578
+  input in matrix: state: H currentWindowPosition: 7 currentAminoAcid: L => 51999
+  input in matrix: state: H currentWindowPosition: 8 currentAminoAcid: L => 56644
+  input in matrix: state: H currentWindowPosition: 9 currentAminoAcid: L => 57132
+  input in matrix: state: H currentWindowPosition: 10 currentAminoAcid: L => 57648
+  input in matrix: state: H currentWindowPosition: 11 currentAminoAcid: L => 57367
+  input in matrix: state: H currentWindowPosition: 12 currentAminoAcid: L => 53273
+  input in matrix: state: H currentWindowPosition: 13 currentAminoAcid: L => 52148
+  input in matrix: state: H currentWindowPosition: 14 currentAminoAcid: L => 52274
+  input in matrix: state: H currentWindowPosition: 15 currentAminoAcid: L => 50060
+  input in matrix: state: H currentWindowPosition: 16 currentAminoAcid: L => 48121
+Process line: M	10330	10046	10187	10279	10404	10632	11187	10949	11591	11763	11832	11667	10999	10609	10548	10091	9783
+ data line!
+  input in matrix: state: H currentWindowPosition: 0 currentAminoAcid: M => 10330
+  input in matrix: state: H currentWindowPosition: 1 currentAminoAcid: M => 10046
+  input in matrix: state: H currentWindowPosition: 2 currentAminoAcid: M => 10187
+  input in matrix: state: H currentWindowPosition: 3 currentAminoAcid: M => 10279
+  input in matrix: state: H currentWindowPosition: 4 currentAminoAcid: M => 10404
+  input in matrix: state: H currentWindowPosition: 5 currentAminoAcid: M => 10632
+  input in matrix: state: H currentWindowPosition: 6 currentAminoAcid: M => 11187
+  input in matrix: state: H currentWindowPosition: 7 currentAminoAcid: M => 10949
+  input in matrix: state: H currentWindowPosition: 8 currentAminoAcid: M => 11591
+  input in matrix: state: H currentWindowPosition: 9 currentAminoAcid: M => 11763
+  input in matrix: state: H currentWindowPosition: 10 currentAminoAcid: M => 11832
+  input in matrix: state: H currentWindowPosition: 11 currentAminoAcid: M => 11667
+  input in matrix: state: H currentWindowPosition: 12 currentAminoAcid: M => 10999
+  input in matrix: state: H currentWindowPosition: 13 currentAminoAcid: M => 10609
+  input in matrix: state: H currentWindowPosition: 14 currentAminoAcid: M => 10548
+  input in matrix: state: H currentWindowPosition: 15 currentAminoAcid: M => 10091
+  input in matrix: state: H currentWindowPosition: 16 currentAminoAcid: M => 9783
+Process line: N	20443	20341	20112	19882	19473	19059	17942	17653	15469	17651	18414	18976	20028	20246	20025	20309	20463
+ data line!
+  input in matrix: state: H currentWindowPosition: 0 currentAminoAcid: N => 20443
+  input in matrix: state: H currentWindowPosition: 1 currentAminoAcid: N => 20341
+  input in matrix: state: H currentWindowPosition: 2 currentAminoAcid: N => 20112
+  input in matrix: state: H currentWindowPosition: 3 currentAminoAcid: N => 19882
+  input in matrix: state: H currentWindowPosition: 4 currentAminoAcid: N => 19473
+  input in matrix: state: H currentWindowPosition: 5 currentAminoAcid: N => 19059
+  input in matrix: state: H currentWindowPosition: 6 currentAminoAcid: N => 17942
+  input in matrix: state: H currentWindowPosition: 7 currentAminoAcid: N => 17653
+  input in matrix: state: H currentWindowPosition: 8 currentAminoAcid: N => 15469
+  input in matrix: state: H currentWindowPosition: 9 currentAminoAcid: N => 17651
+  input in matrix: state: H currentWindowPosition: 10 currentAminoAcid: N => 18414
+  input in matrix: state: H currentWindowPosition: 11 currentAminoAcid: N => 18976
+  input in matrix: state: H currentWindowPosition: 12 currentAminoAcid: N => 20028
+  input in matrix: state: H currentWindowPosition: 13 currentAminoAcid: N => 20246
+  input in matrix: state: H currentWindowPosition: 14 currentAminoAcid: N => 20025
+  input in matrix: state: H currentWindowPosition: 15 currentAminoAcid: N => 20309
+  input in matrix: state: H currentWindowPosition: 16 currentAminoAcid: N => 20463
+Process line: P	22078	21616	21002	20265	19353	18726	17855	15677	11930	4913	7429	10291	14496	16679	17600	18628	19379
+ data line!
+  input in matrix: state: H currentWindowPosition: 0 currentAminoAcid: P => 22078
+  input in matrix: state: H currentWindowPosition: 1 currentAminoAcid: P => 21616
+  input in matrix: state: H currentWindowPosition: 2 currentAminoAcid: P => 21002
+  input in matrix: state: H currentWindowPosition: 3 currentAminoAcid: P => 20265
+  input in matrix: state: H currentWindowPosition: 4 currentAminoAcid: P => 19353
+  input in matrix: state: H currentWindowPosition: 5 currentAminoAcid: P => 18726
+  input in matrix: state: H currentWindowPosition: 6 currentAminoAcid: P => 17855
+  input in matrix: state: H currentWindowPosition: 7 currentAminoAcid: P => 15677
+  input in matrix: state: H currentWindowPosition: 8 currentAminoAcid: P => 11930
+  input in matrix: state: H currentWindowPosition: 9 currentAminoAcid: P => 4913
+  input in matrix: state: H currentWindowPosition: 10 currentAminoAcid: P => 7429
+  input in matrix: state: H currentWindowPosition: 11 currentAminoAcid: P => 10291
+  input in matrix: state: H currentWindowPosition: 12 currentAminoAcid: P => 14496
+  input in matrix: state: H currentWindowPosition: 13 currentAminoAcid: P => 16679
+  input in matrix: state: H currentWindowPosition: 14 currentAminoAcid: P => 17600
+  input in matrix: state: H currentWindowPosition: 15 currentAminoAcid: P => 18628
+  input in matrix: state: H currentWindowPosition: 16 currentAminoAcid: P => 19379
+Process line: Q	18513	18814	19031	19494	19974	20117	20452	21343	22600	23009	22503	21221	20910	20196	19383	19387	19274
+ data line!
+  input in matrix: state: H currentWindowPosition: 0 currentAminoAcid: Q => 18513
+  input in matrix: state: H currentWindowPosition: 1 currentAminoAcid: Q => 18814
+  input in matrix: state: H currentWindowPosition: 2 currentAminoAcid: Q => 19031
+  input in matrix: state: H currentWindowPosition: 3 currentAminoAcid: Q => 19494
+  input in matrix: state: H currentWindowPosition: 4 currentAminoAcid: Q => 19974
+  input in matrix: state: H currentWindowPosition: 5 currentAminoAcid: Q => 20117
+  input in matrix: state: H currentWindowPosition: 6 currentAminoAcid: Q => 20452
+  input in matrix: state: H currentWindowPosition: 7 currentAminoAcid: Q => 21343
+  input in matrix: state: H currentWindowPosition: 8 currentAminoAcid: Q => 22600
+  input in matrix: state: H currentWindowPosition: 9 currentAminoAcid: Q => 23009
+  input in matrix: state: H currentWindowPosition: 10 currentAminoAcid: Q => 22503
+  input in matrix: state: H currentWindowPosition: 11 currentAminoAcid: Q => 21221
+  input in matrix: state: H currentWindowPosition: 12 currentAminoAcid: Q => 20910
+  input in matrix: state: H currentWindowPosition: 13 currentAminoAcid: Q => 20196
+  input in matrix: state: H currentWindowPosition: 14 currentAminoAcid: Q => 19383
+  input in matrix: state: H currentWindowPosition: 15 currentAminoAcid: Q => 19387
+  input in matrix: state: H currentWindowPosition: 16 currentAminoAcid: Q => 19274
+Process line: R	23847	23803	23975	24485	25017	24932	25522	26779	28345	28590	28791	29051	28410	27534	26345	26301	26082
+ data line!
+  input in matrix: state: H currentWindowPosition: 0 currentAminoAcid: R => 23847
+  input in matrix: state: H currentWindowPosition: 1 currentAminoAcid: R => 23803
+  input in matrix: state: H currentWindowPosition: 2 currentAminoAcid: R => 23975
+  input in matrix: state: H currentWindowPosition: 3 currentAminoAcid: R => 24485
+  input in matrix: state: H currentWindowPosition: 4 currentAminoAcid: R => 25017
+  input in matrix: state: H currentWindowPosition: 5 currentAminoAcid: R => 24932
+  input in matrix: state: H currentWindowPosition: 6 currentAminoAcid: R => 25522
+  input in matrix: state: H currentWindowPosition: 7 currentAminoAcid: R => 26779
+  input in matrix: state: H currentWindowPosition: 8 currentAminoAcid: R => 28345
+  input in matrix: state: H currentWindowPosition: 9 currentAminoAcid: R => 28590
+  input in matrix: state: H currentWindowPosition: 10 currentAminoAcid: R => 28791
+  input in matrix: state: H currentWindowPosition: 11 currentAminoAcid: R => 29051
+  input in matrix: state: H currentWindowPosition: 12 currentAminoAcid: R => 28410
+  input in matrix: state: H currentWindowPosition: 13 currentAminoAcid: R => 27534
+  input in matrix: state: H currentWindowPosition: 14 currentAminoAcid: R => 26345
+  input in matrix: state: H currentWindowPosition: 15 currentAminoAcid: R => 26301
+  input in matrix: state: H currentWindowPosition: 16 currentAminoAcid: R => 26082
+Process line: S	29221	29117	28999	28810	28458	27796	26949	26998	23401	23997	23109	23310	24538	24845	24975	25465	26077
+ data line!
+  input in matrix: state: H currentWindowPosition: 0 currentAminoAcid: S => 29221
+  input in matrix: state: H currentWindowPosition: 1 currentAminoAcid: S => 29117
+  input in matrix: state: H currentWindowPosition: 2 currentAminoAcid: S => 28999
+  input in matrix: state: H currentWindowPosition: 3 currentAminoAcid: S => 28810
+  input in matrix: state: H currentWindowPosition: 4 currentAminoAcid: S => 28458
+  input in matrix: state: H currentWindowPosition: 5 currentAminoAcid: S => 27796
+  input in matrix: state: H currentWindowPosition: 6 currentAminoAcid: S => 26949
+  input in matrix: state: H currentWindowPosition: 7 currentAminoAcid: S => 26998
+  input in matrix: state: H currentWindowPosition: 8 currentAminoAcid: S => 23401
+  input in matrix: state: H currentWindowPosition: 9 currentAminoAcid: S => 23997
+  input in matrix: state: H currentWindowPosition: 10 currentAminoAcid: S => 23109
+  input in matrix: state: H currentWindowPosition: 11 currentAminoAcid: S => 23310
+  input in matrix: state: H currentWindowPosition: 12 currentAminoAcid: S => 24538
+  input in matrix: state: H currentWindowPosition: 13 currentAminoAcid: S => 24845
+  input in matrix: state: H currentWindowPosition: 14 currentAminoAcid: S => 24975
+  input in matrix: state: H currentWindowPosition: 15 currentAminoAcid: S => 25465
+  input in matrix: state: H currentWindowPosition: 16 currentAminoAcid: S => 26077
+Process line: T	27020	27135	27185	26954	26423	25526	24145	23151	20551	20313	20515	20233	20984	21613	22091	22692	23238
+ data line!
+  input in matrix: state: H currentWindowPosition: 0 currentAminoAcid: T => 27020
+  input in matrix: state: H currentWindowPosition: 1 currentAminoAcid: T => 27135
+  input in matrix: state: H currentWindowPosition: 2 currentAminoAcid: T => 27185
+  input in matrix: state: H currentWindowPosition: 3 currentAminoAcid: T => 26954
+  input in matrix: state: H currentWindowPosition: 4 currentAminoAcid: T => 26423
+  input in matrix: state: H currentWindowPosition: 5 currentAminoAcid: T => 25526
+  input in matrix: state: H currentWindowPosition: 6 currentAminoAcid: T => 24145
+  input in matrix: state: H currentWindowPosition: 7 currentAminoAcid: T => 23151
+  input in matrix: state: H currentWindowPosition: 8 currentAminoAcid: T => 20551
+  input in matrix: state: H currentWindowPosition: 9 currentAminoAcid: T => 20313
+  input in matrix: state: H currentWindowPosition: 10 currentAminoAcid: T => 20515
+  input in matrix: state: H currentWindowPosition: 11 currentAminoAcid: T => 20233
+  input in matrix: state: H currentWindowPosition: 12 currentAminoAcid: T => 20984
+  input in matrix: state: H currentWindowPosition: 13 currentAminoAcid: T => 21613
+  input in matrix: state: H currentWindowPosition: 14 currentAminoAcid: T => 22091
+  input in matrix: state: H currentWindowPosition: 15 currentAminoAcid: T => 22692
+  input in matrix: state: H currentWindowPosition: 16 currentAminoAcid: T => 23238
+Process line: V	33030	32676	32443	32005	31627	31280	30759	29748	30835	30113	30503	30634	29195	30476	32624	33491	33910
+ data line!
+  input in matrix: state: H currentWindowPosition: 0 currentAminoAcid: V => 33030
+  input in matrix: state: H currentWindowPosition: 1 currentAminoAcid: V => 32676
+  input in matrix: state: H currentWindowPosition: 2 currentAminoAcid: V => 32443
+  input in matrix: state: H currentWindowPosition: 3 currentAminoAcid: V => 32005
+  input in matrix: state: H currentWindowPosition: 4 currentAminoAcid: V => 31627
+  input in matrix: state: H currentWindowPosition: 5 currentAminoAcid: V => 31280
+  input in matrix: state: H currentWindowPosition: 6 currentAminoAcid: V => 30759
+  input in matrix: state: H currentWindowPosition: 7 currentAminoAcid: V => 29748
+  input in matrix: state: H currentWindowPosition: 8 currentAminoAcid: V => 30835
+  input in matrix: state: H currentWindowPosition: 9 currentAminoAcid: V => 30113
+  input in matrix: state: H currentWindowPosition: 10 currentAminoAcid: V => 30503
+  input in matrix: state: H currentWindowPosition: 11 currentAminoAcid: V => 30634
+  input in matrix: state: H currentWindowPosition: 12 currentAminoAcid: V => 29195
+  input in matrix: state: H currentWindowPosition: 13 currentAminoAcid: V => 30476
+  input in matrix: state: H currentWindowPosition: 14 currentAminoAcid: V => 32624
+  input in matrix: state: H currentWindowPosition: 15 currentAminoAcid: V => 33491
+  input in matrix: state: H currentWindowPosition: 16 currentAminoAcid: V => 33910
+Process line: W	6434	6366	6343	6298	6428	6700	7091	7050	7307	6835	6483	6383	5999	6008	6052	5700	5735
+ data line!
+  input in matrix: state: H currentWindowPosition: 0 currentAminoAcid: W => 6434
+  input in matrix: state: H currentWindowPosition: 1 currentAminoAcid: W => 6366
+  input in matrix: state: H currentWindowPosition: 2 currentAminoAcid: W => 6343
+  input in matrix: state: H currentWindowPosition: 3 currentAminoAcid: W => 6298
+  input in matrix: state: H currentWindowPosition: 4 currentAminoAcid: W => 6428
+  input in matrix: state: H currentWindowPosition: 5 currentAminoAcid: W => 6700
+  input in matrix: state: H currentWindowPosition: 6 currentAminoAcid: W => 7091
+  input in matrix: state: H currentWindowPosition: 7 currentAminoAcid: W => 7050
+  input in matrix: state: H currentWindowPosition: 8 currentAminoAcid: W => 7307
+  input in matrix: state: H currentWindowPosition: 9 currentAminoAcid: W => 6835
+  input in matrix: state: H currentWindowPosition: 10 currentAminoAcid: W => 6483
+  input in matrix: state: H currentWindowPosition: 11 currentAminoAcid: W => 6383
+  input in matrix: state: H currentWindowPosition: 12 currentAminoAcid: W => 5999
+  input in matrix: state: H currentWindowPosition: 13 currentAminoAcid: W => 6008
+  input in matrix: state: H currentWindowPosition: 14 currentAminoAcid: W => 6052
+  input in matrix: state: H currentWindowPosition: 15 currentAminoAcid: W => 5700
+  input in matrix: state: H currentWindowPosition: 16 currentAminoAcid: W => 5735
+Process line: Y	15583	15487	15354	15026	15234	15286	15225	14975	16010	16317	16445	16337	16065	16223	16313	15954	15854
+ data line!
+  input in matrix: state: H currentWindowPosition: 0 currentAminoAcid: Y => 15583
+  input in matrix: state: H currentWindowPosition: 1 currentAminoAcid: Y => 15487
+  input in matrix: state: H currentWindowPosition: 2 currentAminoAcid: Y => 15354
+  input in matrix: state: H currentWindowPosition: 3 currentAminoAcid: Y => 15026
+  input in matrix: state: H currentWindowPosition: 4 currentAminoAcid: Y => 15234
+  input in matrix: state: H currentWindowPosition: 5 currentAminoAcid: Y => 15286
+  input in matrix: state: H currentWindowPosition: 6 currentAminoAcid: Y => 15225
+  input in matrix: state: H currentWindowPosition: 7 currentAminoAcid: Y => 14975
+  input in matrix: state: H currentWindowPosition: 8 currentAminoAcid: Y => 16010
+  input in matrix: state: H currentWindowPosition: 9 currentAminoAcid: Y => 16317
+  input in matrix: state: H currentWindowPosition: 10 currentAminoAcid: Y => 16445
+  input in matrix: state: H currentWindowPosition: 11 currentAminoAcid: Y => 16337
+  input in matrix: state: H currentWindowPosition: 12 currentAminoAcid: Y => 16065
+  input in matrix: state: H currentWindowPosition: 13 currentAminoAcid: Y => 16223
+  input in matrix: state: H currentWindowPosition: 14 currentAminoAcid: Y => 16313
+  input in matrix: state: H currentWindowPosition: 15 currentAminoAcid: Y => 15954
+  input in matrix: state: H currentWindowPosition: 16 currentAminoAcid: Y => 15854
+Process line: 
+ Skip line!
+Process line: 
+ Skip line!
+Model file parsed! 
+Init prediction ...
+Predict ...
+Process line: 
+Process line: 
+Process line: >1C0T_B 46.111 10.826 9.091 0.0 100.0 10.127 0.0 16.745
+Process line: 
+Process line: 
+Process line: ELHPDKWTVQPIVLPEKDSWTVNDIQKLVGKLNWASQIYPGIKVRQLCKLLRGT
+Process line: 
+Process line: 
+Process line: KALTEVIPLTEEAELELAENREILKEPVHGVY
+Process line: 
+Process line: 
+Process line: >sdfg
+Found Sequence: ID: '1C0T_B 46.111 10.826 9.091 0.0 100.0 10.127 0.0 16.745'
+seq: ELHPDKWTVQPIVLPEKDSWTVNDIQKLVGKLNWASQIYPGIKVRQLCKLLRGTKALTEVIPLTEEAELELAENREILKEPVHGVY
+Call prediction for: ELHPDKWTVQPIVLPEK
+Prediction for: ELHPDKWTVQPIVLPEK
+Prediction for C: Infinity
+Prediction for E: Infinity
+Prediction for H: Infinity
+Call prediction for: LHPDKWTVQPIVLPEKD
+Prediction for: LHPDKWTVQPIVLPEKD
+Prediction for C: Infinity
+Prediction for E: Infinity
+Prediction for H: Infinity
+Call prediction for: HPDKWTVQPIVLPEKDS
+Prediction for: HPDKWTVQPIVLPEKDS
+Prediction for C: Infinity
+Prediction for E: Infinity
+Prediction for H: Infinity
+Call prediction for: PDKWTVQPIVLPEKDSW
+Prediction for: PDKWTVQPIVLPEKDSW
+Prediction for C: Infinity
+Prediction for E: Infinity
+Prediction for H: Infinity
+Call prediction for: DKWTVQPIVLPEKDSWT
+Prediction for: DKWTVQPIVLPEKDSWT
+Prediction for C: Infinity
+Prediction for E: Infinity
+Prediction for H: Infinity
+Call prediction for: KWTVQPIVLPEKDSWTV
+Prediction for: KWTVQPIVLPEKDSWTV
+Prediction for C: Infinity
+Prediction for E: Infinity
+Prediction for H: Infinity
+Call prediction for: WTVQPIVLPEKDSWTVN
+Prediction for: WTVQPIVLPEKDSWTVN
+Prediction for C: Infinity
+Prediction for E: Infinity
+Prediction for H: Infinity
+Call prediction for: TVQPIVLPEKDSWTVND
+Prediction for: TVQPIVLPEKDSWTVND
+Prediction for C: Infinity
+Prediction for E: Infinity
+Prediction for H: Infinity
+Call prediction for: VQPIVLPEKDSWTVNDI
+Prediction for: VQPIVLPEKDSWTVNDI
+Prediction for C: Infinity
+Prediction for E: Infinity
+Prediction for H: Infinity
+Call prediction for: QPIVLPEKDSWTVNDIQ
+Prediction for: QPIVLPEKDSWTVNDIQ
+Prediction for C: Infinity
+Prediction for E: Infinity
+Prediction for H: Infinity
+Call prediction for: PIVLPEKDSWTVNDIQK
+Prediction for: PIVLPEKDSWTVNDIQK
+Prediction for C: Infinity
+Prediction for E: Infinity
+Prediction for H: Infinity
+Call prediction for: IVLPEKDSWTVNDIQKL
+Prediction for: IVLPEKDSWTVNDIQKL
+Prediction for C: Infinity
+Prediction for E: Infinity
+Prediction for H: Infinity
+Call prediction for: VLPEKDSWTVNDIQKLV
+Prediction for: VLPEKDSWTVNDIQKLV
+Prediction for C: Infinity
+Prediction for E: Infinity
+Prediction for H: Infinity
+Call prediction for: LPEKDSWTVNDIQKLVG
+Prediction for: LPEKDSWTVNDIQKLVG
+Prediction for C: Infinity
+Prediction for E: Infinity
+Prediction for H: Infinity
+Call prediction for: PEKDSWTVNDIQKLVGK
+Prediction for: PEKDSWTVNDIQKLVGK
+Prediction for C: Infinity
+Prediction for E: Infinity
+Prediction for H: Infinity
+Call prediction for: EKDSWTVNDIQKLVGKL
+Prediction for: EKDSWTVNDIQKLVGKL
+Prediction for C: Infinity
+Prediction for E: Infinity
+Prediction for H: Infinity
+Call prediction for: KDSWTVNDIQKLVGKLN
+Prediction for: KDSWTVNDIQKLVGKLN
+Prediction for C: Infinity
+Prediction for E: Infinity
+Prediction for H: Infinity
+Call prediction for: DSWTVNDIQKLVGKLNW
+Prediction for: DSWTVNDIQKLVGKLNW
+Prediction for C: Infinity
+Prediction for E: Infinity
+Prediction for H: Infinity
+Call prediction for: SWTVNDIQKLVGKLNWA
+Prediction for: SWTVNDIQKLVGKLNWA
+Prediction for C: Infinity
+Prediction for E: Infinity
+Prediction for H: Infinity
+Call prediction for: WTVNDIQKLVGKLNWAS
+Prediction for: WTVNDIQKLVGKLNWAS
+Prediction for C: Infinity
+Prediction for E: Infinity
+Prediction for H: Infinity
+Call prediction for: TVNDIQKLVGKLNWASQ
+Prediction for: TVNDIQKLVGKLNWASQ
+Prediction for C: Infinity
+Prediction for E: Infinity
+Prediction for H: Infinity
+Call prediction for: VNDIQKLVGKLNWASQI
+Prediction for: VNDIQKLVGKLNWASQI
+Prediction for C: Infinity
+Prediction for E: Infinity
+Prediction for H: Infinity
+Call prediction for: NDIQKLVGKLNWASQIY
+Prediction for: NDIQKLVGKLNWASQIY
+Prediction for C: Infinity
+Prediction for E: Infinity
+Prediction for H: Infinity
+Call prediction for: DIQKLVGKLNWASQIYP
+Prediction for: DIQKLVGKLNWASQIYP
+Prediction for C: Infinity
+Prediction for E: Infinity
+Prediction for H: Infinity
+Call prediction for: IQKLVGKLNWASQIYPG
+Prediction for: IQKLVGKLNWASQIYPG
+Prediction for C: Infinity
+Prediction for E: Infinity
+Prediction for H: Infinity
+Call prediction for: QKLVGKLNWASQIYPGI
+Prediction for: QKLVGKLNWASQIYPGI
+Prediction for C: Infinity
+Prediction for E: Infinity
+Prediction for H: Infinity
+Call prediction for: KLVGKLNWASQIYPGIK
+Prediction for: KLVGKLNWASQIYPGIK
+Prediction for C: Infinity
+Prediction for E: Infinity
+Prediction for H: Infinity
+Call prediction for: LVGKLNWASQIYPGIKV
+Prediction for: LVGKLNWASQIYPGIKV
+Prediction for C: Infinity
+Prediction for E: Infinity
+Prediction for H: Infinity
+Call prediction for: VGKLNWASQIYPGIKVR
+Prediction for: VGKLNWASQIYPGIKVR
+Prediction for C: Infinity
+Prediction for E: Infinity
+Prediction for H: Infinity
+Call prediction for: GKLNWASQIYPGIKVRQ
+Prediction for: GKLNWASQIYPGIKVRQ
+Prediction for C: Infinity
+Prediction for E: Infinity
+Prediction for H: Infinity
+Call prediction for: KLNWASQIYPGIKVRQL
+Prediction for: KLNWASQIYPGIKVRQL
+Prediction for C: Infinity
+Prediction for E: Infinity
+Prediction for H: Infinity
+Call prediction for: LNWASQIYPGIKVRQLC
+Prediction for: LNWASQIYPGIKVRQLC
+Prediction for C: Infinity
+Prediction for E: Infinity
+Prediction for H: Infinity
+Call prediction for: NWASQIYPGIKVRQLCK
+Prediction for: NWASQIYPGIKVRQLCK
+Prediction for C: Infinity
+Prediction for E: Infinity
+Prediction for H: Infinity
+Call prediction for: WASQIYPGIKVRQLCKL
+Prediction for: WASQIYPGIKVRQLCKL
+Prediction for C: Infinity
+Prediction for E: Infinity
+Prediction for H: Infinity
+Call prediction for: ASQIYPGIKVRQLCKLL
+Prediction for: ASQIYPGIKVRQLCKLL
+Prediction for C: Infinity
+Prediction for E: Infinity
+Prediction for H: Infinity
+Call prediction for: SQIYPGIKVRQLCKLLR
+Prediction for: SQIYPGIKVRQLCKLLR
+Prediction for C: Infinity
+Prediction for E: Infinity
+Prediction for H: Infinity
+Call prediction for: QIYPGIKVRQLCKLLRG
+Prediction for: QIYPGIKVRQLCKLLRG
+Prediction for C: Infinity
+Prediction for E: Infinity
+Prediction for H: Infinity
+Call prediction for: IYPGIKVRQLCKLLRGT
+Prediction for: IYPGIKVRQLCKLLRGT
+Prediction for C: Infinity
+Prediction for E: Infinity
+Prediction for H: Infinity
+Call prediction for: YPGIKVRQLCKLLRGTK
+Prediction for: YPGIKVRQLCKLLRGTK
+Prediction for C: Infinity
+Prediction for E: Infinity
+Prediction for H: Infinity
+Call prediction for: PGIKVRQLCKLLRGTKA
+Prediction for: PGIKVRQLCKLLRGTKA
+Prediction for C: Infinity
+Prediction for E: Infinity
+Prediction for H: Infinity
+Call prediction for: GIKVRQLCKLLRGTKAL
+Prediction for: GIKVRQLCKLLRGTKAL
+Prediction for C: Infinity
+Prediction for E: Infinity
+Prediction for H: Infinity
+Call prediction for: IKVRQLCKLLRGTKALT
+Prediction for: IKVRQLCKLLRGTKALT
+Prediction for C: Infinity
+Prediction for E: Infinity
+Prediction for H: Infinity
+Call prediction for: KVRQLCKLLRGTKALTE
+Prediction for: KVRQLCKLLRGTKALTE
+Prediction for C: Infinity
+Prediction for E: Infinity
+Prediction for H: Infinity
+Call prediction for: VRQLCKLLRGTKALTEV
+Prediction for: VRQLCKLLRGTKALTEV
+Prediction for C: Infinity
+Prediction for E: Infinity
+Prediction for H: Infinity
+Call prediction for: RQLCKLLRGTKALTEVI
+Prediction for: RQLCKLLRGTKALTEVI
+Prediction for C: Infinity
+Prediction for E: Infinity
+Prediction for H: Infinity
+Call prediction for: QLCKLLRGTKALTEVIP
+Prediction for: QLCKLLRGTKALTEVIP
+Prediction for C: Infinity
+Prediction for E: Infinity
+Prediction for H: Infinity
+Call prediction for: LCKLLRGTKALTEVIPL
+Prediction for: LCKLLRGTKALTEVIPL
+Prediction for C: Infinity
+Prediction for E: Infinity
+Prediction for H: Infinity
+Call prediction for: CKLLRGTKALTEVIPLT
+Prediction for: CKLLRGTKALTEVIPLT
+Prediction for C: Infinity
+Prediction for E: Infinity
+Prediction for H: Infinity
+Call prediction for: KLLRGTKALTEVIPLTE
+Prediction for: KLLRGTKALTEVIPLTE
+Prediction for C: Infinity
+Prediction for E: Infinity
+Prediction for H: Infinity
+Call prediction for: LLRGTKALTEVIPLTEE
+Prediction for: LLRGTKALTEVIPLTEE
+Prediction for C: Infinity
+Prediction for E: Infinity
+Prediction for H: Infinity
+Call prediction for: LRGTKALTEVIPLTEEA
+Prediction for: LRGTKALTEVIPLTEEA
+Prediction for C: Infinity
+Prediction for E: Infinity
+Prediction for H: Infinity
+Call prediction for: RGTKALTEVIPLTEEAE
+Prediction for: RGTKALTEVIPLTEEAE
+Prediction for C: Infinity
+Prediction for E: Infinity
+Prediction for H: Infinity
+Call prediction for: GTKALTEVIPLTEEAEL
+Prediction for: GTKALTEVIPLTEEAEL
+Prediction for C: Infinity
+Prediction for E: Infinity
+Prediction for H: Infinity
+Call prediction for: TKALTEVIPLTEEAELE
+Prediction for: TKALTEVIPLTEEAELE
+Prediction for C: Infinity
+Prediction for E: Infinity
+Prediction for H: Infinity
+Call prediction for: KALTEVIPLTEEAELEL
+Prediction for: KALTEVIPLTEEAELEL
+Prediction for C: Infinity
+Prediction for E: Infinity
+Prediction for H: Infinity
+Call prediction for: ALTEVIPLTEEAELELA
+Prediction for: ALTEVIPLTEEAELELA
+Prediction for C: Infinity
+Prediction for E: Infinity
+Prediction for H: Infinity
+Call prediction for: LTEVIPLTEEAELELAE
+Prediction for: LTEVIPLTEEAELELAE
+Prediction for C: Infinity
+Prediction for E: Infinity
+Prediction for H: Infinity
+Call prediction for: TEVIPLTEEAELELAEN
+Prediction for: TEVIPLTEEAELELAEN
+Prediction for C: Infinity
+Prediction for E: Infinity
+Prediction for H: Infinity
+Call prediction for: EVIPLTEEAELELAENR
+Prediction for: EVIPLTEEAELELAENR
+Prediction for C: Infinity
+Prediction for E: Infinity
+Prediction for H: Infinity
+Call prediction for: VIPLTEEAELELAENRE
+Prediction for: VIPLTEEAELELAENRE
+Prediction for C: Infinity
+Prediction for E: Infinity
+Prediction for H: Infinity
+Call prediction for: IPLTEEAELELAENREI
+Prediction for: IPLTEEAELELAENREI
+Prediction for C: Infinity
+Prediction for E: Infinity
+Prediction for H: Infinity
+Call prediction for: PLTEEAELELAENREIL
+Prediction for: PLTEEAELELAENREIL
+Prediction for C: Infinity
+Prediction for E: Infinity
+Prediction for H: Infinity
+Call prediction for: LTEEAELELAENREILK
+Prediction for: LTEEAELELAENREILK
+Prediction for C: Infinity
+Prediction for E: Infinity
+Prediction for H: Infinity
+Call prediction for: TEEAELELAENREILKE
+Prediction for: TEEAELELAENREILKE
+Prediction for C: Infinity
+Prediction for E: Infinity
+Prediction for H: Infinity
+Call prediction for: EEAELELAENREILKEP
+Prediction for: EEAELELAENREILKEP
+Prediction for C: Infinity
+Prediction for E: Infinity
+Prediction for H: Infinity
+Call prediction for: EAELELAENREILKEPV
+Prediction for: EAELELAENREILKEPV
+Prediction for C: Infinity
+Prediction for E: Infinity
+Prediction for H: Infinity
+Call prediction for: AELELAENREILKEPVH
+Prediction for: AELELAENREILKEPVH
+Prediction for C: Infinity
+Prediction for E: Infinity
+Prediction for H: Infinity
+Call prediction for: ELELAENREILKEPVHG
+Prediction for: ELELAENREILKEPVHG
+Prediction for C: Infinity
+Prediction for E: Infinity
+Prediction for H: Infinity
+Call prediction for: LELAENREILKEPVHGV
+Prediction for: LELAENREILKEPVHGV
+Prediction for C: Infinity
+Prediction for E: Infinity
+Prediction for H: Infinity
+Call prediction for: ELAENREILKEPVHGVY
+Prediction for: ELAENREILKEPVHGVY
+Prediction for C: Infinity
+Prediction for E: Infinity
+Prediction for H: -0.5819767068693265
+Prediction Result added! (1C0T_B 46.111 10.826 9.091 0.0 100.0 10.127 0.0 16.745, ELHPDKWTVQPIVLPEKDSWTVNDIQKLVGKLNWASQIYPGIKVRQLCKLLRGTKALTEVIPLTEEAELELAENREILKEPVHGVY, [[D@5debf305)
+Process line: 
+Process line: ELHPDKWTVQPIVLPEKDSWTVNDIQKLVGKLNWASQIYPGIKVRQLCKLLRGT
+Process line: 
+Process line: 
+Process line: KALTEVIPLTEEAELELAENREILKEPVHGVYYDPSKDLIAEIQKQGQGQWTYQI
+Process line: 
+Process line: 
+Process line: 
+Process line: 
+Process line: 
+Process line: YQEPFKNLKTGKYARMRGAHTNDVKQLTEAVQKI
+Found Sequence: ID: 'sdfg'
+seq: ELHPDKWTVQPIVLPEKDSWTVNDIQKLVGKLNWASQIYPGIKVRQLCKLLRGTKALTEVIPLTEEAELELAENREILKEPVHGVYYDPSKDLIAEIQKQGQGQWTYQIYQEPFKNLKTGKYARMRGAHTNDVKQLTEAVQKI
+Call prediction for: ELHPDKWTVQPIVLPEK
+Prediction for: ELHPDKWTVQPIVLPEK
+Prediction for C: Infinity
+Prediction for E: Infinity
+Prediction for H: Infinity
+Call prediction for: LHPDKWTVQPIVLPEKD
+Prediction for: LHPDKWTVQPIVLPEKD
+Prediction for C: Infinity
+Prediction for E: Infinity
+Prediction for H: Infinity
+Call prediction for: HPDKWTVQPIVLPEKDS
+Prediction for: HPDKWTVQPIVLPEKDS
+Prediction for C: Infinity
+Prediction for E: Infinity
+Prediction for H: Infinity
+Call prediction for: PDKWTVQPIVLPEKDSW
+Prediction for: PDKWTVQPIVLPEKDSW
+Prediction for C: Infinity
+Prediction for E: Infinity
+Prediction for H: Infinity
+Call prediction for: DKWTVQPIVLPEKDSWT
+Prediction for: DKWTVQPIVLPEKDSWT
+Prediction for C: Infinity
+Prediction for E: Infinity
+Prediction for H: Infinity
+Call prediction for: KWTVQPIVLPEKDSWTV
+Prediction for: KWTVQPIVLPEKDSWTV
+Prediction for C: Infinity
+Prediction for E: Infinity
+Prediction for H: Infinity
+Call prediction for: WTVQPIVLPEKDSWTVN
+Prediction for: WTVQPIVLPEKDSWTVN
+Prediction for C: Infinity
+Prediction for E: Infinity
+Prediction for H: Infinity
+Call prediction for: TVQPIVLPEKDSWTVND
+Prediction for: TVQPIVLPEKDSWTVND
+Prediction for C: Infinity
+Prediction for E: Infinity
+Prediction for H: Infinity
+Call prediction for: VQPIVLPEKDSWTVNDI
+Prediction for: VQPIVLPEKDSWTVNDI
+Prediction for C: Infinity
+Prediction for E: Infinity
+Prediction for H: Infinity
+Call prediction for: QPIVLPEKDSWTVNDIQ
+Prediction for: QPIVLPEKDSWTVNDIQ
+Prediction for C: Infinity
+Prediction for E: Infinity
+Prediction for H: Infinity
+Call prediction for: PIVLPEKDSWTVNDIQK
+Prediction for: PIVLPEKDSWTVNDIQK
+Prediction for C: Infinity
+Prediction for E: Infinity
+Prediction for H: Infinity
+Call prediction for: IVLPEKDSWTVNDIQKL
+Prediction for: IVLPEKDSWTVNDIQKL
+Prediction for C: Infinity
+Prediction for E: Infinity
+Prediction for H: Infinity
+Call prediction for: VLPEKDSWTVNDIQKLV
+Prediction for: VLPEKDSWTVNDIQKLV
+Prediction for C: Infinity
+Prediction for E: Infinity
+Prediction for H: Infinity
+Call prediction for: LPEKDSWTVNDIQKLVG
+Prediction for: LPEKDSWTVNDIQKLVG
+Prediction for C: Infinity
+Prediction for E: Infinity
+Prediction for H: Infinity
+Call prediction for: PEKDSWTVNDIQKLVGK
+Prediction for: PEKDSWTVNDIQKLVGK
+Prediction for C: Infinity
+Prediction for E: Infinity
+Prediction for H: Infinity
+Call prediction for: EKDSWTVNDIQKLVGKL
+Prediction for: EKDSWTVNDIQKLVGKL
+Prediction for C: Infinity
+Prediction for E: Infinity
+Prediction for H: Infinity
+Call prediction for: KDSWTVNDIQKLVGKLN
+Prediction for: KDSWTVNDIQKLVGKLN
+Prediction for C: Infinity
+Prediction for E: Infinity
+Prediction for H: Infinity
+Call prediction for: DSWTVNDIQKLVGKLNW
+Prediction for: DSWTVNDIQKLVGKLNW
+Prediction for C: Infinity
+Prediction for E: Infinity
+Prediction for H: Infinity
+Call prediction for: SWTVNDIQKLVGKLNWA
+Prediction for: SWTVNDIQKLVGKLNWA
+Prediction for C: Infinity
+Prediction for E: Infinity
+Prediction for H: Infinity
+Call prediction for: WTVNDIQKLVGKLNWAS
+Prediction for: WTVNDIQKLVGKLNWAS
+Prediction for C: Infinity
+Prediction for E: Infinity
+Prediction for H: Infinity
+Call prediction for: TVNDIQKLVGKLNWASQ
+Prediction for: TVNDIQKLVGKLNWASQ
+Prediction for C: Infinity
+Prediction for E: Infinity
+Prediction for H: Infinity
+Call prediction for: VNDIQKLVGKLNWASQI
+Prediction for: VNDIQKLVGKLNWASQI
+Prediction for C: Infinity
+Prediction for E: Infinity
+Prediction for H: Infinity
+Call prediction for: NDIQKLVGKLNWASQIY
+Prediction for: NDIQKLVGKLNWASQIY
+Prediction for C: Infinity
+Prediction for E: Infinity
+Prediction for H: Infinity
+Call prediction for: DIQKLVGKLNWASQIYP
+Prediction for: DIQKLVGKLNWASQIYP
+Prediction for C: Infinity
+Prediction for E: Infinity
+Prediction for H: Infinity
+Call prediction for: IQKLVGKLNWASQIYPG
+Prediction for: IQKLVGKLNWASQIYPG
+Prediction for C: Infinity
+Prediction for E: Infinity
+Prediction for H: Infinity
+Call prediction for: QKLVGKLNWASQIYPGI
+Prediction for: QKLVGKLNWASQIYPGI
+Prediction for C: Infinity
+Prediction for E: Infinity
+Prediction for H: Infinity
+Call prediction for: KLVGKLNWASQIYPGIK
+Prediction for: KLVGKLNWASQIYPGIK
+Prediction for C: Infinity
+Prediction for E: Infinity
+Prediction for H: Infinity
+Call prediction for: LVGKLNWASQIYPGIKV
+Prediction for: LVGKLNWASQIYPGIKV
+Prediction for C: Infinity
+Prediction for E: Infinity
+Prediction for H: Infinity
+Call prediction for: VGKLNWASQIYPGIKVR
+Prediction for: VGKLNWASQIYPGIKVR
+Prediction for C: Infinity
+Prediction for E: Infinity
+Prediction for H: Infinity
+Call prediction for: GKLNWASQIYPGIKVRQ
+Prediction for: GKLNWASQIYPGIKVRQ
+Prediction for C: Infinity
+Prediction for E: Infinity
+Prediction for H: Infinity
+Call prediction for: KLNWASQIYPGIKVRQL
+Prediction for: KLNWASQIYPGIKVRQL
+Prediction for C: Infinity
+Prediction for E: Infinity
+Prediction for H: Infinity
+Call prediction for: LNWASQIYPGIKVRQLC
+Prediction for: LNWASQIYPGIKVRQLC
+Prediction for C: Infinity
+Prediction for E: Infinity
+Prediction for H: Infinity
+Call prediction for: NWASQIYPGIKVRQLCK
+Prediction for: NWASQIYPGIKVRQLCK
+Prediction for C: Infinity
+Prediction for E: Infinity
+Prediction for H: Infinity
+Call prediction for: WASQIYPGIKVRQLCKL
+Prediction for: WASQIYPGIKVRQLCKL
+Prediction for C: Infinity
+Prediction for E: Infinity
+Prediction for H: Infinity
+Call prediction for: ASQIYPGIKVRQLCKLL
+Prediction for: ASQIYPGIKVRQLCKLL
+Prediction for C: Infinity
+Prediction for E: Infinity
+Prediction for H: Infinity
+Call prediction for: SQIYPGIKVRQLCKLLR
+Prediction for: SQIYPGIKVRQLCKLLR
+Prediction for C: Infinity
+Prediction for E: Infinity
+Prediction for H: Infinity
+Call prediction for: QIYPGIKVRQLCKLLRG
+Prediction for: QIYPGIKVRQLCKLLRG
+Prediction for C: Infinity
+Prediction for E: Infinity
+Prediction for H: Infinity
+Call prediction for: IYPGIKVRQLCKLLRGT
+Prediction for: IYPGIKVRQLCKLLRGT
+Prediction for C: Infinity
+Prediction for E: Infinity
+Prediction for H: Infinity
+Call prediction for: YPGIKVRQLCKLLRGTK
+Prediction for: YPGIKVRQLCKLLRGTK
+Prediction for C: Infinity
+Prediction for E: Infinity
+Prediction for H: Infinity
+Call prediction for: PGIKVRQLCKLLRGTKA
+Prediction for: PGIKVRQLCKLLRGTKA
+Prediction for C: Infinity
+Prediction for E: Infinity
+Prediction for H: Infinity
+Call prediction for: GIKVRQLCKLLRGTKAL
+Prediction for: GIKVRQLCKLLRGTKAL
+Prediction for C: Infinity
+Prediction for E: Infinity
+Prediction for H: Infinity
+Call prediction for: IKVRQLCKLLRGTKALT
+Prediction for: IKVRQLCKLLRGTKALT
+Prediction for C: Infinity
+Prediction for E: Infinity
+Prediction for H: Infinity
+Call prediction for: KVRQLCKLLRGTKALTE
+Prediction for: KVRQLCKLLRGTKALTE
+Prediction for C: Infinity
+Prediction for E: Infinity
+Prediction for H: Infinity
+Call prediction for: VRQLCKLLRGTKALTEV
+Prediction for: VRQLCKLLRGTKALTEV
+Prediction for C: Infinity
+Prediction for E: Infinity
+Prediction for H: Infinity
+Call prediction for: RQLCKLLRGTKALTEVI
+Prediction for: RQLCKLLRGTKALTEVI
+Prediction for C: Infinity
+Prediction for E: Infinity
+Prediction for H: Infinity
+Call prediction for: QLCKLLRGTKALTEVIP
+Prediction for: QLCKLLRGTKALTEVIP
+Prediction for C: Infinity
+Prediction for E: Infinity
+Prediction for H: Infinity
+Call prediction for: LCKLLRGTKALTEVIPL
+Prediction for: LCKLLRGTKALTEVIPL
+Prediction for C: Infinity
+Prediction for E: Infinity
+Prediction for H: Infinity
+Call prediction for: CKLLRGTKALTEVIPLT
+Prediction for: CKLLRGTKALTEVIPLT
+Prediction for C: Infinity
+Prediction for E: Infinity
+Prediction for H: Infinity
+Call prediction for: KLLRGTKALTEVIPLTE
+Prediction for: KLLRGTKALTEVIPLTE
+Prediction for C: Infinity
+Prediction for E: Infinity
+Prediction for H: Infinity
+Call prediction for: LLRGTKALTEVIPLTEE
+Prediction for: LLRGTKALTEVIPLTEE
+Prediction for C: Infinity
+Prediction for E: Infinity
+Prediction for H: Infinity
+Call prediction for: LRGTKALTEVIPLTEEA
+Prediction for: LRGTKALTEVIPLTEEA
+Prediction for C: Infinity
+Prediction for E: Infinity
+Prediction for H: Infinity
+Call prediction for: RGTKALTEVIPLTEEAE
+Prediction for: RGTKALTEVIPLTEEAE
+Prediction for C: Infinity
+Prediction for E: Infinity
+Prediction for H: Infinity
+Call prediction for: GTKALTEVIPLTEEAEL
+Prediction for: GTKALTEVIPLTEEAEL
+Prediction for C: Infinity
+Prediction for E: Infinity
+Prediction for H: Infinity
+Call prediction for: TKALTEVIPLTEEAELE
+Prediction for: TKALTEVIPLTEEAELE
+Prediction for C: Infinity
+Prediction for E: Infinity
+Prediction for H: Infinity
+Call prediction for: KALTEVIPLTEEAELEL
+Prediction for: KALTEVIPLTEEAELEL
+Prediction for C: Infinity
+Prediction for E: Infinity
+Prediction for H: Infinity
+Call prediction for: ALTEVIPLTEEAELELA
+Prediction for: ALTEVIPLTEEAELELA
+Prediction for C: Infinity
+Prediction for E: Infinity
+Prediction for H: Infinity
+Call prediction for: LTEVIPLTEEAELELAE
+Prediction for: LTEVIPLTEEAELELAE
+Prediction for C: Infinity
+Prediction for E: Infinity
+Prediction for H: Infinity
+Call prediction for: TEVIPLTEEAELELAEN
+Prediction for: TEVIPLTEEAELELAEN
+Prediction for C: Infinity
+Prediction for E: Infinity
+Prediction for H: Infinity
+Call prediction for: EVIPLTEEAELELAENR
+Prediction for: EVIPLTEEAELELAENR
+Prediction for C: Infinity
+Prediction for E: Infinity
+Prediction for H: Infinity
+Call prediction for: VIPLTEEAELELAENRE
+Prediction for: VIPLTEEAELELAENRE
+Prediction for C: Infinity
+Prediction for E: Infinity
+Prediction for H: Infinity
+Call prediction for: IPLTEEAELELAENREI
+Prediction for: IPLTEEAELELAENREI
+Prediction for C: Infinity
+Prediction for E: Infinity
+Prediction for H: Infinity
+Call prediction for: PLTEEAELELAENREIL
+Prediction for: PLTEEAELELAENREIL
+Prediction for C: Infinity
+Prediction for E: Infinity
+Prediction for H: Infinity
+Call prediction for: LTEEAELELAENREILK
+Prediction for: LTEEAELELAENREILK
+Prediction for C: Infinity
+Prediction for E: Infinity
+Prediction for H: Infinity
+Call prediction for: TEEAELELAENREILKE
+Prediction for: TEEAELELAENREILKE
+Prediction for C: Infinity
+Prediction for E: Infinity
+Prediction for H: Infinity
+Call prediction for: EEAELELAENREILKEP
+Prediction for: EEAELELAENREILKEP
+Prediction for C: Infinity
+Prediction for E: Infinity
+Prediction for H: Infinity
+Call prediction for: EAELELAENREILKEPV
+Prediction for: EAELELAENREILKEPV
+Prediction for C: Infinity
+Prediction for E: Infinity
+Prediction for H: Infinity
+Call prediction for: AELELAENREILKEPVH
+Prediction for: AELELAENREILKEPVH
+Prediction for C: Infinity
+Prediction for E: Infinity
+Prediction for H: Infinity
+Call prediction for: ELELAENREILKEPVHG
+Prediction for: ELELAENREILKEPVHG
+Prediction for C: Infinity
+Prediction for E: Infinity
+Prediction for H: Infinity
+Call prediction for: LELAENREILKEPVHGV
+Prediction for: LELAENREILKEPVHGV
+Prediction for C: Infinity
+Prediction for E: Infinity
+Prediction for H: Infinity
+Call prediction for: ELAENREILKEPVHGVY
+Prediction for: ELAENREILKEPVHGVY
+Prediction for C: Infinity
+Prediction for E: Infinity
+Prediction for H: -0.5819767068693265
+Call prediction for: LAENREILKEPVHGVYY
+Prediction for: LAENREILKEPVHGVYY
+Prediction for C: Infinity
+Prediction for E: Infinity
+Prediction for H: -0.5819767068693265
+Call prediction for: AENREILKEPVHGVYYD
+Prediction for: AENREILKEPVHGVYYD
+Prediction for C: Infinity
+Prediction for E: Infinity
+Prediction for H: -0.5819767068693265
+Call prediction for: ENREILKEPVHGVYYDP
+Prediction for: ENREILKEPVHGVYYDP
+Prediction for C: Infinity
+Prediction for E: Infinity
+Prediction for H: Infinity
+Call prediction for: NREILKEPVHGVYYDPS
+Prediction for: NREILKEPVHGVYYDPS
+Prediction for C: Infinity
+Prediction for E: Infinity
+Prediction for H: Infinity
+Call prediction for: REILKEPVHGVYYDPSK
+Prediction for: REILKEPVHGVYYDPSK
+Prediction for C: Infinity
+Prediction for E: Infinity
+Prediction for H: Infinity
+Call prediction for: EILKEPVHGVYYDPSKD
+Prediction for: EILKEPVHGVYYDPSKD
+Prediction for C: Infinity
+Prediction for E: Infinity
+Prediction for H: Infinity
+Call prediction for: ILKEPVHGVYYDPSKDL
+Prediction for: ILKEPVHGVYYDPSKDL
+Prediction for C: Infinity
+Prediction for E: Infinity
+Prediction for H: Infinity
+Call prediction for: LKEPVHGVYYDPSKDLI
+Prediction for: LKEPVHGVYYDPSKDLI
+Prediction for C: Infinity
+Prediction for E: Infinity
+Prediction for H: Infinity
+Call prediction for: KEPVHGVYYDPSKDLIA
+Prediction for: KEPVHGVYYDPSKDLIA
+Prediction for C: Infinity
+Prediction for E: Infinity
+Prediction for H: Infinity
+Call prediction for: EPVHGVYYDPSKDLIAE
+Prediction for: EPVHGVYYDPSKDLIAE
+Prediction for C: Infinity
+Prediction for E: Infinity
+Prediction for H: Infinity
+Call prediction for: PVHGVYYDPSKDLIAEI
+Prediction for: PVHGVYYDPSKDLIAEI
+Prediction for C: Infinity
+Prediction for E: Infinity
+Prediction for H: Infinity
+Call prediction for: VHGVYYDPSKDLIAEIQ
+Prediction for: VHGVYYDPSKDLIAEIQ
+Prediction for C: Infinity
+Prediction for E: Infinity
+Prediction for H: Infinity
+Call prediction for: HGVYYDPSKDLIAEIQK
+Prediction for: HGVYYDPSKDLIAEIQK
+Prediction for C: Infinity
+Prediction for E: Infinity
+Prediction for H: Infinity
+Call prediction for: GVYYDPSKDLIAEIQKQ
+Prediction for: GVYYDPSKDLIAEIQKQ
+Prediction for C: Infinity
+Prediction for E: Infinity
+Prediction for H: Infinity
+Call prediction for: VYYDPSKDLIAEIQKQG
+Prediction for: VYYDPSKDLIAEIQKQG
+Prediction for C: Infinity
+Prediction for E: Infinity
+Prediction for H: Infinity
+Call prediction for: YYDPSKDLIAEIQKQGQ
+Prediction for: YYDPSKDLIAEIQKQGQ
+Prediction for C: Infinity
+Prediction for E: Infinity
+Prediction for H: Infinity
+Call prediction for: YDPSKDLIAEIQKQGQG
+Prediction for: YDPSKDLIAEIQKQGQG
+Prediction for C: Infinity
+Prediction for E: Infinity
+Prediction for H: Infinity
+Call prediction for: DPSKDLIAEIQKQGQGQ
+Prediction for: DPSKDLIAEIQKQGQGQ
+Prediction for C: Infinity
+Prediction for E: Infinity
+Prediction for H: Infinity
+Call prediction for: PSKDLIAEIQKQGQGQW
+Prediction for: PSKDLIAEIQKQGQGQW
+Prediction for C: Infinity
+Prediction for E: Infinity
+Prediction for H: Infinity
+Call prediction for: SKDLIAEIQKQGQGQWT
+Prediction for: SKDLIAEIQKQGQGQWT
+Prediction for C: Infinity
+Prediction for E: Infinity
+Prediction for H: Infinity
+Call prediction for: KDLIAEIQKQGQGQWTY
+Prediction for: KDLIAEIQKQGQGQWTY
+Prediction for C: Infinity
+Prediction for E: Infinity
+Prediction for H: Infinity
+Call prediction for: DLIAEIQKQGQGQWTYQ
+Prediction for: DLIAEIQKQGQGQWTYQ
+Prediction for C: Infinity
+Prediction for E: Infinity
+Prediction for H: Infinity
+Call prediction for: LIAEIQKQGQGQWTYQI
+Prediction for: LIAEIQKQGQGQWTYQI
+Prediction for C: Infinity
+Prediction for E: Infinity
+Prediction for H: Infinity
+Call prediction for: IAEIQKQGQGQWTYQIY
+Prediction for: IAEIQKQGQGQWTYQIY
+Prediction for C: Infinity
+Prediction for E: Infinity
+Prediction for H: Infinity
+Call prediction for: AEIQKQGQGQWTYQIYQ
+Prediction for: AEIQKQGQGQWTYQIYQ
+Prediction for C: Infinity
+Prediction for E: Infinity
+Prediction for H: Infinity
+Call prediction for: EIQKQGQGQWTYQIYQE
+Prediction for: EIQKQGQGQWTYQIYQE
+Prediction for C: Infinity
+Prediction for E: Infinity
+Prediction for H: Infinity
+Call prediction for: IQKQGQGQWTYQIYQEP
+Prediction for: IQKQGQGQWTYQIYQEP
+Prediction for C: Infinity
+Prediction for E: Infinity
+Prediction for H: Infinity
+Call prediction for: QKQGQGQWTYQIYQEPF
+Prediction for: QKQGQGQWTYQIYQEPF
+Prediction for C: Infinity
+Prediction for E: Infinity
+Prediction for H: Infinity
+Call prediction for: KQGQGQWTYQIYQEPFK
+Prediction for: KQGQGQWTYQIYQEPFK
+Prediction for C: Infinity
+Prediction for E: Infinity
+Prediction for H: Infinity
+Call prediction for: QGQGQWTYQIYQEPFKN
+Prediction for: QGQGQWTYQIYQEPFKN
+Prediction for C: Infinity
+Prediction for E: Infinity
+Prediction for H: Infinity
+Call prediction for: GQGQWTYQIYQEPFKNL
+Prediction for: GQGQWTYQIYQEPFKNL
+Prediction for C: Infinity
+Prediction for E: Infinity
+Prediction for H: Infinity
+Call prediction for: QGQWTYQIYQEPFKNLK
+Prediction for: QGQWTYQIYQEPFKNLK
+Prediction for C: Infinity
+Prediction for E: Infinity
+Prediction for H: Infinity
+Call prediction for: GQWTYQIYQEPFKNLKT
+Prediction for: GQWTYQIYQEPFKNLKT
+Prediction for C: Infinity
+Prediction for E: Infinity
+Prediction for H: Infinity
+Call prediction for: QWTYQIYQEPFKNLKTG
+Prediction for: QWTYQIYQEPFKNLKTG
+Prediction for C: Infinity
+Prediction for E: Infinity
+Prediction for H: Infinity
+Call prediction for: WTYQIYQEPFKNLKTGK
+Prediction for: WTYQIYQEPFKNLKTGK
+Prediction for C: Infinity
+Prediction for E: Infinity
+Prediction for H: Infinity
+Call prediction for: TYQIYQEPFKNLKTGKY
+Prediction for: TYQIYQEPFKNLKTGKY
+Prediction for C: Infinity
+Prediction for E: Infinity
+Prediction for H: Infinity
+Call prediction for: YQIYQEPFKNLKTGKYA
+Prediction for: YQIYQEPFKNLKTGKYA
+Prediction for C: Infinity
+Prediction for E: Infinity
+Prediction for H: Infinity
+Call prediction for: QIYQEPFKNLKTGKYAR
+Prediction for: QIYQEPFKNLKTGKYAR
+Prediction for C: Infinity
+Prediction for E: Infinity
+Prediction for H: Infinity
+Call prediction for: IYQEPFKNLKTGKYARM
+Prediction for: IYQEPFKNLKTGKYARM
+Prediction for C: Infinity
+Prediction for E: Infinity
+Prediction for H: Infinity
+Call prediction for: YQEPFKNLKTGKYARMR
+Prediction for: YQEPFKNLKTGKYARMR
+Prediction for C: Infinity
+Prediction for E: Infinity
+Prediction for H: Infinity
+Call prediction for: QEPFKNLKTGKYARMRG
+Prediction for: QEPFKNLKTGKYARMRG
+Prediction for C: Infinity
+Prediction for E: Infinity
+Prediction for H: Infinity
+Call prediction for: EPFKNLKTGKYARMRGA
+Prediction for: EPFKNLKTGKYARMRGA
+Prediction for C: Infinity
+Prediction for E: Infinity
+Prediction for H: Infinity
+Call prediction for: PFKNLKTGKYARMRGAH
+Prediction for: PFKNLKTGKYARMRGAH
+Prediction for C: Infinity
+Prediction for E: Infinity
+Prediction for H: Infinity
+Call prediction for: FKNLKTGKYARMRGAHT
+Prediction for: FKNLKTGKYARMRGAHT
+Prediction for C: Infinity
+Prediction for E: Infinity
+Prediction for H: Infinity
+Call prediction for: KNLKTGKYARMRGAHTN
+Prediction for: KNLKTGKYARMRGAHTN
+Prediction for C: Infinity
+Prediction for E: Infinity
+Prediction for H: Infinity
+Call prediction for: NLKTGKYARMRGAHTND
+Prediction for: NLKTGKYARMRGAHTND
+Prediction for C: Infinity
+Prediction for E: Infinity
+Prediction for H: Infinity
+Call prediction for: LKTGKYARMRGAHTNDV
+Prediction for: LKTGKYARMRGAHTNDV
+Prediction for C: Infinity
+Prediction for E: Infinity
+Prediction for H: Infinity
+Call prediction for: KTGKYARMRGAHTNDVK
+Prediction for: KTGKYARMRGAHTNDVK
+Prediction for C: Infinity
+Prediction for E: Infinity
+Prediction for H: Infinity
+Call prediction for: TGKYARMRGAHTNDVKQ
+Prediction for: TGKYARMRGAHTNDVKQ
+Prediction for C: Infinity
+Prediction for E: Infinity
+Prediction for H: Infinity
+Call prediction for: GKYARMRGAHTNDVKQL
+Prediction for: GKYARMRGAHTNDVKQL
+Prediction for C: Infinity
+Prediction for E: Infinity
+Prediction for H: Infinity
+Call prediction for: KYARMRGAHTNDVKQLT
+Prediction for: KYARMRGAHTNDVKQLT
+Prediction for C: Infinity
+Prediction for E: Infinity
+Prediction for H: Infinity
+Call prediction for: YARMRGAHTNDVKQLTE
+Prediction for: YARMRGAHTNDVKQLTE
+Prediction for C: Infinity
+Prediction for E: Infinity
+Prediction for H: Infinity
+Call prediction for: ARMRGAHTNDVKQLTEA
+Prediction for: ARMRGAHTNDVKQLTEA
+Prediction for C: Infinity
+Prediction for E: Infinity
+Prediction for H: Infinity
+Call prediction for: RMRGAHTNDVKQLTEAV
+Prediction for: RMRGAHTNDVKQLTEAV
+Prediction for C: Infinity
+Prediction for E: Infinity
+Prediction for H: Infinity
+Call prediction for: MRGAHTNDVKQLTEAVQ
+Prediction for: MRGAHTNDVKQLTEAVQ
+Prediction for C: Infinity
+Prediction for E: Infinity
+Prediction for H: Infinity
+Call prediction for: RGAHTNDVKQLTEAVQK
+Prediction for: RGAHTNDVKQLTEAVQK
+Prediction for C: Infinity
+Prediction for E: Infinity
+Prediction for H: Infinity
+Call prediction for: GAHTNDVKQLTEAVQKI
+Prediction for: GAHTNDVKQLTEAVQKI
+Prediction for C: Infinity
+Prediction for E: Infinity
+Prediction for H: Infinity
+Prediction Result added! (sdfg, ELHPDKWTVQPIVLPEKDSWTVNDIQKLVGKLNWASQIYPGIKVRQLCKLLRGTKALTEVIPLTEEAELELAENREILKEPVHGVYYDPSKDLIAEIQKQGQGQWTYQIYQEPFKNLKTGKYARMRGAHTNDVKQLTEAVQKI, [[D@2d9ffd6f)
+Postprocessing ...
+Format and write results (txt, probabilities) ...
+Debug position probability:
+  @pos: 0 value fpr C = 0.8523356512511755
+  @pos: 0 value fpr E = 0.779510919219257
+  @pos: 0 value fpr H = 0.8294342565146761
+ => max: C
+Debug position probability:
+  @pos: 1 value fpr C = 0.19483881531878045
+  @pos: 1 value fpr E = 0.015915003016659157
+  @pos: 1 value fpr H = 0.06998546044665088
+ => max: C
+Debug position probability:
+  @pos: 2 value fpr C = 0.9035573698454483
+  @pos: 2 value fpr E = 0.8733976394657843
+  @pos: 2 value fpr H = 0.76688159768988
+ => max: C
+Debug position probability:
+  @pos: 3 value fpr C = 0.37090481514322515
+  @pos: 3 value fpr E = 0.14291431467217797
+  @pos: 3 value fpr H = 0.8009169755328565
+ => max: H
+Debug position probability:
+  @pos: 4 value fpr C = 0.692477917411265
+  @pos: 4 value fpr E = 0.903830652091005
+  @pos: 4 value fpr H = 0.36988745912605236
+ => max: E
+Debug position probability:
+  @pos: 5 value fpr C = 0.4513322793416523
+  @pos: 5 value fpr E = 0.16290373111266276
+  @pos: 5 value fpr H = 0.6023527518954266
+ => max: H
+Debug position probability:
+  @pos: 6 value fpr C = 0.7019655958627268
+  @pos: 6 value fpr E = 0.4817363956439097
+  @pos: 6 value fpr H = 0.7468346025836589
+ => max: H
+Debug position probability:
+  @pos: 7 value fpr C = 0.15653021531822775
+  @pos: 7 value fpr E = 0.175182977592801
+  @pos: 7 value fpr H = 0.8850900864014289
+ => max: H
+Debug position probability:
+  @pos: 8 value fpr C = 0.3723180557389092
+  @pos: 8 value fpr E = 0.4884783933112953
+  @pos: 8 value fpr H = 0.37076381333064345
+ => max: E
+Debug position probability:
+  @pos: 9 value fpr C = 0.6850552514463156
+  @pos: 9 value fpr E = 0.24504057401102697
+  @pos: 9 value fpr H = 0.6215344291675089
+ => max: C
+Debug position probability:
+  @pos: 10 value fpr C = 0.9285473106378979
+  @pos: 10 value fpr E = 0.9014973001294616
+  @pos: 10 value fpr H = 0.09943560421942033
+ => max: C
+Debug position probability:
+  @pos: 11 value fpr C = 0.5704730228178441
+  @pos: 11 value fpr E = 0.15987063243802346
+  @pos: 11 value fpr H = 0.5708665776711405
+ => max: H
+Debug position probability:
+  @pos: 12 value fpr C = 0.7028289114557897
+  @pos: 12 value fpr E = 0.5765338705578998
+  @pos: 12 value fpr H = 0.5829380442491323
+ => max: C
+Debug position probability:
+  @pos: 13 value fpr C = 0.1925833261247467
+  @pos: 13 value fpr E = 0.6587945700048231
+  @pos: 13 value fpr H = 0.7385604436667946
+ => max: H
+Debug position probability:
+  @pos: 14 value fpr C = 0.09530653251695453
+  @pos: 14 value fpr E = 0.0907144151010213
+  @pos: 14 value fpr H = 0.46312116047367635
+ => max: H
+Debug position probability:
+  @pos: 15 value fpr C = 0.8503394459285386
+  @pos: 15 value fpr E = 0.6709695932967707
+  @pos: 15 value fpr H = 0.8296442037684618
+ => max: C
+Debug position probability:
+  @pos: 16 value fpr C = 0.45426426920576113
+  @pos: 16 value fpr E = 0.04426903389360015
+  @pos: 16 value fpr H = 0.9236223039778795
+ => max: H
+Debug position probability:
+  @pos: 17 value fpr C = 0.0031061696285971108
+  @pos: 17 value fpr E = 0.7698884805287246
+  @pos: 17 value fpr H = 0.6627730061286161
+ => max: E
+Debug position probability:
+  @pos: 18 value fpr C = 0.6130426162991438
+  @pos: 18 value fpr E = 0.427855422389268
+  @pos: 18 value fpr H = 0.6720774951602867
+ => max: H
+Debug position probability:
+  @pos: 19 value fpr C = 0.6314172961660326
+  @pos: 19 value fpr E = 0.18812524190666213
+  @pos: 19 value fpr H = 0.016427326913092233
+ => max: C
+Debug position probability:
+  @pos: 20 value fpr C = 0.636019180110182
+  @pos: 20 value fpr E = 0.4914742532840475
+  @pos: 20 value fpr H = 0.7579560636952968
+ => max: H
+Debug position probability:
+  @pos: 21 value fpr C = 0.3778401345860837
+  @pos: 21 value fpr E = 0.4104471620969171
+  @pos: 21 value fpr H = 0.16471881427761226
+ => max: E
+Debug position probability:
+  @pos: 22 value fpr C = 0.46141644383490854
+  @pos: 22 value fpr E = 0.5007649680381717
+  @pos: 22 value fpr H = 0.8528486935646034
+ => max: H
+Debug position probability:
+  @pos: 23 value fpr C = 0.46953050145928676
+  @pos: 23 value fpr E = 0.06615872365731401
+  @pos: 23 value fpr H = 0.7105994598432526
+ => max: H
+Debug position probability:
+  @pos: 24 value fpr C = 0.7184238383616792
+  @pos: 24 value fpr E = 0.384913306626837
+  @pos: 24 value fpr H = 0.7693953250701632
+ => max: H
+Debug position probability:
+  @pos: 25 value fpr C = 0.46004617767160616
+  @pos: 25 value fpr E = 0.7390085349188943
+  @pos: 25 value fpr H = 0.0678354692278238
+ => max: E
+Debug position probability:
+  @pos: 26 value fpr C = 0.595795881502686
+  @pos: 26 value fpr E = 0.4122105769205183
+  @pos: 26 value fpr H = 0.2666501177516677
+ => max: C
+Debug position probability:
+  @pos: 27 value fpr C = 0.6693296511845905
+  @pos: 27 value fpr E = 0.49188776672111445
+  @pos: 27 value fpr H = 0.7058975442607061
+ => max: H
+Debug position probability:
+  @pos: 28 value fpr C = 0.4762503802651423
+  @pos: 28 value fpr E = 0.0660831965832257
+  @pos: 28 value fpr H = 0.20170787478294527
+ => max: C
+Debug position probability:
+  @pos: 29 value fpr C = 0.2546993354056315
+  @pos: 29 value fpr E = 0.6226683623682175
+  @pos: 29 value fpr H = 0.7267874009273294
+ => max: H
+Debug position probability:
+  @pos: 30 value fpr C = 0.27505395765036555
+  @pos: 30 value fpr E = 0.42463232805180173
+  @pos: 30 value fpr H = 0.12990124028827899
+ => max: E
+Debug position probability:
+  @pos: 31 value fpr C = 0.06630356977806551
+  @pos: 31 value fpr E = 0.10753640597809622
+  @pos: 31 value fpr H = 0.4594933605834842
+ => max: H
+Debug position probability:
+  @pos: 32 value fpr C = 0.35343775808163447
+  @pos: 32 value fpr E = 0.8057428207006224
+  @pos: 32 value fpr H = 0.7407322784346785
+ => max: E
+Debug position probability:
+  @pos: 33 value fpr C = 0.5787711313892785
+  @pos: 33 value fpr E = 0.7016066270160567
+  @pos: 33 value fpr H = 0.052845583775503524
+ => max: E
+Debug position probability:
+  @pos: 34 value fpr C = 0.2610950744981023
+  @pos: 34 value fpr E = 0.7598618977218582
+  @pos: 34 value fpr H = 0.4277171638665199
+ => max: E
+Debug position probability:
+  @pos: 35 value fpr C = 0.04458592723773913
+  @pos: 35 value fpr E = 0.027875564236729433
+  @pos: 35 value fpr H = 0.8345025502248984
+ => max: H
+Debug position probability:
+  @pos: 36 value fpr C = 0.8120172665904482
+  @pos: 36 value fpr E = 0.7527146396363493
+  @pos: 36 value fpr H = 0.6331602506912758
+ => max: C
+Debug position probability:
+  @pos: 37 value fpr C = 0.6787488691165819
+  @pos: 37 value fpr E = 0.6409699568699548
+  @pos: 37 value fpr H = 0.8429945260449575
+ => max: H
+Debug position probability:
+  @pos: 38 value fpr C = 0.45123575939215765
+  @pos: 38 value fpr E = 0.956490051074848
+  @pos: 38 value fpr H = 0.8610759715673111
+ => max: E
+Debug position probability:
+  @pos: 39 value fpr C = 0.8001699543723054
+  @pos: 39 value fpr E = 0.8698388057148965
+  @pos: 39 value fpr H = 0.08840518883050796
+ => max: E
+Debug position probability:
+  @pos: 40 value fpr C = 0.0354470937012592
+  @pos: 40 value fpr E = 0.38325180883467447
+  @pos: 40 value fpr H = 0.8124535017816209
+ => max: H
+Debug position probability:
+  @pos: 41 value fpr C = 0.8614312915849237
+  @pos: 41 value fpr E = 0.7635609472497432
+  @pos: 41 value fpr H = 0.9594886860620245
+ => max: H
+Debug position probability:
+  @pos: 42 value fpr C = 0.9586684697906176
+  @pos: 42 value fpr E = 0.3682265178964601
+  @pos: 42 value fpr H = 0.5381046270584927
+ => max: C
+Debug position probability:
+  @pos: 43 value fpr C = 0.6804332593488295
+  @pos: 43 value fpr E = 0.14870862743989788
+  @pos: 43 value fpr H = 0.7717761214907143
+ => max: H
+Debug position probability:
+  @pos: 44 value fpr C = 0.6075416016695864
+  @pos: 44 value fpr E = 0.9098026058915226
+  @pos: 44 value fpr H = 0.8186075487668232
+ => max: E
+Debug position probability:
+  @pos: 45 value fpr C = 0.7272031084155924
+  @pos: 45 value fpr E = 0.2890119056309959
+  @pos: 45 value fpr H = 0.7903698708379807
+ => max: H
+Debug position probability:
+  @pos: 46 value fpr C = 0.9540880217130429
+  @pos: 46 value fpr E = 0.16100944488028734
+  @pos: 46 value fpr H = 0.8334032901846975
+ => max: C
+Debug position probability:
+  @pos: 47 value fpr C = 0.3459139869708058
+  @pos: 47 value fpr E = 0.9740700322808145
+  @pos: 47 value fpr H = 0.5073874052312471
+ => max: E
+Debug position probability:
+  @pos: 48 value fpr C = 0.3829068230530064
+  @pos: 48 value fpr E = 0.054293102663576676
+  @pos: 48 value fpr H = 0.15882697877898555
+ => max: C
+Debug position probability:
+  @pos: 49 value fpr C = 0.4319054562177237
+  @pos: 49 value fpr E = 0.7810970717570263
+  @pos: 49 value fpr H = 0.3989964745330251
+ => max: E
+Debug position probability:
+  @pos: 50 value fpr C = 0.7231622646494459
+  @pos: 50 value fpr E = 0.5347862100719457
+  @pos: 50 value fpr H = 0.9965542171877789
+ => max: H
+Debug position probability:
+  @pos: 51 value fpr C = 0.509068482431217
+  @pos: 51 value fpr E = 0.4015803989850336
+  @pos: 51 value fpr H = 0.5191591106600392
+ => max: H
+Debug position probability:
+  @pos: 52 value fpr C = 0.7032708259227292
+  @pos: 52 value fpr E = 0.6310878085336958
+  @pos: 52 value fpr H = 0.4602776662665047
+ => max: C
+Debug position probability:
+  @pos: 53 value fpr C = 0.8340832929104394
+  @pos: 53 value fpr E = 0.12456388237479277
+  @pos: 53 value fpr H = 0.8419236462008944
+ => max: H
+Debug position probability:
+  @pos: 54 value fpr C = 0.3798799187624471
+  @pos: 54 value fpr E = 0.8578014975880304
+  @pos: 54 value fpr H = 0.5919380831908448
+ => max: E
+Debug position probability:
+  @pos: 55 value fpr C = 0.10727990248597419
+  @pos: 55 value fpr E = 0.06320543076629415
+  @pos: 55 value fpr H = 0.2735988158481957
+ => max: H
+Debug position probability:
+  @pos: 56 value fpr C = 0.39632405005031435
+  @pos: 56 value fpr E = 0.518577402807043
+  @pos: 56 value fpr H = 0.31393344413257096
+ => max: E
+Debug position probability:
+  @pos: 57 value fpr C = 0.4088048959271977
+  @pos: 57 value fpr E = 0.4163404931986632
+  @pos: 57 value fpr H = 0.29951330601171955
+ => max: E
+Debug position probability:
+  @pos: 58 value fpr C = 0.5049098123915855
+  @pos: 58 value fpr E = 0.9568918491530211
+  @pos: 58 value fpr H = 0.696707120748866
+ => max: E
+Debug position probability:
+  @pos: 59 value fpr C = 0.9636758309012262
+  @pos: 59 value fpr E = 0.8089231155094713
+  @pos: 59 value fpr H = 0.683284291937992
+ => max: C
+Debug position probability:
+  @pos: 60 value fpr C = 0.6196606037352795
+  @pos: 60 value fpr E = 0.8258816369007219
+  @pos: 60 value fpr H = 0.10013599588062372
+ => max: E
+Debug position probability:
+  @pos: 61 value fpr C = 0.4274122330004855
+  @pos: 61 value fpr E = 0.5632034060383186
+  @pos: 61 value fpr H = 0.9224418680904172
+ => max: H
+Debug position probability:
+  @pos: 62 value fpr C = 0.6509581375606595
+  @pos: 62 value fpr E = 0.9567011455021173
+  @pos: 62 value fpr H = 0.9722408675108885
+ => max: H
+Debug position probability:
+  @pos: 63 value fpr C = 0.27935268978285843
+  @pos: 63 value fpr E = 0.04699885783754787
+  @pos: 63 value fpr H = 0.0026080123927855192
+ => max: C
+Debug position probability:
+  @pos: 64 value fpr C = 0.5821395069339683
+  @pos: 64 value fpr E = 0.38244431882731855
+  @pos: 64 value fpr H = 0.3218386135895558
+ => max: C
+Debug position probability:
+  @pos: 65 value fpr C = 0.11447596951729855
+  @pos: 65 value fpr E = 0.1289652145071778
+  @pos: 65 value fpr H = 0.6498122020863283
+ => max: H
+Debug position probability:
+  @pos: 66 value fpr C = 0.17371088757239173
+  @pos: 66 value fpr E = 0.8038944976400371
+  @pos: 66 value fpr H = 0.256637243806507
+ => max: E
+Debug position probability:
+  @pos: 67 value fpr C = 0.6843930011959953
+  @pos: 67 value fpr E = 0.2677866170356027
+  @pos: 67 value fpr H = 0.8204157095929251
+ => max: H
+Debug position probability:
+  @pos: 68 value fpr C = 0.4884596655799244
+  @pos: 68 value fpr E = 0.0933366789129263
+  @pos: 68 value fpr H = 0.05060562852909245
+ => max: C
+Debug position probability:
+  @pos: 69 value fpr C = 0.29889178137466
+  @pos: 69 value fpr E = 0.06896972707634319
+  @pos: 69 value fpr H = 0.700865817688237
+ => max: H
+Debug position probability:
+  @pos: 0 value fpr C = 0.2073009003259999
+  @pos: 0 value fpr E = 0.9493625259118796
+  @pos: 0 value fpr H = 0.20176772165212342
+ => max: E
+Debug position probability:
+  @pos: 1 value fpr C = 0.05260141396569806
+  @pos: 1 value fpr E = 0.8776126028138665
+  @pos: 1 value fpr H = 0.4223360864810134
+ => max: E
+Debug position probability:
+  @pos: 2 value fpr C = 0.7099705507644103
+  @pos: 2 value fpr E = 0.21187435835521284
+  @pos: 2 value fpr H = 0.013291287410456931
+ => max: C
+Debug position probability:
+  @pos: 3 value fpr C = 0.47546976328528756
+  @pos: 3 value fpr E = 0.4281574437530088
+  @pos: 3 value fpr H = 0.9823301305116765
+ => max: H
+Debug position probability:
+  @pos: 4 value fpr C = 0.8073402364045731
+  @pos: 4 value fpr E = 0.5920721409893929
+  @pos: 4 value fpr H = 0.69815249702624
+ => max: C
+Debug position probability:
+  @pos: 5 value fpr C = 0.85617397789203
+  @pos: 5 value fpr E = 0.9546492172681598
+  @pos: 5 value fpr H = 0.2575118379253678
+ => max: E
+Debug position probability:
+  @pos: 6 value fpr C = 0.18571590608723
+  @pos: 6 value fpr E = 0.18369220815169118
+  @pos: 6 value fpr H = 0.6139230530272293
+ => max: H
+Debug position probability:
+  @pos: 7 value fpr C = 0.18653200647061163
+  @pos: 7 value fpr E = 0.8611918753004716
+  @pos: 7 value fpr H = 0.287224902885694
+ => max: E
+Debug position probability:
+  @pos: 8 value fpr C = 0.3324103878607988
+  @pos: 8 value fpr E = 0.41263395362298894
+  @pos: 8 value fpr H = 0.3943876021134186
+ => max: E
+Debug position probability:
+  @pos: 9 value fpr C = 0.5015540460398187
+  @pos: 9 value fpr E = 0.8677889911786247
+  @pos: 9 value fpr H = 0.3001072654076342
+ => max: E
+Debug position probability:
+  @pos: 10 value fpr C = 0.4024350257596041
+  @pos: 10 value fpr E = 0.41271030333349856
+  @pos: 10 value fpr H = 0.7956661540853724
+ => max: H
+Debug position probability:
+  @pos: 11 value fpr C = 0.21994796607317946
+  @pos: 11 value fpr E = 0.9591128061913744
+  @pos: 11 value fpr H = 0.8884906251820143
+ => max: E
+Debug position probability:
+  @pos: 12 value fpr C = 0.026503730679388715
+  @pos: 12 value fpr E = 0.842820225048484
+  @pos: 12 value fpr H = 0.5250828350226824
+ => max: E
+Debug position probability:
+  @pos: 13 value fpr C = 0.8465179666187346
+  @pos: 13 value fpr E = 0.8723795472442244
+  @pos: 13 value fpr H = 0.7453808519275797
+ => max: E
+Debug position probability:
+  @pos: 14 value fpr C = 0.9907225080300065
+  @pos: 14 value fpr E = 0.08946361929081659
+  @pos: 14 value fpr H = 0.10184765226845849
+ => max: C
+Debug position probability:
+  @pos: 15 value fpr C = 0.30070097616166636
+  @pos: 15 value fpr E = 0.836709860872948
+  @pos: 15 value fpr H = 0.9520913515885503
+ => max: H
+Debug position probability:
+  @pos: 16 value fpr C = 0.500262413123837
+  @pos: 16 value fpr E = 0.6291816468316673
+  @pos: 16 value fpr H = 0.5122458256377135
+ => max: E
+Debug position probability:
+  @pos: 17 value fpr C = 0.9510721689797297
+  @pos: 17 value fpr E = 0.8132820856553041
+  @pos: 17 value fpr H = 0.7232760908581992
+ => max: C
+Debug position probability:
+  @pos: 18 value fpr C = 0.006774144908142765
+  @pos: 18 value fpr E = 0.1060567279760779
+  @pos: 18 value fpr H = 0.5928697969701606
+ => max: H
+Debug position probability:
+  @pos: 19 value fpr C = 0.7274935399937423
+  @pos: 19 value fpr E = 0.24828614892888679
+  @pos: 19 value fpr H = 0.10928275073056137
+ => max: C
+Debug position probability:
+  @pos: 20 value fpr C = 0.38796096872975905
+  @pos: 20 value fpr E = 0.7545754179218838
+  @pos: 20 value fpr H = 0.39977394478805206
+ => max: E
+Debug position probability:
+  @pos: 21 value fpr C = 0.061032305471528936
+  @pos: 21 value fpr E = 0.9260679010886466
+  @pos: 21 value fpr H = 0.5493970267964079
+ => max: E
+Debug position probability:
+  @pos: 22 value fpr C = 0.3451225827898965
+  @pos: 22 value fpr E = 0.05954432247254604
+  @pos: 22 value fpr H = 0.4174441039592328
+ => max: H
+Debug position probability:
+  @pos: 23 value fpr C = 0.7740633037042884
+  @pos: 23 value fpr E = 0.656707740678451
+  @pos: 23 value fpr H = 0.5365257969140537
+ => max: C
+Debug position probability:
+  @pos: 24 value fpr C = 0.8800317657085054
+  @pos: 24 value fpr E = 0.6808305164248876
+  @pos: 24 value fpr H = 0.11919263628443688
+ => max: C
+Debug position probability:
+  @pos: 25 value fpr C = 0.8631947525234387
+  @pos: 25 value fpr E = 0.43126839544347595
+  @pos: 25 value fpr H = 0.46390010843021334
+ => max: C
+Debug position probability:
+  @pos: 26 value fpr C = 0.4474937699077861
+  @pos: 26 value fpr E = 0.4168266253828712
+  @pos: 26 value fpr H = 0.8219290658945846
+ => max: H
+Debug position probability:
+  @pos: 27 value fpr C = 0.6367947058048494
+  @pos: 27 value fpr E = 0.18161252563591668
+  @pos: 27 value fpr H = 0.9940653619319199
+ => max: H
+Debug position probability:
+  @pos: 28 value fpr C = 0.09753321540377347
+  @pos: 28 value fpr E = 0.36894090476365304
+  @pos: 28 value fpr H = 0.8670051538631147
+ => max: H
+Debug position probability:
+  @pos: 29 value fpr C = 0.18479900359262602
+  @pos: 29 value fpr E = 0.16444607828883828
+  @pos: 29 value fpr H = 0.8332468411525957
+ => max: H
+Debug position probability:
+  @pos: 30 value fpr C = 0.5363913282394147
+  @pos: 30 value fpr E = 0.07918916228840267
+  @pos: 30 value fpr H = 0.2106561569168619
+ => max: C
+Debug position probability:
+  @pos: 31 value fpr C = 0.2658769975120254
+  @pos: 31 value fpr E = 0.1973770723073044
+  @pos: 31 value fpr H = 0.47048211772322224
+ => max: H
+Debug position probability:
+  @pos: 32 value fpr C = 0.38531238182813765
+  @pos: 32 value fpr E = 0.6200910517704172
+  @pos: 32 value fpr H = 0.49999519887869126
+ => max: E
+Debug position probability:
+  @pos: 33 value fpr C = 0.5375194327790683
+  @pos: 33 value fpr E = 0.8764554781326424
+  @pos: 33 value fpr H = 0.40792672663559104
+ => max: E
+Debug position probability:
+  @pos: 34 value fpr C = 0.009242205606211584
+  @pos: 34 value fpr E = 0.8434036664408326
+  @pos: 34 value fpr H = 0.542980085450073
+ => max: E
+Debug position probability:
+  @pos: 35 value fpr C = 0.5666714957881616
+  @pos: 35 value fpr E = 0.5399179822583263
+  @pos: 35 value fpr H = 0.37056497105886155
+ => max: C
+Debug position probability:
+  @pos: 36 value fpr C = 0.554715442631921
+  @pos: 36 value fpr E = 0.9614820343554378
+  @pos: 36 value fpr H = 0.8245505051670717
+ => max: E
+Debug position probability:
+  @pos: 37 value fpr C = 0.2275130989990405
+  @pos: 37 value fpr E = 0.07361428849452889
+  @pos: 37 value fpr H = 0.4411736605682066
+ => max: H
+Debug position probability:
+  @pos: 38 value fpr C = 0.37991447027937575
+  @pos: 38 value fpr E = 0.6088478049015026
+  @pos: 38 value fpr H = 0.8693908537126648
+ => max: H
+Debug position probability:
+  @pos: 39 value fpr C = 0.2011167593380565
+  @pos: 39 value fpr E = 0.8136298925564248
+  @pos: 39 value fpr H = 0.5676407361215885
+ => max: E
+Debug position probability:
+  @pos: 40 value fpr C = 0.9045507530771966
+  @pos: 40 value fpr E = 0.5753411311695951
+  @pos: 40 value fpr H = 0.9695523028924914
+ => max: H
+Debug position probability:
+  @pos: 41 value fpr C = 0.1680901089841813
+  @pos: 41 value fpr E = 0.34660692020578276
+  @pos: 41 value fpr H = 0.2793628779795603
+ => max: E
+Debug position probability:
+  @pos: 42 value fpr C = 0.2491437017296536
+  @pos: 42 value fpr E = 0.6263889163900154
+  @pos: 42 value fpr H = 0.1693771439655174
+ => max: E
+Debug position probability:
+  @pos: 43 value fpr C = 0.5559131323356168
+  @pos: 43 value fpr E = 0.1657392154423114
+  @pos: 43 value fpr H = 0.11903638943647132
+ => max: C
+Debug position probability:
+  @pos: 44 value fpr C = 0.4906108782687888
+  @pos: 44 value fpr E = 0.6376612294622779
+  @pos: 44 value fpr H = 0.6896015616980056
+ => max: H
+Debug position probability:
+  @pos: 45 value fpr C = 0.040361627509136744
+  @pos: 45 value fpr E = 0.05979392699193253
+  @pos: 45 value fpr H = 0.43418982212446966
+ => max: H
+Debug position probability:
+  @pos: 46 value fpr C = 0.22388151957835856
+  @pos: 46 value fpr E = 0.6248170025082947
+  @pos: 46 value fpr H = 0.8578314695054525
+ => max: H
+Debug position probability:
+  @pos: 47 value fpr C = 0.3748927285399408
+  @pos: 47 value fpr E = 0.115079571318076
+  @pos: 47 value fpr H = 0.014638683217264803
+ => max: C
+Debug position probability:
+  @pos: 48 value fpr C = 0.5994115572064116
+  @pos: 48 value fpr E = 0.8951310524292172
+  @pos: 48 value fpr H = 0.4463301257654805
+ => max: E
+Debug position probability:
+  @pos: 49 value fpr C = 0.049759643681183796
+  @pos: 49 value fpr E = 0.03920255829876562
+  @pos: 49 value fpr H = 0.13989646116315846
+ => max: H
+Debug position probability:
+  @pos: 50 value fpr C = 0.48780632196859575
+  @pos: 50 value fpr E = 0.2844009126647026
+  @pos: 50 value fpr H = 0.3746396827246874
+ => max: C
+Debug position probability:
+  @pos: 51 value fpr C = 0.07739528393403172
+  @pos: 51 value fpr E = 0.5857705085591314
+  @pos: 51 value fpr H = 0.9935546128073462
+ => max: H
+Debug position probability:
+  @pos: 52 value fpr C = 0.710907249475648
+  @pos: 52 value fpr E = 0.3643806892531447
+  @pos: 52 value fpr H = 0.4602708507674974
+ => max: C
+Debug position probability:
+  @pos: 53 value fpr C = 0.22261228146637768
+  @pos: 53 value fpr E = 0.5078250327270737
+  @pos: 53 value fpr H = 0.9857244080058436
+ => max: H
+Debug position probability:
+  @pos: 54 value fpr C = 0.8512127662163371
+  @pos: 54 value fpr E = 0.2546805437548464
+  @pos: 54 value fpr H = 0.1636984986180794
+ => max: C
+Debug position probability:
+  @pos: 55 value fpr C = 0.9026333907033907
+  @pos: 55 value fpr E = 0.2035087299168148
+  @pos: 55 value fpr H = 0.22266555281318245
+ => max: C
+Debug position probability:
+  @pos: 56 value fpr C = 0.40779409554390267
+  @pos: 56 value fpr E = 0.6870813046294149
+  @pos: 56 value fpr H = 0.6142379150373208
+ => max: E
+Debug position probability:
+  @pos: 57 value fpr C = 0.976996486099796
+  @pos: 57 value fpr E = 0.9709528816128855
+  @pos: 57 value fpr H = 0.3944381448504055
+ => max: C
+Debug position probability:
+  @pos: 58 value fpr C = 0.5782228144126469
+  @pos: 58 value fpr E = 0.7348975494089145
+  @pos: 58 value fpr H = 0.08295672629123585
+ => max: E
+Debug position probability:
+  @pos: 59 value fpr C = 0.7319458963355426
+  @pos: 59 value fpr E = 0.16315697979056476
+  @pos: 59 value fpr H = 0.4834068857828331
+ => max: C
+Debug position probability:
+  @pos: 60 value fpr C = 0.7056132400833818
+  @pos: 60 value fpr E = 0.9176020118449657
+  @pos: 60 value fpr H = 0.12139456313509578
+ => max: E
+Debug position probability:
+  @pos: 61 value fpr C = 0.5858801850331324
+  @pos: 61 value fpr E = 0.052127125269012864
+  @pos: 61 value fpr H = 0.4921762664600856
+ => max: C
+Debug position probability:
+  @pos: 62 value fpr C = 0.10273868534015862
+  @pos: 62 value fpr E = 0.5505053150178832
+  @pos: 62 value fpr H = 0.8661769810538125
+ => max: H
+Debug position probability:
+  @pos: 63 value fpr C = 0.7465013875283466
+  @pos: 63 value fpr E = 0.5710424034013466
+  @pos: 63 value fpr H = 0.4593937958833969
+ => max: C
+Debug position probability:
+  @pos: 64 value fpr C = 0.13821842344284008
+  @pos: 64 value fpr E = 0.3568408624538414
+  @pos: 64 value fpr H = 0.24716248219156411
+ => max: E
+Debug position probability:
+  @pos: 65 value fpr C = 0.12810383364660505
+  @pos: 65 value fpr E = 0.42188590395198156
+  @pos: 65 value fpr H = 0.283052251276978
+ => max: E
+Debug position probability:
+  @pos: 66 value fpr C = 0.9017831806566696
+  @pos: 66 value fpr E = 0.6679887244303738
+  @pos: 66 value fpr H = 0.6799668468350044
+ => max: C
+Debug position probability:
+  @pos: 67 value fpr C = 0.9774281812176164
+  @pos: 67 value fpr E = 0.10385276322870929
+  @pos: 67 value fpr H = 0.7575534969503888
+ => max: C
+Debug position probability:
+  @pos: 68 value fpr C = 0.637273908617918
+  @pos: 68 value fpr E = 0.47651078096941724
+  @pos: 68 value fpr H = 0.09385339435450957
+ => max: C
+Debug position probability:
+  @pos: 69 value fpr C = 0.5940415741805622
+  @pos: 69 value fpr E = 0.9468420612243652
+  @pos: 69 value fpr H = 0.003840217952831959
+ => max: E
+Debug position probability:
+  @pos: 70 value fpr C = 0.2958506690824161
+  @pos: 70 value fpr E = 0.1927627803546026
+  @pos: 70 value fpr H = 0.08622906092100147
+ => max: C
+Debug position probability:
+  @pos: 71 value fpr C = 0.2985111027163707
+  @pos: 71 value fpr E = 0.10824576251154305
+  @pos: 71 value fpr H = 0.42921231904812107
+ => max: H
+Debug position probability:
+  @pos: 72 value fpr C = 0.7922998254429009
+  @pos: 72 value fpr E = 0.0025756955224028877
+  @pos: 72 value fpr H = 0.5203799876035867
+ => max: C
+Debug position probability:
+  @pos: 73 value fpr C = 0.977820099138626
+  @pos: 73 value fpr E = 0.01572578105752309
+  @pos: 73 value fpr H = 0.0897457695280457
+ => max: C
+Debug position probability:
+  @pos: 74 value fpr C = 0.7906180767591909
+  @pos: 74 value fpr E = 0.09120860377417184
+  @pos: 74 value fpr H = 0.8305330852819857
+ => max: H
+Debug position probability:
+  @pos: 75 value fpr C = 0.4985097208906797
+  @pos: 75 value fpr E = 0.8912627327678667
+  @pos: 75 value fpr H = 0.9851263367695966
+ => max: H
+Debug position probability:
+  @pos: 76 value fpr C = 0.4693839366049116
+  @pos: 76 value fpr E = 0.8446958483182707
+  @pos: 76 value fpr H = 0.6766300617408185
+ => max: E
+Debug position probability:
+  @pos: 77 value fpr C = 0.44676333713866456
+  @pos: 77 value fpr E = 0.6718778970664954
+  @pos: 77 value fpr H = 0.3316756099657068
+ => max: E
+Debug position probability:
+  @pos: 78 value fpr C = 0.7628414672787553
+  @pos: 78 value fpr E = 0.16794407406347256
+  @pos: 78 value fpr H = 0.8310107022621483
+ => max: H
+Debug position probability:
+  @pos: 79 value fpr C = 0.7508163807830244
+  @pos: 79 value fpr E = 0.9213648952023076
+  @pos: 79 value fpr H = 0.21973202616189103
+ => max: E
+Debug position probability:
+  @pos: 80 value fpr C = 0.0020303948662018234
+  @pos: 80 value fpr E = 0.770455609368977
+  @pos: 80 value fpr H = 0.3830639914487851
+ => max: E
+Debug position probability:
+  @pos: 81 value fpr C = 0.03126958925352852
+  @pos: 81 value fpr E = 0.6982816479776346
+  @pos: 81 value fpr H = 0.5485837324743581
+ => max: E
+Debug position probability:
+  @pos: 82 value fpr C = 0.8254912739885858
+  @pos: 82 value fpr E = 0.21321584128202709
+  @pos: 82 value fpr H = 0.5402310339403644
+ => max: C
+Debug position probability:
+  @pos: 83 value fpr C = 0.07258642781928759
+  @pos: 83 value fpr E = 0.9733869485356776
+  @pos: 83 value fpr H = 0.5749336431670522
+ => max: E
+Debug position probability:
+  @pos: 84 value fpr C = 0.24671725267016187
+  @pos: 84 value fpr E = 0.5288110202904474
+  @pos: 84 value fpr H = 0.6808225854362498
+ => max: H
+Debug position probability:
+  @pos: 85 value fpr C = 0.724616942662173
+  @pos: 85 value fpr E = 0.16157236163788036
+  @pos: 85 value fpr H = 0.4353861491936847
+ => max: C
+Debug position probability:
+  @pos: 86 value fpr C = 0.08315452790664435
+  @pos: 86 value fpr E = 0.7128377826920338
+  @pos: 86 value fpr H = 0.49411095506696157
+ => max: E
+Debug position probability:
+  @pos: 87 value fpr C = 0.23363775272314768
+  @pos: 87 value fpr E = 0.9079292109359001
+  @pos: 87 value fpr H = 0.2825321097673362
+ => max: E
+Debug position probability:
+  @pos: 88 value fpr C = 0.7185865557994833
+  @pos: 88 value fpr E = 0.5266082834899103
+  @pos: 88 value fpr H = 0.31610851073393476
+ => max: C
+Debug position probability:
+  @pos: 89 value fpr C = 0.42223193086545563
+  @pos: 89 value fpr E = 0.1255653039429323
+  @pos: 89 value fpr H = 0.17760028286572138
+ => max: C
+Debug position probability:
+  @pos: 90 value fpr C = 0.7084603795932903
+  @pos: 90 value fpr E = 0.08439104790263563
+  @pos: 90 value fpr H = 0.3472691085442208
+ => max: C
+Debug position probability:
+  @pos: 91 value fpr C = 0.03732984812830331
+  @pos: 91 value fpr E = 0.7766859811558308
+  @pos: 91 value fpr H = 0.1269399595120697
+ => max: E
+Debug position probability:
+  @pos: 92 value fpr C = 0.7892920585147016
+  @pos: 92 value fpr E = 0.1551887540366954
+  @pos: 92 value fpr H = 0.7048316956204598
+ => max: C
+Debug position probability:
+  @pos: 93 value fpr C = 0.7637455405130408
+  @pos: 93 value fpr E = 0.2926946049140582
+  @pos: 93 value fpr H = 0.9482790942565371
+ => max: H
+Debug position probability:
+  @pos: 94 value fpr C = 0.833760657033547
+  @pos: 94 value fpr E = 0.06843899041353085
+  @pos: 94 value fpr H = 0.023332927933489844
+ => max: C
+Debug position probability:
+  @pos: 95 value fpr C = 0.9512973391881928
+  @pos: 95 value fpr E = 0.28993463072607895
+  @pos: 95 value fpr H = 0.3661157240783768
+ => max: C
+Debug position probability:
+  @pos: 96 value fpr C = 0.5393811903256774
+  @pos: 96 value fpr E = 0.4510096438352774
+  @pos: 96 value fpr H = 0.04948466242713667
+ => max: C
+Debug position probability:
+  @pos: 97 value fpr C = 0.6686991581896755
+  @pos: 97 value fpr E = 0.22335676337752985
+  @pos: 97 value fpr H = 0.5209737147250194
+ => max: C
+Debug position probability:
+  @pos: 98 value fpr C = 0.6595242615983707
+  @pos: 98 value fpr E = 0.6622997810637792
+  @pos: 98 value fpr H = 0.7815597582597024
+ => max: H
+Debug position probability:
+  @pos: 99 value fpr C = 0.7153269278396215
+  @pos: 99 value fpr E = 0.37088636064473557
+  @pos: 99 value fpr H = 0.13868985654329402
+ => max: C
+Debug position probability:
+  @pos: 100 value fpr C = 0.31168975012698097
+  @pos: 100 value fpr E = 0.9548741601209129
+  @pos: 100 value fpr H = 0.7499414766946124
+ => max: E
+Debug position probability:
+  @pos: 101 value fpr C = 0.17805320109945932
+  @pos: 101 value fpr E = 0.5185042360695842
+  @pos: 101 value fpr H = 0.9443734007817614
+ => max: H
+Debug position probability:
+  @pos: 102 value fpr C = 0.9318809284272106
+  @pos: 102 value fpr E = 0.836458582652
+  @pos: 102 value fpr H = 0.017734852706341897
+ => max: C
+Debug position probability:
+  @pos: 103 value fpr C = 0.7968303953215928
+  @pos: 103 value fpr E = 0.5538259547823207
+  @pos: 103 value fpr H = 0.5690440474109956
+ => max: C
+Debug position probability:
+  @pos: 104 value fpr C = 0.31007905249444145
+  @pos: 104 value fpr E = 0.40877866775889216
+  @pos: 104 value fpr H = 0.06334971480564222
+ => max: E
+Debug position probability:
+  @pos: 105 value fpr C = 0.12868906446021555
+  @pos: 105 value fpr E = 0.9299363973756319
+  @pos: 105 value fpr H = 0.5299344802657923
+ => max: E
+Debug position probability:
+  @pos: 106 value fpr C = 0.5364759978850959
+  @pos: 106 value fpr E = 0.2199901179036906
+  @pos: 106 value fpr H = 0.4776601871098306
+ => max: C
+Debug position probability:
+  @pos: 107 value fpr C = 0.40128075336264724
+  @pos: 107 value fpr E = 0.35894474481873984
+  @pos: 107 value fpr H = 0.7596442715648158
+ => max: H
+Debug position probability:
+  @pos: 108 value fpr C = 0.7294467081570172
+  @pos: 108 value fpr E = 0.2975481194819066
+  @pos: 108 value fpr H = 0.12551164773809642
+ => max: C
+Debug position probability:
+  @pos: 109 value fpr C = 0.1968847582971749
+  @pos: 109 value fpr E = 0.7855861013675792
+  @pos: 109 value fpr H = 0.30322490942440194
+ => max: E
+Debug position probability:
+  @pos: 110 value fpr C = 0.8942745531886515
+  @pos: 110 value fpr E = 0.9814012999212555
+  @pos: 110 value fpr H = 0.2656502410938939
+ => max: E
+Debug position probability:
+  @pos: 111 value fpr C = 0.1756425098269273
+  @pos: 111 value fpr E = 0.4964973844729569
+  @pos: 111 value fpr H = 0.9312171347574103
+ => max: H
+Debug position probability:
+  @pos: 112 value fpr C = 0.8882944969732397
+  @pos: 112 value fpr E = 0.20434603447053667
+  @pos: 112 value fpr H = 0.9471275516800739
+ => max: H
+Debug position probability:
+  @pos: 113 value fpr C = 0.9492837683166233
+  @pos: 113 value fpr E = 0.3837021999843341
+  @pos: 113 value fpr H = 0.5628748731596193
+ => max: C
+Debug position probability:
+  @pos: 114 value fpr C = 0.1271803225470607
+  @pos: 114 value fpr E = 0.26509341794847063
+  @pos: 114 value fpr H = 0.5783015812319086
+ => max: H
+Debug position probability:
+  @pos: 115 value fpr C = 0.7672410795102589
+  @pos: 115 value fpr E = 0.816389420714929
+  @pos: 115 value fpr H = 0.13639830705451694
+ => max: E
+Debug position probability:
+  @pos: 116 value fpr C = 0.6642373837597078
+  @pos: 116 value fpr E = 0.5048082963023479
+  @pos: 116 value fpr H = 0.8430005677154288
+ => max: H
+Debug position probability:
+  @pos: 117 value fpr C = 0.7361650808320231
+  @pos: 117 value fpr E = 0.12017973295690254
+  @pos: 117 value fpr H = 0.2779376098876204
+ => max: C
+Debug position probability:
+  @pos: 118 value fpr C = 0.5873103340867418
+  @pos: 118 value fpr E = 0.7711812908882417
+  @pos: 118 value fpr H = 0.48540577936381035
+ => max: E
+Debug position probability:
+  @pos: 119 value fpr C = 0.018680640103905577
+  @pos: 119 value fpr E = 0.3265297618188443
+  @pos: 119 value fpr H = 0.23127066527933993
+ => max: E
+Debug position probability:
+  @pos: 120 value fpr C = 0.20568994309823407
+  @pos: 120 value fpr E = 0.07396483076510696
+  @pos: 120 value fpr H = 0.9407788128207883
+ => max: H
+Debug position probability:
+  @pos: 121 value fpr C = 0.5518620613711007
+  @pos: 121 value fpr E = 0.06739098557943612
+  @pos: 121 value fpr H = 0.7351291772106443
+ => max: H
+Debug position probability:
+  @pos: 122 value fpr C = 0.31349397999757633
+  @pos: 122 value fpr E = 0.38769704846041175
+  @pos: 122 value fpr H = 0.315225378170793
+ => max: E
+Debug position probability:
+  @pos: 123 value fpr C = 0.7913333428279834
+  @pos: 123 value fpr E = 0.35425797977124884
+  @pos: 123 value fpr H = 0.1417489620236343
+ => max: C
+Debug position probability:
+  @pos: 124 value fpr C = 0.40956789970133967
+  @pos: 124 value fpr E = 0.4232769513262643
+  @pos: 124 value fpr H = 0.9480374913920594
+ => max: H
+Debug position probability:
+  @pos: 125 value fpr C = 0.37096667583369947
+  @pos: 125 value fpr E = 0.5207222394734995
+  @pos: 125 value fpr H = 0.12182968990761078
+ => max: E
+Debug position probability:
+  @pos: 126 value fpr C = 0.2920406906264662
+  @pos: 126 value fpr E = 0.19924423032089877
+  @pos: 126 value fpr H = 0.28045571524962365
+ => max: C
+>1C0T_B 46.111 10.826 9.091 0.0 100.0 10.127 0.0 16.745
+AS ELHPDKWTVQPIVLPEKDSWTVNDIQKLVGKLNWASQIYPGIKVRQLCKLLRGTKALTEVIPLTEEAELELAENREILKEPVHGVY
+PS --------CCCHEHHHECCHCHHCHEHCHEHHHECHCHEHEEEHCHEEHHCHEHCECEHHCHEHEEECEHHCCHEHCH--------
+PH --------8188467946166758977082978137271571486891895888852495586333771990363817--------
+PE --------8091925252926717084254514745164187808699484193291854619154988690418311--------
+PC --------9294757247967219506664557567533146308758099767934475784144596473612753--------
+>sdfg
+AS ELHPDKWTVQPIVLPEKDSWTVNDIQKLVGKLNWASQIYPGIKVRQLCKLLRGTKALTEVIPLTEEAELELAENREILKEPVHGVYYDPSKDLIAEIQKQGQGQWTYQIYQEPFKNLKTGKYARMRGAHTNDVKQLTEAVQKI
+PS --------EECHCEHEEEHEEECHECHCEEHCCCHHHHCHEEECEHHEHEECHHHCEHCHCHCCECECECHCEECCCECHCCHHEEHEEECEHCEECCCECHCCCCHCEHCCEECHCEEHHCHEHCEEHHECHEC--------
+PH --------2409736343895719576145451589982554548496932174904149592264151595237810145189738245567453323179040581790615581339966183529731913--------
+PE --------9924692949498918681289177442421269859168636261619036453279729166447159210019872987295279511823135274958649243895243851831144452--------
+PC --------2175892235420893590741389946125345066242922650246051729949677617119966338985548800812712747088895777329831547292991877602638443--------
+
+programdata: 
+AA: ACDEFGHIKLMNPQRSTVWY
+ST: CEH
+window size: 17 - 8

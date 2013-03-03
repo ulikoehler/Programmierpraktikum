@@ -162,16 +162,16 @@ public class GOR4Predicter extends GORPredicter {
         if (middleChar == -1) {
             return result;
         }
-        for (int secundaryStructure = 0; secundaryStructure < Data.secStruct.length; secundaryStructure++) {
+        for (int secundaryStructure = 0; secundaryStructure < Data.secStruct.length; secundaryStructure++) {        // foreach result
             // calc first sum
             double firstSum = 0;
-            for (int k = 0; k < Data.trainingWindowSize; k++) {
-                for (int l = k + 1; l < Data.trainingWindowSize; l++) {
-                    int aaAtPosK = GORPredicter.convertASCharToMatrixId(aaSeq.charAt(l));
+            for (int k = 0; k < Data.trainingWindowSize; k++) {                                     // sum from k=-m to m
+                for (int l = k + 1; l < Data.trainingWindowSize; l++) {                             // sum from l=-m to m; l>k
+                    int aaAtPosK = GORPredicter.convertASCharToMatrixId(aaSeq.charAt(k));           // get a_j+k
                     if (aaAtPosK == -1) {
                         break;
                     }
-                    int aaAtPosL = GORPredicter.convertASCharToMatrixId(aaSeq.charAt(l));
+                    int aaAtPosL = GORPredicter.convertASCharToMatrixId(aaSeq.charAt(l));           // get a_j+l
                     if (aaAtPosL == -1) {
                         break;
                     }
@@ -179,15 +179,15 @@ public class GOR4Predicter extends GORPredicter {
                     // [aaTable][trainingWindowSize][aaTable][aaTable][trainingWindowSize][secStruct]
                     // [amino acid somewhere in window][position of acid somewhere in window][amino acid in the middle]
                     // [amino acid relative to the middle][position relative to the middle][secondary state in middle] = count
-                    double p = cMatrix[aaAtPosK][k][middleChar][aaAtPosL][l][secundaryStructure];
+                    double p = cMatrix[aaAtPosK][k][middleChar][aaAtPosL][l][secundaryStructure];   // p for state
                     double nP = 0;
-                    for (int nSecStruct = 0; nSecStruct < Data.secStruct.length; nSecStruct++) {
-                        if (nSecStruct == secundaryStructure) {
+                    for (int nSecStruct = 0; nSecStruct < Data.secStruct.length; nSecStruct++) {    // get "not p state"
+                        if (nSecStruct == secundaryStructure) {                                     // don't add to current state
                             continue;
                         }
-                        nP += cMatrix[aaAtPosK][k][middleChar][aaAtPosL][l][secundaryStructure];
+                        nP += cMatrix[aaAtPosK][k][middleChar][aaAtPosL][l][nSecStruct];            // sum up
                     }
-                    firstSum += Math.log(p / nP);
+                    firstSum += Math.log((1.0 + p) / (2.0 + nP));                                   // sum up log values (add pseudocount for 0 values in the matrix)
                 }
             }
             // calc second sum
@@ -206,7 +206,7 @@ public class GOR4Predicter extends GORPredicter {
                     }
                     nP += gor3cMatrix[middleChar][nSecStruct][pos][aaAtPos];
                 }
-                secondSum += Math.log(p / nP);
+                secondSum += Math.log((1.0 + p) / (2.0 + nP));      // add pseudocount for 0 values in the matrix
             }
             // calc approx
             double eX = Math.exp((fact1 * firstSum) - (fact2 * secondSum));
@@ -214,5 +214,37 @@ public class GOR4Predicter extends GORPredicter {
             result[secundaryStructure] = eX / (1 + eX);
         }
         return result;
+    }
+
+    public String getMatrixRepresentation() {
+
+        // =State, AS, AS, Pos=
+        //        POS
+        //  AS   count
+
+        StringBuilder result = new StringBuilder("// Matrix6D\n\n");
+
+        for (int ss = 0; ss < Data.secStruct.length; ss++) {
+            for (int aaAbove = 0; aaAbove < Data.aaTable.length; aaAbove++) {
+                for (int aaSom = 0; aaSom < Data.aaTable.length; aaSom++) {
+                    for (int aaSomPos = 0; aaSomPos < Data.trainingWindowSize; aaSomPos++) {
+                        result.append("=").append(Data.secStruct[ss]).append(",").append(Data.aaTable[aaAbove]).append(",").append(Data.aaTable[aaSom]).append(",").append(aaSomPos - Data.prevInWindow).append("=\n\n");
+                        for (int aaRel = 0; aaRel < Data.aaTable.length; aaRel++) {
+                            result.append(Data.aaTable[aaRel]).append("\t");
+                            for (int relPos = 0; relPos < Data.trainingWindowSize; relPos++) {
+                                result.append(cMatrix[aaSom][aaSomPos][aaAbove][aaRel][relPos][ss]).append("\t");
+                            }
+                            result.append('\n');
+                        }
+                        result.append("\n");
+                    }
+                }
+            }
+        }
+
+        result.append("+++++++++++++++++++++++++++\n\n");
+
+        return result.toString();
+
     }
 }

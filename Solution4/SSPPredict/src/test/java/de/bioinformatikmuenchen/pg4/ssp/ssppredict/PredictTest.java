@@ -42,7 +42,9 @@ public class PredictTest {
     }
 
     @Test
-    public void testMain() {/*
+    public void testMain() {
+        Predict.main("--probabilities --format HTML --model src/test/resources/Ugor4CB513DSSP.db.txt --seq predict".split(" "));
+        /*
         java.io.PrintStream sysOut = System.out;
         System.out.println("Testing main method ...");
         String defaultOutputfile = "src/test/resources/testOutput.txt";
