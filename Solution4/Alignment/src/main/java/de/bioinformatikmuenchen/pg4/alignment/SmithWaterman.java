@@ -63,10 +63,10 @@ public class SmithWaterman extends AlignmentProcessor {
         result.setTargetSequenceId(targetSequence);
         return result;
     }
-    
+
     private double findMaxScore() {
         double max = 0.0;
-        for (int x = 1; x <= xSize ; x++) {
+        for (int x = 1; x <= xSize; x++) {
             for (int y = 1; y <= ySize; y++) {
                 max = Math.max(matrix[x][y], max);
             }
