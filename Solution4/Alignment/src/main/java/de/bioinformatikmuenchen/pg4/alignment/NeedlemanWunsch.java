@@ -172,16 +172,16 @@ public class NeedlemanWunsch extends AlignmentProcessor {
             for (y = ySize-1; y > max[1];y--) {
                 queryLine.append('-');
                 targetLine.append(targetSequence.charAt(y-1));
-                topPath[xSize][y+1] = true;
-                hasPath[xSize][y+1] = true;
+                topPath[xSize-1][y] = true;
+                hasPath[xSize-1][y] = true;
             }
         }
         else{
             for (x = xSize-1; x > max[0]; x--) {
                 queryLine.append(querySequence.charAt(x-1));
                 targetLine.append('-');
-                leftPath[x+1][ySize] = true;
-                hasPath[x+1][ySize] = true;
+                leftPath[x][ySize-1] = true;
+                hasPath[x][ySize-1] = true;
             }
         }
         SequencePairAlignment remaining = backTracking(x, y);
