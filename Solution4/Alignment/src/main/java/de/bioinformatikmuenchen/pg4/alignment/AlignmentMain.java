@@ -302,7 +302,7 @@ public class AlignmentMain {
             }
             //Calculate the FPA if applicable
             if (fpaDir != null) {
-                //fpaProcessor.makePlot(seq1, seq2, commandLine.hasOption("min-as-threshold"));
+                fpaProcessor.makePlot(seq1, seq2, commandLine.hasOption("min-as-threshold"), fpaDir.getAbsolutePath());
             }
             //Write the dynamic programming matrix if applicable 
             if (dpMatrixDir != null) {
