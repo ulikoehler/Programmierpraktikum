@@ -71,6 +71,7 @@ public class FixedPoint extends AlignmentProcessor{
         //return ret;
         double[] minMax = getMinMaxAverage();
         //make sure path!=null:
+        //put matrix to file as inout for gnuplot:
         path = (path==null ? "" : path);
         //Remove trailing / if any
         if(path.endsWith("/")) {
