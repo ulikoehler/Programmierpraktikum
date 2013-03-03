@@ -52,15 +52,15 @@ public class GotohTest {
     @Test
     public void fpa() throws IOException {
         IDistanceMatrix matrix = QUASARDistanceMatrixFactory.factorize(new InputStreamReader(NeedlemanWunschTest.class.getResourceAsStream("/matrices/dayhoff.mat")));
-        Sequence seq1Obj = new Sequence("GPLDVQVTEDAVRRYLTRKPMTTKDLLKKFQTKKTGLSSEQTVNVLAQILKRLNPERKMINDKMHFSLK");
-        Sequence seq2Obj = new Sequence("MEEAKQKVVDFLNSKSKSKFYFNDFTDLFPDMKQREVKKILTALVNDEVLEYWSSGSTTMYGLKG");
+        Sequence seq1Obj = new Sequence("id xy","GPLDVQVTEDAVRRYLTRKPMTTKDLLKKFQTKKTGLSSEQTVNVLAQILKRLNPERKMINDKMHFSLK");
+        Sequence seq2Obj = new Sequence("id2 test_zyx","MEEAKQKVVDFLNSKSKSKFYFNDFTDLFPDMKQREVKKILTALVNDEVLEYWSSGSTTMYGLKG");
         IGapCost gapCost = new AffineGapCost(-12, -1);
         FixedPoint instance = new FixedPoint(AlignmentMode.GLOBAL, AlignmentAlgorithm.GOTOH, matrix, gapCost);
         //AlignmentResult result = instance.align(seq1Obj, seq2Obj);
         instance.makePlot(seq1Obj, seq2Obj, true);
         //assertEquals(4.90, result.getScore(), 0.00000001);
     }
-    
+
     @Test
     public void testAlignReal1() throws IOException {
         IDistanceMatrix matrix = QUASARDistanceMatrixFactory.factorize(new InputStreamReader(NeedlemanWunschTest.class.getResourceAsStream("/matrices/dayhoff.mat")));
@@ -177,7 +177,7 @@ public class GotohTest {
         IGapCost gapCost = new AffineGapCost(-12, -1);
         Gotoh instance = new Gotoh(AlignmentMode.LOCAL, AlignmentAlgorithm.GOTOH, matrix, gapCost);
         AlignmentResult result = instance.align(seq1Obj, seq2Obj);
-        System.out.println(instance.printMatrix());
+        //System.out.println(instance.printMatrix());
         SequencePairAlignment alignment = result.getFirstAlignment();
         assertEquals(31.800, result.getScore(), 0.00000001);
         String exp1 = "ECLNKPINHQSNLVVPNTVKNTDGSLVTPEIISDDGDYEKPNVKWH-----------------------------------LPEFTNEVSFIFYQPVTIGKAKARFHGRVTQP--------------------------------";
@@ -190,6 +190,24 @@ public class GotohTest {
         assertEquals(31.800, CheckScoreCalculator.calculateCheckScoreAffine(AlignmentMode.LOCAL, alignment, matrix, gapCost), 0.00000001);
         assertEquals(exp1, alignment.queryAlignment);
         assertEquals(exp2, alignment.targetAlignment);
+    }
+
+    /**
+     * Real world example from sanity.pairs that hasn't worked somewhen -- Not
+     * sure if this is for Goto, so doublechekc
+     */
+    @Test
+    public void testLocalAlignmentResultMaxInCorner() throws IOException {
+        //1m9sA02  1p9mC01
+        IDistanceMatrix matrix = QUASARDistanceMatrixFactory.factorize(new InputStreamReader(NeedlemanWunschTest.class.getResourceAsStream("/matrices/dayhoff.mat")));
+        Sequence seq1Obj = new Sequence("ACACACTA");
+        Sequence seq2Obj = new Sequence("AGCACACA");
+        IGapCost gapCost = new AffineGapCost(-12, -1);
+        Gotoh instance = new Gotoh(AlignmentMode.LOCAL, AlignmentAlgorithm.GOTOH, matrix, gapCost);
+        AlignmentResult result = instance.align(seq1Obj, seq2Obj);
+        //System.out.println(instance.printMatrix());
+        SequencePairAlignment alignment = result.getFirstAlignment();
+        assertEquals(result.getScore(), CheckScoreCalculator.calculateCheckScoreAffine(AlignmentMode.LOCAL, alignment, matrix, gapCost), 0.00000001);
     }
 
     /**
