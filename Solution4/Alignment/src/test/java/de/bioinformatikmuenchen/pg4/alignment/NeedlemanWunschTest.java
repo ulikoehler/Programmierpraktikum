@@ -62,10 +62,14 @@ public class NeedlemanWunschTest {
 //        SequencePairAlignment spa = result.getFirstAlignment();
         //System.out.println("##### \n" + spa.queryAlignment + "\n" + spa.matchLine + "\n" + spa.targetAlignment);
         assertEquals(6.0, result.getScore(), 0.0000000001);
+        System.out.println(result.getFirstAlignment().getQueryAlignment());
+        System.out.println(result.getFirstAlignment().getTargetAlignment());
+        assertEquals(6.0, CheckScoreCalculator.calculateCheckScoreNonAffine(AlignmentMode.GLOBAL, result.getFirstAlignment(), new ZeroOneAlignmentMatrix(), new ConstantGapCost(0)), 0.0000000001);
         //System.out.println("Q: " + result.getFirstAlignment().getQueryAlignment());
         //System.out.println("T: " + result.getFirstAlignment().getTargetAlignment());
 //        assertEquals("G-AATTCAGTTA", currentAlignment.getSequence());
     }
+
     /**
      * Test of align method, of class NeedlemanWunsch.
      */
@@ -78,6 +82,7 @@ public class NeedlemanWunschTest {
         //assertEquals("G-AATTCAGTTA", currentAlignment.getSequence());
 
     }
+
     /**
      * Test of align method, of class RecursiveNWAlignmentProcessor. Just
      * something with high match rate.
@@ -94,7 +99,7 @@ public class NeedlemanWunschTest {
         AlignmentResult result = instance.align(seq1Obj, seq2Obj);
         assertEquals(24.0, result.getScore(), 0.0000000001);
         SequencePairAlignment spa = result.getFirstAlignment();
-        System.out.println("##### \n"+spa.queryAlignment+"\n"+spa.matchLine+"\n"+spa.targetAlignment);
+        System.out.println("##### \n" + spa.queryAlignment + "\n" + spa.matchLine + "\n" + spa.targetAlignment);
     }
 //    @Test
 //    public void testAlignSimple() {

@@ -67,17 +67,17 @@ public class SmithWaterman extends AlignmentProcessor {
         //////  init matrix:
         this.xSize = s.length();
         this.ySize = t.length();
-        int xSizeInit = this.xSize + 1;
-        int ySizeInit = this.ySize + 1;
-        matrix = new double[xSizeInit][ySizeInit];
-        leftArrows = new boolean[xSizeInit][ySizeInit];
-        leftTopArrows = new boolean[xSizeInit][ySizeInit];
-        topArrows = new boolean[xSizeInit][ySizeInit];
+        int xMatrixSize = this.xSize + 1;
+        int ymatrixSize = this.ySize + 1;
+        matrix = new double[xMatrixSize][ymatrixSize];
+        leftArrows = new boolean[xMatrixSize][ymatrixSize];
+        leftTopArrows = new boolean[xMatrixSize][ymatrixSize];
+        topArrows = new boolean[xMatrixSize][ymatrixSize];
 
-        leftTopPath = new boolean[xSizeInit][ySizeInit];
-        leftPath = new boolean[xSizeInit][ySizeInit];
-        topPath = new boolean[xSizeInit][ySizeInit];
-        hasPath = new boolean[xSizeInit][ySizeInit];
+        leftTopPath = new boolean[xMatrixSize][ymatrixSize];
+        leftPath = new boolean[xMatrixSize][ymatrixSize];
+        topPath = new boolean[xMatrixSize][ymatrixSize];
+        hasPath = new boolean[xMatrixSize][ymatrixSize];
         for (int x = 0; x < xSize; x++) {
             for (int y = 0; y < ySize; y++) {
                 leftArrows[x][y] = (y == 0);//first row --> true
@@ -93,27 +93,27 @@ public class SmithWaterman extends AlignmentProcessor {
         leftArrows[0][0] = false;
         leftTopArrows[0][0] = false;
         topArrows[0][0] = false;
-        /////////   fill matrix:
+        //Fill the matrix
         final double compareThreshold = 0.0000001;
-        for (int x = 1; x < xSizeInit; x++) {
-            for (int y = 1; y < ySizeInit; y++) {
+        for (int x = 1; x < xMatrixSize; x++) {
+            for (int y = 1; y < ymatrixSize; y++) {
                 char A = querySequence.charAt(x - 1);
                 char B = targetSequence.charAt(y - 1);
                 double leftTopScore = matrix[x - 1][y - 1] + distanceMatrix.distance(A, B);
                 double leftScore = matrix[x - 1][y] + gapCost.getGapCost(1);
                 double topScore = matrix[x][y - 1] + gapCost.getGapCost(1);
                 //Calculate the max score
-                matrix[x][y] = Math.max(0.0, Math.max(leftTopScore, Math.max(leftScore, topScore)));
-                double maxScore = matrix[x][y];
+                double intermediateMaxScore = Math.max(leftTopScore, Math.max(leftScore, topScore)); //Basically NW
+                matrix[x][y] = Math.max(0.0, intermediateMaxScore);
                 //Check which 'arrows' are set for the current field
-                leftTopArrows[x][y] = Math.abs(leftTopScore - maxScore) < compareThreshold;
-                leftArrows[x][y] = Math.abs(leftScore - maxScore) < compareThreshold;
-                topArrows[x][y] = Math.abs(topScore - maxScore) < compareThreshold;
+                leftTopArrows[x][y] = Math.abs(leftTopScore - intermediateMaxScore) < compareThreshold;
+                leftArrows[x][y] = Math.abs(leftScore - intermediateMaxScore) < compareThreshold;
+                topArrows[x][y] = Math.abs(topScore - intermediateMaxScore) < compareThreshold;
                 //Assert this field has at least one arrow
                 //######### assert leftTopArrows[x][y] || leftArrows[x][y] || topArrows[x][y];//assert only the area where the l/a takes place
             }
         }
-        System.out.println("m[" + xSizeInit + "][" + ySizeInit + "] = " + matrix[xSizeInit - 1][ySizeInit - 1]);
+        //System.out.println("m[" + xMatrixSize + "][" + ymatrixSize + "] = " + matrix[xMatrixSize - 1][ymatrixSize - 1]);
     }
 
     public SequencePairAlignment backtracking() {
@@ -121,8 +121,8 @@ public class SmithWaterman extends AlignmentProcessor {
         double maxEntry = -1;
         int x = 0;
         int y = 0;
-        for (int i = 0; i < xSize; i++) {
-            for (int j = 0; j < ySize; j++) {
+        for (int i = 0; i <= xSize; i++) {
+            for (int j = 0; j <= ySize; j++) {
                 if (matrix[i][j] >= maxEntry) {
                     x = i;
                     y = j;
@@ -131,35 +131,66 @@ public class SmithWaterman extends AlignmentProcessor {
             }
         }
         System.out.println("maxCell " + x + ", " + y);
-        String queryAlignment = "";
-        String targetAlignment = "";
-        while (x >= 0 && y >= 0 && matrix[x][y] != 0) {
-            if (leftTopArrows[x][y]) {
+        StringBuilder queryAlignment = new StringBuilder();
+        StringBuilder targetAlignment = new StringBuilder();
+        int yStart = ySize;
+        int xStart = xSize;
+        //From the corner, move up until y ==  y of the max coord
+        while (yStart > y) {
+            queryAlignment.append('-');
+            targetAlignment.append(targetSequence.charAt(yStart - 1));
+            yStart--;
+        }
+        //From the corner, move up until x == x of the max coord
+        while (xStart > x) {
+            targetAlignment.append('-');
+            queryAlignment.append(querySequence.charAt(xStart - 1));
+            xStart--;
+        }
+//        System.out.println("X");
+//        System.out.println(queryAlignment);
+//        System.out.println(targetAlignment);
+//        System.out.println("X");
+        while (x >= 0 && y >= 0) {
+            if (leftTopArrows[x][y]) { //Match or mismatch
                 leftTopPath[x][y] = true;
                 hasPath[x][y] = true;
-                queryAlignment += querySequence.charAt(x - 1);
-                targetAlignment += targetSequence.charAt(y - 1);
+                queryAlignment.append(querySequence.charAt(x - 1));
+                targetAlignment.append(targetSequence.charAt(y - 1));
                 x--;
                 y--;
-            }
-            if (leftArrows[x][y]) {
+            } else if (topArrows[x][y]) {//Insertion on query
                 topPath[x][y] = true;
                 hasPath[x][y] = true;
-                queryAlignment += querySequence.charAt(x - 1);
-                targetAlignment += '-';
+                queryAlignment.append(querySequence.charAt(x - 1));
+                targetAlignment.append('-');
                 y--;
-            }
-            if (topArrows[x][y]) {
+            } else if (leftArrows[x][y]) { //Deletion on query
                 leftPath[x][y] = true;
                 hasPath[x][y] = true;
-                queryAlignment += '-';
-                targetAlignment += targetSequence.charAt(y - 1);
+                queryAlignment.append('-');
+                targetAlignment.append(targetSequence.charAt(y - 1));
                 x--;
             }
+            //Break if the current value is zero
+            if (matrix[x][y] <= 0) {
+                break;
+            }
+        }
+        //Move up, then left until corner has been reached
+        while (y > 0) {
+            queryAlignment.append('-');
+            targetAlignment.append(targetSequence.charAt(y - 1));
+            y--;
+        }
+        while (x > 0) {
+            targetAlignment.append('-');
+            queryAlignment.append(querySequence.charAt(x - 1));
+            x--;
         }
         SequencePairAlignment spa = new SequencePairAlignment();
-        spa.setQueryAlignment(new StringBuffer(queryAlignment).reverse().toString());
-        spa.setTargetAlignment(new StringBuffer(targetAlignment).reverse().toString());
+        spa.setQueryAlignment(queryAlignment.reverse().toString());
+        spa.setTargetAlignment(targetAlignment.reverse().toString());
         return spa;
     }
 
