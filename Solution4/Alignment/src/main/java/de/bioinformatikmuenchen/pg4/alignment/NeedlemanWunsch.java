@@ -166,22 +166,22 @@ public class NeedlemanWunsch extends AlignmentProcessor {
         StringBuilder targetLine = new StringBuilder();
         double[] max = findMaxInMatrixFreeShift();
         boolean maxInLastColumn = (Math.abs(max[0] + 1.0) < 0.000000001);// <=> max[0] == -1.0
-        int x = xSize;
-        int y = ySize;
+        int x = xSize-1;
+        int y = ySize-1;
         if(maxInLastColumn){
-            for (y = ySize; y > max[1];y--) {
+            for (y = ySize-1; y > max[1];y--) {
                 queryLine.append('-');
                 targetLine.append(targetSequence.charAt(y-1));
-                topPath[xSize][y] = true;
-                hasPath[xSize][y] = true;
+                topPath[xSize][y+1] = true;
+                hasPath[xSize][y+1] = true;
             }
         }
         else{
-            for (x = xSize; x > max[0]; x--) {
-                queryLine.append(querySequence.charAt(x));
+            for (x = xSize-1; x > max[0]; x--) {
+                queryLine.append(querySequence.charAt(x-1));
                 targetLine.append('-');
-                leftPath[x][ySize] = true;
-                hasPath[x][ySize] = true;
+                leftPath[x+1][ySize] = true;
+                hasPath[x+1][ySize] = true;
             }
         }
         SequencePairAlignment remaining = backTracking(x, y);
@@ -243,7 +243,7 @@ public class NeedlemanWunsch extends AlignmentProcessor {
         int x = -1;
         int y = -1;
         double maxValue = Double.NEGATIVE_INFINITY;
-        for (int i = 0; i <= xSize+1; i++) {
+        for (int i = 0; i < xSize; i++) {
             if (matrix[i][ySize-1] > maxValue) {
                 maxValue = matrix[i][ySize-1];
                 x = i;
@@ -251,7 +251,7 @@ public class NeedlemanWunsch extends AlignmentProcessor {
             }
         }
         //calc last column
-        for (int i = 0; i <= ySize+1; i++) {
+        for (int i = 0; i < ySize; i++) {
             if (matrix[xSize-1][i] > maxValue) {
                 maxValue = matrix[xSize-1][i];
                 y = i;
