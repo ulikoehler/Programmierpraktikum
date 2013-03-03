@@ -187,7 +187,7 @@ public class GOR4Predicter extends GORPredicter {
                         }
                         nP += cMatrix[aaAtPosK][k][middleChar][aaAtPosL][l][nSecStruct];            // sum up
                     }
-                    firstSum += Math.log((1.0 + p) / (2.0 + nP));                                                   // sum up log values
+                    firstSum += Math.log((1.0 + p) / (2.0 + nP));                                   // sum up log values (add pseudocount for 0 values in the matrix)
                 }
             }
             // calc second sum
@@ -206,7 +206,7 @@ public class GOR4Predicter extends GORPredicter {
                     }
                     nP += gor3cMatrix[middleChar][nSecStruct][pos][aaAtPos];
                 }
-                secondSum += Math.log((p + 1.0) / (2.0 + nP));
+                secondSum += Math.log((1.0 + p) / (2.0 + nP));      // add pseudocount for 0 values in the matrix
             }
             // calc approx
             double eX = Math.exp((fact1 * firstSum) - (fact2 * secondSum));

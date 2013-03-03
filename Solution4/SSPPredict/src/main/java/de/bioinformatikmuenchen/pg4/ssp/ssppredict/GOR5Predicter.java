@@ -13,30 +13,79 @@ import java.util.LinkedList;
 public class GOR5Predicter {
 
     LinkedList<String> align = new LinkedList<String>();
-    GORPredicter gor;
-    
-    
-    public GOR5Predicter() {
-    }
+    private String alnSeqSS = null;
+    GORPredicter gor = null;
+    private String masterSeqAA = null;
+    private String masterSeqId = null;
 
-    public void readModelFile(File f) {
-        try {
-            BufferedReader br = new BufferedReader(new FileReader(f));
-            String line = "";
-            while((line = br.readLine())!= null) {
-                line = line.trim();         // no spaces at the beginning etc.
-                
-                
-                
-                
-            }
-        } catch(Exception e) {
-            e.printStackTrace();
-            throw new RuntimeException("Exception while reading ali file! " + e.getLocalizedMessage() + " Stacktrace see above!");
+    public GOR5Predicter(Predict.simpleGorMethods gorMethod) {
+        if (gorMethod.name().equals(Predict.simpleGorMethods.gor1.name())) {
+            gor = new GOR1Predicter();
+        } else if (gorMethod.name().equals(Predict.simpleGorMethods.gor3.name())) {
+            gor = new GOR3Predicter();
+        } else if (gorMethod.name().equals(Predict.simpleGorMethods.gor4.name())) {
+            gor = new GOR4Predicter();
+        } else {
+            throw new RuntimeException("No valid GOR (I,III or IV) @ GOR V!");
         }
     }
 
-    public PredictionResult predict() {
+    public void readModelFile(File f) {
+        if (Predict.debug) {
+            System.out.println("read model file: " + f.getAbsolutePath());
+        }
+        gor.init();
+        gor.readModelFile(f);
+        gor.initPrediction();
+    }
+
+    public PredictionResult predict(File aln) {
+        getAlign(aln);
         return null;
+    }
+
+    private void getAlign(File aln) {
+        try {
+            BufferedReader br = new BufferedReader(new FileReader(aln));
+            String line = null;
+            while ((line = br.readLine()) != null) {
+                line = line.trim();
+                if (line.startsWith("//") || line.isEmpty()) {
+                    continue;
+                }
+                // id
+                if (line.startsWith(">")) {
+                    this.masterSeqId = line.substring(1);
+                } // sequence to predict
+                else if (line.startsWith("AS")) {
+                    this.masterSeqAA = line.substring(3).trim();
+                } // secstruct
+                else if (line.startsWith("SS")) {
+                    this.alnSeqSS = line.substring(3).trim();
+                } // alignseq
+                else if (isNumeric(line.charAt(0))) {
+                    int pos = 0;
+                    while (isNumeric(line.charAt(pos))) {
+                        pos++;
+                    }
+                    String seq = line.substring(pos).trim();
+                    this.align.add(seq);
+                } // unknown file ?
+                else {
+                    throw new RuntimeException("ERROR in ali file: " + line);
+                }
+            }
+            br.close();
+        } catch (Exception e) {
+            throw new RuntimeException("Error reading aln file: " + e.getLocalizedMessage());
+        }
+    }
+
+    private boolean isNumeric(char x) {
+        int asciiValue = (int) x;
+        if (asciiValue >= 48 && asciiValue <= 57) {
+            return true;
+        }
+        return false;
     }
 }

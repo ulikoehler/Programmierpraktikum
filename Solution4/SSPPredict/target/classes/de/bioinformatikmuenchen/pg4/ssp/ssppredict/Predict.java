@@ -95,52 +95,8 @@ public class Predict {
             printUsageAndQuit();
         }
 
-        // GOR 5
-        /*
-         * Params of GOR5: model? maf (format <txt|html>) (probabilities) (postprocess) (debug) 
-        String maf = "";
-        File h = null;
-        if (!commandLine.hasOption("a")) {
-            maf = commandLine.getOptionValue("a");
-            maf = IO.isExistingReadableFileOrQuit(maf, "Can't read file " + maf + "!");
-            // GOR 5 Alignment
-            if (debug) {
-                System.out.println("Init GOR 5 ...");
-            }
-            GOR5Predicter gor5 = new GOR5Predicter();
-            if (debug) {
-                System.out.println("Read ALI file ...");
-            }
-            gor5.readModelFile(h);
-            if (debug) {
-                System.out.println("Prediction ...");
-            }
-            PredictionResult res = gor5.predict();
-            if (postprocessing) {
-                if (debug) {
-                    System.out.println("Postprocessing ...");
-                }
-                res = GORPredicter.postprocess(res);
-            }
-            if (debug) {
-                System.out.println("Format and write results (" + format.name() + "," + ((probabilities) ? "" : " no") + " probabilities) ...");
-            }
-            if (format.name().equals(outputMethod.html.name())) {
-                res.getHTMLRepresentation(probabilities, System.out);
-            } else {
-                res.getTXTRepresentation(probabilities, System.out);
-            }
-            // end of execution
-            System.exit(0);
-        } else {
-            if (!commandLine.hasOption("s")) {
-                System.err.println("Please spec --seq or --maf");
-                printUsageAndQuit();
-            }
-        }*/
-        
         // GOR 1-4
-        
+
         String model = "";
         File f = null;
         simpleGorMethods method = simpleGorMethods.gor1;
@@ -158,7 +114,7 @@ public class Predict {
             System.err.println("Please spec --seq *or* --maf!");
             printUsageAndQuit();
         }
-        
+
         String seq = "";
         File g = null;
         if (commandLine.hasOption("s")) {
@@ -167,7 +123,7 @@ public class Predict {
             g = new File(seq);
         } else {
             if (!commandLine.hasOption("a")) {
-                System.err.println("Please spec --seq or --maf");
+                System.err.println("@s: Please spec --seq or --maf");
                 printUsageAndQuit();
             }
         }
@@ -185,6 +141,8 @@ public class Predict {
             }
         }
 
+        // generell
+
         boolean probabilities = false;
         if (commandLine.hasOption("p")) {
             probabilities = true;
@@ -199,6 +157,72 @@ public class Predict {
             debug = true;
         }
 
+        // GOR 5
+
+        String maf = "";
+        File h = null;
+        if (commandLine.hasOption("a")) {
+            maf = commandLine.getOptionValue("a");
+            maf = IO.isExistingReadableFileOrQuit(maf, "Can't read file " + maf + "!");
+            h = new File(maf);
+            // GOR 5 Alignment
+            if (debug) {
+                System.out.println("Preprocessing ...");
+            }
+            Data.secStruct = GORPredicter.getStatesFromFile(f, method);
+            Data.trainingWindowSize = GORPredicter.getWindowSizeFromFile(f);
+            Data.prevInWindow = Data.trainingWindowSize / 2;
+            if (debug) {
+                System.out.println("Init gor5 ...");
+            }
+            GOR5Predicter gor5 = new GOR5Predicter(method);
+            if (debug) {
+                System.out.println("Parse gor5 model file ...");
+            }
+            gor5.readModelFile(f);
+            if (debug) {
+                System.out.println("Predict ...");
+            }
+            PredictionResult res = gor5.predict(h);
+            if (postprocessing) {
+                if (debug) {
+                    System.out.println("Postprocessing ...");
+                }
+                res = GORPredicter.postprocess(res);
+            }
+            if (debug) {
+                System.out.println("Format and write results (" + format.name() + "," + ((probabilities) ? "" : " no") + " probabilities) ...");
+            }
+            if (format.name().equals(outputMethod.html.name())) {
+                res.getHTMLRepresentation(probabilities, System.out);
+            } else {
+                res.getTXTRepresentation(probabilities, System.out);
+            }
+            if (debug) {
+                System.out.println("programdata: ");
+                System.out.print("AA: ");
+                for (int i = 0; i < Data.aaTable.length; i++) {
+                    System.out.print(Data.aaTable[i]);
+                }
+                System.out.println();
+                System.out.print("ST: ");
+                for (int i = 0; i < Data.secStruct.length; i++) {
+                    System.out.print(Data.secStruct[i]);
+                }
+                System.out.println();
+                System.out.println("window size: " + Data.trainingWindowSize + " - " + Data.prevInWindow);
+            }
+            // quit
+            System.exit(0);
+        } else {
+            if (!commandLine.hasOption("s")) {
+                System.err.println("@a: Please spec --seq or --maf");
+                printUsageAndQuit();
+            }
+        }
+
+        // GOR 1-4
+        
         GORPredicter predicter =
                 (method.name().equals(simpleGorMethods.gor1.name()))
                 ? new GOR1Predicter()

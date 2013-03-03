@@ -243,6 +243,8 @@ public abstract class GORPredicter {
         // an helix has an minimal size of 4 so it doesn't make sens to have less than 4 H's after each other
         // look at the predictions
         
+        
+        
         return results;
     }
 }
