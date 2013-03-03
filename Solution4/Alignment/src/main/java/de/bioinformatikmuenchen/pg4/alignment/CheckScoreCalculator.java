@@ -123,7 +123,7 @@ public class CheckScoreCalculator {
             ta = vals[1];
         }
         //Iterate over the characters
-        for (int i = 0; i < alignment.getQueryAlignment().length(); i++) {
+        for (int i = 0; i < qa.length(); i++) {
             if (qa.charAt(i) == '-' || ta.charAt(i) == '-') {
                 score += gapCost.getGapCost(1);
             } else { //Match or mismatch
