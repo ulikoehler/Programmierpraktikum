@@ -51,7 +51,7 @@ public class AlignmentMain {
                 .addOption("p", "pairs", true, "Path to pairs file")
                 .addOption("s", "seqlib", true, "seqlibfile")
                 .addOption("m", "matrixname", true, "matrixname")
-                .addOption("s", "mode", true, "mode")
+                .addOption("s", "mode", true, "Set the mode (global|local|freeshift)")
                 .addOption("u", "nw", false, "Use Needleman-Wunsch, with gap-open ignored")
                 .addOption("a", "fixed-point-alignment", true, "Output FPA to directory")
                 .addOption("t", "min-as-threshold", true, "In FPA, set the minimum of the matrix as heatmap minimum")
