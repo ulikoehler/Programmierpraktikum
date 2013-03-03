@@ -48,7 +48,7 @@ public class FixedPoint extends AlignmentProcessor{
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
     
-    public void makePlot(Sequence seq1, Sequence seq2, boolean minAsThreshold){
+    public void makePlot(Sequence seq1, Sequence seq2, boolean minAsThreshold, String path){
         //initialize some of the the declared global variables:
         this.xSize = seq1.getSequence().length();
         this.ySize = seq2.getSequence().length();
@@ -75,9 +75,9 @@ public class FixedPoint extends AlignmentProcessor{
         String s = matrixToString();
         putToFile(matrixToString(), "./matrix.txt");
         String gnuPlot = "set terminal png\n" +
-        "set output \"fixedPointAlignment.png\"\n" +
+        "set output \""+path+"/fpa_"+seq1.getId()+"_"+seq2.getId()+".png\"\n" +
         "set size ratio 0.5\n" +
-        "set title \"Fixed Point Alignment "+seq1.getId()+" vs. "+seq2.getId()+"\"\n" +
+        "set title \"Fixed Point Alignment"+seq1.getId()+" vs. "+seq2.getId()+"\"\n" +
         "\n" +
         "set xlabel \""+seq1.getId()+"\"\n" +
         "set ylabel \""+seq2.getId()+"\"\n" +
@@ -99,6 +99,7 @@ public class FixedPoint extends AlignmentProcessor{
         putToFile(gnuPlot, "./plot.gp");
         Runtime rt = Runtime.getRuntime();
         try {
+            rt.exec(new String[]{"mkdir",path});
             rt.exec(new String[]{"gnuplot","plot.gp"});
         } catch (IOException ex) {
             Logger.getLogger(FixedPoint.class.getName()).log(Level.SEVERE, null, ex);

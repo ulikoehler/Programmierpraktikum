@@ -53,11 +53,11 @@ public class GotohTest {
     public void fpa() throws IOException {
         IDistanceMatrix matrix = QUASARDistanceMatrixFactory.factorize(new InputStreamReader(NeedlemanWunschTest.class.getResourceAsStream("/matrices/dayhoff.mat")));
         Sequence seq1Obj = new Sequence("id xy","GPLDVQVTEDAVRRYLTRKPMTTKDLLKKFQTKKTGLSSEQTVNVLAQILKRLNPERKMINDKMHFSLK");
-        Sequence seq2Obj = new Sequence("id2 test_zyx","MEEAKQKVVDFLNSKSKSKFYFNDFTDLFPDMKQREVKKILTALVNDEVLEYWSSGSTTMYGLKG");
+        Sequence seq2Obj = new Sequence("id2 test_zyx2","MEEAKQKVVDFLNSKSKSKFYFNDFTDLFPDMKQREVKKILTALVNDEVLEYWSSGSTTMYGLKG");
         IGapCost gapCost = new AffineGapCost(-12, -1);
         FixedPoint instance = new FixedPoint(AlignmentMode.GLOBAL, AlignmentAlgorithm.GOTOH, matrix, gapCost);
         //AlignmentResult result = instance.align(seq1Obj, seq2Obj);
-        instance.makePlot(seq1Obj, seq2Obj, true);
+        instance.makePlot(seq1Obj, seq2Obj, false, "plotTest");
         //assertEquals(4.90, result.getScore(), 0.00000001);
     }
 
