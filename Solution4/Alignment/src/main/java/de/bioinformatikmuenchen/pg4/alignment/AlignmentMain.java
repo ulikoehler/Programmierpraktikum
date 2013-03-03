@@ -51,8 +51,8 @@ public class AlignmentMain {
                 .addOption("p", "pairs", true, "Path to pairs file")
                 .addOption("s", "seqlib", true, "seqlibfile")
                 .addOption("m", "matrixname", true, "matrixname")
-                .addOption("s", "mode", true, "Set the mode (global|local|freeshift)")
-                .addOption("u", "nw", false, "Use Needleman-Wunsch, with gap-open ignored")
+                .addOption("r", "mode", true, "Set the mode (global|local|freeshift)")
+                .addOption("u", "nw", false, "Use Needleman-Wunsch, with gap-open being ignored")
                 .addOption("a", "fixed-point-alignment", true, "Output FPA to directory")
                 .addOption("t", "min-as-threshold", true, "In FPA, set the minimum of the matrix as heatmap minimum")
                 .addOption("b", "benchmark", false, "Benchmark the selected algorithm versus the recursive Needleman-Wunsch")
@@ -236,8 +236,9 @@ public class AlignmentMain {
         //Inter-argument cheks
         //
         boolean haveAffineGapCost = Math.abs(gapOpen - gapExtend) > 0.00000001;
-        //TODO TEMPORARY assertion until it's impl
-        assert !haveAffineGapCost;
+        if(algorithm != AlignmentAlgorithm.GOTOH) {
+            haveAffineGapCost = false;
+        }
         //If a DP matrix dir is set, we need to copy the SVG graphics there
         if (dpMatrixDir != null) {
             for (String filename : Lists.newArrayList("T.svg", "L.svg", "LT.svg", "B-T.svg", "B-L.svg", "B-LT.svg")) {
