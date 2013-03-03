@@ -188,7 +188,7 @@ public class NeedlemanWunsch extends AlignmentProcessor {
         return new SequencePairAlignment(remaining.queryAlignment+queryLine.reverse().toString(), remaining.targetAlignment+targetLine.reverse().toString());
     }
     
-    public SequencePairAlignment backTracking(int xStart, int yStart) {
+    public SequencePairAlignment backTrackingCalcEachStep(int xStart, int yStart) {
         StringBuilder queryAlignment = new StringBuilder();
         StringBuilder targetAlignment = new StringBuilder();
         int x = (freeShift ? xStart : xSize - 1);
@@ -243,7 +243,7 @@ public class NeedlemanWunsch extends AlignmentProcessor {
         return new SequencePairAlignment(queryAlignment.reverse().toString(), targetAlignment.reverse().toString());
     }
     
-    public SequencePairAlignment backTrackingArrows(int xStart, int yStart) {
+    public SequencePairAlignment backTracking(int xStart, int yStart) {
         StringBuilder queryAlignment = new StringBuilder();
         StringBuilder targetAlignment = new StringBuilder();
         int x = (freeShift ? xStart : xSize - 1);
