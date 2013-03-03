@@ -289,10 +289,15 @@ public class AlignmentMain {
             //Either --check and print only incorrect alignment or print all
             if (calculateCheckscores) {
                 for (SequencePairAlignment alignment : result.getAlignments()) {
-                    double checkScore = CheckScoreCalculator.calculateCheckScoreAffine(mode, alignment, matrix, gapCost);
+                    double checkScore = (haveAffineGapCost ? 
+                            CheckScoreCalculator.calculateCheckScoreAffine(mode, alignment, matrix, gapCost)
+                            : CheckScoreCalculator.calculateCheckScoreNonAffine(mode, alignment, matrix, gapCost));
                     if (Math.abs(checkScore - result.getScore()) > 0.000000001) {
                         //Check failed, print failed alignments ONLY
-                        formatter.formatAndPrint(new AlignmentResult(checkScore, Collections.singletonList(alignment)));
+                        AlignmentResult tmpRes = new AlignmentResult(checkScore, Collections.singletonList(alignment));
+                        tmpRes.setQuerySequenceId(result.getQuerySequenceId());
+                        tmpRes.setTargetSequenceId(result.getTargetSequenceId());
+                        formatter.formatAndPrint(tmpRes);
                         System.err.println("Score " + result.getScore() + " vs " + checkScore);
                     }
                 }

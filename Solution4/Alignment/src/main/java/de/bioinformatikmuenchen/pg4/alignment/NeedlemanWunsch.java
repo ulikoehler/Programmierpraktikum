@@ -42,6 +42,7 @@ public class NeedlemanWunsch extends AlignmentProcessor {
         this.targetSequence = seq2.getSequence();
         this.querySequenceId = seq1.getId();
         this.targetSequenceId = seq2.getId();
+//        System.err.println("STTST " + querySequenceId);
         if(mode==AlignmentMode.FREESHIFT){this.freeShift = true;}
         initMatrix(seq1.getSequence().length(), seq2.getSequence().length());
         fillMatrix(seq1.getSequence(), seq2.getSequence());
@@ -58,8 +59,8 @@ public class NeedlemanWunsch extends AlignmentProcessor {
         result.setAlignments(Collections.singletonList(alignment));
         //this.score = matrix[xSize - 1][ySize - 1];
         result.setScore(this.score);
-        result.setQuerySequenceId(seq1.getId());
-        result.setTargetSequenceId(seq2.getId());
+        result.setQuerySequenceId(querySequenceId);
+        result.setTargetSequenceId(targetSequenceId);
         return result;
     }
 

@@ -4,6 +4,7 @@
  */
 package de.bioinformatikmuenchen.pg4.alignment;
 
+import de.bioinformatikmuenchen.pg4.alignment.gap.AffineGapCost;
 import de.bioinformatikmuenchen.pg4.common.alignment.AlignmentResult;
 import de.bioinformatikmuenchen.pg4.common.alignment.SequencePairAlignment;
 import de.bioinformatikmuenchen.pg4.common.distance.IDistanceMatrix;
@@ -121,7 +122,82 @@ public class NeedlemanWunschTest {
         assertEquals(24.0, CheckScoreCalculator.calculateCheckScoreNonAffine(AlignmentMode.GLOBAL, result.getFirstAlignment(), new WikipediaAlignmentMatrix1(), new ConstantGapCost(-5)), 0.0000000001);
         //System.out.println("##### \n" + spa.queryAlignment + "\n" + spa.matchLine + "\n" + spa.targetAlignment);
     }
-    
+
+    @Test
+    public void testAlignReal1() throws IOException {
+        IDistanceMatrix matrix = QUASARDistanceMatrixFactory.factorize(new InputStreamReader(NeedlemanWunschTest.class.getResourceAsStream("/matrices/dayhoff.mat")));
+        Sequence seq1Obj = new Sequence("GPLDVQVTEDAVRRYLTRKPMTTKDLLKKFQTKKTGLSSEQTVNVLAQILKRLNPERKMINDKMHFSLK");
+        Sequence seq2Obj = new Sequence("MEEAKQKVVDFLNSKSKSKFYFNDFTDLFPDMKQREVKKILTALVNDEVLEYWSSGSTTMYGLKG");
+        IGapCost gapCost = new ConstantGapCost(-1);
+        //Align global
+        NeedlemanWunsch instance = new NeedlemanWunsch(AlignmentMode.GLOBAL, AlignmentAlgorithm.NEEDLEMAN_WUNSCH, matrix, gapCost);
+        AlignmentResult result = instance.align(seq1Obj, seq2Obj);
+        assertEquals(result.getScore(), CheckScoreCalculator.calculateCheckScoreNonAffine(AlignmentMode.GLOBAL, result.getFirstAlignment(), matrix, gapCost), 0.00000001);
+        //Align freeshift
+        instance = new NeedlemanWunsch(AlignmentMode.FREESHIFT, AlignmentAlgorithm.NEEDLEMAN_WUNSCH, matrix, gapCost);
+        result = instance.align(seq1Obj, seq2Obj);
+        assertEquals(result.getScore(), CheckScoreCalculator.calculateCheckScoreNonAffine(AlignmentMode.FREESHIFT, result.getFirstAlignment(), matrix, gapCost), 0.00000001);
+    }
+
+    /**
+     * Real world example from sanity.pairs that hasn't worked somewhen -- Not
+     * sure if this is for Goto, so doublechekc
+     */
+    @Test
+    public void testAlignReal2() throws IOException {
+        //1xauA00  1fltX00
+        IDistanceMatrix matrix = QUASARDistanceMatrixFactory.factorize(new InputStreamReader(NeedlemanWunschTest.class.getResourceAsStream("/matrices/dayhoff.mat")));
+        Sequence seq1Obj = new Sequence("CEVQLNIKRNSKHSAWTGELFKIECPVKYCVHRPNVTWCKHNGTIWVPLEVGPQLYTSWEENRSVPVFVLHFKPIHLSDNGSYSCSTNFNSQVINSHSVTIHV");
+        Sequence seq2Obj = new Sequence("GRPFVEMYSEIPEIIHMTEGRELVIPCRVTSPNITVTLKKFPLDTLIPDGKRIIWDSRKGFIISNATYKEIGLLTCEATVNGHLYKTNYLTHRQ");
+        IGapCost gapCost = new ConstantGapCost(-1);
+        //Align global
+        NeedlemanWunsch instance = new NeedlemanWunsch(AlignmentMode.GLOBAL, AlignmentAlgorithm.NEEDLEMAN_WUNSCH, matrix, gapCost);
+        AlignmentResult result = instance.align(seq1Obj, seq2Obj);
+        assertEquals(result.getScore(), CheckScoreCalculator.calculateCheckScoreNonAffine(AlignmentMode.GLOBAL, result.getFirstAlignment(), matrix, gapCost), 0.00000001);
+        //Align freeshift
+        instance = new NeedlemanWunsch(AlignmentMode.FREESHIFT, AlignmentAlgorithm.NEEDLEMAN_WUNSCH, matrix, gapCost);
+        result = instance.align(seq1Obj, seq2Obj);
+        assertEquals(result.getScore(), CheckScoreCalculator.calculateCheckScoreNonAffine(AlignmentMode.FREESHIFT, result.getFirstAlignment(), matrix, gapCost), 0.00000001);
+    }
+
+    /**
+     * Real world example from sanity.pairs that hasn't worked somewhen -- Not
+     * sure if this is for Goto, so doublechekc
+     */
+    @Test
+    public void testAlignReal3() throws IOException {
+        //1m9sA02  1p9mC01
+        IDistanceMatrix matrix = QUASARDistanceMatrixFactory.factorize(new InputStreamReader(NeedlemanWunschTest.class.getResourceAsStream("/matrices/dayhoff.mat")));
+        Sequence seq1Obj = new Sequence("ECLNKPINHQSNLVVPNTVKNTDGSLVTPEIISDDGDYEKPNVKWHLPEFTNEVSFIFYQPVTIGKAKARFHGRVTQP");
+        Sequence seq2Obj = new Sequence("EEPQLSCFRKSPLSNVVCEWGPRSTPSLTTKAVLLVRKFQNSPAEDFQEPCQYSQESQKFSCQLAVPEGDSSFYIVSMCVASSVGSKFSKTQTFQGCGI");
+        IGapCost gapCost = new ConstantGapCost(-1);
+        //Align global
+        NeedlemanWunsch instance = new NeedlemanWunsch(AlignmentMode.GLOBAL, AlignmentAlgorithm.NEEDLEMAN_WUNSCH, matrix, gapCost);
+        AlignmentResult result = instance.align(seq1Obj, seq2Obj);
+        assertEquals(result.getScore(), CheckScoreCalculator.calculateCheckScoreNonAffine(AlignmentMode.GLOBAL, result.getFirstAlignment(), matrix, gapCost), 0.00000001);
+        //Align freeshift
+        instance = new NeedlemanWunsch(AlignmentMode.FREESHIFT, AlignmentAlgorithm.NEEDLEMAN_WUNSCH, matrix, gapCost);
+        result = instance.align(seq1Obj, seq2Obj);
+        assertEquals(result.getScore(), CheckScoreCalculator.calculateCheckScoreNonAffine(AlignmentMode.FREESHIFT, result.getFirstAlignment(), matrix, gapCost), 0.00000001);
+    }
+
+    @Test
+    public void testAlignReal4() throws IOException {
+        //1gvmF00 1nukA00
+        IDistanceMatrix matrix = QUASARDistanceMatrixFactory.factorize(new InputStreamReader(NeedlemanWunschTest.class.getResourceAsStream("/matrices/dayhoff.mat")));
+        Sequence seq1Obj = new Sequence("GGIVHSDGSYPKDKFEKINGTWYYFDSSGYMLADRWRKHTDGNWYWFDNSGEMATGWKKIADKWYYFNEEGAMKTGWVKYKDTWYYLDAKEGAMVSNAFIQSADGTGWYYLKPDGTLADRPEFTVEPDGLITV");
+        Sequence seq2Obj = new Sequence("EETLMDSTTATAELGWMVHPPSGWEEVSGYDNTIRTYQVCNVFESSQNNWLRTKFIRRRGAHRIHVEMKFSVRDCSSIPSVPGSCKETFNLYYYEADFDLATKTFPNWMENPWVKVDTIAADESFSQVDVMKINTEVRSFGPVSRNGFYLAFQDYGGCMSLIAVRVFY");
+        IGapCost gapCost = new ConstantGapCost(-1);
+        //Align global
+        NeedlemanWunsch instance = new NeedlemanWunsch(AlignmentMode.GLOBAL, AlignmentAlgorithm.NEEDLEMAN_WUNSCH, matrix, gapCost);
+        AlignmentResult result = instance.align(seq1Obj, seq2Obj);
+        assertEquals(result.getScore(), CheckScoreCalculator.calculateCheckScoreNonAffine(AlignmentMode.GLOBAL, result.getFirstAlignment(), matrix, gapCost), 0.00000001);
+        //Align freeshift
+        instance = new NeedlemanWunsch(AlignmentMode.FREESHIFT, AlignmentAlgorithm.NEEDLEMAN_WUNSCH, matrix, gapCost);
+        result = instance.align(seq1Obj, seq2Obj);
+        assertEquals(result.getScore(), CheckScoreCalculator.calculateCheckScoreNonAffine(AlignmentMode.FREESHIFT, result.getFirstAlignment(), matrix, gapCost), 0.00000001);
+    }
+
     @Test
     public void testAlignLeftBorderSimple() {
         Sequence seq1Obj = new Sequence("GAATT");
