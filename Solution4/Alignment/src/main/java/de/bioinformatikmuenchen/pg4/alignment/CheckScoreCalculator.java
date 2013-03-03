@@ -23,7 +23,6 @@ public class CheckScoreCalculator {
                 break;
             }
         }
-
         //
         // Handle end gaps
         //

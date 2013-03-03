@@ -53,7 +53,27 @@ public class NeedlemanWunschTest {
      * Test of align method, of class NeedlemanWunsch.
      */
     @Test
-    public void testAlignAvatar() {
+    public void testAlignAvatarGlobal() {
+        NeedlemanWunsch instance = new NeedlemanWunsch(AlignmentMode.GLOBAL, AlignmentAlgorithm.NEEDLEMAN_WUNSCH, new ZeroOneAlignmentMatrix(), new ConstantGapCost(0));
+        Sequence seq1Obj = new Sequence("GAATTCAGTTA");
+        Sequence seq2Obj = new Sequence("GGATCGA");
+        AlignmentResult result = instance.align(seq1Obj, seq2Obj);
+        //System.out.println(instance.printMatrix());
+//        SequencePairAlignment spa = result.getFirstAlignment();
+        //System.out.println("##### \n" + spa.queryAlignment + "\n" + spa.matchLine + "\n" + spa.targetAlignment);
+        System.out.println(instance.printMatrix());
+        System.out.println("-----------------");
+        System.out.println("Q: " + result.getFirstAlignment().getQueryAlignment());
+        System.out.println("T: " + result.getFirstAlignment().getTargetAlignment());
+        System.out.println("-----------------");
+        assertEquals(6.0, result.getScore(), 0.0000000001);
+        assertEquals(6.0, CheckScoreCalculator.calculateCheckScoreAffine(AlignmentMode.GLOBAL, result.getFirstAlignment(), new ZeroOneAlignmentMatrix(), new ConstantGapCost(0)), 0.0000000001);
+
+//        assertEquals("G-AATTCAGTTA", currentAlignment.getSequence());
+    }
+
+    @Test
+    public void testAlignAvatarFS() {
         NeedlemanWunsch instance = new NeedlemanWunsch(AlignmentMode.FREESHIFT, AlignmentAlgorithm.NEEDLEMAN_WUNSCH, new ZeroOneAlignmentMatrix(), new ConstantGapCost(0));
         Sequence seq1Obj = new Sequence("GAATTCAGTTA");
         Sequence seq2Obj = new Sequence("GGATCGA");
@@ -61,8 +81,7 @@ public class NeedlemanWunschTest {
         //System.out.println(instance.printMatrix());
 //        SequencePairAlignment spa = result.getFirstAlignment();
         //System.out.println("##### \n" + spa.queryAlignment + "\n" + spa.matchLine + "\n" + spa.targetAlignment);
-        assertEquals(6.0, result.getScore(), 0.0000000001);
-        assertEquals(6.0, CheckScoreCalculator.calculateCheckScoreNonAffine(AlignmentMode.FREESHIFT, result.getFirstAlignment(), new ZeroOneAlignmentMatrix(), new ConstantGapCost(0)), 0.0000000001);
+        assertEquals(result.getScore(), CheckScoreCalculator.calculateCheckScoreNonAffine(AlignmentMode.FREESHIFT, result.getFirstAlignment(), new ZeroOneAlignmentMatrix(), new ConstantGapCost(0)), 0.0000000001);
         //System.out.println("Q: " + result.getFirstAlignment().getQueryAlignment());
         //System.out.println("T: " + result.getFirstAlignment().getTargetAlignment());
 //        assertEquals("G-AATTCAGTTA", currentAlignment.getSequence());

@@ -127,12 +127,12 @@ public class NeedlemanWunsch extends AlignmentProcessor {
                 char A = seq1.charAt(x - 1);
                 char B = seq2.charAt(y - 1);
                 double leftTopScore = matrix[x - 1][y - 1] + distanceMatrix.distance(A, B);
-                double leftScore = matrix[x][y - 1] + gapCost.getGapCost(1);
-                double topScore = matrix[x - 1][y] + gapCost.getGapCost(1);
+                double topScore = matrix[x][y - 1] + gapCost.getGapCost(1);
+                double leftScore = matrix[x - 1][y] + gapCost.getGapCost(1);
                 //Calculate the max score
-                matrix[x][y] = Math.max(leftTopScore,
+                double maxScore  = Math.max(leftTopScore,
                         Math.max(leftScore, topScore));
-                double maxScore = matrix[x][y];
+                matrix[x][y] = maxScore;
                 //Check which 'arrows' are set for the current field
                 leftTopArrows[x][y] = Math.abs(leftTopScore - maxScore) < compareThreshold;
                 leftArrows[x][y] = Math.abs(leftScore - maxScore) < compareThreshold;
