@@ -68,6 +68,8 @@ public class SmithWatermanTest {
         //Align global
         SmithWaterman instance = new SmithWaterman(AlignmentMode.LOCAL, AlignmentAlgorithm.SMITH_WATERMAN, matrix, gapCost);
         AlignmentResult result = instance.align(seq1Obj, seq2Obj);
+        System.out.println(result.getFirstAlignment().getQueryAlignment());
+        System.out.println(result.getFirstAlignment().getTargetAlignment());
         assertEquals(result.getScore(), CheckScoreCalculator.calculateCheckScoreNonAffine(AlignmentMode.LOCAL, result.getFirstAlignment(), matrix, gapCost), 0.00000001);
     }
 
