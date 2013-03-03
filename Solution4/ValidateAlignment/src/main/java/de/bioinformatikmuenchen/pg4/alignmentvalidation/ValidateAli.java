@@ -105,7 +105,7 @@ public class ValidateAli {
         if (commandLine.hasOption("summaryfile")) {
             summary = new File(commandLine.getOptionValue("summaryfile"));
             if (!summary.exists() || summary.isDirectory()) {
-                System.err.println("Error: --reference argument is not a file!");
+                System.err.println("Error: --summary argument is not a file!");
                 System.exit(1);
             }
         } else {
@@ -119,7 +119,7 @@ public class ValidateAli {
         if (commandLine.hasOption("detailedfile")) {
             detailed = new File(commandLine.getOptionValue("detailedfile"));
             if (!detailed.exists() || detailed.isDirectory()) {
-                System.err.println("Error: --reference argument is not a file!");
+                System.err.println("Error: --detailed argument is not a file!");
                 System.exit(1);
             }
         } else {

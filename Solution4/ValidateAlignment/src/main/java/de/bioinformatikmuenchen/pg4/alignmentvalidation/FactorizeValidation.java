@@ -125,7 +125,6 @@ public class FactorizeValidation {
                             line = reader.readLine();
                         }
                     }
-
                     //getting sequence 2
                     if (line == null) {
                         break;
@@ -146,8 +145,6 @@ public class FactorizeValidation {
                             line = reader.readLine();
                         }
                     }
-                    System.out.println("template: " + candidatetemplate);
-                    System.out.println("target: " + candidatetarget);
                     //safing alignment and reference pair in Arraylist
                     alignmentpair.add(new VTuple(homstradname1, homstradname2, candidatetemplate, candidatetarget));
                 }else{
