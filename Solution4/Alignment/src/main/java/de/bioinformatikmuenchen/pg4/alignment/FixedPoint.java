@@ -77,10 +77,10 @@ public class FixedPoint extends AlignmentProcessor{
         String gnuPlot = "set terminal png\n" +
         "set output \"fixedPointAlignment.png\"\n" +
         "set size ratio 0.5\n" +
-        "set title \"Fixed Point Alignment\"\n" +
+        "set title \"Fixed Point Alignment "+seq1.getId()+" vs. "+seq2.getId()+"\"\n" +
         "\n" +
-        "set xlabel \"Sequence 1\"\n" +
-        "set ylabel \"Sequence 2\"\n" +
+        "set xlabel \""+seq1.getId()+"\"\n" +
+        "set ylabel \""+seq2.getId()+"\"\n" +
         "\n" +
         "set tic scale 0\n" +
         "\n" +
