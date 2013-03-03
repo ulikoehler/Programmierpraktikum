@@ -123,7 +123,7 @@ public class ValidateSSP {
             formatter.printHelp("validateGor.jar", opts);
             System.exit(1);
         }
-
+        System.out.println("Finished parsing commandline");
         FactorizeValidation factory = new FactorizeValidation(predictionsfile, reference);
         
     }
