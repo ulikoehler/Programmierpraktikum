@@ -46,27 +46,13 @@ public class FactorizeValidation {
             while (line != null) {
                 if (!line.equals("")) {
                     if (line.charAt(0) == '>') {
-                        String name = line.substring(2, 6);
-                        String secon = "";
+                        String sequence;
+                        String secon;
                         line = lines.readLine();
-                        if (!line.equals("")) {
-                            while (line.charAt(0) != '>' && !line.substring(0, 3).equals("SS ")) {
-                                line = lines.readLine();
-                                if (line.equals("")) {
-                                    break;
-                                }
-                            }
-                        }
-                        if (line.substring(0, 3).equals("SS ")) {
-                            secon += line.substring(3);
-                            line = lines.readLine();
-                            if (!line.equals("")) {
-                                while (line.charAt(0) != '>') {
-                                    secon += line;
-                                }
-                            }
-                            hash.put(name, secon);
-                        }
+                        sequence = line.substring(3);
+                        line = lines.readLine();
+                        secon = line.substring(3);
+                        hash.put(sequence, secon);
                     }
                 }
                 line = lines.readLine();
@@ -81,36 +67,66 @@ public class FactorizeValidation {
             FileReader input = new FileReader(prediction);
             BufferedReader lines = new BufferedReader(input);
             String line = lines.readLine();
-              while (line != null) {
-                  if(!line.equals("")){
-                      if(line.charAt(0)== '>'){
-                          String id = line.substring(2);
-                          String amino = "";
-                          String secon = "";
-                          line = lines.readLine();
-                          amino += line.substring(3);
-                          line = lines.readLine(); 
-                          secon += line.substring(3);
-                          
-                          System.out.println(id);
-                          System.out.println(amino);
-                          System.out.println(secon);
-                          secondarypair.add(new DTupel(id,amino,secon));
-                      }
-                  }
-                  line = lines.readLine();
-              }
+            while (line != null) {
+                if (!line.equals("")) {
+                    if (line.charAt(0) == '>') {
+                        String id = line.substring(2);
+                        String amino = "";
+                        String secon = "";
+                        line = lines.readLine();
+                        amino += line.substring(3);
+                        line = lines.readLine();
+                        secon += line.substring(3);
+                        //creaing Tupel representing prediction for one sequence
+                        secondarypair.add(new DTupel(id, amino, secon));
+                    }
+                }
+                line = lines.readLine();
+            }
         } catch (Exception e) {
             System.err.println(e);
         }
     }
-    
-    private void factorizeInput(){
-        
+
+    private void factorizeInput() {
+
         summary = new Summary();
         detailed = new Detailed();
-        
-        
+        for (int i = 0; i < secondarypair.size(); i++) {
+            //assembling secondary structures pair that is to be validated
+            String prediction = secondarypair.get(i).att3;
+            String reference = hash.get(secondarypair.get(i).att2);
+            //checking if reference structure exists
+            if (!(reference == null)) {
+                //creating new instance of secondary structure validation algorithm
+                StrucValiAlg instance = new StrucValiAlg(prediction, reference);
+                //getting validation criteria
+                double Q3 = instance.getQ3();
+                double QH = instance.getQH();
+                double QE = instance.getQE();
+                double QC = instance.getQC();
+                double SOV = instance.getSOV();
+                double SOVH = instance.getSOVH();
+                double SOVE = instance.getSOVE();
+                double SOVC = instance.getSOVC();
+                //creating Tuple representing Validation
+                String header = ">" + secondarypair.get(i).att1 + " " + round(Q3) + " " + round(SOV);
+                header += " " + round(QH) + " " + round(QE) + " " + round(QC);
+                header += " " + round(SOVH) + " " + round(SOVE) + " " + round(SOVC);
+                VTupeltxt result = new VTupeltxt (header, secondarypair.get(i).att2,prediction,reference);
+                //safing result
+                detailed.add(result);
+                //safing validation criteria for summary
+                summary.addQ3(Q3);
+                summary.addQH(QH);
+                summary.addQE(QE);
+                summary.addQC(QC);
+                summary.addSOV(SOV);
+                summary.addSOVH(SOVH);
+                summary.addSOVE(SOVE);
+                summary.addSOVC(SOVC);                   
+            }
+        }
     }
 
     public Detailed getDetail() {
@@ -122,14 +138,18 @@ public class FactorizeValidation {
     }
 
     private static double round(double d) {
-        DecimalFormat numberFormat = new DecimalFormat();
-        DecimalFormatSymbols dfs = new DecimalFormatSymbols();
-        dfs.setDecimalSeparator('.');
-        numberFormat.setGroupingUsed(false);
-        numberFormat.setMinimumFractionDigits(6);
-        numberFormat.setMaximumFractionDigits(3);
-        numberFormat.setDecimalSeparatorAlwaysShown(false);
-        numberFormat.setDecimalFormatSymbols(dfs);
-        return Double.valueOf(numberFormat.format(d));
+        Double p = d;
+        if (!(p.isNaN())) {
+            DecimalFormat numberFormat = new DecimalFormat();
+            DecimalFormatSymbols dfs = new DecimalFormatSymbols();
+            dfs.setDecimalSeparator('.');
+            numberFormat.setGroupingUsed(false);
+            numberFormat.setMinimumFractionDigits(6);
+            numberFormat.setMaximumFractionDigits(3);
+            numberFormat.setDecimalSeparatorAlwaysShown(false);
+            numberFormat.setDecimalFormatSymbols(dfs);
+            return Double.valueOf(numberFormat.format(d));
+        }
+        return d;
     }
 }

@@ -21,16 +21,16 @@ public class HtmlOutputFormater {
         builder.append("<head><title> AlignmentValidation </title></head>");
         builder.append("<body>");
         for (int i = 0; i < input.results.size(); i++) {
-            builder.append(input.results.get(i).att1).append("<br>");
+            builder.append(input.results.get(i).att1).append("\n");
             builder.append(input.results.get(i).att1.substring(1, 8)).append(": ");
-            builder.append(input.results.get(i).att2).append("<br>");
+            builder.append(input.results.get(i).att2).append("\n");
             builder.append(input.results.get(i).att1.substring(9, 16)).append(": ");
-            builder.append(input.results.get(i).att3).append("<br>");
+            builder.append(input.results.get(i).att3).append("\n");
             builder.append(input.results.get(i).att1.substring(1, 8)).append(": ");
-            builder.append(input.results.get(i).att4).append("<br>");
+            builder.append(input.results.get(i).att4).append("\n");
             builder.append(input.results.get(i).att1.substring(9, 16)).append(": ");
-            builder.append(input.results.get(i).att5).append("<br>");
-            builder.append("<br>");
+            builder.append(input.results.get(i).att5).append("\n");
+            builder.append("\n");
         }
         builder.append("</body>");
         builder.append("</html>");
@@ -39,10 +39,10 @@ public class HtmlOutputFormater {
 
     public String format(Summary input) {
         StringBuilder builder = new StringBuilder();
-                builder.append("<html>");
+        builder.append("<html>");
         builder.append("<head><title> AlignmentValidationSummary </title></head>");
         builder.append("<body>");
-        
+
         builder.append("Summary:\n");
         builder.append("Validation Value\tSD\tMean\tMin\tMax\tQuan50\tQuan5\tQuan95\n\n");
         builder.append(">Sensitivity    \t").append(input.getSensiStanDevi()).append("\t").append(input.getSensiMean()).append("\t").append(input.getSensiMin()).append("\t")

@@ -125,7 +125,10 @@ public class ValidateSSP {
         }
         System.out.println("Finished parsing commandline");
         FactorizeValidation factory = new FactorizeValidation(predictionsfile, reference);
-        
+        System.out.println("Assembling output componenets");
+        ValidationOutputFormater out = new ValidationOutputFormater(factory.getDetail(),factory.getSummary(),format,detailed,summary);
+        System.out.println("Writing output");
+        out.print();
     }
 
     public static void main(String[] args) {
