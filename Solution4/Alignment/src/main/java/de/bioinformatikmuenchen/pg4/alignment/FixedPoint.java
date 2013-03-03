@@ -71,10 +71,10 @@ public class FixedPoint extends AlignmentProcessor{
         //return ret;
         double[] minMax = getMinMaxAverage();
         //put matrix to file as inout for gnuplot:
-        String s = matrixToString();
+        path = (path==null ? "" : path);
         putToFile(matrixToString(), "./matrix.txt");
         String gnuPlot = "set terminal png\n" +
-        "set output \""+path+"/fpa_"+seq1.getId()+"_"+seq2.getId()+".png\"\n" +
+        "set output \""+(!path.equals("") ? path+"/" : "")+"fpa_"+seq1.getId()+"_"+seq2.getId()+".png\"\n" +
         "set size ratio 0.5\n" +
         "set title \"Fixed Point Alignment"+seq1.getId()+" vs. "+seq2.getId()+"\"\n" +
         "\n" +
