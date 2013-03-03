@@ -118,7 +118,24 @@ public class NeedlemanWunschTest {
         NeedlemanWunsch instance = new NeedlemanWunsch(AlignmentMode.GLOBAL, AlignmentAlgorithm.NEEDLEMAN_WUNSCH, matrix, gapCost);
         AlignmentResult result = instance.align(seq1Obj, seq2Obj);
         assertEquals(24.0, result.getScore(), 0.0000000001);
-        assertEquals(24.0, CheckScoreCalculator.calculateCheckScoreNonAffine(AlignmentMode.GLOBAL, result.getFirstAlignment(), new ZeroOneAlignmentMatrix(), new ConstantGapCost(0)), 0.0000000001);
+        assertEquals(24.0, CheckScoreCalculator.calculateCheckScoreNonAffine(AlignmentMode.GLOBAL, result.getFirstAlignment(), new WikipediaAlignmentMatrix1(), new ConstantGapCost(-5)), 0.0000000001);
+        //System.out.println("##### \n" + spa.queryAlignment + "\n" + spa.matchLine + "\n" + spa.targetAlignment);
+    }
+    
+    @Test
+    public void testAlignLeftBorderSimple() {
+        Sequence seq1Obj = new Sequence("GAATT");
+        Sequence seq2Obj = new Sequence("GAATTCCCCC");
+        IDistanceMatrix matrix = new ZeroOneAlignmentMatrix();
+        IGapCost gapCost = new ConstantGapCost(0);
+        NeedlemanWunsch instance = new NeedlemanWunsch(AlignmentMode.GLOBAL, AlignmentAlgorithm.NEEDLEMAN_WUNSCH, matrix, gapCost);
+        AlignmentResult result = instance.align(seq1Obj, seq2Obj);
+        System.out.println("Z");
+        System.out.println(result.getFirstAlignment().getQueryAlignment());
+        System.out.println(result.getFirstAlignment().getTargetAlignment());
+        System.out.println(instance.printMatrix());
+        System.out.println("Z");
+        assertEquals(result.getScore(), CheckScoreCalculator.calculateCheckScoreNonAffine(AlignmentMode.GLOBAL, result.getFirstAlignment(), new ZeroOneAlignmentMatrix(), new ConstantGapCost(0)), 0.0000000001);
         //System.out.println("##### \n" + spa.queryAlignment + "\n" + spa.matchLine + "\n" + spa.targetAlignment);
     }
 
@@ -133,12 +150,12 @@ public class NeedlemanWunschTest {
         IGapCost gapCost = new ConstantGapCost(-5);
         NeedlemanWunsch instance = new NeedlemanWunsch(AlignmentMode.GLOBAL, AlignmentAlgorithm.NEEDLEMAN_WUNSCH, matrix, gapCost);
         AlignmentResult result = instance.align(seq1Obj, seq2Obj);
-        System.out.println("X");
-        System.out.println(result.getFirstAlignment().getQueryAlignment());
-        System.out.println(result.getFirstAlignment().getTargetAlignment());
-        System.out.println(instance.printMatrix());
-        System.out.println("X");
-        assertEquals(result.getScore(), CheckScoreCalculator.calculateCheckScoreNonAffine(AlignmentMode.GLOBAL, result.getFirstAlignment(), new ZeroOneAlignmentMatrix(), new ConstantGapCost(0)), 0.0000000001);
+//        System.out.println("X");
+//        System.out.println(result.getFirstAlignment().getQueryAlignment());
+//        System.out.println(result.getFirstAlignment().getTargetAlignment());
+//        System.out.println(instance.printMatrix());
+//        System.out.println("X");
+        assertEquals(result.getScore(), CheckScoreCalculator.calculateCheckScoreNonAffine(AlignmentMode.GLOBAL, result.getFirstAlignment(), new WikipediaAlignmentMatrix1(), new ConstantGapCost(-5)), 0.0000000001);
         //System.out.println("##### \n" + spa.queryAlignment + "\n" + spa.matchLine + "\n" + spa.targetAlignment);
     }
 
@@ -153,12 +170,12 @@ public class NeedlemanWunschTest {
         IGapCost gapCost = new ConstantGapCost(-5);
         NeedlemanWunsch instance = new NeedlemanWunsch(AlignmentMode.FREESHIFT, AlignmentAlgorithm.NEEDLEMAN_WUNSCH, matrix, gapCost);
         AlignmentResult result = instance.align(seq1Obj, seq2Obj);
-        System.out.println("Y");
-        System.out.println(result.getFirstAlignment().getQueryAlignment());
-        System.out.println(result.getFirstAlignment().getTargetAlignment());
-        System.out.println(instance.printMatrix());
-        System.out.println("X");
-        assertEquals(result.getScore(), CheckScoreCalculator.calculateCheckScoreNonAffine(AlignmentMode.FREESHIFT, result.getFirstAlignment(), new ZeroOneAlignmentMatrix(), new ConstantGapCost(0)), 0.0000000001);
+//        System.out.println("Y");
+//        System.out.println(result.getFirstAlignment().getQueryAlignment());
+//        System.out.println(result.getFirstAlignment().getTargetAlignment());
+//        System.out.println(instance.printMatrix());
+//        System.out.println("Y");
+        assertEquals(result.getScore(), CheckScoreCalculator.calculateCheckScoreNonAffine(AlignmentMode.FREESHIFT, result.getFirstAlignment(), new WikipediaAlignmentMatrix1(), new ConstantGapCost(-5)), 0.0000000001);
         //System.out.println("##### \n" + spa.queryAlignment + "\n" + spa.matchLine + "\n" + spa.targetAlignment);
     }
 //    @Test
