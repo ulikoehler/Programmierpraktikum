@@ -70,12 +70,12 @@ public class FixedPoint extends AlignmentProcessor{
         AlignmentResult ret = new AlignmentResult();
         //return ret;
         double[] minMax = getMinMaxAverage();
+        //put matrix to file as inout for gnuplot:
+        path = (path==null ? "" : path);
         //Remove trailing / if any
         if(path.endsWith("/")) {
             path = path.substring(0,path.length()-1);
         }
-        //put matrix to file as inout for gnuplot:
-        path = (path==null ? "" : path);
         putToFile(matrixToString(), "./matrix.txt");
         String gnuPlot = "set terminal png\n" +
         "set output \""+(!path.equals("") ? path+"/" : "")+"fpa_"+seq1.getId()+"_"+seq2.getId()+".png\"\n" +
