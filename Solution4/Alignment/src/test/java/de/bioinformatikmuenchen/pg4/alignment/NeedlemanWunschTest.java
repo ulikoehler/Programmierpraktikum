@@ -118,8 +118,7 @@ public class NeedlemanWunschTest {
         System.out.println(result.getFirstAlignment().getQueryAlignment());
         System.out.println(result.getFirstAlignment().getTargetAlignment());
         System.out.println("X");
-        assertEquals(24.0, result.getScore(), 0.0000000001);
-        assertEquals(24.0, CheckScoreCalculator.calculateCheckScoreNonAffine(AlignmentMode.GLOBAL, result.getFirstAlignment(), new ZeroOneAlignmentMatrix(), new ConstantGapCost(0)), 0.0000000001);
+        assertEquals(result.getScore(), CheckScoreCalculator.calculateCheckScoreNonAffine(AlignmentMode.GLOBAL, result.getFirstAlignment(), new ZeroOneAlignmentMatrix(), new ConstantGapCost(0)), 0.0000000001);
         //System.out.println("##### \n" + spa.queryAlignment + "\n" + spa.matchLine + "\n" + spa.targetAlignment);
     }
 //    @Test
