@@ -53,7 +53,7 @@ public class AlignmentMain {
                 .addOption("m", "matrixname", true, "matrixname")
                 .addOption("r", "mode", true, "Set the mode (global|local|freeshift)")
                 .addOption("u", "nw", false, "Use Needleman-Wunsch, with gap-open being ignored")
-                .addOption("a", "fixed-point-alignment", true, "Output FPA to directory")
+                .addOption("a", "fixedpointalignment", true, "Output FPA to directory")
                 .addOption("t", "min-as-threshold", true, "In FPA, set the minimum of the matrix as heatmap minimum")
                 .addOption("b", "benchmark", false, "Benchmark the selected algorithm versus the recursive Needleman-Wunsch")
                 .addOption("v", "verbose", false, "Print verbose status reports (on stderr)")
@@ -122,8 +122,8 @@ public class AlignmentMain {
         }
         //check --fixed-point-alignment
         File fpaDir = null;
-        if (commandLine.hasOption("fixed-point-alignment")) {
-            fpaDir = new File(commandLine.getOptionValue("fixed-point-alignment"));
+        if (commandLine.hasOption("fixedpointalignment")) {
+            fpaDir = new File(commandLine.getOptionValue("fixedpointalignment"));
             if (fpaDir.exists() && !fpaDir.isDirectory()) {
                 System.err.println("Error: --fixed-point-alignment argument exists and is not a directory");
                 System.exit(1);
