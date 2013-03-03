@@ -13,7 +13,6 @@ import java.util.LinkedList;
 public class GOR5Predicter {
 
     LinkedList<String> align = new LinkedList<String>();
-    private String alnSeqSS = null;
     GORPredicter gor = null;
     private String masterSeqAA = null;
     private String masterSeqId = null;
@@ -41,7 +40,11 @@ public class GOR5Predicter {
 
     public PredictionResult predict(File aln) {
         getAlign(aln);
-        return null;
+        PredictionResult result = new PredictionResult();
+        // 
+        
+        
+        return result;
     }
 
     private void getAlign(File aln) {
@@ -61,7 +64,7 @@ public class GOR5Predicter {
                     this.masterSeqAA = line.substring(3).trim();
                 } // secstruct
                 else if (line.startsWith("SS")) {
-                    this.alnSeqSS = line.substring(3).trim();
+                    // don't cheat skip this line
                 } // alignseq
                 else if (isNumeric(line.charAt(0))) {
                     int pos = 0;

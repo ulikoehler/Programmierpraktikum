@@ -58,9 +58,9 @@
     <property name="sun.io.unicode.encoding" value="UnicodeLittle"/>
     <property name="sun.cpu.isalist" value=""/>
   </properties>
-  <testcase time="0.661" classname="de.bioinformatikmuenchen.pg4.ssp.ssppredict.GORPredicterTest" name="testGetStatesFromFile"/>
-  <testcase time="0.013" classname="de.bioinformatikmuenchen.pg4.ssp.ssppredict.GORPredicterTest" name="testGetGorFromFile"/>
-  <testcase time="0.01" classname="de.bioinformatikmuenchen.pg4.ssp.ssppredict.GORPredicterTest" name="testGetWindowSizeFromFile"/>
-  <testcase time="1.79" classname="de.bioinformatikmuenchen.pg4.ssp.ssppredict.GORPredicterTest" name="testPredictionArgMax"/>
-  <testcase time="0" classname="de.bioinformatikmuenchen.pg4.ssp.ssppredict.GORPredicterTest" name="testP2Int"/>
+  <testcase time="0.667" classname="de.bioinformatikmuenchen.pg4.ssp.ssppredict.GORPredicterTest" name="testGetStatesFromFile"/>
+  <testcase time="0.012" classname="de.bioinformatikmuenchen.pg4.ssp.ssppredict.GORPredicterTest" name="testGetGorFromFile"/>
+  <testcase time="0.009" classname="de.bioinformatikmuenchen.pg4.ssp.ssppredict.GORPredicterTest" name="testGetWindowSizeFromFile"/>
+  <testcase time="1.785" classname="de.bioinformatikmuenchen.pg4.ssp.ssppredict.GORPredicterTest" name="testPredictionArgMax"/>
+  <testcase time="0.001" classname="de.bioinformatikmuenchen.pg4.ssp.ssppredict.GORPredicterTest" name="testP2Int"/>
 </testsuite>

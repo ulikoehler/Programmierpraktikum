@@ -8,6 +8,7 @@ import java.io.*;
 import java.io.File;
 import java.io.FileReader;
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -239,12 +240,73 @@ public abstract class GORPredicter {
 
     // Postprocessing
     public static PredictionResult postprocess(PredictionResult results) {
-        // TODO: implement
-        // an helix has an minimal size of 4 so it doesn't make sens to have less than 4 H's after each other
         // look at the predictions
-        
-        
-        
-        return results;
+        PredictionResult result = new PredictionResult();
+
+        LinkedList<String[]> sequences = results.sequences;
+        LinkedList<double[][]> probabilities = results.probabilities;
+
+        for (int seqNr = 0; seqNr < sequences.size(); seqNr++) {
+            String[] currentSeq = sequences.get(seqNr);
+            double[][] currentProb = probabilities.get(seqNr);
+            // add to our result the prev seq and its probabilities so it won't disappear
+            result.add(currentSeq[0], currentSeq[1], currentProb);
+            // add postpredicted seqence
+            String id = " +++ postprocess +++ " + currentSeq[0];
+            String seq = currentSeq[1];
+            // new probabilities
+            double[][] newProb = new double[currentProb.length][Data.secStruct.length];
+            // postpredict
+            for (int pos = 0; pos < newProb.length; pos++) {
+                double[] probCurr = currentProb[pos];
+                double[] newProbCurr = new double[Data.secStruct.length];
+                // add logic here
+                if (hasHighProbability(probCurr)) {
+                    // there's a high prob for this, so just copy
+                    System.arraycopy(probCurr, 0, newProbCurr, 0, probCurr.length);
+                } else {
+                    // there's no high probability look at the states before and after (build the average)
+                    if (pos - 1 >= 0 && pos + 1 < newProb.length) {
+                        double[] prevState = currentProb[pos - 1];
+                        // probCurr
+                        double[] nextState = currentProb[pos + 1];
+                        for (int i = 0; i < Data.secStruct.length; i++) {
+                            // average
+                            newProbCurr[i] = (prevState[i] + nextState[i] + probCurr[i]) / 3;
+                        }
+                    } else if (pos - 1 >= 0) {
+                        double[] prevState = currentProb[pos - 1];
+                        // probCurr
+                        for (int i = 0; i < Data.secStruct.length; i++) {
+                            // average
+                            newProbCurr[i] = (prevState[i] + probCurr[i]) / 2;
+                        }
+                    } else {  // pos + 1 < newProb.lengt
+                        // probCurr
+                        double[] nextState = currentProb[pos + 1];
+                        for (int i = 0; i < Data.secStruct.length; i++) {
+                            // average
+                            newProbCurr[i] = (nextState[i] + probCurr[i]) / 2;
+                        }
+                    }
+                }
+                // end add logic
+                newProb[pos] = newProbCurr;
+            }
+            // add postprediction
+            result.add(id, seq, newProb);
+        }
+
+        return result;
+    }
+
+    public static boolean hasHighProbability(double[] probs) {
+        double probabilityBorder = 0.65;             // There're at least to other state for the rest probability!
+        for (int i = 0; i < probs.length; i++) {
+            if (probs[i] > probabilityBorder) {
+                return true;
+            }
+        }
+        return false;
     }
 }
