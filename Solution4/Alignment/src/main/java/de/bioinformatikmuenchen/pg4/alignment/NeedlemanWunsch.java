@@ -178,7 +178,9 @@ public class NeedlemanWunsch extends AlignmentProcessor {
                 queryAlignment.append('-');
                 targetAlignment.append(targetSequence.charAt(y - 1));
                 y--;
-            } else if (x == 0) {
+            }
+            //If we encountered an edge, break
+            if (x == 0) {
                 while (y > 0) {
                     topPath[x][y] = true;
                     hasPath[x][y] = true;
