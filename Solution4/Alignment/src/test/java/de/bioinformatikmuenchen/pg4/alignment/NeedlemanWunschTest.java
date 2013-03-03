@@ -62,8 +62,6 @@ public class NeedlemanWunschTest {
 //        SequencePairAlignment spa = result.getFirstAlignment();
         //System.out.println("##### \n" + spa.queryAlignment + "\n" + spa.matchLine + "\n" + spa.targetAlignment);
         assertEquals(6.0, result.getScore(), 0.0000000001);
-        System.out.println(result.getFirstAlignment().getQueryAlignment());
-        System.out.println(result.getFirstAlignment().getTargetAlignment());
         assertEquals(6.0, CheckScoreCalculator.calculateCheckScoreNonAffine(AlignmentMode.FREESHIFT, result.getFirstAlignment(), new ZeroOneAlignmentMatrix(), new ConstantGapCost(0)), 0.0000000001);
         //System.out.println("Q: " + result.getFirstAlignment().getQueryAlignment());
         //System.out.println("T: " + result.getFirstAlignment().getTargetAlignment());
@@ -79,10 +77,11 @@ public class NeedlemanWunschTest {
         AlignmentResult result = w.align(new Sequence("ACGA"), new Sequence("TCCG"));
         //System.out.println("Score: " + result.getScore());
         assertEquals(2, result.getScore(), 0.00000001);
+
+        System.out.println(result.getFirstAlignment().getQueryAlignment());
+        System.out.println(result.getFirstAlignment().getTargetAlignment());
         //assertEquals("G-AATTCAGTTA", currentAlignment.getSequence());
         assertEquals(2.0, CheckScoreCalculator.calculateCheckScoreNonAffine(AlignmentMode.GLOBAL, result.getFirstAlignment(), new ZeroOneAlignmentMatrix(), new ConstantGapCost(0)), 0.0000000001);
-        
-
     }
 
     /**
@@ -101,6 +100,25 @@ public class NeedlemanWunschTest {
         AlignmentResult result = instance.align(seq1Obj, seq2Obj);
         assertEquals(24.0, result.getScore(), 0.0000000001);
         assertEquals(24.0, CheckScoreCalculator.calculateCheckScoreNonAffine(AlignmentMode.GLOBAL, result.getFirstAlignment(), new ZeroOneAlignmentMatrix(), new ConstantGapCost(0)), 0.0000000001);
+        //System.out.println("##### \n" + spa.queryAlignment + "\n" + spa.matchLine + "\n" + spa.targetAlignment);
+    }
+
+    /**
+     * It should match on the left border
+     */
+    @Test
+    public void testAlignLeftBorder() {
+        Sequence seq1Obj = new Sequence("GAATT");
+        Sequence seq2Obj = new Sequence("GAATTGGATC");
+        IDistanceMatrix matrix = new WikipediaAlignmentMatrix1();
+        IGapCost gapCost = new ConstantGapCost(-5);
+        NeedlemanWunsch instance = new NeedlemanWunsch(AlignmentMode.GLOBAL, AlignmentAlgorithm.NEEDLEMAN_WUNSCH, matrix, gapCost);
+        AlignmentResult result = instance.align(seq1Obj, seq2Obj);
+        System.out.println("X");
+        System.out.println(result.getFirstAlignment().getQueryAlignment());
+        System.out.println(result.getFirstAlignment().getTargetAlignment());
+        System.out.println("X");
+        assertEquals(result.getScore(), CheckScoreCalculator.calculateCheckScoreNonAffine(AlignmentMode.GLOBAL, result.getFirstAlignment(), new ZeroOneAlignmentMatrix(), new ConstantGapCost(0)), 0.0000000001);
         //System.out.println("##### \n" + spa.queryAlignment + "\n" + spa.matchLine + "\n" + spa.targetAlignment);
     }
 //    @Test

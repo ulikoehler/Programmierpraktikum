@@ -52,7 +52,9 @@ public class AlignmentMain {
                 .addOption("s", "seqlib", true, "seqlibfile")
                 .addOption("m", "matrixname", true, "matrixname")
                 .addOption("s", "mode", true, "mode")
-                .addOption("u", "nw", false, "Use Needleman-Wunsch")
+                .addOption("p", "mode", true, "mode")
+                .addOption("a", "fixed-point-alignment", true, "Output FPA to directory")
+                .addOption("t", "min-as-threshold", true, "In FPA, set the minimum of the matrix as heatmap minimum")
                 .addOption("b", "benchmark", false, "Benchmark the selected algorithm versus the recursive Needleman-Wunsch")
                 .addOption("v", "verbose", false, "Print verbose status reports (on stderr)")
                 .addOption("c", "check", false, "Calculate checkscores")
@@ -107,12 +109,27 @@ public class AlignmentMain {
         File dpMatrixDir = null;
         if (commandLine.hasOption("dpmatrices")) {
             dpMatrixDir = new File(commandLine.getOptionValue("dpmatrices"));
+            if (!dpMatrixDir.exists()) {
+                dpMatrixDir.mkdirs();
+            }
             if (dpMatrixDir.exists() && !dpMatrixDir.isDirectory()) {
                 System.err.println("Error: --dpmatrices argument exists and is not a directory");
                 System.exit(1);
             }
             if (!dpMatrixDir.exists()) {
                 dpMatrixDir.mkdirs();
+            }
+        }
+        //check --fixed-point-alignment
+        File fpaDir = null;
+        if (commandLine.hasOption("fixed-point-alignment")) {
+            fpaDir = new File(commandLine.getOptionValue("fixed-point-alignment"));
+            if (fpaDir.exists() && !fpaDir.isDirectory()) {
+                System.err.println("Error: --fixed-point-alignment argument exists and is not a directory");
+                System.exit(1);
+            }
+            if (!fpaDir.exists()) {
+                fpaDir.mkdirs();
             }
         }
         //check --pairs
@@ -223,7 +240,7 @@ public class AlignmentMain {
         assert !haveAffineGapCost;
         //If a DP matrix dir is set, we need to copy the SVG graphics there
         if (dpMatrixDir != null) {
-            for (String filename : Lists.newArrayList("T.svg", "L.svg", "LT.svg","B-T.svg", "B-L.svg", "B-LT.svg")) {
+            for (String filename : Lists.newArrayList("T.svg", "L.svg", "LT.svg", "B-T.svg", "B-L.svg", "B-LT.svg")) {
                 InputStream istream = AlignmentMain.class.getResourceAsStream("/graphics/" + filename);
                 //Read it...
                 List<String> lines = IOUtils.readLines(istream);
@@ -241,6 +258,7 @@ public class AlignmentMain {
         IDistanceMatrix matrix = QUASARDistanceMatrixFactory.factorize(substitutionMatrixFile.getAbsolutePath());
         IGapCost gapCost = (haveAffineGapCost ? new AffineGapCost(gapOpen, gapExtend) : new ConstantGapCost(gapOpen));
         DPMatrixExporter matrixExporter = new DPMatrixExporter(dpMatrixDir, outputFormat);
+        FixedPoint fpaProcessor = new FixedPoint(mode, algorithm, matrix, gapCost);
         //Create the processor
         AlignmentProcessor proc = AlignmentProcessorFactory.factorize(mode, algorithm, matrix, gapCost);
         //Handle possible benchmarks if applicable -- benchmark to recursive NW
@@ -281,6 +299,10 @@ public class AlignmentMain {
             } else {
                 //Print all alignments (usually one)
                 formatter.formatAndPrint(result);
+            }
+            //Calculate the FPA if applicable
+            if (fpaDir != null) {
+                fpaProcessor.makePlot(seq1, seq2, commandLine.hasOption("min-as-threshold"));
             }
             //Write the dynamic programming matrix if applicable 
             if (dpMatrixDir != null) {
