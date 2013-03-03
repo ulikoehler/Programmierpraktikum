@@ -21,6 +21,14 @@ public class HtmlOutputFormater {
         builder.append("<head><title> AlignmentValidationSummary </title></head>");
         builder.append("<body>");
 
+        for (int i = 0; i < input.results.size(); i++) {
+            builder.append(input.results.get(i).att1).append("<br>");
+            builder.append("AS ").append(input.results.get(i).att2).append("<br>");
+            builder.append("PS ").append(input.results.get(i).att3).append("<br>");
+            builder.append("SS ").append(input.results.get(i).att4).append("<br>");
+            builder.append("<br>");
+        }
+
         builder.append("</body>");
         builder.append("</html>");
         return builder.toString();
@@ -30,9 +38,36 @@ public class HtmlOutputFormater {
         StringBuilder builder = new StringBuilder();
         builder.append("<html>");
         builder.append("<head><title> AlignmentValidationSummary </title></head>");
-        builder.append("<body>");
+        builder.append("<body><pre>");
 
-        builder.append("</body>");
+        builder.append("Summary:<br>");
+        builder.append("Validation Value\tSD\tMean\tMin\tMax\tQuan50\tQuan5\tQuan95<br><br>");
+        builder.append("> Q3\t\t\t").append(input.getQ3StanDevi()).append("\t").append(input.getQ3Mean()).append("\t").append(input.getQ3Min()).append("\t")
+                .append(input.getQ3Max()).append("\t").append(input.getQ3Quantil(0.5)).append("\t")
+                .append(input.getQ3Quantil(0.05)).append("\t").append(input.getQ3Quantil(0.95)).append("<br><br>");
+        builder.append("> SOV\t\t\t").append(input.getQ3StanDevi()).append("\t").append(input.getQ3Mean()).append("\t").append(input.getQ3Min()).append("\t")
+                .append(input.getQ3Max()).append("\t").append(input.getQ3Quantil(0.5)).append("\t")
+                .append(input.getQ3Quantil(0.05)).append("\t").append(input.getQ3Quantil(0.95)).append("<br><br>");
+        builder.append("> QH\t\t\t").append(input.getQ3StanDevi()).append("\t").append(input.getQ3Mean()).append("\t").append(input.getQ3Min()).append("\t")
+                .append(input.getQ3Max()).append("\t").append(input.getQ3Quantil(0.5)).append("\t")
+                .append(input.getQ3Quantil(0.05)).append("\t").append(input.getQ3Quantil(0.95)).append("<br><br>");
+        builder.append("> QE\t\t\t").append(input.getQ3StanDevi()).append("\t").append(input.getQ3Mean()).append("\t").append(input.getQ3Min()).append("\t")
+                .append(input.getQ3Max()).append("\t").append(input.getQ3Quantil(0.5)).append("\t")
+                .append(input.getQ3Quantil(0.05)).append("\t").append(input.getQ3Quantil(0.95)).append("<br><br>");
+        builder.append("> QC\t\t\t").append(input.getQ3StanDevi()).append("\t").append(input.getQ3Mean()).append("\t").append(input.getQ3Min()).append("\t")
+                .append(input.getQ3Max()).append("\t").append(input.getQ3Quantil(0.5)).append("\t")
+                .append(input.getQ3Quantil(0.05)).append("\t").append(input.getQ3Quantil(0.95)).append("<br><br>");
+        builder.append("> SOVH\t\t\t").append(input.getQ3StanDevi()).append("\t").append(input.getQ3Mean()).append("\t").append(input.getQ3Min()).append("\t")
+                .append(input.getQ3Max()).append("\t").append(input.getQ3Quantil(0.5)).append("\t")
+                .append(input.getQ3Quantil(0.05)).append("\t").append(input.getQ3Quantil(0.95)).append("<br><br>");
+        builder.append("> SOVE\t\t\t").append(input.getQ3StanDevi()).append("\t").append(input.getQ3Mean()).append("\t").append(input.getQ3Min()).append("\t")
+                .append(input.getQ3Max()).append("\t").append(input.getQ3Quantil(0.5)).append("\t")
+                .append(input.getQ3Quantil(0.05)).append("\t").append(input.getQ3Quantil(0.95)).append("<br><br>");
+        builder.append("> SOVC\t\t\t").append(input.getQ3StanDevi()).append("\t").append(input.getQ3Mean()).append("\t").append(input.getQ3Min()).append("\t")
+                .append(input.getQ3Max()).append("\t").append(input.getQ3Quantil(0.5)).append("\t")
+                .append(input.getQ3Quantil(0.05)).append("\t").append(input.getQ3Quantil(0.95)).append("<br><br>");
+
+        builder.append("</pre></body>");
         builder.append("</html>");
         return builder.toString();
     }
