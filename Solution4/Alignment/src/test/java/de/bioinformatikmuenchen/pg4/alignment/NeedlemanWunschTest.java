@@ -54,7 +54,8 @@ public class NeedlemanWunschTest {
      */
     @Test
     public void testAlignAvatar() {
-        NeedlemanWunsch instance = new NeedlemanWunsch(AlignmentMode.GLOBAL, AlignmentAlgorithm.NEEDLEMAN_WUNSCH, new ZeroOneAlignmentMatrix(), new ConstantGapCost(0));
+        NeedlemanWunsch instance = new NeedlemanWunsch(AlignmentMode.FREESHIFT, AlignmentAlgorithm.NEEDLEMAN_WUNSCH, new ZeroOneAlignmentMatrix(), new ConstantGapCost(0));
+        instance.setFreeShift(true);
         Sequence seq1Obj = new Sequence("GAATTCAGTTA");
         Sequence seq2Obj = new Sequence("GGATCGA");
         AlignmentResult result = instance.align(seq1Obj, seq2Obj);
