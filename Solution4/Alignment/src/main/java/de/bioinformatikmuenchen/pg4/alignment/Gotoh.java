@@ -128,6 +128,12 @@ public class Gotoh extends AlignmentProcessor {
                 leftTopArrows[x][y] = false;
                 topArrows[x][y] = false;
                 hasPath[x][y] = false;
+                //init the edges
+                if (x == 0 && y != 0) {
+                    topArrows[x][y] = true;
+                } else if (y == 0 && x != 0) {
+                    leftArrows[x][y] = true;
+                }
             }
         }
     }
@@ -238,8 +244,8 @@ public class Gotoh extends AlignmentProcessor {
             } else if (Math.abs(matrixA[x][y] - matrixIn[x][y]) < 0.0000000001) {//Insertion -> left
                 int xShift = 1;
                 while (Math.abs(matrixA[x][y] - (matrixA[x - xShift][y] + gapCost.getGapCost(xShift))) > 0.0000000001) {
-                    leftPath[x - xShift][y] = true;
-                    hasPath[x - xShift][y] = true;
+                    leftPath[x - xShift + 1][y] = true;
+                    hasPath[x - xShift + 1][y] = true;
                     queryLine.append(querySequence.charAt(x - xShift));
                     targetLine.append('-');
                     xShift++;
@@ -252,8 +258,8 @@ public class Gotoh extends AlignmentProcessor {
             } else if (Math.abs(matrixA[x][y] - matrixDel[x][y]) < 0.0000000001) {//Deletion -> right
                 int yShift = 1;
                 while (Math.abs(matrixA[x][y] - (matrixA[x][y - yShift] + gapCost.getGapCost(yShift))) > 0.0000000001) {
-                    topPath[x][y - yShift] = true;
-                    hasPath[x][y - yShift] = true;
+                    topPath[x][y - yShift + 1] = true;
+                    hasPath[x][y - yShift + 1] = true;
                     queryLine.append('-');
                     targetLine.append(targetSequence.charAt(y - yShift));
                     yShift++;
@@ -349,22 +355,22 @@ public class Gotoh extends AlignmentProcessor {
                     targetLine.append('-');
                     xShift++;
                 }
-                leftPath[x - xShift][y] = true;
-                hasPath[x - xShift][y] = true;
+                leftPath[x - xShift + 1][y] = true;
+                hasPath[x - xShift + 1][y] = true;
                 queryLine.append(querySequence.charAt(x - xShift));
                 targetLine.append('-');
                 x -= xShift;
             } else if (Math.abs(matrixA[x][y] - matrixDel[x][y]) < 0.0000000001) {// Deletion -> to the right --> Gap in query alignment part
                 int yShift = 1;
                 while (Math.abs(matrixA[x][y] - (matrixA[x][y - yShift] + gapCost.getGapCost(yShift))) > 0.0000000001) {
-                    topPath[x][y - yShift] = true;
-                    hasPath[x][y - yShift] = true;
+                    topPath[x][y - yShift + 1] = true;
+                    hasPath[x][y - yShift + 1] = true;
                     queryLine.append('-');
                     targetLine.append(targetSequence.charAt(y - yShift));
                     yShift++;
                 }
-                topPath[x][y - yShift] = true;
-                hasPath[x][y - yShift] = true;
+                topPath[x][y - yShift + 1] = true;
+                hasPath[x][y - yShift + 1] = true;
                 queryLine.append('-');
                 targetLine.append(targetSequence.charAt(y - yShift));
                 y -= yShift;

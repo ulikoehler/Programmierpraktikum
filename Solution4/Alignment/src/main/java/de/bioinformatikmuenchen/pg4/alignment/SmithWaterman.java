@@ -237,6 +237,9 @@ public class SmithWaterman extends AlignmentProcessor {
         info.leftArrows = leftArrows;
         info.topArrows = topArrows;
         info.topLeftArrows = leftTopArrows;
+        info.leftPath = leftPath;
+        info.topPath = topPath;
+        info.topLeftPath = leftTopPath;
         info.score = score;
         try {
             exporter.write(info);

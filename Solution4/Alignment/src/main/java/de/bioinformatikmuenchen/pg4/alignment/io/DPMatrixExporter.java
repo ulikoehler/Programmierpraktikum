@@ -130,7 +130,7 @@ public class DPMatrixExporter implements IDPMatrixExporter {
             builder.append("</head><body>");
         }
         builder.append("<h3>").append("Alignment of:&nbsp;").append(info.queryId).append(" and ").append(info.targetId).append("</h3>");
-        builder.append("<p>Score:&nbsp;").append(info.score).append("</p>");
+        builder.append("<p>Score:&nbsp;").append(numberFormat.format(info.score)).append("</p>");
         //Foreach field, write one <div>
         for (int y = 0; y < info.ySize; y++) {
             builder.append("<div class=\"line-container\">");
