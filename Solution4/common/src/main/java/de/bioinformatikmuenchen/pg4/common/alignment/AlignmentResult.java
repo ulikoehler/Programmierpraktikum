@@ -18,7 +18,7 @@ public class AlignmentResult {
 
     private double score;
     private String querySequenceId;
-    private String targetSequence;
+    private String targetSequenceId;
     private Collection<SequencePairAlignment> alignments;
 
     public AlignmentResult() {
@@ -45,11 +45,11 @@ public class AlignmentResult {
     }
 
     public String getTargetSequenceId() {
-        return targetSequence;
+        return targetSequenceId;
     }
 
     public void setTargetSequenceId(String seq2Id) {
-        this.targetSequence = seq2Id;
+        this.targetSequenceId = seq2Id;
     }
 
     public AlignmentResult(double score, Collection<SequencePairAlignment> alignments) {
