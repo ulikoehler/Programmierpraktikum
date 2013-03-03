@@ -42,11 +42,18 @@ public class NeedlemanWunsch extends AlignmentProcessor {
         this.targetSequence = seq2.getSequence();
         this.querySequenceId = seq1.getId();
         this.targetSequenceId = seq2.getId();
+        if(mode==AlignmentMode.FREESHIFT){this.freeShift = true;}
         initMatrix(seq1.getSequence().length(), seq2.getSequence().length());
         fillMatrix(seq1.getSequence(), seq2.getSequence());
         AlignmentResult result = new AlignmentResult();
         //Calculate the alignment and add it to the result
-        SequencePairAlignment alignment = backTrackingGlobal();
+        SequencePairAlignment alignment = null;
+        if(freeShift){
+            alignment = backTrackingFreeShift();
+        }
+        else{
+            alignment = backTracking(-1,-1);
+        }
 //        System.out.println("##spa query: "+spa.queryAlignment);
         result.setAlignments(Collections.singletonList(alignment));
         //this.score = matrix[xSize - 1][ySize - 1];
@@ -159,23 +166,26 @@ public class NeedlemanWunsch extends AlignmentProcessor {
         StringBuilder targetLine = new StringBuilder();
         double[] max = findMaxInMatrixFreeShift();
         boolean maxInLastColumn = (Math.abs(max[0] + 1.0) < 0.000000001);// <=> max[0] == -1.0
+        int x = xSize;
+        int y = ySize;
         if(maxInLastColumn){
-            for (int i = ySize; i > max[1];i--) {
+            for (y = ySize; y > max[1];y--) {
                 queryLine.append('-');
-                targetLine.append(targetSequence.charAt(i-1));
-                topPath[xSize][i] = true;
-                hasPath[xSize][i] = true;
+                targetLine.append(targetSequence.charAt(y-1));
+                topPath[xSize][y] = true;
+                hasPath[xSize][y] = true;
             }
         }
         else{
-            for (int i = xSize; i > max[0]; i--) {
-                queryLine.append(querySequence.charAt(i));
+            for (x = xSize; x > max[0]; x--) {
+                queryLine.append(querySequence.charAt(x));
                 targetLine.append('-');
-                leftPath[i][ySize] = true;
-                hasPath[i][ySize] = true;
+                leftPath[x][ySize] = true;
+                hasPath[x][ySize] = true;
             }
         }
-        SequencePairAlignment remai
+        SequencePairAlignment remaining = backTracking(x, y);
+        return new SequencePairAlignment(remaining.queryAlignment+queryLine.reverse().toString(), remaining.targetAlignment+targetLine.reverse().toString());
     }
     
     public SequencePairAlignment backTracking(int xStart, int yStart) {
