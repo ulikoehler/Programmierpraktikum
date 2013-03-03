@@ -49,7 +49,7 @@ public class NeedlemanWunsch extends AlignmentProcessor {
         SequencePairAlignment alignment = backTracking();
 //        System.out.println("##spa query: "+spa.queryAlignment);
         result.setAlignments(Collections.singletonList(alignment));
-        this.score = matrix[xSize - 1][ySize - 1];
+        //this.score = matrix[xSize - 1][ySize - 1];
         result.setScore(this.score);
         result.setQuerySequenceId(seq1.getId());
         result.setTargetSequenceId(seq2.getId());
@@ -134,6 +134,7 @@ public class NeedlemanWunsch extends AlignmentProcessor {
                 assert leftTopArrows[x][y] || leftArrows[x][y] || topArrows[x][y];
             }
         }
+        this.score = (freeShift ? findMaxInMatrixFreeShift()[2] : matrix[xSize-1][xSize-1]);
     }
 
     public String printMatrix() {
@@ -200,6 +201,29 @@ public class NeedlemanWunsch extends AlignmentProcessor {
         }
         //reverse the output:
         return new SequencePairAlignment(queryAlignment.reverse().toString(), targetAlignment.reverse().toString());
+    }
+    public double[] findMaxInMatrixFreeShift() {//look for maxEntry only in last column and line
+    
+        int x = -1;
+        int y = -1;
+        double maxValue = Double.NEGATIVE_INFINITY;
+        for (int i = 0; i <= xSize; i++) {
+            if (matrix[i][ySize] > maxValue) {
+                maxValue = matrix[i][ySize];
+                x = i;
+                y = -1;
+            }
+        }
+        //calc last column
+        for (int i = 0; i <= ySize; i++) {
+            if (matrix[xSize][i] > maxValue) {
+                maxValue = matrix[xSize][i];
+                y = i;
+                x = -1;
+            }
+        }
+        assert (((x > -1) || (y > -1)) && (maxValue > Double.NEGATIVE_INFINITY));
+        return new double[]{x, y, maxValue};
     }
 
     public boolean setFreeShift(boolean freeShift) {
