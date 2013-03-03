@@ -52,7 +52,7 @@ public class AlignmentMain {
                 .addOption("s", "seqlib", true, "seqlibfile")
                 .addOption("m", "matrixname", true, "matrixname")
                 .addOption("s", "mode", true, "mode")
-                .addOption("p", "mode", true, "mode")
+                .addOption("u", "nw", false, "Use Needleman-Wunsch, with gap-open ignored")
                 .addOption("a", "fixed-point-alignment", true, "Output FPA to directory")
                 .addOption("t", "min-as-threshold", true, "In FPA, set the minimum of the matrix as heatmap minimum")
                 .addOption("b", "benchmark", false, "Benchmark the selected algorithm versus the recursive Needleman-Wunsch")
@@ -256,7 +256,7 @@ public class AlignmentMain {
         ISequenceSource sequenceSource = new SequenceLibrarySequenceSource(seqLibFile.getAbsolutePath());
         Collection<PairfileEntry> pairfileEntries = PairfileParser.parsePairfile(pairsFile.getAbsolutePath());
         IDistanceMatrix matrix = QUASARDistanceMatrixFactory.factorize(substitutionMatrixFile.getAbsolutePath());
-        IGapCost gapCost = (haveAffineGapCost ? new AffineGapCost(gapOpen, gapExtend) : new ConstantGapCost(gapOpen));
+        IGapCost gapCost = (haveAffineGapCost ? new AffineGapCost(gapOpen, gapExtend) : new ConstantGapCost(gapExtend));
         DPMatrixExporter matrixExporter = new DPMatrixExporter(dpMatrixDir, outputFormat);
         FixedPoint fpaProcessor = new FixedPoint(mode, algorithm, matrix, gapCost);
         //Create the processor
