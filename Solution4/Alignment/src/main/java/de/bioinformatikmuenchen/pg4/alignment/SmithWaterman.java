@@ -27,11 +27,15 @@ public class SmithWaterman extends AlignmentProcessor {
     //IDs / Names of the sequences
     private String querySequenceId;
     private String targetSequenceId;
+    private String querySequenceStruct;
+    private String targetSequenceStruct;
     private double score;
     boolean[][] leftPath;
     boolean[][] leftTopPath;
     boolean[][] topPath;
     boolean[][] hasPath;
+    private double[][] secStructMatrix = new double[][]{{2.0, -15.0, -4.0},{-15.0, 4.0, -4.0},{-4.0, -4.0, 2.0}};//H-E-C
+    private boolean secStructAided;
 
     public SmithWaterman(AlignmentMode mode, AlignmentAlgorithm algorithm, IDistanceMatrix distanceMatrix, IGapCost gapCost) {
         super(mode, algorithm, distanceMatrix, gapCost);
@@ -73,6 +77,12 @@ public class SmithWaterman extends AlignmentProcessor {
         }
         return max;
     }
+    
+    public double distanceScore(int x, int y){
+        double distance = distanceMatrix.distance(querySequence.charAt(x), targetSequence.charAt(y));
+        double secStructDistance = secStructMatrix[querySequenceStruct.charAt(x)][targetSequenceStruct.charAt(y)];
+        return (secStructAided ? distance + secStructDistance : distance);
+    }
 
     public void initAndFillMatrix(String s, String t) {
         //////  init matrix:
@@ -108,9 +118,7 @@ public class SmithWaterman extends AlignmentProcessor {
         final double compareThreshold = 0.0000001;
         for (int x = 1; x < xMatrixSize; x++) {
             for (int y = 1; y < ymatrixSize; y++) {
-                char A = querySequence.charAt(x - 1);
-                char B = targetSequence.charAt(y - 1);
-                double leftTopScore = matrix[x - 1][y - 1] + distanceMatrix.distance(A, B);
+                double leftTopScore = matrix[x - 1][y - 1] + distanceScore(x-1, y-1);
                 double leftScore = matrix[x - 1][y] + gapCost.getGapCost(1);
                 double topScore = matrix[x][y - 1] + gapCost.getGapCost(1);
                 //Calculate the max score
@@ -250,5 +258,9 @@ public class SmithWaterman extends AlignmentProcessor {
 
     public double[][] getMatrix() {
         return matrix;
+    }
+
+    public void setSecStructAided(boolean secStructAided) {
+        this.secStructAided = secStructAided;
     }
 }
