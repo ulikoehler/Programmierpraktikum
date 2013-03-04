@@ -43,6 +43,7 @@ public class Gotoh extends AlignmentProcessor {
     boolean[][] topArrows;
     boolean[][] hasPath;
     private double[][] secStructMatrix = new double[][]{{2.0, -15.0, -4.0},{-15.0, 4.0, -4.0},{-4.0, -4.0, 2.0}};//H-E-C
+    private boolean secStructAided;
 
     public Gotoh(AlignmentMode mode, AlignmentAlgorithm algorithm, IDistanceMatrix distanceMatrix, IGapCost gapCost) {
         super(mode, algorithm, distanceMatrix, gapCost);
@@ -182,8 +183,10 @@ public class Gotoh extends AlignmentProcessor {
         return new double[]{x, y, maxValue};
     }
     
-    public double ssaaScore(int x, int y, char A, char B){
-        return distanceMatrix.distance(A, B) + 
+    public double distanceScore(int x, int y){
+        double distance = distanceMatrix.distance(querySequence.charAt(x), targetSequence.charAt(y));
+        double secStructDistance = secStructMatrix[querySequenceStruct.charAt(x)][targetSequenceStruct.charAt(y)];
+        return (secStructAided ? distance + secStructDistance : distance);
     }
 
     public void fillMatrix(String seq1, String seq2, AlignmentResult result) {
@@ -192,7 +195,7 @@ public class Gotoh extends AlignmentProcessor {
             for (int y = 1; y < ySize + 1; y++) {
                 matrixIn[x][y] = Math.max(matrixA[x - 1][y] + gapCost.getGapCost(1), matrixIn[x - 1][y] + gapCost.getGapExtensionPenalty(0, 1));
                 matrixDel[x][y] = Math.max(matrixA[x][y - 1] + gapCost.getGapCost(1), matrixDel[x][y - 1] + gapCost.getGapExtensionPenalty(0, 1));
-                double match = matrixA[x - 1][y - 1] + distanceMatrix.distance(seq1.charAt(x - 1), seq2.charAt(y - 1));
+                double match = matrixA[x - 1][y - 1] + distanceScore(x-1, y-1);
                 double in = matrixIn[x][y];
                 double del = matrixDel[x][y];
                 double max = Math.max(Math.max(in, del), match);
@@ -458,4 +461,18 @@ public class Gotoh extends AlignmentProcessor {
         }
         info.score = score;
     }
+
+    public void setQuerySequenceStruct(String querySequenceStruct) {
+        this.querySequenceStruct = querySequenceStruct;
+    }
+
+    public void setTargetSequenceStruct(String targetSequenceStruct) {
+        this.targetSequenceStruct = targetSequenceStruct;
+    }
+
+    public void setSecStructAided(boolean secStructAided) {
+        this.secStructAided = secStructAided;
+    }
+    
+    
 }
