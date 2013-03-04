@@ -291,8 +291,18 @@ public class AlignmentMain {
             Sequence seq2 = sequenceSource.getSequence(entry.second);
             //If applicable, fetch the secondary structure and enable SSAA
             if (secStructDB != null) {
-                seq1.setSs(secStructDB.getSS(entry.first));
-                seq2.setSs(secStructDB.getSS(entry.second));
+                String seq1SS = secStructDB.getSS(entry.first);
+                String seq2SS = secStructDB.getSS(entry.second);
+                seq1.setSs(seq1SS);
+                seq2.setSs(seq2SS);
+                //Enable SSAA only if we have SSs for both sequences
+                if (seq1SS == null || seq2SS == null) {
+                    System.err.println("Can't find secondary structure for " + entry.first + " or " + entry.second);
+                } else {
+                    proc.setSecStructAided(true);
+                }
+            } else {
+                proc.setSecStructAided(false);
             }
             //Print status if in verbose mode
             if (verbose) {
