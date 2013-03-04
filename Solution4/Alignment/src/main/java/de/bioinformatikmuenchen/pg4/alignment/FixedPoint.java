@@ -78,7 +78,7 @@ public class FixedPoint extends AlignmentProcessor{
             path = path.substring(0,path.length()-1);
         }
         //put matrix to file as inout for gnuplot:
-        putToFile(matrixToString(), "./matrix.txt");
+        putToFile(matrixToString(), "./matrix");
         String gnuPlot = "set terminal png\n" +
         "set output \""+(!path.equals("") ? path+"/" : "")+"fpa_"+seq1.getId()+"_"+seq2.getId()+".png\"\n" +
         "set size ratio 0.5\n" +
@@ -95,12 +95,12 @@ public class FixedPoint extends AlignmentProcessor{
         "set cbrange ["+(minAsThreshold ? minMax[0] : minMax[2])+":"+minMax[1]+"]\n" +//decides the minimum threshold for the plot (min or average value of fpaMatrix)
         "#unset cbtics\n" +
         "\n" +
-        "set xrange [0:"+xSize+"]\n" +
-        "set yrange [0:"+ySize+"]\n" +
+        "set xrange [0:"+ySize+"]\n" +
+        "set yrange [0:"+xSize+"]\n" +
         "\n" +
         "set view map\n" +
         "\n" +
-        "splot 'matrix.txt' matrix with image";
+        "splot 'matrix' matrix with image";
         putToFile(gnuPlot, "./plot.gp");
         Runtime rt = Runtime.getRuntime();
         try {
