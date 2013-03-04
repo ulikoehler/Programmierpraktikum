@@ -91,6 +91,48 @@
 			  </div>
 			  <h3>Predict secondary structure</h3>
 			  <div>
+				<form id="sspPredictForm">
+					<h4>Secondary Structure Prediction</h4>
+					<div id="sspSequenceDropField" class="sequence-drop ui-widget-content ui-state-default">
+						<h4 class="ui-widget-header">Please drop the sequence or the alignment (GOR5) you want to predict in this box!</h4><!-- param --seq <if sequence> or --maf <if alignment> -->
+					</div>
+					<br>
+					<div id="sspSequenceDropField" class="sequence-drop ui-widget-content ui-state-default">
+						<h4 class="ui-widget-header">Please drop the model file you want to use in this box!</h4><!-- param --model <model file> -->
+					</div>
+					<!-- param: --format <txt|html> -->
+					<br>
+					Options:<br>
+					<br>
+						<input type="checkbox" name="option" value="probabilities" checked="checked">show probabilities in results<br><!-- param: --probabilities -->
+						<input type="checkbox" name="option" value="avgPost" checked="checked">use avg postprocessing for positions with less than <input id="avgProb" type="text" value="50" style="text-align:right; border: none; width: 24px;" maxlength="3" onkeydown="javascript: this.style.width = ((this.value.length + 1) * 8) + 'px';">% probability<br><!-- --avgPost <double> -->
+						<input type="checkbox" name="option" value="stdPost" checked="checked">use std postprocessing for positions with less than <input id="stdProb" type="text" value="50" style="text-align:right; border: none; width: 24px;" maxlength="3" onkeydown="javascript: this.style.width = ((this.value.length + 1) * 8) + 'px';">% probability<br><!-- --stdPost <double> -->
+					<br>
+					<button id="sspCalculateSequenceButton">Predict sequence &gt;&gt;</button><!-- TODO Use JQuery to load results -->
+				</form>
+				<script type="text/javascript">
+				// <!--
+					$(function() {
+						$( "#sspResultDialog" ).dialog({
+								autoOpen: false,
+								show: {
+								effect: "blind",
+								duration: 1000
+							},
+							hide: {
+								effect: "explode",
+								duration: 1000
+							}
+						});
+						$( "#sspCalculateSequenceButton" ).click(function() {
+							$( "#sspResultDialog" ).dialog( "open" );
+						});
+					});
+				// -->
+				</script>
+				<div id="sspResultDialog" title="Input a sequence for prediction">
+					<h3>Prediction Results:</h3>
+				</div>
 			  </div>
 			  <h3>Validation</h3>
 			  <div>
