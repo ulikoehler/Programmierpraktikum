@@ -12,6 +12,7 @@ import de.bioinformatikmuenchen.pg4.alignment.gap.IGapCost;
 import de.bioinformatikmuenchen.pg4.alignment.io.AlignmentOutputFormatFactory;
 import de.bioinformatikmuenchen.pg4.alignment.io.DPMatrixExporter;
 import de.bioinformatikmuenchen.pg4.alignment.io.IAlignmentOutputFormatter;
+import de.bioinformatikmuenchen.pg4.alignment.io.SecStructDB;
 import de.bioinformatikmuenchen.pg4.alignment.pairfile.PairfileEntry;
 import de.bioinformatikmuenchen.pg4.alignment.pairfile.PairfileParser;
 import de.bioinformatikmuenchen.pg4.alignment.recursive.RecursiveNWAlignmentProcessor;
@@ -52,6 +53,7 @@ public class AlignmentMain {
                 .addOption("s", "seqlib", true, "seqlibfile")
                 .addOption("m", "matrixname", true, "matrixname")
                 .addOption("r", "mode", true, "Set the mode (global|local|freeshift)")
+                .addOption("q", "secstructdb", true, "Enable SSAA with the specified <")
                 .addOption("u", "nw", false, "Use Needleman-Wunsch, with gap-open being ignored")
                 .addOption("a", "fixedpointalignment", true, "Output FPA to directory")
                 .addOption("t", "min-as-threshold", true, "In FPA, set the minimum of the matrix as heatmap minimum")
@@ -146,6 +148,15 @@ public class AlignmentMain {
             formatter.printHelp("alignment.jar", opts);
             System.exit(1);
         }
+        //check --pairs
+        File secStructDBFile = null;
+        if (commandLine.hasOption("secstructdb")) {
+            secStructDBFile = new File(commandLine.getOptionValue("secstructdb"));
+            if (!secStructDBFile.exists() || secStructDBFile.isDirectory()) {
+                System.err.println("Error: --secstructdb argument is not a file or does not exist!");
+                System.exit(1);
+            }
+        }
         //check --seqlib
         File seqLibFile = null;
         if (commandLine.hasOption("seqlib")) {
@@ -236,7 +247,7 @@ public class AlignmentMain {
         //Inter-argument cheks
         //
         boolean haveAffineGapCost = Math.abs(gapOpen - gapExtend) > 0.00000001;
-        if(algorithm != AlignmentAlgorithm.GOTOH) {
+        if (algorithm != AlignmentAlgorithm.GOTOH) {
             haveAffineGapCost = false;
         }
         //If a DP matrix dir is set, we need to copy the SVG graphics there
@@ -260,6 +271,10 @@ public class AlignmentMain {
         IGapCost gapCost = (haveAffineGapCost ? new AffineGapCost(gapOpen, gapExtend) : new ConstantGapCost(gapExtend));
         DPMatrixExporter matrixExporter = new DPMatrixExporter(dpMatrixDir, outputFormat);
         FixedPoint fpaProcessor = new FixedPoint(mode, algorithm, matrix, gapCost);
+        SecStructDB secStructDB = (secStructDBFile == null ? null : new SecStructDB(secStructDBFile.getAbsolutePath()));
+        if (secStructDB != null) {
+            System.err.println("Enabling secondary-structure-assisted alignment");
+        }
         //Create the processor
         AlignmentProcessor proc = AlignmentProcessorFactory.factorize(mode, algorithm, matrix, gapCost);
         //Handle possible benchmarks if applicable -- benchmark to recursive NW
@@ -274,6 +289,11 @@ public class AlignmentMain {
             //Get the sequences
             Sequence seq1 = sequenceSource.getSequence(entry.first);
             Sequence seq2 = sequenceSource.getSequence(entry.second);
+            //If applicable, fetch the secondary structure and enable SSAA
+            if (secStructDB != null) {
+                seq1.setSs(secStructDB.getSS(entry.first));
+                seq2.setSs(secStructDB.getSS(entry.second));
+            }
             //Print status if in verbose mode
             if (verbose) {
                 System.err.println("Aligning " + seq1.getId() + " and " + seq2.getId() + "...");
@@ -290,8 +310,8 @@ public class AlignmentMain {
             //Either --check and print only incorrect alignment or print all
             if (calculateCheckscores) {
                 for (SequencePairAlignment alignment : result.getAlignments()) {
-                    double checkScore = (haveAffineGapCost ? 
-                            CheckScoreCalculator.calculateCheckScoreAffine(mode, alignment, matrix, gapCost)
+                    double checkScore = (haveAffineGapCost
+                            ? CheckScoreCalculator.calculateCheckScoreAffine(mode, alignment, matrix, gapCost)
                             : CheckScoreCalculator.calculateCheckScoreNonAffine(mode, alignment, matrix, gapCost));
                     if (Math.abs(checkScore - result.getScore()) > 0.000000001) {
                         //Check failed, print failed alignments ONLY

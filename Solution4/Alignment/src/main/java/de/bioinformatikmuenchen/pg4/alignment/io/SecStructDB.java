@@ -16,7 +16,7 @@ import java.util.HashMap;
  *
  * @author koehleru
  */
-public class SecStructDBParser {
+public class SecStructDB {
 
     private HashMap<String, String> asMap = Maps.newHashMap();
     private HashMap<String, String> ssMap = Maps.newHashMap();
@@ -29,11 +29,11 @@ public class SecStructDBParser {
         return ssMap.get(id);
     }
 
-    public SecStructDBParser(String filename) throws IOException {
+    public SecStructDB(String filename) throws IOException {
         this(new FileInputStream(filename));
     }
 
-    public SecStructDBParser(InputStream in) throws IOException {
+    public SecStructDB(InputStream in) throws IOException {
         BufferedReader reader = new BufferedReader(new InputStreamReader(in));
         String line;
         String currentSequenceId = null;
