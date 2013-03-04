@@ -12,6 +12,7 @@ import de.bioinformatikmuenchen.pg4.alignment.gap.IGapCost;
 import de.bioinformatikmuenchen.pg4.alignment.io.AlignmentOutputFormatFactory;
 import de.bioinformatikmuenchen.pg4.alignment.io.DPMatrixExporter;
 import de.bioinformatikmuenchen.pg4.alignment.io.IAlignmentOutputFormatter;
+import de.bioinformatikmuenchen.pg4.alignment.io.SecStructDB;
 import de.bioinformatikmuenchen.pg4.alignment.pairfile.PairfileEntry;
 import de.bioinformatikmuenchen.pg4.alignment.pairfile.PairfileParser;
 import de.bioinformatikmuenchen.pg4.alignment.recursive.RecursiveNWAlignmentProcessor;
@@ -51,8 +52,11 @@ public class AlignmentMain {
                 .addOption("p", "pairs", true, "Path to pairs file")
                 .addOption("s", "seqlib", true, "seqlibfile")
                 .addOption("m", "matrixname", true, "matrixname")
-                .addOption("s", "mode", true, "mode")
-                .addOption("u", "nw", false, "Use Needleman-Wunsch")
+                .addOption("r", "mode", true, "Set the mode (global|local|freeshift)")
+                .addOption("q", "secstructdb", true, "Enable SSAA with the specified <")
+                .addOption("u", "nw", false, "Use Needleman-Wunsch, with gap-open being ignored")
+                .addOption("a", "fixedpointalignment", true, "Output FPA to directory")
+                .addOption("t", "min-as-threshold", true, "In FPA, set the minimum of the matrix as heatmap minimum")
                 .addOption("b", "benchmark", false, "Benchmark the selected algorithm versus the recursive Needleman-Wunsch")
                 .addOption("v", "verbose", false, "Print verbose status reports (on stderr)")
                 .addOption("c", "check", false, "Calculate checkscores")
@@ -107,12 +111,27 @@ public class AlignmentMain {
         File dpMatrixDir = null;
         if (commandLine.hasOption("dpmatrices")) {
             dpMatrixDir = new File(commandLine.getOptionValue("dpmatrices"));
+            if (!dpMatrixDir.exists()) {
+                dpMatrixDir.mkdirs();
+            }
             if (dpMatrixDir.exists() && !dpMatrixDir.isDirectory()) {
                 System.err.println("Error: --dpmatrices argument exists and is not a directory");
                 System.exit(1);
             }
             if (!dpMatrixDir.exists()) {
                 dpMatrixDir.mkdirs();
+            }
+        }
+        //check --fixed-point-alignment
+        File fpaDir = null;
+        if (commandLine.hasOption("fixedpointalignment")) {
+            fpaDir = new File(commandLine.getOptionValue("fixedpointalignment"));
+            if (fpaDir.exists() && !fpaDir.isDirectory()) {
+                System.err.println("Error: --fixed-point-alignment argument exists and is not a directory");
+                System.exit(1);
+            }
+            if (!fpaDir.exists()) {
+                fpaDir.mkdirs();
             }
         }
         //check --pairs
@@ -128,6 +147,15 @@ public class AlignmentMain {
             HelpFormatter formatter = new HelpFormatter();
             formatter.printHelp("alignment.jar", opts);
             System.exit(1);
+        }
+        //check --pairs
+        File secStructDBFile = null;
+        if (commandLine.hasOption("secstructdb")) {
+            secStructDBFile = new File(commandLine.getOptionValue("secstructdb"));
+            if (!secStructDBFile.exists() || secStructDBFile.isDirectory()) {
+                System.err.println("Error: --secstructdb argument is not a file or does not exist!");
+                System.exit(1);
+            }
         }
         //check --seqlib
         File seqLibFile = null;
@@ -219,11 +247,12 @@ public class AlignmentMain {
         //Inter-argument cheks
         //
         boolean haveAffineGapCost = Math.abs(gapOpen - gapExtend) > 0.00000001;
-        //TODO TEMPORARY assertion until it's impl
-        assert !haveAffineGapCost;
+        if (algorithm != AlignmentAlgorithm.GOTOH) {
+            haveAffineGapCost = false;
+        }
         //If a DP matrix dir is set, we need to copy the SVG graphics there
         if (dpMatrixDir != null) {
-            for (String filename : Lists.newArrayList("T.svg", "L.svg", "LT.svg","B-T.svg", "B-L.svg", "B-LT.svg")) {
+            for (String filename : Lists.newArrayList("T.svg", "L.svg", "LT.svg", "B-T.svg", "B-L.svg", "B-LT.svg")) {
                 InputStream istream = AlignmentMain.class.getResourceAsStream("/graphics/" + filename);
                 //Read it...
                 List<String> lines = IOUtils.readLines(istream);
@@ -239,8 +268,13 @@ public class AlignmentMain {
         ISequenceSource sequenceSource = new SequenceLibrarySequenceSource(seqLibFile.getAbsolutePath());
         Collection<PairfileEntry> pairfileEntries = PairfileParser.parsePairfile(pairsFile.getAbsolutePath());
         IDistanceMatrix matrix = QUASARDistanceMatrixFactory.factorize(substitutionMatrixFile.getAbsolutePath());
-        IGapCost gapCost = (haveAffineGapCost ? new AffineGapCost(gapOpen, gapExtend) : new ConstantGapCost(gapOpen));
+        IGapCost gapCost = (haveAffineGapCost ? new AffineGapCost(gapOpen, gapExtend) : new ConstantGapCost(gapExtend));
         DPMatrixExporter matrixExporter = new DPMatrixExporter(dpMatrixDir, outputFormat);
+        FixedPoint fpaProcessor = new FixedPoint(mode, algorithm, matrix, gapCost);
+        SecStructDB secStructDB = (secStructDBFile == null ? null : new SecStructDB(secStructDBFile.getAbsolutePath()));
+        if (secStructDB != null) {
+            System.err.println("Enabling secondary-structure-assisted alignment");
+        }
         //Create the processor
         AlignmentProcessor proc = AlignmentProcessorFactory.factorize(mode, algorithm, matrix, gapCost);
         //Handle possible benchmarks if applicable -- benchmark to recursive NW
@@ -255,6 +289,21 @@ public class AlignmentMain {
             //Get the sequences
             Sequence seq1 = sequenceSource.getSequence(entry.first);
             Sequence seq2 = sequenceSource.getSequence(entry.second);
+            //If applicable, fetch the secondary structure and enable SSAA
+            if (secStructDB != null) {
+                String seq1SS = secStructDB.getSS(entry.first);
+                String seq2SS = secStructDB.getSS(entry.second);
+                seq1.setSs(seq1SS);
+                seq2.setSs(seq2SS);
+                //Enable SSAA only if we have SSs for both sequences
+                if (seq1SS == null || seq2SS == null) {
+                    System.err.println("Can't find secondary structure for " + entry.first + " or " + entry.second);
+                } else {
+                    proc.setSecStructAided(true);
+                }
+            } else {
+                proc.setSecStructAided(false);
+            }
             //Print status if in verbose mode
             if (verbose) {
                 System.err.println("Aligning " + seq1.getId() + " and " + seq2.getId() + "...");
@@ -271,16 +320,25 @@ public class AlignmentMain {
             //Either --check and print only incorrect alignment or print all
             if (calculateCheckscores) {
                 for (SequencePairAlignment alignment : result.getAlignments()) {
-                    double checkScore = CheckScoreCalculator.calculateCheckScoreAffine(mode, alignment, matrix, gapCost);
+                    double checkScore = (haveAffineGapCost
+                            ? CheckScoreCalculator.calculateCheckScoreAffine(mode, alignment, matrix, gapCost)
+                            : CheckScoreCalculator.calculateCheckScoreNonAffine(mode, alignment, matrix, gapCost));
                     if (Math.abs(checkScore - result.getScore()) > 0.000000001) {
                         //Check failed, print failed alignments ONLY
-                        formatter.formatAndPrint(new AlignmentResult(checkScore, Collections.singletonList(alignment)));
+                        AlignmentResult tmpRes = new AlignmentResult(checkScore, Collections.singletonList(alignment));
+                        tmpRes.setQuerySequenceId(result.getQuerySequenceId());
+                        tmpRes.setTargetSequenceId(result.getTargetSequenceId());
+                        formatter.formatAndPrint(tmpRes);
                         System.err.println("Score " + result.getScore() + " vs " + checkScore);
                     }
                 }
             } else {
                 //Print all alignments (usually one)
                 formatter.formatAndPrint(result);
+            }
+            //Calculate the FPA if applicable
+            if (fpaDir != null) {
+                fpaProcessor.makePlot(seq1, seq2, commandLine.hasOption("min-as-threshold"), fpaDir.getAbsolutePath());
             }
             //Write the dynamic programming matrix if applicable 
             if (dpMatrixDir != null) {

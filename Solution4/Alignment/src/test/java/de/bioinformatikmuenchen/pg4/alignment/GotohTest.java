@@ -52,13 +52,11 @@ public class GotohTest {
     @Test
     public void fpa() throws IOException {
         IDistanceMatrix matrix = QUASARDistanceMatrixFactory.factorize(new InputStreamReader(NeedlemanWunschTest.class.getResourceAsStream("/matrices/dayhoff.mat")));
-        Sequence seq1Obj = new Sequence("id xy","GPLDVQVTEDAVRRYLTRKPMTTKDLLKKFQTKKTGLSSEQTVNVLAQILKRLNPERKMINDKMHFSLK");
-        Sequence seq2Obj = new Sequence("id2 test_zyx","MEEAKQKVVDFLNSKSKSKFYFNDFTDLFPDMKQREVKKILTALVNDEVLEYWSSGSTTMYGLKG");
+        Sequence seq1Obj = new Sequence("id xy","MFNSDNLRLDGKCAIITGAGAGIGKEIAITFATAGASVVVSDINADAANHVVDEIQQLGGQAFACRCDITSEQELSALADFAISKLGKVDILVNNAGGGGPKPFDMPMADFRRAYELNVFSFFHLSQLVAPEMEKNGGGVILTITSMAAENKNINMTSYASSKAAASHLVRNMAFDLGEKNIRVNGIAPGAILTDALKSVITPEIEQKMLQHTPIRRLGQPQDIANAALFLCSPAASWVSGQILTVSGGGVQEL");
+        Sequence seq2Obj = new Sequence("id2 test_zyx2","NKLHVIDLHKRYGGHEVLKGVSLQARAGDVISIIGSSGSGKSTFLRCINFLEKPSEGAIIVNGQNINLVRDKDGQLKVADKNQLRLLRTRLTMVFQHFNLWSHMTVLENVMEAPIQVLGLSKHDARERALKYLAKVGIDERAQGKYPVHLSGGQQQRVSIARALAMEPDVLLFDEPTSALDPELVGEVLRIMQQLAEEGKTMVVVTHEMGFARHVSSHVIFLHQGKIEEEGDPEQVFGNPQSPRLQQFLKGSLKKLE");
         IGapCost gapCost = new AffineGapCost(-12, -1);
         FixedPoint instance = new FixedPoint(AlignmentMode.GLOBAL, AlignmentAlgorithm.GOTOH, matrix, gapCost);
-        //AlignmentResult result = instance.align(seq1Obj, seq2Obj);
-        instance.makePlot(seq1Obj, seq2Obj, true);
-        //assertEquals(4.90, result.getScore(), 0.00000001);
+        instance.makePlot(seq1Obj, seq2Obj, false, null);
     }
 
     @Test

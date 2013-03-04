@@ -1,6 +1,5 @@
 package de.bioinformatikmuenchen.pg4.alignment;
 
-import de.bioinformatikmuenchen.pg4.alignment.gap.ConstantGapCost;
 import de.bioinformatikmuenchen.pg4.alignment.gap.IGapCost;
 import de.bioinformatikmuenchen.pg4.alignment.io.IDPMatrixExporter;
 import de.bioinformatikmuenchen.pg4.common.Sequence;
@@ -38,7 +37,7 @@ public class FixedPoint extends AlignmentProcessor{
     private double[][] fixedPointMatrix;
     
     public FixedPoint(AlignmentMode mode, AlignmentAlgorithm algorithm, IDistanceMatrix distanceMatrix, IGapCost gapCost) {
-        super(AlignmentMode.GLOBAL, algorithm, distanceMatrix, gapCost);
+        super(mode, algorithm, distanceMatrix, gapCost);
         //assert gapCost instanceof ConstantGapCost;
         //AlignmentResult result = new AlignmentResult();
     }
@@ -48,7 +47,7 @@ public class FixedPoint extends AlignmentProcessor{
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
     
-    public void makePlot(Sequence seq1, Sequence seq2, boolean minAsThreshold){
+    public void makePlot(Sequence seq1, Sequence seq2, boolean minAsThreshold, String path){
         //initialize some of the the declared global variables:
         this.xSize = seq1.getSequence().length();
         this.ySize = seq2.getSequence().length();
@@ -71,11 +70,17 @@ public class FixedPoint extends AlignmentProcessor{
         AlignmentResult ret = new AlignmentResult();
         //return ret;
         double[] minMax = getMinMaxAverage();
+        //make sure path!=null:
         //put matrix to file as inout for gnuplot:
-        String s = matrixToString();
+        path = (path==null ? "" : path);
+        //Remove trailing / if any
+        if(path.endsWith("/")) {
+            path = path.substring(0,path.length()-1);
+        }
+        //put matrix to file as inout for gnuplot:
         putToFile(matrixToString(), "./matrix.txt");
         String gnuPlot = "set terminal png\n" +
-        "set output \"fixedPointAlignment.png\"\n" +
+        "set output \""+(!path.equals("") ? path+"/" : "")+"fpa_"+seq1.getId()+"_"+seq2.getId()+".png\"\n" +
         "set size ratio 0.5\n" +
         "set title \"Fixed Point Alignment "+seq1.getId()+" vs. "+seq2.getId()+"\"\n" +
         "\n" +
@@ -99,6 +104,7 @@ public class FixedPoint extends AlignmentProcessor{
         putToFile(gnuPlot, "./plot.gp");
         Runtime rt = Runtime.getRuntime();
         try {
+            rt.exec(new String[]{"mkdir",path});
             rt.exec(new String[]{"gnuplot","plot.gp"});
         } catch (IOException ex) {
             Logger.getLogger(FixedPoint.class.getName()).log(Level.SEVERE, null, ex);
