@@ -71,10 +71,9 @@ public class Gotoh extends AlignmentProcessor {
         this.targetSequenceStruct = seq2.getSs();
         if (secStructAided) {
             if (querySequence.length() != querySequenceStruct.length()) {
-                throw new SSAADataInvalidException("Query sequence length does not match with query SS length");
+                throw new SSAADataInvalidException("Query sequence length does not match with query SS length, difference (" + querySequence.length() + " vs " + querySequenceStruct.length() + ")");
             } else if (targetSequence.length() != targetSequenceStruct.length()) {
-                throw new SSAADataInvalidException("Target sequence length does not match with target SS length");
-
+                throw new SSAADataInvalidException("Target sequence length does not match with target SS length, difference (" + querySequence.length() + " vs " + querySequenceStruct.length() + ")");
             }
         }
         AlignmentResult result = new AlignmentResult();

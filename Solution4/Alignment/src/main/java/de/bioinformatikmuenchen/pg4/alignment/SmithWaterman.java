@@ -56,6 +56,13 @@ public class SmithWaterman extends AlignmentProcessor {
         this.querySequenceId = seq1.getId();
         this.targetSequence = seq2.getSequence();
         this.targetSequenceId = seq2.getId();
+        if (secStructAided) {
+            if (querySequence.length() != querySequenceStruct.length()) {
+                throw new SSAADataInvalidException("Query sequence length does not match with query SS length, difference (" + querySequence.length() + " vs " + querySequenceStruct.length() + ")");
+            } else if (targetSequence.length() != targetSequenceStruct.length()) {
+                throw new SSAADataInvalidException("Target sequence length does not match with target SS length, difference (" + querySequence.length() + " vs " + querySequenceStruct.length() + ")");
+            }
+        }
         initAndFillMatrix(seq1.getSequence(), seq2.getSequence());
         AlignmentResult result = new AlignmentResult();
         //Calculate the alignment and add it to the result
