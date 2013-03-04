@@ -9,15 +9,26 @@ $(function() {
 	      connectWith: ".dropList"
 	}).disableSelection();
 	//$('.nodrag').draggable( "disable" )
-	$("#droppable").droppable({
-	      drop: function( event, ui ) {
-		$( this )
-		  .addClass( "ui-state-highlight" )
-		  .find( "p" )
-		    .html( "Dropped!" );
-	      }
-	    });
+	 $(".sequence-drop").droppable({
+	    accept: ".sequence",
+	    activeClass: "ui-state-highlight",
+	    drop: function( event, ui ) {
+	      deleteImage( ui.draggable );
+	    }
+	});
 	$(".uibtn").button();
+	$( "#alignmentMatrix" ).autocomplete({
+		source: function( request, response ) {
+		  $.getJSON( "matrix/name_autocomplete.cgi", {
+		    limit:10,
+		     prefix: request.term,
+		  }, response);
+		},
+	      select: function( event, ui ) {
+		   //"Selected: " + ui.item.value + " aka " + ui.item.id :
+		  //"Nothing selected, input was " + this.value );
+	    }
+	});
 	$( "#proteinId" ).autocomplete({
 		source: function( request, response ) {
 		  $.getJSON( "get_autocomplete_ids.cgi", {
@@ -31,6 +42,7 @@ $(function() {
 		  //"Nothing selected, input was " + this.value );
 	    }
 	});
+	$(".accordion").accordion();
 });
 function showAddMatrixDialog() {
     $("#addMatrixDialog").dialog({autoOpen: false,modal: true,bgiframe: true,width:500,height:250});
@@ -41,5 +53,9 @@ function hideAddMatrixDialog() {
 	$('#addMatrixDialog').dialog('close');
     }
 }
-
-$(".accordion").accordion();
+function showAlignment() {
+  
+}
+function showFixedPointAlignment() {
+  
+}
