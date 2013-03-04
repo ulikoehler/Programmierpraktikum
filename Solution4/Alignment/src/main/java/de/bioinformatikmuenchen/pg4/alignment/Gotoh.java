@@ -31,6 +31,8 @@ public class Gotoh extends AlignmentProcessor {
     private String targetSequence;
     private String querySequenceId;
     private String targetSequenceId;
+    private String querySequenceStruct;
+    private String targetSequenceStruct;
     private boolean freeshift = false;
     private boolean local = false;
     boolean[][] leftPath;
@@ -40,6 +42,7 @@ public class Gotoh extends AlignmentProcessor {
     boolean[][] leftTopArrows;
     boolean[][] topArrows;
     boolean[][] hasPath;
+    private double[][] secStructMatrix = new double[][]{{2.0, -15.0, -4.0},{-15.0, 4.0, -4.0},{-4.0, -4.0, 2.0}};//H-E-C
 
     public Gotoh(AlignmentMode mode, AlignmentAlgorithm algorithm, IDistanceMatrix distanceMatrix, IGapCost gapCost) {
         super(mode, algorithm, distanceMatrix, gapCost);
@@ -177,6 +180,10 @@ public class Gotoh extends AlignmentProcessor {
         }
         assert (((x > -1) || (y > -1)) && (maxValue > Double.NEGATIVE_INFINITY));
         return new double[]{x, y, maxValue};
+    }
+    
+    public double ssaaScore(int x, int y, char A, char B){
+        return distanceMatrix.distance(A, B) + 
     }
 
     public void fillMatrix(String seq1, String seq2, AlignmentResult result) {
