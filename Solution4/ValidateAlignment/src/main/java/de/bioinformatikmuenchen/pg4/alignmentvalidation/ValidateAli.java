@@ -104,10 +104,6 @@ public class ValidateAli {
         File summary = null;
         if (commandLine.hasOption("summaryfile")) {
             summary = new File(commandLine.getOptionValue("summaryfile"));
-            if (summary.isDirectory()) {
-                System.err.println("Error: --summary argument is not a file!");
-                System.exit(1);
-            }
         } else {
             System.err.println("Error: --summaryfile is mandatory");
             HelpFormatter formatter = new HelpFormatter();
@@ -118,10 +114,6 @@ public class ValidateAli {
         File detailed = null;
         if (commandLine.hasOption("detailedfile")) {
             detailed = new File(commandLine.getOptionValue("detailedfile"));
-            if (detailed.isDirectory()) {
-                System.err.println("Error: --detailed argument is not a file!");
-                System.exit(1);
-            }
         } else {
             System.err.println("Error: --detailedfile is mandatory");
             HelpFormatter formatter = new HelpFormatter();

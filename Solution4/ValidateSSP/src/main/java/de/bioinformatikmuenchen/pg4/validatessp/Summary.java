@@ -71,34 +71,58 @@ public class Summary {
     }
 
     public double getQ3Mean() {
+        if (Q3.isEmpty()) {
+            return 0 / 0;
+        }
         return round(getMean(Q3));
     }
 
     public double getQHMean() {
+        if (QH.isEmpty()) {
+            return 0 / 0;
+        }
         return round(getMean(QH));
     }
 
     public double getQEMean() {
+        if (QE.isEmpty()) {
+            return 0 / 0;
+        }
         return round(getMean(QE));
     }
 
     public double getQCMean() {
+        if (QC.isEmpty()) {
+            return 0 / 0;
+        }
         return round(getMean(QC));
     }
 
     public double getSOVMean() {
+        if (SOV.isEmpty()) {
+            return 0 / 0;
+        }
         return round(getMean(SOV));
     }
 
     public double getSOVHMean() {
+        if (SOVH.isEmpty()) {
+            return 0 / 0;
+        }
         return round(getMean(SOVH));
     }
 
     public double getSOVEMean() {
+        if (SOVE.isEmpty()) {
+            return 0 / 0;
+        }
         return round(getMean(SOVE));
     }
 
     public double getSOVCMean() {
+        if (SOVC.isEmpty()) {
+            return 0 / 0;
+        }
         return round(getMean(SOVC));
     }
 
@@ -113,34 +137,58 @@ public class Summary {
     }
 
     public double getQ3Min() {
+        if (Q3.isEmpty()) {
+            return 0 / 0;
+        }
         return (getMin(Q3));
     }
 
     public double getQHMin() {
+        if (QH.isEmpty()) {
+            return 0 / 0;
+        }
         return (getMin(QH));
     }
 
     public double getQEMin() {
+        if (QE.isEmpty()) {
+            return 0 / 0;
+        }
         return (getMin(QE));
     }
 
     public double getQCMin() {
+        if (QC.isEmpty()) {
+            return 0 / 0;
+        }
         return (getMin(QC));
     }
 
     public double getSOVMin() {
+        if (SOV.isEmpty()) {
+            return 0 / 0;
+        }
         return (getMin(SOV));
     }
 
     public double getSOVHMin() {
+        if (SOVH.isEmpty()) {
+            return 0 / 0;
+        }
         return (getMin(SOVH));
     }
 
     public double getSOVEMin() {
+        if (SOVE.isEmpty()) {
+            return 0 / 0;
+        }
         return (getMin(SOVE));
     }
 
     public double getSOVCMin() {
+        if (SOVC.isEmpty()) {
+            return 0 / 0;
+        }
         return (getMin(SOVC));
     }
 
@@ -195,8 +243,8 @@ public class Summary {
             quan = 0;
         }
         int j = 0;
-        for (int i = 0; i < list.size(); i++) {      
-            if (!(list.get(i).isNaN())){
+        for (int i = 0; i < list.size(); i++) {
+            if (!(list.get(i).isNaN())) {
                 j++;
             }
         }
@@ -291,7 +339,7 @@ public class Summary {
 
     private static double round(double d) {
         Double p = d;
-        if (!(p.isNaN())|| !(p.isInfinite())) {
+        if (!(p.isNaN()) || !(p.isInfinite())) {
             DecimalFormat numberFormat = new DecimalFormat();
             DecimalFormatSymbols dfs = new DecimalFormatSymbols();
             dfs.setDecimalSeparator('.');
