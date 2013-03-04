@@ -27,7 +27,7 @@ public class Sequence {
         this.as = as;
     }
 
-    public void setSs(String ss) {
+    public void setSecondaryStructure(String ss) {
         this.ss = ss;
     }    
     

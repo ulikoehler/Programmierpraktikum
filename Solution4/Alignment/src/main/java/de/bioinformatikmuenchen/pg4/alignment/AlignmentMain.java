@@ -55,7 +55,7 @@ public class AlignmentMain {
                 .addOption("r", "mode", true, "Set the mode (global|local|freeshift)")
                 .addOption("q", "secstructdb", true, "Enable SSAA with the specified <")
                 .addOption("u", "nw", false, "Use Needleman-Wunsch, with gap-open being ignored")
-                .addOption("a", "fixedpointalignment", true, "Output FPA to directory")
+                .addOption("a", "fixedpointali gnment", true, "Output FPA to directory")
                 .addOption("t", "min-as-threshold", true, "In FPA, set the minimum of the matrix as heatmap minimum")
                 .addOption("b", "benchmark", false, "Benchmark the selected algorithm versus the recursive Needleman-Wunsch")
                 .addOption("v", "verbose", false, "Print verbose status reports (on stderr)")
@@ -285,6 +285,7 @@ public class AlignmentMain {
             proc = new AlignmentProcessorBenchmarkController(proc, new RecursiveNWAlignmentProcessor(mode, algorithm, matrix, gapCost));
             ((AlignmentProcessorBenchmarkController) proc).setVerbose(verbose);
         }
+        pairLoop:
         for (PairfileEntry entry : pairfileEntries) {
             //Get the sequences
             Sequence seq1 = sequenceSource.getSequence(entry.first);
@@ -293,8 +294,8 @@ public class AlignmentMain {
             if (secStructDB != null) {
                 String seq1SS = secStructDB.getSS(entry.first);
                 String seq2SS = secStructDB.getSS(entry.second);
-                seq1.setSs(seq1SS);
-                seq2.setSs(seq2SS);
+                seq1.setSecondaryStructure(seq1SS);
+                seq2.setSecondaryStructure(seq2SS);
                 //Enable SSAA only if we have SSs for both sequences
                 if (seq1SS == null || seq2SS == null) {
                     System.err.println("Can't find secondary structure for " + entry.first + " or " + entry.second);
@@ -312,10 +313,15 @@ public class AlignmentMain {
             AlignmentResult result = null;
             try {
                 result = proc.align(seq1, seq2);
+            } catch (SSAADataInvalidException ex) {
+                System.err.println("SSAA data invalid for pair " + entry.first + " and " + entry.second + ":");
+                System.err.println(ex.getLocalizedMessage());
+                continue pairLoop;
             } catch (Exception ex) {
                 System.err.println("Error occured while trying to align " + entry.first + " and " + entry.second);
                 System.err.println("Error: " + ex.getLocalizedMessage());
                 ex.printStackTrace();
+                System.exit(1);
             }
             //Either --check and print only incorrect alignment or print all
             if (calculateCheckscores) {

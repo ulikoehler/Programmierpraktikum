@@ -69,6 +69,14 @@ public class Gotoh extends AlignmentProcessor {
         this.ySize = targetSequence.length();
         this.querySequenceStruct = seq1.getSs();
         this.targetSequenceStruct = seq2.getSs();
+        if (secStructAided) {
+            if (querySequence.length() != querySequenceStruct.length()) {
+                throw new SSAADataInvalidException("Query sequence length does not match with query SS length");
+            } else if (targetSequence.length() != targetSequenceStruct.length()) {
+                throw new SSAADataInvalidException("Target sequence length does not match with target SS length");
+
+            }
+        }
         AlignmentResult result = new AlignmentResult();
         initMatrix(seq1.getSequence().length(), seq2.getSequence().length());
         fillMatrix(seq1.getSequence(), seq2.getSequence(), result);////////////////////// SCORE übergeben!
@@ -205,8 +213,8 @@ public class Gotoh extends AlignmentProcessor {
 
     public void fillMatrix(String seq1, String seq2, AlignmentResult result) {
         assert ((gapCost != null) && (distanceMatrix != null));
-        for (int x = 1; x < xSize + 1; x++) {
-            for (int y = 1; y < ySize + 1; y++) {
+        for (int x = 1; x <= xSize; x++) {
+            for (int y = 1; y <= ySize; y++) {
                 matrixIn[x][y] = Math.max(matrixA[x - 1][y] + gapCost.getGapCost(1), matrixIn[x - 1][y] + gapCost.getGapExtensionPenalty(0, 1));
                 matrixDel[x][y] = Math.max(matrixA[x][y - 1] + gapCost.getGapCost(1), matrixDel[x][y - 1] + gapCost.getGapExtensionPenalty(0, 1));
                 double match = matrixA[x - 1][y - 1] + distanceScore(x - 1, y - 1);
@@ -258,7 +266,7 @@ public class Gotoh extends AlignmentProcessor {
         while (matrixA[x][y] > 0.0000000001) {//&& x > 0 && y > 0
             char A = (x == 0 ? '?' : querySequence.charAt(x - 1));//;querySequence.charAt(x - 1);
             char B = (y == 0 ? '?' : targetSequence.charAt(y - 1));
-            if (Math.abs(matrixA[x][y] - (matrixA[x - 1][y - 1] + distanceMatrix.distance(A, B))) < 0.0000000001) {//leftTop
+            if (Math.abs(matrixA[x][y] - (matrixA[x - 1][y - 1] + distanceScore(x - 1, y - 1))) < 0.0000000001) {//leftTop
                 leftTopPath[x][y] = true;
                 hasPath[x][y] = true;
                 queryLine.append(A);
@@ -363,7 +371,7 @@ public class Gotoh extends AlignmentProcessor {
                     x--;
                 }
                 break;
-            } else if (Math.abs((matrixA[x][y]) - (matrixA[x - 1][y - 1] + distanceMatrix.distance(A, B))) < 0.0000000001) {//leftTop
+            } else if (Math.abs((matrixA[x][y]) - (matrixA[x - 1][y - 1] + distanceScore(x - 1, y - 1))) < 0.0000000001) {//leftTop
                 leftTopPath[x][y] = true;
                 hasPath[x][y] = true;
                 queryLine.append(A);
