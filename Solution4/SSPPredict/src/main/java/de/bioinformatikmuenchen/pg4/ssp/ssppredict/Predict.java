@@ -81,7 +81,8 @@ public class Predict {
                 .addOption("a", "maf", true, "path to .aln file")
                 .addOption("f", "format", true, "output sequence in html or txt format")
                 .addOption("p", "probabilities", false, "include the probabilities in the output (0-9, coloring in html)")
-                .addOption("t", "postprocessing", true, "whether to postprocess results")
+                .addOption("t", "avgPost", true, "whether to postprocess results with an average method")
+                .addOption("x", "stdPost", true, "whether to postprocess results with an simplifier method")
                 .addOption("d", "debug", false, "output debug informations");
 
         final CommandLineParser cmdLinePosixParser = new PosixParser();
@@ -148,10 +149,16 @@ public class Predict {
             probabilities = true;
         }
 
-        boolean postprocessing = false;
+        boolean postprocessingAVG = false;
         if (commandLine.hasOption("t")) {
-            Data.postProcessProbabilityBorder = Double.parseDouble(commandLine.getOptionValue("t"));
-            postprocessing = true;
+            Data.postProcessProbabilityBorderAvg = Double.parseDouble(commandLine.getOptionValue("t"));
+            postprocessingAVG = true;
+        }
+        
+        boolean postprocessingStd = false;
+        if (commandLine.hasOption("x")) {
+            Data.postProcessProbabilityBorderStd = Double.parseDouble(commandLine.getOptionValue("x"));
+            postprocessingStd = true;
         }
 
         if (commandLine.hasOption("d")) {
@@ -185,11 +192,17 @@ public class Predict {
                 System.out.println("Predict ...");
             }
             PredictionResult res = gor5.predict(h);
-            if (postprocessing) {
+            if (postprocessingAVG) {
                 if (debug) {
-                    System.out.println("Postprocessing ...");
+                    System.out.println("Postprocessing avg ...");
                 }
-                res = GORPredicter.postprocess(res);
+                res = GORPredicter.postprocessAVG(res);
+            }
+            if (postprocessingStd) {
+                if (debug) {
+                    System.out.println("Postprocessing std ...");
+                }
+                res = GORPredicter.postprocessSTD(res);
             }
             if (debug) {
                 System.out.println("Format and write results (" + format.name() + "," + ((probabilities) ? "" : " no") + " probabilities) ...");
@@ -253,11 +266,17 @@ public class Predict {
                 System.out.println("Predict ...");
             }
             PredictionResult res = predicter.predictFileSequences(g);
-            if (postprocessing) {
+            if (postprocessingAVG) {
                 if (debug) {
-                    System.out.println("Postprocessing ...");
+                    System.out.println("Postprocessing avg ...");
                 }
-                res = GORPredicter.postprocess(res);
+                res = GORPredicter.postprocessAVG(res);
+            }
+            if (postprocessingStd) {
+                if (debug) {
+                    System.out.println("Postprocessing std ...");
+                }
+                res = GORPredicter.postprocessSTD(res);
             }
             if (debug) {
                 System.out.println("Format and write results (" + format.name() + "," + ((probabilities) ? "" : " no") + " probabilities) ...");
