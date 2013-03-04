@@ -3,6 +3,7 @@
  * and open the template in the editor.
  */
 package de.bioinformatikmuenchen.pg4.alignmentvalidation;
+
 /**
  *
  * @author schoeffel

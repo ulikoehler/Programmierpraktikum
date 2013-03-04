@@ -4,6 +4,9 @@
  */
 package de.bioinformatikmuenchen.pg4.alignmentvalidation;
 
+import com.google.common.base.CharMatcher;
+import com.google.common.base.Splitter;
+import com.google.common.collect.Lists;
 import java.io.File;
 import java.io.FileReader;
 import java.io.BufferedReader;
@@ -11,6 +14,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.text.DecimalFormat;
 import java.text.DecimalFormatSymbols;
+import java.util.regex.Pattern;
 
 /**
  *
@@ -56,13 +60,15 @@ public class FactorizeValidation {
                     String line = homestradtext.readLine();
                     while (line != null) {
                         //checking for sequence entry
-                        if (line.charAt(0) == '>') {
+                        if (line.startsWith(">")) {
                             String name;
                             String sequence = "";
                             name = line.substring(4, 8);
+                            //Skip structureX line
                             line = homestradtext.readLine();
+                            //Assemble all lines
                             line = homestradtext.readLine();
-                            while (line.charAt(line.length() - 1) != '*') {
+                            while (!line.endsWith("*")) {
                                 sequence += line;
                                 line = homestradtext.readLine();
                             }
@@ -100,16 +106,21 @@ public class FactorizeValidation {
             line = reader.readLine();
             while (line != null) {
                 //finding alignment entry
+                Splitter colonWhitespaceSplitter = Splitter.on(Pattern.compile(":\\s")).omitEmptyStrings().trimResults();
+                Splitter whitespaceSplitter = Splitter.on(CharMatcher.WHITESPACE).omitEmptyStrings().trimResults();
                 if (!line.equals("")) {
                     if (line.charAt(0) == '>') {
-                        homstradname1 = line.substring(1, 8);
-                        homstradname2 = line.substring(9, 16);
+                        ArrayList<String> split = Lists.newArrayList(whitespaceSplitter.split(line));
+                        homstradname1 = split.get(0);
+                        homstradname2 = split.get(1);
                         line = reader.readLine();
                         //getting sequence 1
-                        candidatetemplate = line.substring(9);
+                        split = Lists.newArrayList(colonWhitespaceSplitter.split(line));
+                        candidatetemplate = split.get(1);
                         line = reader.readLine();
                         //getting sequence 2
-                        candidatetarget = line.substring(9);
+                        split = Lists.newArrayList(colonWhitespaceSplitter.split(line));
+                        candidatetarget = split.get(1); //line.substring(9);
                         //safing alignment and reference pair in Arraylist
                         alignmentpair.add(new VTuple(homstradname1, homstradname2, candidatetemplate, candidatetarget));
                     }
@@ -129,7 +140,7 @@ public class FactorizeValidation {
         detailed = new Detailed();
         for (int i = 0; i < alignmentpair.size(); i++) {
             //assembling sequences
-            String seqid1 = alignmentpair.get(i).att1.substring(0, 4);
+            String seqid1 = alignmentpair.get(i).att1.substring(1, 5);
             String seqid2 = alignmentpair.get(i).att2.substring(0, 4);
             String candidatetemplate = alignmentpair.get(i).att3;
             String candidatetarget = alignmentpair.get(i).att4;
@@ -137,7 +148,7 @@ public class FactorizeValidation {
             String referencetarget = hash.get(seqid2);
             //checking if reference alignment exists
             if (referencetemplate == null || referencetarget == null) {
-                System.out.println("Reference pair doesnt exist");
+                System.err.println("Reference pair doesnt exist");
             } else {
                 //creating new instance of validation algorithm
                 AliValiAlg instance = new AliValiAlg(candidatetemplate, candidatetarget, referencetemplate, referencetarget);
@@ -148,7 +159,7 @@ public class FactorizeValidation {
                 double means = instance.getMeanS();
                 double inver = instance.getInver();
                 //creating tuple representing validation
-                String header = ">" + alignmentpair.get(i).att1 + " " + alignmentpair.get(i).att2 + " " + round(sensi) + " " + round(speci) + " " + round(cover) + " " + round(means) + " " + round(inver);
+                String header = alignmentpair.get(i).att1 + " " + alignmentpair.get(i).att2 + " " + round(sensi) + " " + round(speci) + " " + round(cover) + " " + round(means) + " " + round(inver);
                 FTuple result = new FTuple(header, candidatetemplate, candidatetarget, referencetemplate, referencetarget);
                 //safing result
                 detailed.add(result);
@@ -172,7 +183,7 @@ public class FactorizeValidation {
 
     public static double round(double d) {
         Double p = d;
-        if (!(p.isNaN())) {
+        if (!(p.isNaN()) || !(p.isInfinite())) {
             DecimalFormat numberFormat = new DecimalFormat();
             DecimalFormatSymbols dfs = new DecimalFormatSymbols();
             dfs.setDecimalSeparator('.');

@@ -4,10 +4,14 @@
  */
 package de.bioinformatikmuenchen.pg4.alignmentvalidation;
 
+import com.google.common.base.CharMatcher;
+import com.google.common.base.Splitter;
+import com.google.common.collect.Lists;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.BufferedWriter;
 import java.io.IOException;
+import java.util.ArrayList;
 
 /**
  *
@@ -21,15 +25,18 @@ public class TxtOutputFormater {
         }
 
         StringBuilder builder = new StringBuilder();
+        Splitter whitespaceSplitter = Splitter.on(CharMatcher.WHITESPACE).omitEmptyStrings().trimResults();
+        ArrayList<String> split ;
         for (int i = 0; i < input.results.size(); i++) {
+            split= Lists.newArrayList(whitespaceSplitter.split(input.results.get(i).att1));
             builder.append(input.results.get(i).att1).append("\n");
-            builder.append(input.results.get(i).att1.substring(1, 8)).append(": ");
+            builder.append((split.get(0)).substring(1)).append(": ");
             builder.append(input.results.get(i).att2).append("\n");
-            builder.append(input.results.get(i).att1.substring(9, 16)).append(": ");
+            builder.append(split.get(1)).append(": ");
             builder.append(input.results.get(i).att3).append("\n");
-            builder.append(input.results.get(i).att1.substring(1, 8)).append(": ");
+            builder.append((split.get(0)).substring(1)).append(": ");
             builder.append(input.results.get(i).att4).append("\n");
-            builder.append(input.results.get(i).att1.substring(9, 16)).append(": ");
+            builder.append(split.get(1)).append(": ");
             builder.append(input.results.get(i).att5).append("\n");
             builder.append("\n");
         }
