@@ -18,14 +18,17 @@
 			#align-to {float:none; height: 100px;}
 			#aligna-from-list, #aligna-to-list {height:100%; width:100%;}
 			.resizable > h3 { text-align: center; margin: 0; }
-			#proteinId {border-radius: 5px;}
+			.roundBorder{border-radius: 3px;}
 			.dropList { list-style-type: none; margin: 0; padding: 0 0 2.5em; float: left; margin-right: 10px; }
 			.dropList li { margin: 0 5px 5px 5px; padding: 5px; font-size: 1.2em;}
-
 			.sequence {min-width: 150px;}
+			.sequence-drop {min-height: 60px;}
+			.sequence-drop h4 { line-height: 16px; margin: 0 0 0.4em; }
+			.indent {margin-left: 10px;}
 		</style>
 		<!-- JS -->
 		<script type="text/javascript" src="js/jquery.js"></script>
+		<script type="text/javascript" src="js/jstorage.js"></script>
 		<script type="text/javascript" src="js/jquery-ui.js"></script>
 		<script type="text/javascript" src="ws.js"></script>
 	</head>
@@ -39,11 +42,59 @@
 			<h3>Select protein ID</h3>
 			<div style="height: 30px;">
 			</div>
-			<div id="align-from" class="resizable ui-widget-content">
-				<h3 class="ui-widget-header">Align from</h3>
-				<ul id="align-from-list" class="dropList" style="margin-top:5px;min-height:80px;">
-					<li class="nodrag sequence ui-state-highlight">Drop sequences here</li>
-				</ul>
+			
+			<div class="accordion">
+			  <h3>Align sequences</h3>
+			  <div>
+			    <form action="alignment/align.cgi" method="post" enctype="multipart/form-data">
+				  <div id="alignmentSequence1" class="sequence-drop ui-widget-content ui-state-default">
+				    <h4 class="ui-widget-header">Drop first sequence in this box</h4>
+				  </div><br/>
+				  <div id="alignmentSequence2" class="sequence-drop ui-widget-content ui-state-default">
+				    <h4 class="ui-widget-header">Drop second sequence in this box</h4>
+				  </div>
+				  <!-- Hidden inputs -->
+				  <!-- These hold the sequence IDs to be aligned -->
+				  <input id="alignmentSeq1Id" type="hidden" name="seq1Id"/>
+				  <input id="alignmentSeq2Id" type="hidden" name="seq2Id"/>
+				  <br/>
+				  Alignment matrix:
+				    <input id="alignmentMatrix"  class="roundBorder" />
+				  <br/><br/>
+				  <!-- Alignment type -->
+				  Alignment type:
+				    <input type="radio" name="alignmentType" value="Global" checked>Global
+				    <input type="radio" name="alignmentType" value="Local">Local
+				    <input type="radio" name="alignmentType" value="Freeshift">Freeshift
+				  <br/><br/>
+				  <!-- Alignment algorithm -->
+				  Alignment algorithm:
+				    <input type="radio" name="alignmentAlgorithm" value="Global" checked>Gotoh
+				    <input type="radio" name="alignmentAlgorithm" value="Local">Needleman-Wunsch <!-- TODO Auto-deselect gap open -->
+				  <br/><br/>
+				  <b>Gap penalties</b>
+				  <div class="indent">
+				    <table>
+				      <tr><td>Gap open penalty:</td><td><input class="roundBorder" type="text" name="gapOpenPenalty" value="-12.0"/></td></tr>
+				      <tr><td>Gap extension penalty:</td><td><input class="roundBorder" type="text" name="gapExtendPenalty" value="-1.0"/></td><br/>
+				    </table>
+				  </div>
+				  <br/>
+				  Options<br/>
+				  <div class="indent">
+				    <input type="checkbox" name="calculateSSAA"> Predict secondary structure and execute SSAA</input>
+				  </div>
+				  <br/>
+				    <div class="button" onclick="showAlignment()">Show alignment</div>
+				    <div class="button" onclick="showFixedPointAlignment()">Show fixed-point alignment</div>
+			    </form>
+			  </div>
+			  <h3>Predict secondary structure</h3>
+			  <div>
+			  </div>
+			  <h3>Validation</h3>
+			  <div>
+			  </div>
 			</div>
 			<div id="available-sequences" class="resizable ui-widget-content">
 				<h3 class="ui-widget-header">Available sequences</h3>
@@ -51,8 +102,6 @@
 					<li class="sequence ui-state-default">Item 1</li>
 				</ul>
 			</div>
-			
-				
 			<h3>Upload sequence data</h3>
 			<div class="tabs">
 				<ul>
@@ -64,6 +113,7 @@
 					<select id="dbselect" name="db">
 						<option>PDB</option>
 						<option>SwissProt</option>
+						<option>RefSeq</option>
 					</select>
 					<input id="proteinId" />
 					<input class="uibtn" type="submit" value="Add" />
@@ -82,7 +132,6 @@
 						<input type="file" name="seqfile" /><br />
 						<input type="submit" value="Add sequence" class="button"/>
 					</form>
-
 				</div>
 			</div>
 		</div>

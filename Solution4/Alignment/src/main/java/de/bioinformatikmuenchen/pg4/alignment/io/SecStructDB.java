@@ -47,6 +47,9 @@ public class SecStructDB {
             } else if (line.startsWith("SS")) {
                 line = line.substring(2).trim();
                 ssMap.put(currentSequenceId, line);
+            } else if (line.startsWith("PS")) {
+                line = line.substring(2).trim();
+                ssMap.put(currentSequenceId, line);
             } else {
                 System.err.println("Unkown line format: " + line);
             }

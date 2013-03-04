@@ -11,12 +11,12 @@ set tic scale 0
 set palette rgbformulae 22,13,10
 set palette negative
 
-set cbrange [-145.92518765893635:-11.399999999999995]
+set cbrange [-236.60196617853506:-15.399999999999977]
 #unset cbtics
 
-set xrange [0:254]
-set yrange [0:257]
+set xrange [0:498]
+set yrange [0:427]
 
 set view map
 
-splot 'matrix.txt' matrix with image
+splot 'matrix' matrix with image

@@ -21,5 +21,14 @@ $insertStmt->execute($name, $processedData);
 carp "Inserted user sequence $name into database\n"
 #Write header
 #print "{\"success\":true,\"name\":$name}";
+print <<"EOHTML"
+<html>
+<head>
+    <script type="text/javascript" src="js/jquery.js"></script>
+    <script type="text/javascript" src="js/jstorage.js"></script>
+</head>
+<body></body>
+</html>
+EOHTML
 print redirect(referer());
 $db->disconnect();

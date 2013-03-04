@@ -1,7 +1,7 @@
 #!/bin/sh
-mvn package
+#mvn package
 #sleep 1s
-mv target/*-jar-with-dependencies.jar predict.jar
+#mv target/*-jar-with-dependencies.jar predict.jar
 
 java -jar predict.jar --probabilities --format HTML --model src/test/resources/Ugor1CB513DSSP.db.txt --seq predict > out1hp
 java -jar predict.jar --probabilities --format HTML --model src/test/resources/Ugor3CB513DSSP.db.txt --seq predict > out3hp

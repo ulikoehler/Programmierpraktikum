@@ -34,7 +34,6 @@ public class SmithWaterman extends AlignmentProcessor {
     boolean[][] leftTopPath;
     boolean[][] topPath;
     boolean[][] hasPath;
-    private double[][] secStructMatrix = new double[][]{{2.0, -15.0, -4.0}, {-15.0, 4.0, -4.0}, {-4.0, -4.0, 2.0}};//H-E-C
 
     public SmithWaterman(AlignmentMode mode, AlignmentAlgorithm algorithm, IDistanceMatrix distanceMatrix, IGapCost gapCost) {
         super(mode, algorithm, distanceMatrix, gapCost);
@@ -56,6 +55,13 @@ public class SmithWaterman extends AlignmentProcessor {
         this.querySequenceId = seq1.getId();
         this.targetSequence = seq2.getSequence();
         this.targetSequenceId = seq2.getId();
+        if (secStructAided) {
+            if (querySequence.length() != querySequenceStruct.length()) {
+                throw new SSAADataInvalidException("Query sequence length does not match with query SS length, difference (" + querySequence.length() + " vs " + querySequenceStruct.length() + ")");
+            } else if (targetSequence.length() != targetSequenceStruct.length()) {
+                throw new SSAADataInvalidException("Target sequence length does not match with target SS length, difference (" + querySequence.length() + " vs " + querySequenceStruct.length() + ")");
+            }
+        }
         initAndFillMatrix(seq1.getSequence(), seq2.getSequence());
         AlignmentResult result = new AlignmentResult();
         //Calculate the alignment and add it to the result
@@ -77,25 +83,17 @@ public class SmithWaterman extends AlignmentProcessor {
         return max;
     }
 
-    public int getSecStructIndex(char bla) {
-        if (bla == 'H') {
-            return 0;
-        } else if (bla == 'E') {
-            return 1;
-        } else if (bla == 'C') {
-            return 2;
-        } else {
-            throw new IllegalArgumentException(bla + " is no valid secondary structure specified");
-        }
-    }
-
     public double distanceScore(int x, int y) {
         double distance = distanceMatrix.distance(querySequence.charAt(x), targetSequence.charAt(y));
         //Set to 0 if not sec struct aided
-        double secStructDistance = (secStructAided ? secStructMatrix[getSecStructIndex(querySequenceStruct.charAt(x))][getSecStructIndex(targetSequenceStruct.charAt(y))] : 0);
-        return distance + secStructDistance;
+        try {
+            double secStructDistance = (secStructAided ? secStructMatrix[getSecStructIndex(querySequenceStruct.charAt(x))][getSecStructIndex(targetSequenceStruct.charAt(y))] : 0);
+            return distance + secStructDistance;
+        } catch (Exception ex) {
+            return distance;
+        }
     }
-
+    
     public void initAndFillMatrix(String s, String t) {
         //////  init matrix:
         this.xSize = s.length();
