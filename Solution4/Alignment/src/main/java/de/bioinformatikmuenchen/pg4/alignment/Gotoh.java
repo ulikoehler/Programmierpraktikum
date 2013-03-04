@@ -36,6 +36,9 @@ public class Gotoh extends AlignmentProcessor {
     boolean[][] leftPath;
     boolean[][] leftTopPath;
     boolean[][] topPath;
+    boolean[][] leftArrows;
+    boolean[][] leftTopArrows;
+    boolean[][] topArrows;
     boolean[][] hasPath;
 
     public Gotoh(AlignmentMode mode, AlignmentAlgorithm algorithm, IDistanceMatrix distanceMatrix, IGapCost gapCost) {
@@ -93,6 +96,9 @@ public class Gotoh extends AlignmentProcessor {
         leftPath = new boolean[xSize][ySize];
         leftTopPath = new boolean[xSize][ySize];
         topPath = new boolean[xSize][ySize];
+        leftArrows = new boolean[xSize][ySize];
+        leftTopArrows = new boolean[xSize][ySize];
+        topArrows = new boolean[xSize][ySize];
         hasPath = new boolean[xSize][ySize];
         matrixDel[0][0] = Double.NEGATIVE_INFINITY;//NaN;
         matrixIn[0][0] = Double.NEGATIVE_INFINITY;//NaN;
@@ -118,7 +124,16 @@ public class Gotoh extends AlignmentProcessor {
                 leftPath[x][y] = false;
                 leftTopPath[x][y] = false;
                 topPath[x][y] = false;
+                leftArrows[x][y] = false;
+                leftTopArrows[x][y] = false;
+                topArrows[x][y] = false;
                 hasPath[x][y] = false;
+                //init the edges
+                if (x == 0 && y != 0) {
+                    topArrows[x][y] = true;
+                } else if (y == 0 && x != 0) {
+                    leftArrows[x][y] = true;
+                }
             }
         }
     }
@@ -170,10 +185,20 @@ public class Gotoh extends AlignmentProcessor {
             for (int y = 1; y < ySize + 1; y++) {
                 matrixIn[x][y] = Math.max(matrixA[x - 1][y] + gapCost.getGapCost(1), matrixIn[x - 1][y] + gapCost.getGapExtensionPenalty(0, 1));
                 matrixDel[x][y] = Math.max(matrixA[x][y - 1] + gapCost.getGapCost(1), matrixDel[x][y - 1] + gapCost.getGapExtensionPenalty(0, 1));
+                double match = matrixA[x - 1][y - 1] + distanceMatrix.distance(seq1.charAt(x - 1), seq2.charAt(y - 1));
+                double in = matrixIn[x][y];
+                double del = matrixDel[x][y];
+                double max = Math.max(Math.max(in, del), match);
                 if (mode == AlignmentMode.LOCAL) {
-                    matrixA[x][y] = Math.max(0, Math.max(Math.max(matrixIn[x][y], matrixDel[x][y]), matrixA[x - 1][y - 1] + distanceMatrix.distance(seq1.charAt(x - 1), seq2.charAt(y - 1))));
+                    matrixA[x][y] = Math.max(0, max);
+                    leftArrows[x][y] = (Math.abs(max - in) < 0.000000001);
+                    leftTopArrows[x][y] = (Math.abs(max - match) < 0.000000001);
+                    topArrows[x][y] = (Math.abs(max - del) < 0.000000001);
                 } else {
-                    matrixA[x][y] = Math.max(Math.max(matrixIn[x][y], matrixDel[x][y]), matrixA[x - 1][y - 1] + distanceMatrix.distance(seq1.charAt(x - 1), seq2.charAt(y - 1)));
+                    matrixA[x][y] = max;
+                    leftArrows[x][y] = (Math.abs(max - in) < 0.000000001);
+                    leftTopArrows[x][y] = (Math.abs(max - match) < 0.000000001);
+                    topArrows[x][y] = (Math.abs(max - del) < 0.000000001);
                 }
             }
         }
@@ -219,8 +244,8 @@ public class Gotoh extends AlignmentProcessor {
             } else if (Math.abs(matrixA[x][y] - matrixIn[x][y]) < 0.0000000001) {//Insertion -> left
                 int xShift = 1;
                 while (Math.abs(matrixA[x][y] - (matrixA[x - xShift][y] + gapCost.getGapCost(xShift))) > 0.0000000001) {
-                    leftPath[x - xShift][y] = true;
-                    hasPath[x - xShift][y] = true;
+                    leftPath[x - xShift + 1][y] = true;
+                    hasPath[x - xShift + 1][y] = true;
                     queryLine.append(querySequence.charAt(x - xShift));
                     targetLine.append('-');
                     xShift++;
@@ -233,8 +258,8 @@ public class Gotoh extends AlignmentProcessor {
             } else if (Math.abs(matrixA[x][y] - matrixDel[x][y]) < 0.0000000001) {//Deletion -> right
                 int yShift = 1;
                 while (Math.abs(matrixA[x][y] - (matrixA[x][y - yShift] + gapCost.getGapCost(yShift))) > 0.0000000001) {
-                    topPath[x][y - yShift] = true;
-                    hasPath[x][y - yShift] = true;
+                    topPath[x][y - yShift + 1] = true;
+                    hasPath[x][y - yShift + 1] = true;
                     queryLine.append('-');
                     targetLine.append(targetSequence.charAt(y - yShift));
                     yShift++;
@@ -330,22 +355,22 @@ public class Gotoh extends AlignmentProcessor {
                     targetLine.append('-');
                     xShift++;
                 }
-                leftPath[x - xShift][y] = true;
-                hasPath[x - xShift][y] = true;
+                leftPath[x - xShift + 1][y] = true;
+                hasPath[x - xShift + 1][y] = true;
                 queryLine.append(querySequence.charAt(x - xShift));
                 targetLine.append('-');
                 x -= xShift;
             } else if (Math.abs(matrixA[x][y] - matrixDel[x][y]) < 0.0000000001) {// Deletion -> to the right --> Gap in query alignment part
                 int yShift = 1;
                 while (Math.abs(matrixA[x][y] - (matrixA[x][y - yShift] + gapCost.getGapCost(yShift))) > 0.0000000001) {
-                    topPath[x][y - yShift] = true;
-                    hasPath[x][y - yShift] = true;
+                    topPath[x][y - yShift + 1] = true;
+                    hasPath[x][y - yShift + 1] = true;
                     queryLine.append('-');
                     targetLine.append(targetSequence.charAt(y - yShift));
                     yShift++;
                 }
-                topPath[x][y - yShift] = true;
-                hasPath[x][y - yShift] = true;
+                topPath[x][y - yShift + 1] = true;
+                hasPath[x][y - yShift + 1] = true;
                 queryLine.append('-');
                 targetLine.append(targetSequence.charAt(y - yShift));
                 y -= yShift;
@@ -397,6 +422,9 @@ public class Gotoh extends AlignmentProcessor {
         info.targetId = targetSequenceId;
         info.xSize = xSize;
         info.ySize = ySize;
+        info.leftArrows = leftArrows;
+        info.topArrows = topArrows;
+        info.topLeftArrows = leftTopArrows;
         info.topPath = topPath;
         info.leftPath = leftPath;
         info.topLeftPath = leftTopPath;

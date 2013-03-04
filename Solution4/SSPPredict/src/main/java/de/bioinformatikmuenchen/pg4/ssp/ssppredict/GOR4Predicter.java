@@ -17,28 +17,28 @@ import java.util.regex.Pattern;
  */
 public class GOR4Predicter extends GORPredicter {
 
-    long[][] fS;
-    long[][] fNS;
-    private long[][][][][][] cMatrix;
-    double[][][][] iMatrix;
+    long[][][][][][] cMatrix;
+    long[][][][] gor3cMatrix;
+    double fact1 = 2.0d / 17.0d;
+    double fact2 = 15.0d / 17.0d;
 
     @Override
     public void init() {
         cMatrix = new long[Data.aaTable.length][Data.trainingWindowSize][Data.aaTable.length][Data.aaTable.length][Data.trainingWindowSize][Data.secStruct.length];
-        iMatrix = new double[Data.aaTable.length][Data.trainingWindowSize][Data.aaTable.length][Data.aaTable.length][Data.trainingWindowSize][Data.secStruct.length];
-        fS = new long[Data.aaTable.length][Data.secStruct.length];
-        fNS = new long[Data.aaTable.length][Data.secStruct.length];
+        gor3cMatrix = new long[Data.aaTable.length][Data.secStruct.length][Data.trainingWindowSize][Data.aaTable.length];
     }
 
     @Override
     public void readModelFile(File f) {
-
+        // Trainer output:
+        // result.append("=").append(Data.secStruct[ss]).append(",").append(Data.aaTable[aaAbove]).append(",").append(Data.aaTable[aaSom]).append(",").append(aaSomPos - Data.prevInWindow).append("=\n\n");
+        // result.append(cMatrix[aaSom][aaSomPos][aaAbove][aaRel][relPos][ss]).append("\t");
         try {
             BufferedReader br = new BufferedReader(new FileReader(f));
             String line = null;
-            char currentState = ' ';
-            char currentAA = ' ';
-            int currentAminoAcidNr = -1;
+            char ss = ' ', aaAbove = ' ', aaSom = ' ';
+            int aaSomPos = 0;
+            int aaRel = -1;
             while ((line = br.readLine()) != null) {
                 line = line.trim();
                 if (Predict.debug) {
@@ -50,13 +50,65 @@ public class GOR4Predicter extends GORPredicter {
                     }
                     continue;
                 }
-                if (line.startsWith("=")) {
+                if (line.startsWith("+")) {
+                    // quasi gor3
+                    char currentState = ' ';
+                    char currentAA = ' ';
+                    while ((line = br.readLine()) != null) {
+                        line = line.trim();
+                        if (Predict.debug) {
+                            System.out.println("Process line: " + line);
+                        }
+                        if (line.startsWith("//") || line.isEmpty()) {
+                            if (Predict.debug) {
+                                System.out.println(" Skip line!");
+                            }
+                            continue;
+                        }
+                        if (line.startsWith("=")) {
+                            // getCurrentState
+                            String[] r = line.substring(1, line.length() - 1).split(",");
+                            currentAA = r[0].trim().charAt(0);
+                            currentState = r[1].trim().charAt(0);
+                            if (Predict.debug) {
+                                System.out.println(" state line! (now in state: " + currentState + ")");
+                            }
+                        } else {
+                            if (Predict.debug) {
+                                System.out.println(" data line!");
+                            }
+                            // go through line
+                            String value = "";
+                            int currentWindowPosition = -1;
+                            line += " ";        // that's no line to remove; think why!
+                            aaRel = GORPredicter.convertASCharToMatrixId(line.charAt(0));      // aa first
+                            for (int i = 1; i < line.length(); i++) {
+                                char currChar = line.charAt(i);
+                                boolean currWhite = (currChar == ' ' || currChar == '\t') ? true : false;
+                                if (value.isEmpty() && currWhite) {
+                                    continue;
+                                }
+                                if (!value.isEmpty() && currWhite) {
+                                    if (Predict.debug) {
+                                        System.out.println("  input in matrix: state: " + currentState + " currentWindowPosition: " + (currentWindowPosition + 1) + " currentAminoAcid: " + Data.aaTable[aaRel] + " => " + value);
+                                    }
+                                    gor3cMatrix[GORPredicter.convertASCharToMatrixId(currentAA)][GORPredicter.convertStructureCharToMatrixId(currentState)][++currentWindowPosition][aaRel] = Integer.parseInt(value);
+                                    value = "";
+                                } else {
+                                    value += currChar;
+                                }
+                            }
+                        }
+                    }
+                } else if (line.startsWith("=")) {
                     // getCurrentState
                     String[] r = line.substring(1, line.length() - 1).split(",");
-                    currentAA = r[0].trim().charAt(0);
-                    currentState = r[1].trim().charAt(0);
+                    ss = r[0].trim().charAt(0);
+                    aaAbove = r[1].trim().charAt(0);
+                    aaSom = r[2].trim().charAt(0);
+                    aaSomPos = Integer.parseInt(r[3].trim()) + Data.prevInWindow;
                     if (Predict.debug) {
-                        System.out.println(" state line! (now in state: " + currentState + ")");
+                        System.out.println(" state line! (now in state: " + ss + ", " + aaAbove + ", " + aaSom + ", " + aaSomPos + ")");
                     }
                 } else {
                     if (Predict.debug) {
@@ -64,9 +116,9 @@ public class GOR4Predicter extends GORPredicter {
                     }
                     // go through line
                     String value = "";
-                    int currentWindowPosition = -1;
+                    int relPos = -1;
                     line += " ";        // that's no line to remove; think why!
-                    currentAminoAcidNr = GORPredicter.convertASCharToMatrixId(line.charAt(0));      // aa first
+                    aaRel = GORPredicter.convertASCharToMatrixId(line.charAt(0));      // aa first
                     for (int i = 1; i < line.length(); i++) {
                         char currChar = line.charAt(i);
                         boolean currWhite = (currChar == ' ' || currChar == '\t') ? true : false;
@@ -75,9 +127,10 @@ public class GOR4Predicter extends GORPredicter {
                         }
                         if (!value.isEmpty() && currWhite) {
                             if (Predict.debug) {
-                                System.out.println("  input in matrix: state: " + currentState + " currentWindowPosition: " + (currentWindowPosition + 1) + " currentAminoAcid: " + Data.aaTable[currentAminoAcidNr] + " => " + value);
+                                System.out.println("  input in matrix: state: " + ss + ", " + aaAbove + ", " + aaSom + ", " + aaSomPos + " currentWindowPosition: " + (relPos + 1) + " currentAminoAcid: " + Data.aaTable[aaRel] + " => " + value);
                             }
-                            cMatrix[GORPredicter.convertASCharToMatrixId(currentAA)][GORPredicter.convertStructureCharToMatrixId(currentState)][++currentWindowPosition][currentAminoAcidNr] = Integer.parseInt(value);
+                            // result.append(cMatrix[aaSom][aaSomPos][aaAbove][aaRel][relPos][ss])
+                            cMatrix[GORPredicter.convertASCharToMatrixId(aaSom)][aaSomPos][GORPredicter.convertASCharToMatrixId(aaAbove)][aaRel][++relPos][GORPredicter.convertStructureCharToMatrixId(ss)] = Integer.parseInt(value);
                             value = "";
                         } else {
                             value += currChar;
@@ -94,92 +147,104 @@ public class GOR4Predicter extends GORPredicter {
             throw new RuntimeException("Error reading model file! Error Type: " + e.toString() + " Error Message: " + e.getMessage() + " Stacktrace see above!");
 
         }
+
     }
 
     @Override
     public void initPrediction() {
-        for (int stateAA = 0; stateAA < Data.aaTable.length; stateAA++) {
-            // calc f_S and allAA
-            for (int st = 0; st < Data.secStruct.length; st++) {
-                fS[stateAA][st] = 0;
-                for (int pos = 0; pos < Data.trainingWindowSize; pos++) {
-                    for (int aa = 0; aa < Data.aaTable.length; aa++) {
-                        fS[stateAA][st] += cMatrix[stateAA][st][pos][aa];
-                        if (Predict.debug) {
-                            System.out.println("calculated fs for " + st + ": " + fS[st]);
-                        }
-                    }
-                }
-            }
-
-            // calc not f_S and prob for each S
-            for (int st = 0; st < Data.secStruct.length; st++) {
-                for (int nSt = 0; nSt < Data.secStruct.length; nSt++) {
-                    if (st == nSt) {
-                        continue;
-                    }
-                    fNS[stateAA][st] += fS[stateAA][nSt];
-                    if (Predict.debug) {
-                        System.out.println("calculated nfs for " + st + ": " + fNS[st]);
-                    }
-                }
-            }
-
-            // calc log matix
-            for (int st = 0; st < Data.secStruct.length; st++) {
-                for (int pos = 0; pos < Data.trainingWindowSize; pos++) {
-                    for (int aa = 0; aa < Data.aaTable.length; aa++) {
-                        long otherStruct = 0;
-                        for (int nSt = 0; nSt < Data.secStruct.length; nSt++) {
-                            if (st == nSt) {
-                                continue;
-                            }
-                            otherStruct += cMatrix[stateAA][nSt][pos][aa];
-                        }
-                        double firstTerm = Math.log((double) cMatrix[stateAA][st][pos][aa]
-                                / (double) otherStruct);
-                        double secTerm = Math.log((double) fNS[stateAA][st] / (double) fS[stateAA][st]);
-                        iMatrix[stateAA][st][pos][aa] = firstTerm + secTerm;
-
-                        if (Predict.debug) {
-                            System.out.println("calculated iMatrix for " + stateAA + ", " + st + ", " + pos + ", " + aa + ": " + iMatrix[stateAA][st][pos][aa]);
-                        }
-                    }
-                }
-            }
-        }
+        // Nothing to do!
     }
 
     @Override
     public double[] predict1Example(String aaSeq) {
-        try {
-            double[] result = new double[Data.secStruct.length];
-            // getMiddleChar
-            char middleChar = aaSeq.charAt(Data.prevInWindow);       // Note, that Java starts counting by 0
-            if(GORPredicter.convertASCharToMatrixId(middleChar) == -1) {
-                return result;
+        double[] result = new double[Data.secStruct.length];
+        int middleChar = GORPredicter.convertASCharToMatrixId(aaSeq.charAt(Data.prevInWindow));       // Note, that Java starts counting by 0
+        if (middleChar == -1) {
+            return result;
+        }
+        for (int secundaryStructure = 0; secundaryStructure < Data.secStruct.length; secundaryStructure++) {        // foreach result
+            // calc first sum
+            double firstSum = 0;
+            for (int k = 0; k < Data.trainingWindowSize; k++) {                                     // sum from k=-m to m
+                for (int l = k + 1; l < Data.trainingWindowSize; l++) {                             // sum from l=-m to m; l>k
+                    int aaAtPosK = GORPredicter.convertASCharToMatrixId(aaSeq.charAt(k));           // get a_j+k
+                    if (aaAtPosK == -1) {
+                        break;
+                    }
+                    int aaAtPosL = GORPredicter.convertASCharToMatrixId(aaSeq.charAt(l));           // get a_j+l
+                    if (aaAtPosL == -1) {
+                        break;
+                    }
+                    // matrix has the following structure:
+                    // [aaTable][trainingWindowSize][aaTable][aaTable][trainingWindowSize][secStruct]
+                    // [amino acid somewhere in window][position of acid somewhere in window][amino acid in the middle]
+                    // [amino acid relative to the middle][position relative to the middle][secondary state in middle] = count
+                    double p = cMatrix[aaAtPosK][k][middleChar][aaAtPosL][l][secundaryStructure];   // p for state
+                    double nP = 0;
+                    for (int nSecStruct = 0; nSecStruct < Data.secStruct.length; nSecStruct++) {    // get "not p state"
+                        if (nSecStruct == secundaryStructure) {                                     // don't add to current state
+                            continue;
+                        }
+                        nP += cMatrix[aaAtPosK][k][middleChar][aaAtPosL][l][nSecStruct];            // sum up
+                    }
+                    firstSum += Math.log((1.0 + p) / (2.0 + nP));                                   // sum up log values (add pseudocount for 0 values in the matrix)
+                }
             }
-            for (int st = 0; st < Data.secStruct.length; st++) {             // for each state to fillout
-                double windowSum = 0;
-                for (int pos = 0; pos < Data.trainingWindowSize; pos++) {    // for each window position
-                    if (GORPredicter.convertASCharToMatrixId(aaSeq.charAt(pos)) == -1) {
+            // calc second sum
+            double secondSum = 0;
+            for (int pos = 0; pos < Data.trainingWindowSize; pos++) {
+                // [Data.aaTable.length][Data.secStruct.length][Data.trainingWindowSize][Data.aaTable.length]
+                int aaAtPos = GORPredicter.convertASCharToMatrixId(aaSeq.charAt(pos));
+                if (aaAtPos == -1) {
+                    break;
+                }
+                double p = gor3cMatrix[middleChar][secundaryStructure][pos][aaAtPos];
+                double nP = 0;
+                for (int nSecStruct = 0; nSecStruct < Data.secStruct.length; nSecStruct++) {
+                    if (nSecStruct == secundaryStructure) {
                         continue;
                     }
-                    windowSum += iMatrix[GORPredicter.convertASCharToMatrixId(middleChar)][st][pos][GORPredicter.convertASCharToMatrixId(aaSeq.charAt(pos))];
+                    nP += gor3cMatrix[middleChar][nSecStruct][pos][aaAtPos];
                 }
-                double expWS = Math.exp(windowSum) * ((double) fS[GORPredicter.convertASCharToMatrixId(middleChar)][st] / (double) fNS[GORPredicter.convertASCharToMatrixId(middleChar)][st]);
-                result[st] = (expWS / (expWS + 1));
+                secondSum += Math.log((1.0 + p) / (2.0 + nP));      // add pseudocount for 0 values in the matrix
             }
-            if (Predict.debug) {
-                System.out.println("Prediction for: " + aaSeq);
-                for (int i = 0; i < Data.secStruct.length; i++) {
-                    System.out.println("Prediction for " + Data.secStruct[i] + ": " + result[i]);
-                }
-            }
-            return result;
-        } catch (Exception e) {
-            e.printStackTrace();
-            throw new RuntimeException("Error executing predict1Example: called with: '" + aaSeq + "'" + e.getMessage() + " - " + e.getLocalizedMessage() + " - " + e.toString());
+            // calc approx
+            double eX = Math.exp((fact1 * firstSum) - (fact2 * secondSum));
+            // append result
+            result[secundaryStructure] = eX / (1 + eX);
         }
+        return result;
+    }
+
+    public String getMatrixRepresentation() {
+
+        // =State, AS, AS, Pos=
+        //        POS
+        //  AS   count
+
+        StringBuilder result = new StringBuilder("// Matrix6D\n\n");
+
+        for (int ss = 0; ss < Data.secStruct.length; ss++) {
+            for (int aaAbove = 0; aaAbove < Data.aaTable.length; aaAbove++) {
+                for (int aaSom = 0; aaSom < Data.aaTable.length; aaSom++) {
+                    for (int aaSomPos = 0; aaSomPos < Data.trainingWindowSize; aaSomPos++) {
+                        result.append("=").append(Data.secStruct[ss]).append(",").append(Data.aaTable[aaAbove]).append(",").append(Data.aaTable[aaSom]).append(",").append(aaSomPos - Data.prevInWindow).append("=\n\n");
+                        for (int aaRel = 0; aaRel < Data.aaTable.length; aaRel++) {
+                            result.append(Data.aaTable[aaRel]).append("\t");
+                            for (int relPos = 0; relPos < Data.trainingWindowSize; relPos++) {
+                                result.append(cMatrix[aaSom][aaSomPos][aaAbove][aaRel][relPos][ss]).append("\t");
+                            }
+                            result.append('\n');
+                        }
+                        result.append("\n");
+                    }
+                }
+            }
+        }
+
+        result.append("+++++++++++++++++++++++++++\n\n");
+
+        return result.toString();
+
     }
 }

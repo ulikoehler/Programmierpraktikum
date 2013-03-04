@@ -13,7 +13,7 @@ import java.util.LinkedList;
  */
 public class PredictionResult {
 
-    public LinkedList<String[]> sequences = new LinkedList<String[]>();
+    public LinkedList<String[]> sequences = new LinkedList<String[]>();             // sequences[Id, content]
     public LinkedList<double[][]> probabilities = new LinkedList<double[][]>();
     private String[][] s;
     private double[][][] p;
@@ -33,7 +33,7 @@ public class PredictionResult {
     }
 
     // convert to
-    public void getHTMLRepresentation(boolean printProbabilities, PrintStream out) {// TODO
+    public void getHTMLRepresentation(boolean printProbabilities, PrintStream out) {
         initArrays();
 
         out.append("<html><head><title>secondary structure prediction</title></head><body><nobr><div style=\"font-family: Courier New\">");

@@ -6,6 +6,8 @@ package de.bioinformatikmuenchen.pg4.ssp.ssppredict;
  */
 public class Data {
     
+    public static double postProcessProbabilityBorderAvg = 0.7;
+    public static double postProcessProbabilityBorderStd = 0.7;
     
     public static int trainingWindowSize = 17;
     
@@ -29,7 +31,15 @@ public class Data {
     };
     
     public static final String[] colors = {
-        "#f00", "#0f0", "#00f", "#ff0", "#f0f", "#0ff", "#fc0", "#f0c", "#0fc", "#cf0", "#c0f", "#800000", "#ffA500", "#808000",
-        "#800080", "#008000", "#008080", "#c0c0c0", "#808080", "#990066", "#000000", "#996600", "#99CCCC", "#FF0066", "#FF9999", "#CC33FF"
+        "#133", "#708", "#047", "#042",
+        "#CCC", "#111", "#222", "#333",
+        "#444", "#555", "#666", "#9C9",
+        "#C9C", "#09C", "#99C", "#669",
+        "#636", "#603", "#069", "#6F0",
+        "#F90", "#F60", "#C30", "#C39",
+        "#06F", "#93C", "#33F", "#F06",
+        "#C0F", "#909", "#390", "#060",
+        "#060", "#006", "#000", "#F00",
+        "#0F0", "#00F"
     };
 }

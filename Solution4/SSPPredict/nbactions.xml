@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<actions>
+        <action>
+            <actionName>run</actionName>
+            <goals>
+                <goal>process-classes</goal>
+                <goal>org.codehaus.mojo:exec-maven-plugin:1.2.1:exec</goal>
+            </goals>
+            <properties>
+                <exec.args>--probabilities --debug --format -classpath %classpath txt --model /home/proj/biocluster/praktikum/bioprakt/Data/commandline/gor_examples/gor1_cb513_model.txt --seq /home/proj/biocluster/praktikum/bioprakt/Data/commandline/gor_examples/1C0T/1C0T.fasta</exec.args>
+                <exec.executable>java</exec.executable>
+            </properties>
+        </action>
+        <action>
+            <actionName>debug</actionName>
+            <goals>
+                <goal>process-classes</goal>
+                <goal>org.codehaus.mojo:exec-maven-plugin:1.2.1:exec</goal>
+            </goals>
+            <properties>
+                <exec.args>-Xdebug -Xrunjdwp:transport=dt_socket,server=n,address=${jpda.address} --probabilities --debug --format -classpath %classpath txt --model /home/proj/biocluster/praktikum/bioprakt/Data/commandline/gor_examples/gor1_cb513_model.txt --seq /home/proj/biocluster/praktikum/bioprakt/Data/commandline/gor_examples/1C0T/1C0T.fasta</exec.args>
+                <exec.executable>java</exec.executable>
+                <jpda.listen>true</jpda.listen>
+            </properties>
+        </action>
+        <action>
+            <actionName>profile</actionName>
+            <goals>
+                <goal>process-classes</goal>
+                <goal>org.codehaus.mojo:exec-maven-plugin:1.2.1:exec</goal>
+            </goals>
+            <properties>
+                <exec.args>${profiler.args} --probabilities --debug --format -classpath %classpath txt --model /home/proj/biocluster/praktikum/bioprakt/Data/commandline/gor_examples/gor1_cb513_model.txt --seq /home/proj/biocluster/praktikum/bioprakt/Data/commandline/gor_examples/1C0T/1C0T.fasta</exec.args>
+                <exec.executable>${profiler.java}</exec.executable>
+            </properties>
+        </action>
+    </actions>

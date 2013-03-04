@@ -43,6 +43,11 @@ public class PredictTest {
 
     @Test
     public void testMain() {
+        //Predict.main("--probabilities --format HTML --model src/test/resources/Ugor4CB513DSSP.db.txt --seq predict".split(" "));
+        Predict.main("--probabilities --format HTML --model src/test/resources/Ugor3CB513DSSP.db.txt --maf src/test/resources/1chkb.aln".split(" "));
+        //Predict.main("--probabilities --postprocessing 0.7 --format HTML --model src/test/resources/Ugor1CB513DSSP.db.txt --seq predict".split(" "));
+        
+        /*
         java.io.PrintStream sysOut = System.out;
         System.out.println("Testing main method ...");
         String defaultOutputfile = "src/test/resources/testOutput.txt";
@@ -73,7 +78,7 @@ public class PredictTest {
                 File f = new File(defaultOutputfile);
                 BufferedReader r = new BufferedReader(new FileReader(f));
                 String line = null;
-                while ((line = r.readLine()) != null) {// TODO
+                while ((line = r.readLine()) != null) {
                 }
 
 
@@ -81,7 +86,7 @@ public class PredictTest {
                 System.out.println("---");
                 fail("Unexpected Exception in Test!");
             }
-        }
+        }*/
     }
 
     @Test

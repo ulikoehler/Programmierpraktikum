@@ -1,5 +1,5 @@
 #!/bin/bash
-export MAT=/home/proj/biocluster/praktikum/bioprakt/Data/MATRICES/dayhoff.mat
+export MAT=dayhoff.mat
 
 echo "Aligning global..."
 java -jar align.jar --pairs sanity.pairs --seqlib domains.seqlib --mode global --format scores -m $MAT > global.scores.out

@@ -73,7 +73,7 @@ public class Predict {
 
     public static void main(String[] args) {
         System.gc();
-        
+
         // get command options
         final Options opts = new Options();
         opts.addOption("m", "model", true, "path to the model file")
@@ -81,7 +81,8 @@ public class Predict {
                 .addOption("a", "maf", true, "path to .aln file")
                 .addOption("f", "format", true, "output sequence in html or txt format")
                 .addOption("p", "probabilities", false, "include the probabilities in the output (0-9, coloring in html)")
-                .addOption("t", "postprocessing", false, "whether to postprocess results")
+                .addOption("t", "avgPost", true, "whether to postprocess results with an average method")
+                .addOption("x", "stdPost", true, "whether to postprocess results with an simplifier method")
                 .addOption("d", "debug", false, "output debug informations");
 
         final CommandLineParser cmdLinePosixParser = new PosixParser();
@@ -94,6 +95,8 @@ public class Predict {
                     + parseException.getMessage());
             printUsageAndQuit();
         }
+
+        // GOR 1-4
 
         String model = "";
         File f = null;
@@ -108,6 +111,11 @@ public class Predict {
             printUsageAndQuit();
         }
 
+        if (commandLine.hasOption("s") && commandLine.hasOption("a")) {
+            System.err.println("Please spec --seq *or* --maf!");
+            printUsageAndQuit();
+        }
+
         String seq = "";
         File g = null;
         if (commandLine.hasOption("s")) {
@@ -116,16 +124,9 @@ public class Predict {
             g = new File(seq);
         } else {
             if (!commandLine.hasOption("a")) {
-                System.err.println("Please spec --seq or --maf");
+                System.err.println("@s: Please spec --seq or --maf");
                 printUsageAndQuit();
             }
-        }
-
-        String maf = "";  // TODO
-        File h = null;
-        if (!commandLine.hasOption("a")) {
-            maf = commandLine.getOptionValue("a");
-
         }
 
         outputMethod format = outputMethod.txt;
@@ -141,20 +142,101 @@ public class Predict {
             }
         }
 
+        // generell
+
         boolean probabilities = false;
         if (commandLine.hasOption("p")) {
             probabilities = true;
         }
 
-        boolean postprocessing = false;
+        boolean postprocessingAVG = false;
         if (commandLine.hasOption("t")) {
-            postprocessing = true;
+            Data.postProcessProbabilityBorderAvg = Double.parseDouble(commandLine.getOptionValue("t"));
+            postprocessingAVG = true;
+        }
+        
+        boolean postprocessingStd = false;
+        if (commandLine.hasOption("x")) {
+            Data.postProcessProbabilityBorderStd = Double.parseDouble(commandLine.getOptionValue("x"));
+            postprocessingStd = true;
         }
 
         if (commandLine.hasOption("d")) {
             debug = true;
         }
 
+        // GOR 5
+
+        String maf = "";
+        File h = null;
+        if (commandLine.hasOption("a")) {
+            maf = commandLine.getOptionValue("a");
+            maf = IO.isExistingReadableFileOrQuit(maf, "Can't read file " + maf + "!");
+            h = new File(maf);
+            // GOR 5 Alignment
+            if (debug) {
+                System.out.println("Preprocessing ...");
+            }
+            Data.secStruct = GORPredicter.getStatesFromFile(f, method);
+            Data.trainingWindowSize = GORPredicter.getWindowSizeFromFile(f);
+            Data.prevInWindow = Data.trainingWindowSize / 2;
+            if (debug) {
+                System.out.println("Init gor5 ...");
+            }
+            GOR5Predicter gor5 = new GOR5Predicter(method);
+            if (debug) {
+                System.out.println("Parse gor5 model file ...");
+            }
+            gor5.readModelFile(f);
+            if (debug) {
+                System.out.println("Predict ...");
+            }
+            PredictionResult res = gor5.predict(h);
+            if (postprocessingAVG) {
+                if (debug) {
+                    System.out.println("Postprocessing avg ...");
+                }
+                res = GORPredicter.postprocessAVG(res);
+            }
+            if (postprocessingStd) {
+                if (debug) {
+                    System.out.println("Postprocessing std ...");
+                }
+                res = GORPredicter.postprocessSTD(res);
+            }
+            if (debug) {
+                System.out.println("Format and write results (" + format.name() + "," + ((probabilities) ? "" : " no") + " probabilities) ...");
+            }
+            if (format.name().equals(outputMethod.html.name())) {
+                res.getHTMLRepresentation(probabilities, System.out);
+            } else {
+                res.getTXTRepresentation(probabilities, System.out);
+            }
+            if (debug) {
+                System.out.println("programdata: ");
+                System.out.print("AA: ");
+                for (int i = 0; i < Data.aaTable.length; i++) {
+                    System.out.print(Data.aaTable[i]);
+                }
+                System.out.println();
+                System.out.print("ST: ");
+                for (int i = 0; i < Data.secStruct.length; i++) {
+                    System.out.print(Data.secStruct[i]);
+                }
+                System.out.println();
+                System.out.println("window size: " + Data.trainingWindowSize + " - " + Data.prevInWindow);
+            }
+            // quit
+            System.exit(0);
+        } else {
+            if (!commandLine.hasOption("s")) {
+                System.err.println("@a: Please spec --seq or --maf");
+                printUsageAndQuit();
+            }
+        }
+
+        // GOR 1-4
+        
         GORPredicter predicter =
                 (method.name().equals(simpleGorMethods.gor1.name()))
                 ? new GOR1Predicter()
@@ -184,11 +266,17 @@ public class Predict {
                 System.out.println("Predict ...");
             }
             PredictionResult res = predicter.predictFileSequences(g);
-            if (postprocessing) {
+            if (postprocessingAVG) {
                 if (debug) {
-                    System.out.println("Postprocessing ...");
+                    System.out.println("Postprocessing avg ...");
                 }
-                res = GORPredicter.postprocess(res);
+                res = GORPredicter.postprocessAVG(res);
+            }
+            if (postprocessingStd) {
+                if (debug) {
+                    System.out.println("Postprocessing std ...");
+                }
+                res = GORPredicter.postprocessSTD(res);
             }
             if (debug) {
                 System.out.println("Format and write results (" + format.name() + "," + ((probabilities) ? "" : " no") + " probabilities) ...");

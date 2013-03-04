@@ -98,7 +98,7 @@ public class DPMatrixExporter implements IDPMatrixExporter {
         for (int y = 0; y <= info.target.length(); y++) {
             builder.append(y == 0 ? ' ' : info.target.charAt(y - 1)).append("\t");
             for (int x = 0; x <= info.query.length(); x++) {
-                builder.append(info.matrix[x][y]).append("\t");
+                builder.append(numberFormat.format(info.matrix[x][y])).append("\t");
             }
             builder.append("\n");
         }
@@ -125,13 +125,15 @@ public class DPMatrixExporter implements IDPMatrixExporter {
             builder.append(".overlay-top {z-index: -2;}\n");
             builder.append(".overlay-left {z-index: -3;}\n");
             builder.append(".overlay-topleft {z-index: -4;}\n");
+            builder.append(".line-container {display:inline-block;white-space:nowrap;}\n");
             builder.append("</style>");
             builder.append("</head><body>");
         }
         builder.append("<h3>").append("Alignment of:&nbsp;").append(info.queryId).append(" and ").append(info.targetId).append("</h3>");
-        builder.append("<p>Score:&nbsp;").append(info.score).append("</p>");
+        builder.append("<p>Score:&nbsp;").append(numberFormat.format(info.score)).append("</p>");
         //Foreach field, write one <div>
         for (int y = 0; y < info.ySize; y++) {
+            builder.append("<div class=\"line-container\">");
             for (int x = 0; x < info.xSize; x++) {
                 builder.append("<div class=\"container\">");
                 //Write
@@ -166,6 +168,7 @@ public class DPMatrixExporter implements IDPMatrixExporter {
                 //
                 builder.append("</div>"); //container
             }
+            builder.append("</div>");
             builder.append("<br/>\n");
         }
         //Write footer

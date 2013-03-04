@@ -28,7 +28,6 @@ public class FactorizeValidation {
 
     public FactorizeValidation(File align, File reflist) {
         //safing alignment for each reference sequence in hash
-
         System.out.println("Filling Hashmap ");
         this.fillhash(reflist);
         //extracting candidate alingment
@@ -106,35 +105,59 @@ public class FactorizeValidation {
                     homstradname2 = line.substring(9, 16);
                     line = reader.readLine();
                     //getting sequence 1
-                    if (line != null && line.charAt(7) == ':') {
+                    if (line == null){
+                        break;
+                    }else{
                         candidatetemplate = line.substring(9, line.length() - 1);
                         line = reader.readLine();
-                        while (line != null && line.charAt(7) != ':') {
-                            candidatetemplate += line;
+                        while(line != null){
+                            if(line.equals("")){
+                                line = reader.readLine();
+                                break;
+                            }else{
+                                if(line.charAt(7) != ':'){
+                                    candidatetemplate += line;
+                                }else{
+                                    break;
+                                }
+                            }
+                            line = reader.readLine();
                         }
                     }
                     //getting sequence 2
-                    if (line != null && line.charAt(7) == ':') {
+                    if (line == null) {
+                        break;
+                    }else{
                         candidatetarget = line.substring(9, line.length() - 1);
                         line = reader.readLine();
-                        while (line != null && line.charAt(0) != '>') {
-                            candidatetarget += line;
+                        while(line != null){
+                            if(line.equals("")){
+                                line = reader.readLine();
+                                break;
+                            }else{
+                                if(line.charAt(0) != '>'){
+                                    candidatetarget += line;
+                                }else{
+                                    break;
+                                }
+                            }
+                            line = reader.readLine();
                         }
                     }
                     //safing alignment and reference pair in Arraylist
                     alignmentpair.add(new VTuple(homstradname1, homstradname2, candidatetemplate, candidatetarget));
-                }
+                }else{
                 line = reader.readLine();
+                }
             }
             reader.close();
         } catch (Exception e) {
-            System.out.println("caughth one");
             System.err.println(e);
         }
     }
 
     private void factorizeInput() {
-        //create summary
+        //creating summary and detailed representations
         summary = new Summary();
         detailed = new Detailed();
         for (int i = 0; i < alignmentpair.size(); i++) {
@@ -164,11 +187,6 @@ public class FactorizeValidation {
             //safing result
             detailed.add(result);
             //safing validation criteria for summary file
-            //System.out.println("Sensi " + sensi);
-            //System.out.println("Speci " + speci);
-            //System.out.println("Cover " + cover);
-            //System.out.println("Means " + means);
-            //System.out.println("Inver " + inver);
             summary.addSensi(sensi);
             summary.addSpeci(speci);
             summary.addCover(cover);
@@ -196,4 +214,5 @@ public class FactorizeValidation {
         numberFormat.setDecimalFormatSymbols(dfs);
         return Double.valueOf(numberFormat.format(d));
     }
+    
 }

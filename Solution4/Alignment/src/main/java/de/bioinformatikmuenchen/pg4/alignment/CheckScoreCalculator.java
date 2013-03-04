@@ -23,7 +23,6 @@ public class CheckScoreCalculator {
                 break;
             }
         }
-
         //
         // Handle end gaps
         //
@@ -113,14 +112,17 @@ public class CheckScoreCalculator {
         String ta = alignment.getTargetAlignment();
         double score = 0;
         //Remove gaps at the beginning/end for local
-        if (mode == AlignmentMode.LOCAL) {
-//            String[] vals = stripStartAndEndGapsFreeshift(qa, ta);
+        if (mode == AlignmentMode.FREESHIFT) {
+            String[] vals = stripStartAndEndGapsFreeshift(qa, ta);
+            qa = vals[0];
+            ta = vals[1];
+        } else if (mode == AlignmentMode.LOCAL) {
             String[] vals = stripStartAndEndGapsLocal(qa, ta);
             qa = vals[0];
             ta = vals[1];
         }
         //Iterate over the characters
-        for (int i = 0; i < alignment.getQueryAlignment().length(); i++) {
+        for (int i = 0; i < qa.length(); i++) {
             if (qa.charAt(i) == '-' || ta.charAt(i) == '-') {
                 score += gapCost.getGapCost(1);
             } else { //Match or mismatch
