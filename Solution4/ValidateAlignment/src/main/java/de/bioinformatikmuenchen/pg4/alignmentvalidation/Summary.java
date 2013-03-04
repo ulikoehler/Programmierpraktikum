@@ -213,7 +213,7 @@ public class Summary {
 
     public static double round(double d) {
         Double p = d;
-        if (!(p.isNaN())) {
+        if (!(p.isNaN())|| !(p.isInfinite())) {
             DecimalFormat numberFormat = new DecimalFormat();
             DecimalFormatSymbols dfs = new DecimalFormatSymbols();
             dfs.setDecimalSeparator('.');

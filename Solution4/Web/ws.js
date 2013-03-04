@@ -53,3 +53,9 @@ function hideAddMatrixDialog() {
 	$('#addMatrixDialog').dialog('close');
     }
 }
+function showAlignment() {
+  
+}
+function showFixedPointAlignment() {
+  
+}
