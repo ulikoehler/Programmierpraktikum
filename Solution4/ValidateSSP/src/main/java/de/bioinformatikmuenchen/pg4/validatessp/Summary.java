@@ -59,10 +59,15 @@ public class Summary {
 
     private static double getMean(Collection<Double> coll) {
         double sum = 0.0;
+        int NaN = 0;
         for (Double val : coll) {
-            sum += val;
+            if (!(val.isNaN())) {
+                sum += val;
+            } else {
+                NaN++;
+            }
         }
-        return sum / coll.size();
+        return sum / (coll.size() - NaN);
     }
 
     public double getQ3Mean() {
@@ -189,56 +194,67 @@ public class Summary {
         if (quantil < 0) {
             quan = 0;
         }
-        double number = (quan * list.size());
+        int j = 0;
+        for (int i = 0; i < list.size(); i++) {      
+            if (!(list.get(i).isNaN())){
+                j++;
+            }
+        }
+        double number = (quan * j);
         return list.get((int) number);
     }
 
     public double getQ3Quantil(double quantil) {
         Collections.sort(Q3);
-        return getQuantil(Q3, quantil);
+        return round(getQuantil(Q3, quantil));
     }
 
     public double getQHQuantil(double quantil) {
         Collections.sort(QH);
-        return getQuantil(QH, quantil);
+        return round(getQuantil(QH, quantil));
     }
 
     public double getQEQuantil(double quantil) {
         Collections.sort(QE);
-        return getQuantil(QE, quantil);
+        return round(getQuantil(QE, quantil));
     }
 
     public double getQCQuantil(double quantil) {
         Collections.sort(QC);
-        return getQuantil(QC, quantil);
+        return round(getQuantil(QC, quantil));
     }
 
     public double getSOVQuantil(double quantil) {
         Collections.sort(SOV);
-        return getQuantil(SOV, quantil);
+        return round(getQuantil(SOV, quantil));
     }
 
     public double getSOVHQuantil(double quantil) {
         Collections.sort(SOVH);
-        return getQuantil(SOVH, quantil);
+        return round(getQuantil(SOVH, quantil));
     }
 
     public double getSOVEQuantil(double quantil) {
         Collections.sort(SOVE);
-        return getQuantil(SOVE, quantil);
+        return round(getQuantil(SOVE, quantil));
     }
 
     public double getSOVCQuantil(double quantil) {
         Collections.sort(SOVC);
-        return getQuantil(SOVC, quantil);
+        return round(getQuantil(SOVC, quantil));
     }
 
     private static double getStandardDeviation(Collection<Double> coll, double mean) {
         double number = 0;
+        int NaN = 0;
         for (Double val : coll) {
-            number += (mean - val) * (mean - val);
+            if (!(val.isNaN())) {
+                number += (mean - val) * (mean - val);
+            } else {
+                NaN++;
+            }
         }
-        return round(Math.sqrt(number / coll.size()));
+        return round(Math.sqrt(number / (coll.size() - NaN)));
     }
 
     public double getQ3StanDevi() {
@@ -273,15 +289,19 @@ public class Summary {
         return getStandardDeviation(SOVC, this.getSOVCMean());
     }
 
-    public static double round(double d) {
-        DecimalFormat numberFormat = new DecimalFormat();
-        DecimalFormatSymbols dfs = new DecimalFormatSymbols();
-        dfs.setDecimalSeparator('.');
-        numberFormat.setGroupingUsed(false);
-        numberFormat.setMinimumFractionDigits(6);
-        numberFormat.setMaximumFractionDigits(3);
-        numberFormat.setDecimalSeparatorAlwaysShown(false);
-        numberFormat.setDecimalFormatSymbols(dfs);
-        return Double.valueOf(numberFormat.format(d));
+    private static double round(double d) {
+        Double p = d;
+        if (!(p.isNaN())) {
+            DecimalFormat numberFormat = new DecimalFormat();
+            DecimalFormatSymbols dfs = new DecimalFormatSymbols();
+            dfs.setDecimalSeparator('.');
+            numberFormat.setGroupingUsed(false);
+            numberFormat.setMinimumFractionDigits(6);
+            numberFormat.setMaximumFractionDigits(3);
+            numberFormat.setDecimalSeparatorAlwaysShown(false);
+            numberFormat.setDecimalFormatSymbols(dfs);
+            return Double.valueOf(numberFormat.format(d));
+        }
+        return d;
     }
 }

@@ -44,10 +44,15 @@ public class Summary {
 
     private static double getMean(Collection<Double> coll) {
         double sum = 0.0;
+        int NaN = 0;
         for (Double val : coll) {
-            sum += val;
+            if (!(val.isNaN())) {
+                sum += val;
+            } else {
+                NaN++;
+            }
         }
-        return sum / coll.size();
+        return sum / (coll.size() - NaN);
     }
 
     public double getSensiMean() {
@@ -138,41 +143,52 @@ public class Summary {
         if (quantil < 0) {
             quan = 0;
         }
-        double number = (quan * list.size());
+        int j = 0;
+        for (int i = 0; i < list.size(); i++) {      
+            if (!(list.get(i).isNaN())){
+                j++;
+            }
+        }
+        double number = (quan * j);
         return list.get((int) number);
     }
 
     public double getSensiQuantil(double quantil) {
         Collections.sort(sensi);
-        return getQuantil(sensi, quantil);
+        return round(getQuantil(sensi, quantil));
     }
 
     public double getSpeciQuantil(double quantil) {
         Collections.sort(speci);
-        return getQuantil(speci, quantil);
+        return round(getQuantil(speci, quantil));
     }
 
     public double getCoverQuantil(double quantil) {
         Collections.sort(cover);
-        return getQuantil(cover, quantil);
+        return round(getQuantil(cover, quantil));
     }
 
     public double getMeansQuantil(double quantil) {
         Collections.sort(means);
-        return getQuantil(means, quantil);
+        return round(getQuantil(means, quantil));
     }
 
     public double getInverQuantil(double quantil) {
         Collections.sort(inver);
-        return getQuantil(inver, quantil);
+        return round(getQuantil(inver, quantil));
     }
 
     private static double getStandardDeviation(Collection<Double> coll, double mean) {
         double number = 0;
+        int NaN = 0;
         for (Double val : coll) {
-            number += (mean - val) * (mean - val);
+            if (!(val.isNaN())) {
+                number += (mean - val) * (mean - val);
+            } else {
+                NaN++;
+            }
         }
-        return round(Math.sqrt(number / coll.size()));
+        return round(Math.sqrt(number / (coll.size() - NaN)));
     }
 
     public double getSensiStanDevi() {
@@ -196,14 +212,18 @@ public class Summary {
     }
 
     public static double round(double d) {
-        DecimalFormat numberFormat = new DecimalFormat();
-        DecimalFormatSymbols dfs = new DecimalFormatSymbols();
-        dfs.setDecimalSeparator('.');
-        numberFormat.setGroupingUsed(false);
-        numberFormat.setMinimumFractionDigits(6);
-        numberFormat.setMaximumFractionDigits(3);
-        numberFormat.setDecimalSeparatorAlwaysShown(false);
-        numberFormat.setDecimalFormatSymbols(dfs);
-        return Double.valueOf(numberFormat.format(d));
+        Double p = d;
+        if (!(p.isNaN())) {
+            DecimalFormat numberFormat = new DecimalFormat();
+            DecimalFormatSymbols dfs = new DecimalFormatSymbols();
+            dfs.setDecimalSeparator('.');
+            numberFormat.setGroupingUsed(false);
+            numberFormat.setMinimumFractionDigits(6);
+            numberFormat.setMaximumFractionDigits(3);
+            numberFormat.setDecimalSeparatorAlwaysShown(false);
+            numberFormat.setDecimalFormatSymbols(dfs);
+            return Double.valueOf(numberFormat.format(d));
+        }
+        return d;
     }
 }

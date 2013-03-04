@@ -204,15 +204,19 @@ public class FactorizeValidation {
     }
 
     public static double round(double d) {
-        DecimalFormat numberFormat = new DecimalFormat();
-        DecimalFormatSymbols dfs = new DecimalFormatSymbols();
-        dfs.setDecimalSeparator('.');
-        numberFormat.setGroupingUsed(false);
-        numberFormat.setMinimumFractionDigits(6);
-        numberFormat.setMaximumFractionDigits(3);
-        numberFormat.setDecimalSeparatorAlwaysShown(false);
-        numberFormat.setDecimalFormatSymbols(dfs);
-        return Double.valueOf(numberFormat.format(d));
+        Double p = d;
+        if (!(p.isNaN())) {
+            DecimalFormat numberFormat = new DecimalFormat();
+            DecimalFormatSymbols dfs = new DecimalFormatSymbols();
+            dfs.setDecimalSeparator('.');
+            numberFormat.setGroupingUsed(false);
+            numberFormat.setMinimumFractionDigits(6);
+            numberFormat.setMaximumFractionDigits(3);
+            numberFormat.setDecimalSeparatorAlwaysShown(false);
+            numberFormat.setDecimalFormatSymbols(dfs);
+            return Double.valueOf(numberFormat.format(d));
+        }
+        return d;
     }
     
 }
