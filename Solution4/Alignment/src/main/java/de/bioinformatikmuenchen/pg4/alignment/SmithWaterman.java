@@ -68,8 +68,8 @@ public class SmithWaterman extends AlignmentProcessor {
         result.setAlignments(Collections.singletonList(backtracking()));
         this.score = findMaxScore();
         result.setScore(this.score);
-        result.setQuerySequenceId(querySequence);
-        result.setTargetSequenceId(targetSequence);
+        result.setQuerySequenceId(querySequenceId);
+        result.setTargetSequenceId(targetSequenceId);
         return result;
     }
 
