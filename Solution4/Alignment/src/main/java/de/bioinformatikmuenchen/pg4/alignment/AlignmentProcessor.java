@@ -26,6 +26,20 @@ public abstract class AlignmentProcessor {
     protected IDistanceMatrix distanceMatrix;
     protected IGapCost gapCost;
     protected boolean secStructAided = false;
+    protected double[][] secStructMatrix = new double[][]{{2.0, -15.0, -4.0}, {-15.0, 4.0, -4.0}, {-4.0, -4.0, 2.0}};//H-E-C
+    
+    
+    protected int getSecStructIndex(char bla) {
+        if (bla == 'H') {
+            return 0;
+        } else if (bla == 'E') {
+            return 1;
+        } else if (bla == 'C') {
+            return 2;
+        } else {
+            throw new IllegalArgumentException(bla + " is no valid secondary structure specified");
+        }
+    }
 
     public void setSecStructAided(boolean secStructAided) {
         this.secStructAided = secStructAided;

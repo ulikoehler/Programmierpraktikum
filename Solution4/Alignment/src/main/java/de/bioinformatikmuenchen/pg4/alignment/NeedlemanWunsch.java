@@ -34,7 +34,6 @@ public class NeedlemanWunsch extends AlignmentProcessor {
     private boolean[][] leftPath;
     private boolean[][] topPath;
     private boolean[][] hasPath;
-    private double[][] secStructMatrix = new double[][]{{2.0, -15.0, -4.0}, {-15.0, 4.0, -4.0}, {-4.0, -4.0, 2.0}};//H-E-C
 
     @Override
     public AlignmentResult align(Sequence seq1, Sequence seq2) {
@@ -159,19 +158,11 @@ public class NeedlemanWunsch extends AlignmentProcessor {
     public double distanceScore(int x, int y) {
         double distance = distanceMatrix.distance(querySequence.charAt(x), targetSequence.charAt(y));
         //Set to 0 if not sec struct aided
-        double secStructDistance = (secStructAided ? secStructMatrix[getSecStructIndex(querySequenceStruct.charAt(x))][getSecStructIndex(targetSequenceStruct.charAt(y))] : 0);
-        return distance + secStructDistance;
-    }
-
-    public int getSecStructIndex(char bla) {
-        if (bla == 'H') {
-            return 0;
-        } else if (bla == 'E') {
-            return 1;
-        } else if (bla == 'C') {
-            return 2;
-        } else {
-            throw new IllegalArgumentException(bla + " is no valid secondary structure specified");
+        try {
+            double secStructDistance = (secStructAided ? secStructMatrix[getSecStructIndex(querySequenceStruct.charAt(x))][getSecStructIndex(targetSequenceStruct.charAt(y))] : 0);
+            return distance + secStructDistance;
+        } catch (Exception ex) {
+            return distance;
         }
     }
 
