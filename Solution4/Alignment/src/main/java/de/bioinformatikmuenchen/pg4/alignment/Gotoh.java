@@ -186,8 +186,21 @@ public class Gotoh extends AlignmentProcessor {
 
     public double distanceScore(int x, int y) {
         double distance = distanceMatrix.distance(querySequence.charAt(x), targetSequence.charAt(y));
-        double secStructDistance = secStructMatrix[querySequenceStruct.charAt(x)][targetSequenceStruct.charAt(y)];
-        return (secStructAided ? distance + secStructDistance : distance);
+        //Set to 0 if not sec struct aided
+        double secStructDistance = (secStructAided ? secStructMatrix[getSecStructIndex(querySequenceStruct.charAt(x))][getSecStructIndex(targetSequenceStruct.charAt(y))] : 0);
+        return distance + secStructDistance;
+    }
+
+    public int getSecStructIndex(char bla) {
+        if (bla == 'H') {
+            return 0;
+        } else if (bla == 'E') {
+            return 1;
+        } else if (bla == 'C') {
+            return 2;
+        } else {
+            throw new IllegalArgumentException(bla + " is no valid secondary structure specified");
+        }
     }
 
     public void fillMatrix(String seq1, String seq2, AlignmentResult result) {
@@ -462,5 +475,4 @@ public class Gotoh extends AlignmentProcessor {
         }
         info.score = score;
     }
-
 }

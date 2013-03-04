@@ -25,7 +25,7 @@ public abstract class AlignmentProcessor {
     protected IAlignmentOutputFormatter outputFormatter;
     protected IDistanceMatrix distanceMatrix;
     protected IGapCost gapCost;
-    protected boolean secStructAided;
+    protected boolean secStructAided = false;
 
     public void setSecStructAided(boolean secStructAided) {
         this.secStructAided = secStructAided;
