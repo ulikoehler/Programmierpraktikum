@@ -40,6 +40,10 @@ my $runMode  = "";
 my $input    = "";
 my $output   = "";
 
+################################
+#   ----  ARG  PARSING  ----   #
+################################
+
 # parse arguments
 my $result = GetOptions (
   "pdb=s"       => \$pdbPath,
@@ -55,13 +59,13 @@ $output  = $ARGV[1] if defined $ARGV[1];
 if($input eq "" || !-f $input) {
   # proteinToParseList not given
   print "INVALID INPUT FILE PATH OR INPUT FILE NOT GIVEN!\n";
-  printHelp();
+  printUsageHelpAndQuit();
 }
 
 # check: output file
 if($output eq "") {
   print "PLEASE SPEC OUTPUT FILE!\n";
-  printHelp();
+  printUsageHelpAndQuit();
 }
 
 # read out input list
@@ -69,42 +73,36 @@ open FILE, "<".$input;
 my @idsToConvert = <FILE>;
 close(FILE);
 
+################################
+#   ---- ARG CORRECTING ----   #
+################################
+
+# pdb directory to use
+my $pdbDirectory = $DefaultLocalPdbPath;
+$pdbDirectory = pathCorrecter($pdbPath) if(-d $pdbPath);
+
+# dssp directory to use
+my $dsspDirectory = $DefaultLocalDsspPath;
+$dsspDirectory = pathCorrecter($dsspPath) if(-d $dsspPath);
+
+################################
+#   ----  PROGRAM MODE  ----   #
+################################
+
+# open output file for later access (append mode)
+open FILE, ">>$output";
+
 # check for program mode
 $runMode = uc($runMode);
 if($runMode eq "PDB") {
-  # run mode pdb => pdb to list
-  print "pdb mode entered!\n";
-  
-  # directory to use
-  my $pdbDirectory = $DefaultLocalPdbPath;
-  $pdbDirectory = pathCorrecter($pdbPath) if(-d $pdbPath);
-  
-  # open output file for later access
-  open FILE, ">>$output";                         # append
-  
   # foreach id in list
   foreach my $id(@idsToConvert) {
-    $id = idCorrecter($id);
+    $id = idCorrector($id);
     next if $id eq "";
     
-    # current pdb files!
-    my $pdbFile = $pdbDirectory.substr($id, 1, 2)."/pdb".$id.".ent";
-    my @pdbFileLines = "";
-    
-    # get file
-    if(-f $pdbFile) {                             # local file
-      print "Processing $pdbFile ...\n";
-      open IDFILE, "<$pdbFile";
-      @pdbFileLines = <IDFILE>;
-      close(IDFILE);
-    } else {                                      # if local file don't exist download data from the internet
-      my $downloadUrl = "$DefaultInternetDownloadPath$id.pdb";
-      print "Processing $downloadUrl ...\n";
-      @pdbFileLines = split(/\n/, get $downloadUrl);
-    }
-    
     # parse
-    my @parseResults = pdbParser(\@pdbFileLines, $id);
+    print "Processing: $id\n";
+    my @pdbLines = getPDB($id);   my @parseResults = pdbParser(\@pdbLines, $id);
     
     # write parsing information to file (append mode)
       # save all sequences from the parser
@@ -115,62 +113,15 @@ if($runMode eq "PDB") {
         print FILE "SS ".(shift @parseResults)."\n";
       }
   }
-  
-  # close previously opend file
-  close(FILE);
-  
 } elsif($runMode eq "DSSP") {
-  # run mode dssp => dssp to list
-  print "dssp mode entered!\n";
-  
-  # directory to use
-  my $dsspDirectory = $DefaultLocalDsspPath;
-  $dsspDirectory = pathCorrecter($dsspPath) if(-d $dsspPath);
-  
-  # open output file for later access
-  open FILE, ">>$output";                         # append
-  
   # foreach id in list
   foreach my $id(@idsToConvert) {
-    $id = idCorrecter($id);
+    $id = idCorrector($id);
     next if $id eq "";
     
-    # current pdb files!
-    my $dsspFile = $dsspDirectory.substr($id, 1, 2)."/$id.dssp";
-    my @dsspFileLines = "";
-    
-    # get file
-    if(-f $dsspFile) {                             # local file
-      print "Processing $dsspFile ...\n";
-      open IDFILE, "<$dsspFile";
-      @dsspFileLines = <IDFILE>;
-      close(IDFILE);
-    } else {                                      # if local file don't exist download data from the internet
-      my $downloadUrl = "$DefaultInternetDownloadPath$id.pdb";
-      print "Processing $downloadUrl ...\n";
-      # check if dssp-bin is available
-      if(!-f $dsspBin) {
-        print "MISSING DSSP BINARIES!";
-        printHelp();
-      }
-      # create tmp file and save website content
-      my ($fh1, $tmpFile) = tempfile("dataXXXX", DIR => "/tmp", UNLINK => 0);
-      open( IDFILE, ">".$tmpFile) or die('ERROR saving file!');
-      binmode(IDFILE);
-      print IDFILE get($downloadUrl);
-      close(IDFILE);
-      # tmp file for the output from the dssp-binaries
-      my ($fh2, $resultFile) = tempfile("dataXXXX", DIR => "/tmp", UNLINK => 0);
-      # convert the pdb file to the dssp file using the dssp-binaries
-      my @cmd = `$dsspBin -i '$tmpFile' -o '$resultFile'`;
-      # get content of the new created file / the new dssp-file
-      open IDFILE, "<$resultFile";
-      @dsspFileLines = <IDFILE>;
-      close(IDFILE);
-    }
-    
     # parse
-    my @parseResults = dsspParser(\@dsspFileLines, $id);
+    print "Processing: $id\n";
+    my @dsspLines = getDSSP($id); my @parseResults = dsspParser(\@dsspLines, $id);
     
     # write parsing information to file (append mode)
       # save all sequences from the parser
@@ -181,102 +132,20 @@ if($runMode eq "PDB") {
         print FILE "SS ".(shift @parseResults)."\n";
       }
   }
-  
-  # close previously opend file
-  close(FILE);
-  
 } elsif($runMode eq "CMP") {
-   # run mode cmp => cmp list
-  print "cmp mode entered!\n";
-  
-  # dssp directory
-  my $dsspDirectory = $DefaultLocalDsspPath;
-  $dsspDirectory = pathCorrecter($dsspPath) if(-d $dsspPath);
-  my $pdbDirectory = $DefaultLocalPdbPath;
-  $pdbDirectory = pathCorrecter($pdbPath) if(-d $pdbPath);
-  
-  # open output file for later access
-  open FILE, ">>$output";                         # append
-  
   # foreach id in list
   foreach my $id(@idsToConvert) {
-    $id = idCorrecter($id);
+    $id = idCorrector($id);
     next if $id eq "";
     
-    # open output file for later access
-    open FILE, ">>$output";
-    
-    # open both files
-    my $pdbFile = $pdbDirectory.substr($id, 1, 2)."/pdb".$id.".ent";
-    my $dsspFile = $dsspDirectory.substr($id, 1, 2)."/$id.dssp";
-    
-    # file content
-    my @pdbFileLines   = ();
-    my @dsspFileLines = ();
-    
-    print "Processing $id ...\n";
-    
-    # get file content
-    if(-f $pdbFile) {                             # local file
-      open IDFILE, "<$pdbFile";
-      @pdbFileLines = <IDFILE>;
-      close(IDFILE);
-    } else {                                      # if local file don't exist download data from the internet
-      my $downloadUrl = "$DefaultInternetDownloadPath$id.pdb";
-      @pdbFileLines = split(/\n/, get $downloadUrl);
-    }
-    if(-f $dsspFile) {                             # local file
-      open IDFILE, "<$dsspFile";
-      @dsspFileLines = <IDFILE>;
-      close(IDFILE);
-    } else {                                      # if local file don't exist download data from the internet
-      my $downloadUrl = "$DefaultInternetDownloadPath$id.pdb";
-      # check if dssp-bin is available
-      if(!-f $dsspBin) {
-        print "MISSING DSSP BINARIES!";
-        printHelp();
-      }
-      # create tmp file and save website content
-      my ($fh1, $tmpFile) = tempfile("dataXXXX", DIR => "/tmp", UNLINK => 0);
-      open( IDFILE, ">".$tmpFile) or die('ERROR saving file!');
-      binmode(IDFILE);
-      print IDFILE get($downloadUrl);
-      close(IDFILE);
-      # tmp file for the output from the dssp-binaries
-      my ($fh2, $resultFile) = tempfile("dataXXXX", DIR => "/tmp", UNLINK => 0);
-      # convert the pdb file to the dssp file using the dssp-binaries
-      my @cmd = `$dsspBin -i '$tmpFile' -o '$resultFile'`;
-      # get content of the new created file / the new dssp-file
-      open IDFILE, "<$resultFile";
-      @dsspFileLines = <IDFILE>;
-      close(IDFILE);
-    }
-    
+    # parse
+    print "Processing: $id\n";
+    my @pdbLines  = getPDB($id);  my @parseResultsPdb  = pdbParser(\@pdbLines, $id);
+    my @dsspLines = getDSSP($id); my @parseResultsDssp = dsspParser(\@dsspLines, $id);
+
     # cmp files by parsing
-    my @parseResultsPdb = pdbParser(\@pdbFileLines, $id);
-    my @parseResultsDssp = dsspParser(\@dsspFileLines, $id);
-    
-    # cmp parsing results
-    my $equal = "true";
-    for(my $i = 2; $i <= $#parseResultsPdb; $i += 3) {	# check secundary structure if "equal"
-      # check if secundary structure in dssp parse result
-      my $found = "false";
-      for(my $j = 2; $j <= $#parseResultsDssp; $j += 3) {
-        if($parseResultsPdb[$i] eq $parseResultsDssp[$j]) {
-          $found = "true";
-          last;
-        }
-      }
-      if($found eq "false") {
-        print STDERR "Inconsistent id found: $id!\n";
-        $equal = "false";
-        last;
-      }
-    }
-    if($equal ne "true") {
-      for(my $i = 2; $i <= $#parseResultsPdb; $i+=3) {
-        print STDERR "$parseResultsDssp[$i]\n$parseResultsPdb[$i]\n";
-      }
+    if("false" eq eqParsingResult(\@parseResultsPdb, \@parseResultsDssp)) {
+      print STDERR "Inconsistent id found: $id!\n";
       next;
     }
     
@@ -289,21 +158,97 @@ if($runMode eq "PDB") {
         print FILE "SS ".(shift @parseResultsPdb)."\n";
       }
   }
-  
-  # close previously opend file
-  close(FILE);
-  
 } else {
   # run mode not found!
   print "RUN MODE NOT FOUND!\n";
-  printHelp();
+  printUsageHelpAndQuit();
+}
+
+# close previously opend file
+close(FILE);
+exit(0);
+
+################################
+#  ---- FILELINES GETTER ----  #
+################################
+
+sub getPDB {
+  my $id = $_[0];
+  my $pdbFile = $pdbDirectory.substr($id, 1, 2)."/pdb".$id.".ent";
+  my @pdbFileLines = ();
+  # get file
+  if(-f $pdbFile) {                             # local file
+    open IDFILE, "<$pdbFile";
+    @pdbFileLines = <IDFILE>;
+    close(IDFILE);
+  } else {                                      # if local file don't exist download data from the internet
+    my $downloadUrl = "$DefaultInternetDownloadPath$id.pdb";
+    @pdbFileLines = split(/\n/, get $downloadUrl);
+  }
+  return @pdbFileLines;
+}
+
+sub getDSSP {
+  my $id = $_[0];
+  my $dsspFile = $dsspDirectory.substr($id, 1, 2)."/$id.dssp";
+  my @dsspFileLines = ();
+  # get file
+  if(-f $dsspFile) {                             # local file
+    open IDFILE, "<$dsspFile";
+    @dsspFileLines = <IDFILE>;
+    close(IDFILE);
+  } else {                                      # if local file don't exist download data from the internet
+    my $downloadUrl = "$DefaultInternetDownloadPath$id.pdb";
+    # check if dssp-bin is available
+    if(!-f $dsspBin) {
+      print "MISSING DSSP BINARIES!";
+      printUsageHelpAndQuit();
+    }
+    # create tmp file and save website content
+    my ($fh1, $tmpFile) = tempfile("dataXXXX", DIR => "/tmp", UNLINK => 0);
+    open( IDFILE, ">".$tmpFile) or die('ERROR saving file!');
+    binmode(IDFILE);
+    print IDFILE get($downloadUrl);
+    close(IDFILE);
+    # tmp file for the output from the dssp-binaries
+    my ($fh2, $resultFile) = tempfile("dataXXXX", DIR => "/tmp", UNLINK => 0);
+    # convert the pdb file to the dssp file using the dssp-binaries
+    my @cmd = `$dsspBin -i '$tmpFile' -o '$resultFile'`;
+    # get content of the new created file / the new dssp-file
+    open IDFILE, "<$resultFile";
+    @dsspFileLines = <IDFILE>;
+    close(IDFILE);
+  }
+  return @dsspFileLines;
 }
 
 ################################
-#   ----  SUBFUNCTIONS  ----   #
+#  ---- PARSING COMPARER ----  #
 ################################
 
-sub printHelp {		# print the usage of this program and exit with error code 1
+#
+# NOTE: THIS FUNCTION ONLY CHECKS IF THE SECUNDARY FUNCTION IS EQUAL
+#
+sub eqParsingResult {
+  my @pdbResults  = @{$_[0]};
+  my @dsspResults = @{$_[1]};
+  
+  # check if both parser return arrays with the same size
+  return "false" if($#pdbResults ne $#dsspResults);
+  
+  # cmp parsing results
+  for(my $i = 2; $i <= $#pdbResults; $i += 3) {		# check secundary structure if "equal"
+    return "false" if($pdbResults[$i] ne $dsspResults[$i]);
+  }
+  
+  return "true";
+}
+
+################################
+#   ----  OUTPUT USAGE  ----   #
+################################
+
+sub printUsageHelpAndQuit {		# print the usage of this program and exit with error code 1
     print <<"HELPMSG"
  MISSING OR INCORRECT ARGUMENTS!
  extract-dssp.pl [--pdb <pdb-path>][--dssp <dssp-path>][--dssp-bin <dssp-binary>] -t <pdb|dssp|cmp> <file-protein-list> <dssp-file>
@@ -319,13 +264,17 @@ HELPMSG
     exit(1);
   }
 
+################################
+#   ----  STRING FUNC.  ----   #
+################################
+
 sub pathCorrecter {	# checks whether a path has a / at the end (and append it, if not)
   my $path = $_[0];
   return $path if( substr($path, -1, 1) eq "/" );
   return "$path/";
 }
 
-sub idCorrecter {       # trim and chomp an id, so that it's definatly convertable to a file
+sub idCorrector {       # trim and chomp an id, so that it's definatly convertable to a file
   my $id = $_[0];
   chomp($id);
   $id = trim($id);
@@ -337,19 +286,6 @@ sub trim {		# trim a string
   $string =~ s/^\s+//;
   $string =~ s/\s+$//;
   return $string;
-}
-
-sub isAminoAcid {	# check if a char represent an amino acid
-  # arguments
-  my $c = $_[0];
-  
-  return "true" if($c eq "A" || $c eq "R" || $c eq "N" || $c eq "D");
-  return "true" if($c eq "C" || $c eq "Q" || $c eq "E" || $c eq "G");
-  return "true" if($c eq "H" || $c eq "L" || $c eq "I" || $c eq "K");
-  return "true" if($c eq "M" || $c eq "F" || $c eq "P" || $c eq "O");
-  return "true" if($c eq "U" || $c eq "S" || $c eq "T" || $c eq "W");
-  return "true" if($c eq "Y" || $c eq "V" || $c eq "*");
-  return "false";
 }
 
 sub secStructCharCorrecter {		# correct the structure char
@@ -388,18 +324,103 @@ sub stringBuilder {
   return $result;
 }
 
+################################
+#   ----  AMINOACIDFKT  ----   #
+################################
+
 sub threeLetter2oneLetter {
-  my %aaData = (
+  # argument
+  my $char = trim(uc($_[0]));
+  # data
+  my %aminoAcids3 = (
     'ALA'=>'A', 'TYR'=>'Y', 'MET'=>'M', 'LEU'=>'L', 'CYS'=>'C',
     'GLY'=>'G', 'ARG'=>'R', 'ASN'=>'N', 'ASP'=>'D', 'GLN'=>'Q',
     'GLU'=>'E', 'HIS'=>'H', 'TRP'=>'W', 'LYS'=>'K', 'PHE'=>'F',
     'PRO'=>'P', 'SER'=>'S', 'THR'=>'T', 'ILE'=>'I', 'VAL'=>'V'
   );
-  my $char = uc($_[0]);
+  # code
   chomp($char);
-  $char = trim($char);
-  return $aaData{$char};
+  return $aminoAcids3{$char};
 }
+
+sub isAminoAcid {	# check if a char represent an amino acid
+  # arguments
+  my $c = trim(uc($_[0]));
+  # data
+  my %aminoAcids1 = (
+    'A'=>'ALA', 'Y'=>'TYR', 'M'=>'MET', 'L'=>'LEU', 'C'=>'CYS',
+    'G'=>'GLY', 'R'=>'ARG', 'N'=>'ASN', 'D'=>'ASP', 'Q'=>'GLN',
+    'E'=>'GLU', 'H'=>'HIS', 'W'=>'TRP', 'K'=>'LYS', 'F'=>'PHE',
+    'P'=>'PRO', 'S'=>'SER', 'T'=>'THR', 'I'=>'ILE', 'V'=>'VAL'
+  );
+  # code
+  chomp($c);
+  return "true" if (exists $aminoAcids1{$c});
+  return "false";
+}
+
+################################
+#   ----   PARSER DSSP  ----   #
+################################
+
+sub dsspParser {  # spec: http://swift.cmbi.ru.nl/gv/dssp/HTML/descrip.html
+  # args
+  my @lines = @{$_[0]};
+  my $id    = $_[1];
+    
+  # extract interessting lines and preprocess
+  my $preprocessChain  = "";
+  my $preprocessSeq    = "";
+  my $preprocessStruc  = "";
+  my $lastChain        = "";
+  my $ignore           = "true";
+  
+  # parse
+  foreach my $line (@lines) {
+    if( $line =~ m/\s*#\s*RESIDUE\s/i ) { # there's no interesting line until * RESIDUE
+      $ignore = "false";
+    } elsif ( $ignore eq "false" ) {
+      next if trim($line) eq ""; # empty lines aren't interesting
+      
+      # append to preprocessing
+      my $chainChair   = substr($line, 11, 1); $chainChair = "0" if ($chainChair eq " ");
+      my $seqChair     = substr($line, 13, 1); $seqChair = "*" if($seqChair ne uc($seqChair));
+      my $strucChair   = substr($line, 16, 1); $strucChair = secStructCharCorrecter($strucChair);
+      
+      my $sep = "";
+      if (isAminoAcid($seqChair) eq "false") {
+        $sep = "/"; $chainChair = ""; $seqChair = ""; $strucChair = "";
+      }
+      
+      $preprocessChain = $preprocessChain.$sep.$chainChair;
+      $preprocessSeq   = $preprocessSeq.$sep.$seqChair;
+      $preprocessStruc = $preprocessStruc.$sep.$strucChair;
+    }
+  }
+  
+  # variable to return
+  my @seqs = ();
+  
+  # parse
+  my @grepChain = split(/\//, $preprocessChain);
+  my @grepSeq   = split(/\//, $preprocessSeq);
+  my @grepStruc = split(/\//, $preprocessStruc);
+  
+  # to return variable
+  foreach my $i (0 .. $#grepChain) {
+    my $id    = $id.substr($grepChain[$i], 0, 1).((length "$i" == 1)?"0$i":"$i");
+    my $seq   = $grepSeq[$i];
+    my $struc = $grepStruc[$i];
+    push(@seqs, ($id, $seq, $struc))
+  }
+  
+  # return everything
+  return (@seqs);
+}
+
+################################
+#   ----   PARSER  PDB  ----   #
+################################
 
 sub pdbParser {         # PDB FILE SPEC SEE: http://www.cgl.ucsf.edu/chimera/docs/UsersGuide/tutorials/pdbintro.html
   # args
@@ -475,11 +496,6 @@ sub pdbParser {         # PDB FILE SPEC SEE: http://www.cgl.ucsf.edu/chimera/doc
       delete $aminoAcidSequences[$i];
       $i--;
     }
-  }
-  
-  # print found sequences
-  foreach my $i(0 .. $#aminoAcidSequences) {
-    print "  Sequence $i (chainId: $chains[$i]) found: $aminoAcidSequences[$i]\n";
   }
   
   # parse secondary structure
@@ -560,59 +576,3 @@ sub pdbParser {         # PDB FILE SPEC SEE: http://www.cgl.ucsf.edu/chimera/doc
   # return everything
   return (@seqs);
 }
-
-sub dsspParser {  # spec: http://swift.cmbi.ru.nl/gv/dssp/HTML/descrip.html
-  # args
-  my @lines = @{$_[0]};
-  my $id    = $_[1];
-    
-  # extract interessting lines and preprocess
-  my $preprocessChain  = "";
-  my $preprocessSeq    = "";
-  my $preprocessStruc  = "";
-  my $lastChain        = "";
-  my $ignore           = "true";
-  
-  # parse
-  foreach my $line (@lines) {
-    if( $line =~ m/\s*#\s*RESIDUE\s/i ) { # there's no interesting line until * RESIDUE
-      $ignore = "false";
-    } elsif ( $ignore eq "false" ) {
-      next if trim($line) eq ""; # empty lines aren't interesting
-      
-      # append to preprocessing
-      my $chainChair   = substr($line, 11, 1); $chainChair = "0" if ($chainChair eq " ");
-      my $seqChair     = substr($line, 13, 1); $seqChair = "*" if($seqChair ne uc($seqChair));
-      my $strucChair   = substr($line, 16, 1); $strucChair = secStructCharCorrecter($strucChair);
-      
-      my $sep = "";
-      if (isAminoAcid($seqChair) eq "false") {
-        $sep = "/"; $chainChair = ""; $seqChair = ""; $strucChair = "";
-      }
-      
-      $preprocessChain = $preprocessChain.$sep.$chainChair;
-      $preprocessSeq   = $preprocessSeq.$sep.$seqChair;
-      $preprocessStruc = $preprocessStruc.$sep.$strucChair;
-    }
-  }
-  
-  # variable to return
-  my @seqs = ();
-  
-  # parse
-  my @grepChain = split(/\//, $preprocessChain);
-  my @grepSeq   = split(/\//, $preprocessSeq);
-  my @grepStruc = split(/\//, $preprocessStruc);
-  
-  # to return variable
-  foreach my $i (0 .. $#grepChain) {
-    my $id    = $id.substr($grepChain[$i], 0, 1).((length "$i" == 1)?"0$i":"$i");
-    my $seq   = $grepSeq[$i];
-    my $struc = $grepStruc[$i];
-    push(@seqs, ($id, $seq, $struc))
-  }
-  
-  # return everything
-  return (@seqs);
-}
-
