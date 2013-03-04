@@ -28,6 +28,7 @@
 		</style>
 		<!-- JS -->
 		<script type="text/javascript" src="js/jquery.js"></script>
+		<script type="text/javascript" src="js/jstorage.js"></script>
 		<script type="text/javascript" src="js/jquery-ui.js"></script>
 		<script type="text/javascript" src="ws.js"></script>
 	</head>
@@ -56,34 +57,36 @@
 				  <!-- These hold the sequence IDs to be aligned -->
 				  <input id="alignmentSeq1Id" type="hidden" name="seq1Id"/>
 				  <input id="alignmentSeq2Id" type="hidden" name="seq2Id"/>
-				  Alignment matrix:
-				    <input id="alignmentMatrix" />
 				  <br/>
+				  Alignment matrix:
+				    <input id="alignmentMatrix"  class="roundBorder" />
+				  <br/><br/>
 				  <!-- Alignment type -->
 				  Alignment type:
 				    <input type="radio" name="alignmentType" value="Global" checked>Global
 				    <input type="radio" name="alignmentType" value="Local">Local
 				    <input type="radio" name="alignmentType" value="Freeshift">Freeshift
-				  <br/>
+				  <br/><br/>
 				  <!-- Alignment algorithm -->
 				  Alignment algorithm:
-				    <input type="radio" name="alignmentAlgorithm" value="Global" checked>Gotoh (affine gap penalties)
+				    <input type="radio" name="alignmentAlgorithm" value="Global" checked>Gotoh
 				    <input type="radio" name="alignmentAlgorithm" value="Local">Needleman-Wunsch <!-- TODO Auto-deselect gap open -->
-				  <br/>
-				  Gap penalties<br/>
+				  <br/><br/>
+				  <b>Gap penalties</b>
 				  <div class="indent">
 				    <table>
-				    <tr><td>Gap open penalty:</td><td><input type="text" name="gapOpenPenalty" value="-12.0"/></td></tr>
-				    <tr><td>Gap extension penalty:</td><td><input type="text" name="gapExtendPenalty" value="-1.0"/></td><br/>
+				      <tr><td>Gap open penalty:</td><td><input class="roundBorder" type="text" name="gapOpenPenalty" value="-12.0"/></td></tr>
+				      <tr><td>Gap extension penalty:</td><td><input class="roundBorder" type="text" name="gapExtendPenalty" value="-1.0"/></td><br/>
 				    </table>
 				  </div>
 				  <br/>
 				  Options<br/>
 				  <div class="indent">
 				    <input type="checkbox" name="calculateSSAA"> Predict secondary structure and execute SSAA</input>
+				  </div>
+				  <br/>
 				    <div class="button" onclick="showAlignment()">Show alignment</div>
 				    <div class="button" onclick="showFixedPointAlignment()">Show fixed-point alignment</div>
-				  </div>
 			    </form>
 			  </div>
 			  <h3>Predict secondary structure</h3>
