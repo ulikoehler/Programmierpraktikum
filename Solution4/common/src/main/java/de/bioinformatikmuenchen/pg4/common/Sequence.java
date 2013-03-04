@@ -12,7 +12,25 @@ public class Sequence {
 
     private String id;
     private String sequence;
+    private String as;
+    private String ss;
 
+    public String getAs() {
+        return as;
+    }
+
+    public String getSs() {
+        return ss;
+    }
+
+    public void setAs(String as) {
+        this.as = as;
+    }
+
+    public void setSs(String ss) {
+        this.ss = ss;
+    }    
+    
     public Sequence(String sequence) {
         this.id = null;
         this.sequence = sequence;

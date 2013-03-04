@@ -31,6 +31,8 @@ public class Gotoh extends AlignmentProcessor {
     private String targetSequence;
     private String querySequenceId;
     private String targetSequenceId;
+    private String querySequenceStruct;
+    private String targetSequenceStruct;
     private boolean freeshift = false;
     private boolean local = false;
     boolean[][] leftPath;
@@ -40,6 +42,7 @@ public class Gotoh extends AlignmentProcessor {
     boolean[][] leftTopArrows;
     boolean[][] topArrows;
     boolean[][] hasPath;
+    private double[][] secStructMatrix = new double[][]{{2.0, -15.0, -4.0}, {-15.0, 4.0, -4.0}, {-4.0, -4.0, 2.0}};//H-E-C
 
     public Gotoh(AlignmentMode mode, AlignmentAlgorithm algorithm, IDistanceMatrix distanceMatrix, IGapCost gapCost) {
         super(mode, algorithm, distanceMatrix, gapCost);
@@ -64,6 +67,8 @@ public class Gotoh extends AlignmentProcessor {
         this.targetSequenceId = seq2.getId();
         this.xSize = querySequence.length();
         this.ySize = targetSequence.length();
+        this.querySequenceStruct = seq1.getSs();
+        this.targetSequenceStruct = seq2.getSs();
         AlignmentResult result = new AlignmentResult();
         initMatrix(seq1.getSequence().length(), seq2.getSequence().length());
         fillMatrix(seq1.getSequence(), seq2.getSequence(), result);////////////////////// SCORE übergeben!
@@ -179,13 +184,32 @@ public class Gotoh extends AlignmentProcessor {
         return new double[]{x, y, maxValue};
     }
 
+    public double distanceScore(int x, int y) {
+        double distance = distanceMatrix.distance(querySequence.charAt(x), targetSequence.charAt(y));
+        //Set to 0 if not sec struct aided
+        double secStructDistance = (secStructAided ? secStructMatrix[getSecStructIndex(querySequenceStruct.charAt(x))][getSecStructIndex(targetSequenceStruct.charAt(y))] : 0);
+        return distance + secStructDistance;
+    }
+
+    public int getSecStructIndex(char bla) {
+        if (bla == 'H') {
+            return 0;
+        } else if (bla == 'E') {
+            return 1;
+        } else if (bla == 'C') {
+            return 2;
+        } else {
+            throw new IllegalArgumentException(bla + " is no valid secondary structure specified");
+        }
+    }
+
     public void fillMatrix(String seq1, String seq2, AlignmentResult result) {
         assert ((gapCost != null) && (distanceMatrix != null));
         for (int x = 1; x < xSize + 1; x++) {
             for (int y = 1; y < ySize + 1; y++) {
                 matrixIn[x][y] = Math.max(matrixA[x - 1][y] + gapCost.getGapCost(1), matrixIn[x - 1][y] + gapCost.getGapExtensionPenalty(0, 1));
                 matrixDel[x][y] = Math.max(matrixA[x][y - 1] + gapCost.getGapCost(1), matrixDel[x][y - 1] + gapCost.getGapExtensionPenalty(0, 1));
-                double match = matrixA[x - 1][y - 1] + distanceMatrix.distance(seq1.charAt(x - 1), seq2.charAt(y - 1));
+                double match = matrixA[x - 1][y - 1] + distanceScore(x - 1, y - 1);
                 double in = matrixIn[x][y];
                 double del = matrixDel[x][y];
                 double max = Math.max(Math.max(in, del), match);

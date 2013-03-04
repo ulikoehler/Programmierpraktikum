@@ -25,6 +25,8 @@ public class NeedlemanWunsch extends AlignmentProcessor {
     private String targetSequence;
     private String querySequenceId;
     private String targetSequenceId;
+    private String querySequenceStruct;
+    private String targetSequenceStruct;
     private boolean freeShift = false;
     private double score;
     //boolean arrays to store the backtracking path which is taken by the backtracking algorithm
@@ -32,6 +34,7 @@ public class NeedlemanWunsch extends AlignmentProcessor {
     private boolean[][] leftPath;
     private boolean[][] topPath;
     private boolean[][] hasPath;
+    private double[][] secStructMatrix = new double[][]{{2.0, -15.0, -4.0}, {-15.0, 4.0, -4.0}, {-4.0, -4.0, 2.0}};//H-E-C
 
     @Override
     public AlignmentResult align(Sequence seq1, Sequence seq2) {
@@ -43,17 +46,18 @@ public class NeedlemanWunsch extends AlignmentProcessor {
         this.querySequenceId = seq1.getId();
         this.targetSequenceId = seq2.getId();
 //        System.err.println("STTST " + querySequenceId);
-        if(mode==AlignmentMode.FREESHIFT){this.freeShift = true;}
+        if (mode == AlignmentMode.FREESHIFT) {
+            this.freeShift = true;
+        }
         initMatrix(seq1.getSequence().length(), seq2.getSequence().length());
         fillMatrix(seq1.getSequence(), seq2.getSequence());
         AlignmentResult result = new AlignmentResult();
         //Calculate the alignment and add it to the result
         SequencePairAlignment alignment = null;
-        if(freeShift){
+        if (freeShift) {
             alignment = backTrackingFreeShift();
-        }
-        else{
-            alignment = backTracking(-1,-1);
+        } else {
+            alignment = backTracking(-1, -1);
         }
 //        System.out.println("##spa query: "+spa.queryAlignment);
         result.setAlignments(Collections.singletonList(alignment));
@@ -125,13 +129,11 @@ public class NeedlemanWunsch extends AlignmentProcessor {
         final double compareThreshold = 0.0000001;
         for (int x = 1; x < xSize; x++) {
             for (int y = 1; y < ySize; y++) {
-                char A = seq1.charAt(x - 1);
-                char B = seq2.charAt(y - 1);
-                double leftTopScore = matrix[x - 1][y - 1] + distanceMatrix.distance(A, B);
+                double leftTopScore = matrix[x - 1][y - 1] + distanceScore(x - 1, y - 1);
                 double topScore = matrix[x][y - 1] + gapCost.getGapCost(1);
                 double leftScore = matrix[x - 1][y] + gapCost.getGapCost(1);
                 //Calculate the max score
-                double maxScore  = Math.max(leftTopScore,
+                double maxScore = Math.max(leftTopScore,
                         Math.max(leftScore, topScore));
                 matrix[x][y] = maxScore;
                 //Check which 'arrows' are set for the current field
@@ -142,7 +144,26 @@ public class NeedlemanWunsch extends AlignmentProcessor {
                 assert leftTopArrows[x][y] || leftArrows[x][y] || topArrows[x][y];
             }
         }
-        this.score = (freeShift ? findMaxInMatrixFreeShift()[2] : matrix[xSize-1][ySize-1]);
+        this.score = (freeShift ? findMaxInMatrixFreeShift()[2] : matrix[xSize - 1][ySize - 1]);
+    }
+
+    public double distanceScore(int x, int y) {
+        double distance = distanceMatrix.distance(querySequence.charAt(x), targetSequence.charAt(y));
+        //Set to 0 if not sec struct aided
+        double secStructDistance = (secStructAided ? secStructMatrix[getSecStructIndex(querySequenceStruct.charAt(x))][getSecStructIndex(targetSequenceStruct.charAt(y))] : 0);
+        return distance + secStructDistance;
+    }
+
+    public int getSecStructIndex(char bla) {
+        if (bla == 'H') {
+            return 0;
+        } else if (bla == 'E') {
+            return 1;
+        } else if (bla == 'C') {
+            return 2;
+        } else {
+            throw new IllegalArgumentException(bla + " is no valid secondary structure specified");
+        }
     }
 
     public String printMatrix() {
@@ -162,40 +183,39 @@ public class NeedlemanWunsch extends AlignmentProcessor {
         return builder.toString();
     }
 
-    public SequencePairAlignment backTrackingFreeShift(){
+    public SequencePairAlignment backTrackingFreeShift() {
         StringBuilder queryLine = new StringBuilder();
         StringBuilder targetLine = new StringBuilder();
         double[] max = findMaxInMatrixFreeShift();
         boolean maxInLastColumn = (Math.abs(max[0] + 1.0) < 0.000000001);// <=> max[0] == -1.0
-        int x = xSize-1;
-        int y = ySize-1;
-        if(maxInLastColumn){
-            for (y = ySize-1; y > max[1];y--) {
+        int x = xSize - 1;
+        int y = ySize - 1;
+        if (maxInLastColumn) {
+            for (y = ySize - 1; y > max[1]; y--) {
                 queryLine.append('-');
-                targetLine.append(targetSequence.charAt(y-1));
-                topPath[xSize-1][y] = true;
-                hasPath[xSize-1][y] = true;
+                targetLine.append(targetSequence.charAt(y - 1));
+                topPath[xSize - 1][y] = true;
+                hasPath[xSize - 1][y] = true;
             }
-        }
-        else{
-            for (x = xSize-1; x > max[0]; x--) {
-                queryLine.append(querySequence.charAt(x-1));
+        } else {
+            for (x = xSize - 1; x > max[0]; x--) {
+                queryLine.append(querySequence.charAt(x - 1));
                 targetLine.append('-');
-                leftPath[x][ySize-1] = true;
-                hasPath[x][ySize-1] = true;
+                leftPath[x][ySize - 1] = true;
+                hasPath[x][ySize - 1] = true;
             }
         }
         SequencePairAlignment remaining = backTracking(x, y);
-        return new SequencePairAlignment(remaining.queryAlignment+queryLine.reverse().toString(), remaining.targetAlignment+targetLine.reverse().toString());
+        return new SequencePairAlignment(remaining.queryAlignment + queryLine.reverse().toString(), remaining.targetAlignment + targetLine.reverse().toString());
     }
-    
+
     public SequencePairAlignment backTrackingCalcEachStep(int xStart, int yStart) {
         StringBuilder queryAlignment = new StringBuilder();
         StringBuilder targetAlignment = new StringBuilder();
         int x = (freeShift ? xStart : xSize - 1);
         int y = (freeShift ? yStart : ySize - 1);
         while (x >= 0 && y >= 0) {
-            System.out.println("x,y: "+x+", "+y);
+            System.out.println("x,y: " + x + ", " + y);
             //If we encountered an edge, break
             if (x == 0) {
                 while (y > 0) {
@@ -217,22 +237,22 @@ public class NeedlemanWunsch extends AlignmentProcessor {
                 break;
             }
             //x and y must be > 0 if this block is reached:
-            char A = querySequence.charAt(x-1);
-            char B = targetSequence.charAt(y-1);
-            if (Math.abs(matrix[x][y] - (matrix[x-1][y-1] + distanceMatrix.distance(A, B))) < 0.000000001) {
+            char A = querySequence.charAt(x - 1);
+            char B = targetSequence.charAt(y - 1);
+            if (Math.abs(matrix[x][y] - (matrix[x - 1][y - 1] + distanceMatrix.distance(A, B))) < 0.000000001) {
                 leftTopPath[x][y] = true;
                 hasPath[x][y] = true;
                 queryAlignment.append(querySequence.charAt(x - 1));
                 targetAlignment.append(targetSequence.charAt(y - 1));
                 x--;
                 y--;
-            } else if (Math.abs(matrix[x][y] - (matrix[x-1][y] + gapCost.getGapCost(1))) < 0.000000001) {
+            } else if (Math.abs(matrix[x][y] - (matrix[x - 1][y] + gapCost.getGapCost(1))) < 0.000000001) {
                 leftPath[x][y] = true;
                 hasPath[x][y] = true;
                 queryAlignment.append(querySequence.charAt(x - 1));
                 targetAlignment.append('-');
                 x--;
-            } else if (Math.abs(matrix[x][y] - (matrix[x][y-1] + gapCost.getGapCost(1))) < 0.000000001) {
+            } else if (Math.abs(matrix[x][y] - (matrix[x][y - 1] + gapCost.getGapCost(1))) < 0.000000001) {
                 topPath[x][y] = true;
                 hasPath[x][y] = true;
                 queryAlignment.append('-');
@@ -243,7 +263,7 @@ public class NeedlemanWunsch extends AlignmentProcessor {
         //reverse the output:
         return new SequencePairAlignment(queryAlignment.reverse().toString(), targetAlignment.reverse().toString());
     }
-    
+
     public SequencePairAlignment backTracking(int xStart, int yStart) {
         StringBuilder queryAlignment = new StringBuilder();
         StringBuilder targetAlignment = new StringBuilder();
@@ -294,22 +314,23 @@ public class NeedlemanWunsch extends AlignmentProcessor {
         //reverse the output:
         return new SequencePairAlignment(queryAlignment.reverse().toString(), targetAlignment.reverse().toString());
     }
+
     public double[] findMaxInMatrixFreeShift() {//look for maxEntry only in last column and line
-    
+
         int x = -1;
         int y = -1;
         double maxValue = Double.NEGATIVE_INFINITY;
         for (int i = 0; i < xSize; i++) {
-            if (matrix[i][ySize-1] > maxValue) {
-                maxValue = matrix[i][ySize-1];
+            if (matrix[i][ySize - 1] > maxValue) {
+                maxValue = matrix[i][ySize - 1];
                 x = i;
                 y = -1;
             }
         }
         //calc last column
         for (int i = 0; i < ySize; i++) {
-            if (matrix[xSize-1][i] > maxValue) {
-                maxValue = matrix[xSize-1][i];
+            if (matrix[xSize - 1][i] > maxValue) {
+                maxValue = matrix[xSize - 1][i];
                 y = i;
                 x = -1;
             }
@@ -346,7 +367,7 @@ public class NeedlemanWunsch extends AlignmentProcessor {
         try {
             exporter.write(info);
         } catch (IOException ex) {
-            throw new RuntimeException(ex);
+            throw new AlignmentException("IO error while trying to write DP matrices", ex);
         }
     }
 }
