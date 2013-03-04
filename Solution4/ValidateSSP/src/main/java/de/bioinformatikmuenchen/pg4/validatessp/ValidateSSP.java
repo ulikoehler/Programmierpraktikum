@@ -99,7 +99,7 @@ public class ValidateSSP {
         File summary = null;
         if (commandLine.hasOption("summaryfile")) {
             summary = new File(commandLine.getOptionValue("summaryfile"));
-            if (!summary.exists() || summary.isDirectory()) {
+            if (summary.isDirectory()) {
                 System.err.println("Error: --summaryfile argument is not a file!");
                 System.exit(1);
             }
@@ -113,7 +113,7 @@ public class ValidateSSP {
         File detailed = null;
         if (commandLine.hasOption("detailedfile")) {
             detailed = new File(commandLine.getOptionValue("detailedfile"));
-            if (!detailed.exists() || detailed.isDirectory()) {
+            if (detailed.isDirectory()) {
                 System.err.println("Error: --detailedfile argument is not a file!");
                 System.exit(1);
             }

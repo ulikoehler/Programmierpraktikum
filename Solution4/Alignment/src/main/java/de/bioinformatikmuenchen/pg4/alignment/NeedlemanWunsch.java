@@ -45,6 +45,15 @@ public class NeedlemanWunsch extends AlignmentProcessor {
         this.targetSequence = seq2.getSequence();
         this.querySequenceId = seq1.getId();
         this.targetSequenceId = seq2.getId();
+        this.querySequenceStruct = seq1.getSs();
+        this.targetSequenceStruct = seq2.getSs();
+        if (secStructAided) {
+            if (querySequence.length() != querySequenceStruct.length()) {
+                throw new SSAADataInvalidException("Query sequence length does not match with query SS length, difference (" + querySequence.length() + " vs " + querySequenceStruct.length() + ")");
+            } else if (targetSequence.length() != targetSequenceStruct.length()) {
+                throw new SSAADataInvalidException("Target sequence length does not match with target SS length, difference (" + querySequence.length() + " vs " + querySequenceStruct.length() + ")");
+            }
+        }
 //        System.err.println("STTST " + querySequenceId);
         if (mode == AlignmentMode.FREESHIFT) {
             this.freeShift = true;

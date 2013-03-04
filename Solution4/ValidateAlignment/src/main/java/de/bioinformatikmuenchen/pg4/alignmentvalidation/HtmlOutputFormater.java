@@ -44,7 +44,7 @@ public class HtmlOutputFormater {
         builder.append("<body><pre>");
 
         builder.append("Summary:<br>");
-        builder.append("Validation Value\tSD\tMean\tMin\tMax\tQuan50\tQuan5\tQuan95\n\n");
+        builder.append("Validation Value\tSD\tMean\tMin\tMax\tQuan50\tQuan5\tQuan95<br><br>");
         builder.append(">Sensitivity    \t").append(input.getSensiStanDevi()).append("\t").append(input.getSensiMean()).append("\t").append(input.getSensiMin()).append("\t")
                 .append(input.getSensiMax()).append("\t").append(input.getSensiQuantil(0.5)).append("\t")
                 .append(input.getSensiQuantil(0.05)).append("\t").append(input.getSensiQuantil(0.95)).append("<br><br>");

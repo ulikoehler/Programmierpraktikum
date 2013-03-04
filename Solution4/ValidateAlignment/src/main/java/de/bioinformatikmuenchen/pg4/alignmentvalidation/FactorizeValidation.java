@@ -66,7 +66,7 @@ public class FactorizeValidation {
                                 sequence += line;
                                 line = homestradtext.readLine();
                             }
-                            sequence += line.substring(0, line.length() - 2);
+                            sequence += line.substring(0, line.length() - 1);
                             hash.put(name, sequence);
                         }
                         line = homestradtext.readLine();
@@ -100,58 +100,25 @@ public class FactorizeValidation {
             line = reader.readLine();
             while (line != null) {
                 //finding alignment entry
-                if (line.charAt(0) == '>') {
-                    homstradname1 = line.substring(1, 8);
-                    homstradname2 = line.substring(9, 16);
-                    line = reader.readLine();
-                    //getting sequence 1
-                    if (line == null){
-                        break;
-                    }else{
-                        candidatetemplate = line.substring(9, line.length() - 1);
+                if (!line.equals("")) {
+                    if (line.charAt(0) == '>') {
+                        homstradname1 = line.substring(1, 8);
+                        homstradname2 = line.substring(9, 16);
                         line = reader.readLine();
-                        while(line != null){
-                            if(line.equals("")){
-                                line = reader.readLine();
-                                break;
-                            }else{
-                                if(line.charAt(7) != ':'){
-                                    candidatetemplate += line;
-                                }else{
-                                    break;
-                                }
-                            }
-                            line = reader.readLine();
-                        }
-                    }
-                    //getting sequence 2
-                    if (line == null) {
-                        break;
-                    }else{
-                        candidatetarget = line.substring(9, line.length() - 1);
+                        //getting sequence 1
+                        candidatetemplate = line.substring(9);
                         line = reader.readLine();
-                        while(line != null){
-                            if(line.equals("")){
-                                line = reader.readLine();
-                                break;
-                            }else{
-                                if(line.charAt(0) != '>'){
-                                    candidatetarget += line;
-                                }else{
-                                    break;
-                                }
-                            }
-                            line = reader.readLine();
-                        }
+                        //getting sequence 2
+                        candidatetarget = line.substring(9);
+                        //safing alignment and reference pair in Arraylist
+                        alignmentpair.add(new VTuple(homstradname1, homstradname2, candidatetemplate, candidatetarget));
                     }
-                    //safing alignment and reference pair in Arraylist
-                    alignmentpair.add(new VTuple(homstradname1, homstradname2, candidatetemplate, candidatetarget));
-                }else{
-                line = reader.readLine();
                 }
+                line = reader.readLine();
             }
             reader.close();
         } catch (Exception e) {
+            System.out.println("Caught one");
             System.err.println(e);
         }
     }
@@ -162,36 +129,36 @@ public class FactorizeValidation {
         detailed = new Detailed();
         for (int i = 0; i < alignmentpair.size(); i++) {
             //assembling sequences
-            String seqid1 = alignmentpair.get(i).att1.substring(0,4);
-            String seqid2 = alignmentpair.get(i).att2.substring(0,4);
+            String seqid1 = alignmentpair.get(i).att1.substring(0, 4);
+            String seqid2 = alignmentpair.get(i).att2.substring(0, 4);
             String candidatetemplate = alignmentpair.get(i).att3;
             String candidatetarget = alignmentpair.get(i).att4;
             String referencetemplate = hash.get(seqid1);
             String referencetarget = hash.get(seqid2);
             //checking if reference alignment exists
-            if(referencetemplate == null || referencetarget == null){
+            if (referencetemplate == null || referencetarget == null) {
                 System.out.println("Reference pair doesnt exist");
-                break;
+            } else {
+                //creating new instance of validation algorithm
+                AliValiAlg instance = new AliValiAlg(candidatetemplate, candidatetarget, referencetemplate, referencetarget);
+                //getting validation criteria
+                double sensi = instance.getSensi();
+                double speci = instance.getSpeci();
+                double cover = instance.getCover();
+                double means = instance.getMeanS();
+                double inver = instance.getInver();
+                //creating tuple representing validation
+                String header = ">" + alignmentpair.get(i).att1 + " " + alignmentpair.get(i).att2 + " " + round(sensi) + " " + round(speci) + " " + round(cover) + " " + round(means) + " " + round(inver);
+                FTuple result = new FTuple(header, candidatetemplate, candidatetarget, referencetemplate, referencetarget);
+                //safing result
+                detailed.add(result);
+                //safing validation criteria for summary file
+                summary.addSensi(sensi);
+                summary.addSpeci(speci);
+                summary.addCover(cover);
+                summary.addMeans(means);
+                summary.addInver(inver);
             }
-            //creating new instance of validation algorithm
-            AliValiAlg instance = new AliValiAlg(candidatetemplate, candidatetarget, referencetemplate, referencetarget);
-            //getting validation criteria
-            double sensi = instance.getSensi();
-            double speci = instance.getSpeci();
-            double cover = instance.getCover();
-            double means = instance.getMeanS();
-            double inver = instance.getInver();
-            //creating tuple representing validation
-            String header = ">" + alignmentpair.get(i).att1 + " " + alignmentpair.get(i).att2 + " " + round(sensi) + " " + round(speci) + " " + round(cover) + " " + round(means) + " " + round(inver);
-            FTuple result = new FTuple(header, candidatetemplate, candidatetarget, referencetemplate, referencetarget);
-            //safing result
-            detailed.add(result);
-            //safing validation criteria for summary file
-            summary.addSensi(sensi);
-            summary.addSpeci(speci);
-            summary.addCover(cover);
-            summary.addMeans(means);
-            summary.addInver(inver);
         }
     }
 
@@ -204,15 +171,18 @@ public class FactorizeValidation {
     }
 
     public static double round(double d) {
-        DecimalFormat numberFormat = new DecimalFormat();
-        DecimalFormatSymbols dfs = new DecimalFormatSymbols();
-        dfs.setDecimalSeparator('.');
-        numberFormat.setGroupingUsed(false);
-        numberFormat.setMinimumFractionDigits(6);
-        numberFormat.setMaximumFractionDigits(3);
-        numberFormat.setDecimalSeparatorAlwaysShown(false);
-        numberFormat.setDecimalFormatSymbols(dfs);
-        return Double.valueOf(numberFormat.format(d));
+        Double p = d;
+        if (!(p.isNaN())) {
+            DecimalFormat numberFormat = new DecimalFormat();
+            DecimalFormatSymbols dfs = new DecimalFormatSymbols();
+            dfs.setDecimalSeparator('.');
+            numberFormat.setGroupingUsed(false);
+            numberFormat.setMinimumFractionDigits(6);
+            numberFormat.setMaximumFractionDigits(3);
+            numberFormat.setDecimalSeparatorAlwaysShown(false);
+            numberFormat.setDecimalFormatSymbols(dfs);
+            return Double.valueOf(numberFormat.format(d));
+        }
+        return d;
     }
-    
 }
