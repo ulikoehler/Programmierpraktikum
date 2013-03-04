@@ -9,7 +9,16 @@
 
     <name>common</name>
     <url>http://maven.apache.org</url>
-    <build>
+
+    <build>        
+        <resources>
+            <resource>
+                <directory>src/main/java</directory>
+            </resource>     
+            <resource>
+                <directory>src/main/resources</directory>
+            </resource>
+        </resources>
         <plugins>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
@@ -19,6 +28,38 @@
                     <source>1.6</source>
                     <target>1.6</target>
                 </configuration>
+            </plugin>
+            <plugin>
+                <artifactId>maven-assembly-plugin</artifactId>
+                <configuration>
+                    <appendAssemblyId>true</appendAssemblyId>
+                    <descriptorRefs>
+                        <descriptorRef>jar-with-dependencies</descriptorRef>
+                    </descriptorRefs>
+                    <includeBaseDirectory>false</includeBaseDirectory>
+                    <fileSets>
+                        <fileSet>
+                            <excludes>
+                                <exclude></exclude>
+                            </excludes>
+                            <includes>
+                                <include>*pom.xml</include>
+                                <include>src/**</include>
+                                <include>src/main/resources/*</include>
+                            </includes>
+                            <outputDirectory></outputDirectory>
+                        </fileSet>
+                    </fileSets>
+                </configuration>
+                <executions>
+                    <execution>
+                        <id>make-assembly</id>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>assembly</goal>
+                        </goals>
+                    </execution>
+                </executions>
             </plugin>
         </plugins>
     </build>

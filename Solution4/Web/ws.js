@@ -41,3 +41,5 @@ function hideAddMatrixDialog() {
 	$('#addMatrixDialog').dialog('close');
     }
 }
+
+$(".accordion").accordion();
