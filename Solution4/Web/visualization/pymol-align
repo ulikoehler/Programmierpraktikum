@@ -10,13 +10,14 @@ wget -qO $2.pdb http://www.rcsb.org/pdb/files/$2.pdb
 
 #Create the rasmol script
 echo "load $1.pdb;" > $1.pml
-echo "load $2.pdb;" > $1.pml
+echo "load $2.pdb;" >> $1.pml
 echo "bg_color white;" >> $1.pml
 echo "set ray_opaque_background, on;" >> $1.pml
 echo "show cartoon;" >> $1.pml
 echo "color purple, ss h;" >> $1.pml
 echo "color yellow, ss s;" >> $1.pml
 echo "color gree, ss "";" >> $1.pml
+echo "align $1, $2;" >> $1.pml
 echo "ray 1000,1000;" >> $1.pml
 echo "png $3.png;" >> $1.pml
 echo "quit;" >> $1.pml
@@ -26,5 +27,6 @@ pymol $1.pml
 convert $1.png $1.gif
 
 #Remove tmp files
+#
 rm -rf $1.pml $1.pdb $1.png
 
