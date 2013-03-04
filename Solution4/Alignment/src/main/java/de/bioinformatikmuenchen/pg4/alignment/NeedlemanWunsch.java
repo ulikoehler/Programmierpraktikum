@@ -25,6 +25,8 @@ public class NeedlemanWunsch extends AlignmentProcessor {
     private String targetSequence;
     private String querySequenceId;
     private String targetSequenceId;
+    private String querySequenceStruct;
+    private String targetSequenceStruct;
     private boolean freeShift = false;
     private double score;
     //boolean arrays to store the backtracking path which is taken by the backtracking algorithm
@@ -32,6 +34,8 @@ public class NeedlemanWunsch extends AlignmentProcessor {
     private boolean[][] leftPath;
     private boolean[][] topPath;
     private boolean[][] hasPath;
+    private double[][] secStructMatrix = new double[][]{{2.0, -15.0, -4.0},{-15.0, 4.0, -4.0},{-4.0, -4.0, 2.0}};//H-E-C
+    private boolean secStructAided;
 
     @Override
     public AlignmentResult align(Sequence seq1, Sequence seq2) {
@@ -125,9 +129,7 @@ public class NeedlemanWunsch extends AlignmentProcessor {
         final double compareThreshold = 0.0000001;
         for (int x = 1; x < xSize; x++) {
             for (int y = 1; y < ySize; y++) {
-                char A = seq1.charAt(x - 1);
-                char B = seq2.charAt(y - 1);
-                double leftTopScore = matrix[x - 1][y - 1] + distanceMatrix.distance(A, B);
+                double leftTopScore = matrix[x - 1][y - 1] + distanceScore(x-1, y-1);
                 double topScore = matrix[x][y - 1] + gapCost.getGapCost(1);
                 double leftScore = matrix[x - 1][y] + gapCost.getGapCost(1);
                 //Calculate the max score
@@ -143,6 +145,12 @@ public class NeedlemanWunsch extends AlignmentProcessor {
             }
         }
         this.score = (freeShift ? findMaxInMatrixFreeShift()[2] : matrix[xSize-1][ySize-1]);
+    }
+    
+    public double distanceScore(int x, int y){
+        double distance = distanceMatrix.distance(querySequence.charAt(x), targetSequence.charAt(y));
+        double secStructDistance = secStructMatrix[querySequenceStruct.charAt(x)][targetSequenceStruct.charAt(y)];
+        return (secStructAided ? distance + secStructDistance : distance);
     }
 
     public String printMatrix() {
@@ -349,4 +357,10 @@ public class NeedlemanWunsch extends AlignmentProcessor {
             throw new RuntimeException(ex);
         }
     }
+
+    public void setSecStructAided(boolean secStructAided) {
+        this.secStructAided = secStructAided;
+    }
+    
+    
 }

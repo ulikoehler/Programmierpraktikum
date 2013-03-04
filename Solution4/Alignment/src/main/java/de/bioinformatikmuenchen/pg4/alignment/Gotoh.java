@@ -68,6 +68,8 @@ public class Gotoh extends AlignmentProcessor {
         this.targetSequenceId = seq2.getId();
         this.xSize = querySequence.length();
         this.ySize = targetSequence.length();
+        this.querySequenceStruct = seq1.getSs();
+        this.targetSequenceStruct = seq2.getSs();
         AlignmentResult result = new AlignmentResult();
         initMatrix(seq1.getSequence().length(), seq2.getSequence().length());
         fillMatrix(seq1.getSequence(), seq2.getSequence(), result);////////////////////// SCORE übergeben!
@@ -462,17 +464,7 @@ public class Gotoh extends AlignmentProcessor {
         info.score = score;
     }
 
-    public void setQuerySequenceStruct(String querySequenceStruct) {
-        this.querySequenceStruct = querySequenceStruct;
-    }
-
-    public void setTargetSequenceStruct(String targetSequenceStruct) {
-        this.targetSequenceStruct = targetSequenceStruct;
-    }
-
     public void setSecStructAided(boolean secStructAided) {
         this.secStructAided = secStructAided;
     }
-    
-    
 }
