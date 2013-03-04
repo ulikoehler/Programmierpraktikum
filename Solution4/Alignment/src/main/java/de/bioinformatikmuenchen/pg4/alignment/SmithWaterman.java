@@ -35,7 +35,6 @@ public class SmithWaterman extends AlignmentProcessor {
     boolean[][] topPath;
     boolean[][] hasPath;
     private double[][] secStructMatrix = new double[][]{{2.0, -15.0, -4.0},{-15.0, 4.0, -4.0},{-4.0, -4.0, 2.0}};//H-E-C
-    private boolean secStructAided;
 
     public SmithWaterman(AlignmentMode mode, AlignmentAlgorithm algorithm, IDistanceMatrix distanceMatrix, IGapCost gapCost) {
         super(mode, algorithm, distanceMatrix, gapCost);
@@ -258,9 +257,5 @@ public class SmithWaterman extends AlignmentProcessor {
 
     public double[][] getMatrix() {
         return matrix;
-    }
-
-    public void setSecStructAided(boolean secStructAided) {
-        this.secStructAided = secStructAided;
     }
 }

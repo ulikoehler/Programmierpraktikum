@@ -35,7 +35,6 @@ public class NeedlemanWunsch extends AlignmentProcessor {
     private boolean[][] topPath;
     private boolean[][] hasPath;
     private double[][] secStructMatrix = new double[][]{{2.0, -15.0, -4.0},{-15.0, 4.0, -4.0},{-4.0, -4.0, 2.0}};//H-E-C
-    private boolean secStructAided;
 
     @Override
     public AlignmentResult align(Sequence seq1, Sequence seq2) {
@@ -358,9 +357,4 @@ public class NeedlemanWunsch extends AlignmentProcessor {
         }
     }
 
-    public void setSecStructAided(boolean secStructAided) {
-        this.secStructAided = secStructAided;
-    }
-    
-    
 }
