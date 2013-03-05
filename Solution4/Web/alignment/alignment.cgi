@@ -19,7 +19,6 @@ my $alignmentAlgo = param("alignmentAlgorithm") or die ("No alignment algorithm"
 
 my $calcSSAA = param("calculateSSAA");
 
-
 my $db = DBI->connect('DBI:mysql:bioprakt4;host=mysql2-ext.bio.ifi.lmu.de', 'bioprakt4', 'vGI5GCMg0x') || die "Could not connect to database: $DBI::errstr";
 
 #getMatrixFromDatabase($db, $matrixName, $outputPath) get QUASAR matrix from
@@ -102,14 +101,23 @@ my $jarPath = "/home/proj/biocluster/praktikum/bioprakt/progprakt4/jar";
 
 #carp "/usr/lib64/biojava/bin/java -jar $jarPath/align.jar --go $gapOpen --ge $gapExtend --pairs $outputPath/seqPair.pairs --seqlib $outputPath/sequences.seqlib -m $outputPath/$matrixName --mode $alignmentType --fixedpointalignment $fpaDir --format html > alignmentout.txt";
 
+if() {
+  open (SEQOUT, ">$outputPath/sequences.fa");
+  print SEQOUT ">$seq1ID\nAS $seq1\n";
+  print SEQOUT ">$seq2ID\nAS $seq2\n";
+  close(SEQOUT);
+  my $gorCLI = "/usr/lib64/biojava/bin/java -jar $jarPath/align.jar -m $modelFile -s $outputPath/sequences.fa"
+}
+
 print header();
-my $output = `bash -c '/usr/lib64/biojava/bin/java -jar $jarPath/align.jar --go $gapOpen --ge $gapExtend --pairs $outputPath/seqPair.pairs --seqlib "$outputPath/sequences.seqlib" -m $outputPath/$matrixName --mode $alignmentType --fixedpointalignment $fpaDir --format html'`;
+my $cli = "/usr/lib64/biojava/bin/java -jar $jarPath/align.jar --go $gapOpen --ge $gapExtend --pairs $outputPath/seqPair.pairs --seqlib "$outputPath/sequences.seqlib" -m $outputPath/$matrixName --mode $alignmentType --fixedpointalignment $fpaDir --format html
+my $output = `bash -c '$cli'`;
 #Prin the alignment
 print $output;
 #Copy the FPA graphic & display it
 opendir my($dh), $fpaDir or die "Couldn't open dir '$fpaDir': $!";
 my @files = readdir $dh;
-closedir $dh;
+closedir $dh;p
 foreach my $file (@files) {
   if($file eq ".." or $file eq ".") {
     next;
