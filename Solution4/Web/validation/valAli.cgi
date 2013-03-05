@@ -3,7 +3,7 @@
 use CGI qw(:standard);
 use CGI::Carp qw(fatalsToBrowser);
 
-my $cgi = new cgi;
+#my $cgi = new cgi;
 
 my $alignments = param("alignments");
 my $reference = param("reference");
