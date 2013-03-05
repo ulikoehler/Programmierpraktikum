@@ -71,34 +71,58 @@ public class Summary {
     }
 
     public double getQ3Mean() {
+        if (Q3.isEmpty()) {
+            return Double.NaN;
+        }
         return round(getMean(Q3));
     }
 
     public double getQHMean() {
+        if (QH.isEmpty()) {
+            return Double.NaN;
+        }
         return round(getMean(QH));
     }
 
     public double getQEMean() {
+        if (QE.isEmpty()) {
+            return Double.NaN;
+        }
         return round(getMean(QE));
     }
 
     public double getQCMean() {
+        if (QC.isEmpty()) {
+            return Double.NaN;
+        }
         return round(getMean(QC));
     }
 
     public double getSOVMean() {
+        if (SOV.isEmpty()) {
+            return Double.NaN;
+        }
         return round(getMean(SOV));
     }
 
     public double getSOVHMean() {
+        if (SOVH.isEmpty()) {
+            return Double.NaN;
+        }
         return round(getMean(SOVH));
     }
 
     public double getSOVEMean() {
+        if (SOVE.isEmpty()) {
+            return Double.NaN;
+        }
         return round(getMean(SOVE));
     }
 
     public double getSOVCMean() {
+        if (SOVC.isEmpty()) {
+            return Double.NaN;
+        }
         return round(getMean(SOVC));
     }
 
@@ -113,34 +137,58 @@ public class Summary {
     }
 
     public double getQ3Min() {
+        if (Q3.isEmpty()) {
+            return Double.NaN;
+        }
         return (getMin(Q3));
     }
 
     public double getQHMin() {
+        if (QH.isEmpty()) {
+            return Double.NaN;
+        }
         return (getMin(QH));
     }
 
     public double getQEMin() {
+        if (QE.isEmpty()) {
+            return Double.NaN;
+        }
         return (getMin(QE));
     }
 
     public double getQCMin() {
+        if (QC.isEmpty()) {
+            return Double.NaN;
+        }
         return (getMin(QC));
     }
 
     public double getSOVMin() {
+        if (SOV.isEmpty()) {
+            return Double.NaN;
+        }
         return (getMin(SOV));
     }
 
     public double getSOVHMin() {
+        if (SOVH.isEmpty()) {
+            return Double.NaN;
+        }
         return (getMin(SOVH));
     }
 
     public double getSOVEMin() {
+        if (SOVE.isEmpty()) {
+            return Double.NaN;
+        }
         return (getMin(SOVE));
     }
 
     public double getSOVCMin() {
+        if (SOVC.isEmpty()) {
+            return Double.NaN;
+        }
         return (getMin(SOVC));
     }
 
@@ -155,34 +203,58 @@ public class Summary {
     }
 
     public double getQ3Max() {
+        if (Q3.isEmpty()) {
+            return Double.NaN;
+        }
         return (getMax(Q3));
     }
 
     public double getQHMax() {
+        if (QH.isEmpty()) {
+            return Double.NaN;
+        }
         return (getMax(QH));
     }
 
     public double getQEMax() {
+        if (QE.isEmpty()) {
+            return Double.NaN;
+        }
         return (getMax(QE));
     }
 
     public double getQCMax() {
+        if (QC.isEmpty()) {
+            return Double.NaN;
+        }
         return (getMax(QC));
     }
 
     public double getSOVMax() {
+        if (SOV.isEmpty()) {
+            return Double.NaN;
+        }
         return (getMax(SOV));
     }
 
     public double getSOVHMax() {
+        if (SOVH.isEmpty()) {
+            return Double.NaN;
+        }
         return (getMax(SOVH));
     }
 
     public double getSOVEMax() {
+        if (SOVE.isEmpty()) {
+            return Double.NaN;
+        }
         return (getMax(SOVE));
     }
 
     public double getSOVCMax() {
+        if (SOVC.isEmpty()) {
+            return Double.NaN;
+        }
         return (getMax(SOVC));
     }
 
@@ -195,8 +267,8 @@ public class Summary {
             quan = 0;
         }
         int j = 0;
-        for (int i = 0; i < list.size(); i++) {      
-            if (!(list.get(i).isNaN())){
+        for (int i = 0; i < list.size(); i++) {
+            if (!(list.get(i).isNaN())) {
                 j++;
             }
         }
@@ -205,41 +277,65 @@ public class Summary {
     }
 
     public double getQ3Quantil(double quantil) {
+        if (Q3.isEmpty()) {
+            return Double.NaN;
+        }
         Collections.sort(Q3);
         return round(getQuantil(Q3, quantil));
     }
 
     public double getQHQuantil(double quantil) {
+        if (QH.isEmpty()) {
+            return Double.NaN;
+        }
         Collections.sort(QH);
         return round(getQuantil(QH, quantil));
     }
 
     public double getQEQuantil(double quantil) {
+        if (QE.isEmpty()) {
+            return Double.NaN;
+        }
         Collections.sort(QE);
         return round(getQuantil(QE, quantil));
     }
 
     public double getQCQuantil(double quantil) {
+        if (QC.isEmpty()) {
+            return Double.NaN;
+        }
         Collections.sort(QC);
         return round(getQuantil(QC, quantil));
     }
 
     public double getSOVQuantil(double quantil) {
+        if (SOV.isEmpty()) {
+            return Double.NaN;
+        }
         Collections.sort(SOV);
         return round(getQuantil(SOV, quantil));
     }
 
     public double getSOVHQuantil(double quantil) {
+        if (SOVH.isEmpty()) {
+            return Double.NaN;
+        }
         Collections.sort(SOVH);
         return round(getQuantil(SOVH, quantil));
     }
 
     public double getSOVEQuantil(double quantil) {
+        if (SOVE.isEmpty()) {
+            return Double.NaN;
+        }
         Collections.sort(SOVE);
         return round(getQuantil(SOVE, quantil));
     }
 
     public double getSOVCQuantil(double quantil) {
+        if (SOVC.isEmpty()) {
+            return Double.NaN;
+        }
         Collections.sort(SOVC);
         return round(getQuantil(SOVC, quantil));
     }
@@ -258,40 +354,64 @@ public class Summary {
     }
 
     public double getQ3StanDevi() {
+        if (Q3.isEmpty()) {
+            return Double.NaN;
+        }
         return getStandardDeviation(Q3, this.getQ3Mean());
     }
 
     public double getQHStanDevi() {
+        if (QH.isEmpty()) {
+            return Double.NaN;
+        }
         return getStandardDeviation(QH, this.getQHMean());
     }
 
     public double getQEStanDevi() {
+        if (QE.isEmpty()) {
+            return Double.NaN;
+        }
         return getStandardDeviation(QE, this.getQEMean());
     }
 
     public double getQCStanDevi() {
+        if (QC.isEmpty()) {
+            return Double.NaN;
+        }
         return getStandardDeviation(QC, this.getQCMean());
     }
 
     public double getSOVStanDevi() {
+        if (SOV.isEmpty()) {
+            return Double.NaN;
+        }
         return getStandardDeviation(SOV, this.getSOVMean());
     }
 
     public double getSOVHStanDevi() {
+        if (SOVH.isEmpty()) {
+            return Double.NaN;
+        }
         return getStandardDeviation(SOVH, this.getSOVHMean());
     }
 
     public double getSOVEStanDevi() {
+        if (SOVE.isEmpty()) {
+            return Double.NaN;
+        }
         return getStandardDeviation(SOVE, this.getSOVEMean());
     }
 
     public double getSOVCStanDevi() {
+        if (SOVC.isEmpty()) {
+            return Double.NaN;
+        }
         return getStandardDeviation(SOVC, this.getSOVCMean());
     }
 
     private static double round(double d) {
         Double p = d;
-        if (!(p.isNaN())|| !(p.isInfinite())) {
+        if (!(p.isNaN()) || !(p.isInfinite())) {
             DecimalFormat numberFormat = new DecimalFormat();
             DecimalFormatSymbols dfs = new DecimalFormatSymbols();
             dfs.setDecimalSeparator('.');

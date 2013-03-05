@@ -58,12 +58,17 @@ public class FactorizeValidation {
                     BufferedReader homestradtext = new BufferedReader(onehitwonder2);
                     //parsing through homestradfile
                     String line = homestradtext.readLine();
+                    //Tuple list to keep track of reference sequences in this ali file
+                    ArrayList<ZTuple> list = new ArrayList();
+                    Splitter colonSplitter = Splitter.on(Pattern.compile(";")).omitEmptyStrings().trimResults();
+                    ArrayList<String> split;
                     while (line != null) {
+
                         //checking for sequence entry
                         if (line.startsWith(">")) {
-                            String name;
+                            split = Lists.newArrayList(colonSplitter.split(line));
+                            String name = split.get(1);
                             String sequence = "";
-                            name = line.substring(4, 8);
                             //Skip structureX line
                             line = homestradtext.readLine();
                             //Assemble all lines
@@ -73,11 +78,25 @@ public class FactorizeValidation {
                                 line = homestradtext.readLine();
                             }
                             sequence += line.substring(0, line.length() - 1);
-                            hash.put(name, sequence);
+                            list.add(new ZTuple(name, sequence));
                         }
                         line = homestradtext.readLine();
                     }
                     homestradtext.close();
+                    //going through aligment pairs that need to be added to hash
+                    for (int i = 0; i < list.size(); i++) {
+                        String id1 = list.get(i).att1;
+                        String seq1 = list.get(i).att2;
+                        for (int j = i + 1; j < list.size(); j++) {
+                            String id2 = list.get(j).att1;
+                            String seq2 = list.get(j).att2;
+                            //these hash tags are still not unique and might be overwritten
+                            //but there isnt more information form the input alignment
+                            //that could identify the correct reference alignment
+                            hash.put(id1 + id2 + sequence(seq1) + sequence(seq2), seq1);
+                            hash.put(id2 + id1 + sequence(seq2) + sequence(seq1), seq2);
+                        }
+                    }
 
                 } catch (Exception e) {
                     System.err.println(e);
@@ -129,7 +148,6 @@ public class FactorizeValidation {
             }
             reader.close();
         } catch (Exception e) {
-            System.out.println("Caught one");
             System.err.println(e);
         }
     }
@@ -140,35 +158,39 @@ public class FactorizeValidation {
         detailed = new Detailed();
         for (int i = 0; i < alignmentpair.size(); i++) {
             //assembling sequences
-            String seqid1 = alignmentpair.get(i).att1.substring(1, 5);
-            String seqid2 = alignmentpair.get(i).att2.substring(0, 4);
             String candidatetemplate = alignmentpair.get(i).att3;
             String candidatetarget = alignmentpair.get(i).att4;
-            String referencetemplate = hash.get(seqid1);
-            String referencetarget = hash.get(seqid2);
+            String seqid1 = alignmentpair.get(i).att1.substring(1);
+            String seqid2 = alignmentpair.get(i).att2;
+            String referencetemplate = hash.get(seqid1 + seqid2 + sequence(candidatetemplate) + sequence(candidatetarget));
+            String referencetarget = hash.get(seqid2 + seqid1 + sequence(candidatetarget) + sequence(candidatetemplate));
             //checking if reference alignment exists
             if (referencetemplate == null || referencetarget == null) {
                 System.err.println("Reference pair doesnt exist");
             } else {
-                //creating new instance of validation algorithm
-                AliValiAlg instance = new AliValiAlg(candidatetemplate, candidatetarget, referencetemplate, referencetarget);
-                //getting validation criteria
-                double sensi = instance.getSensi();
-                double speci = instance.getSpeci();
-                double cover = instance.getCover();
-                double means = instance.getMeanS();
-                double inver = instance.getInver();
-                //creating tuple representing validation
-                String header = alignmentpair.get(i).att1 + " " + alignmentpair.get(i).att2 + " " + round(sensi) + " " + round(speci) + " " + round(cover) + " " + round(means) + " " + round(inver);
-                FTuple result = new FTuple(header, candidatetemplate, candidatetarget, referencetemplate, referencetarget);
-                //safing result
-                detailed.add(result);
-                //safing validation criteria for summary file
-                summary.addSensi(sensi);
-                summary.addSpeci(speci);
-                summary.addCover(cover);
-                summary.addMeans(means);
-                summary.addInver(inver);
+                if (referencetemplate.length() != referencetarget.length()) {
+                    System.err.println("False reference identifications");
+                } else {
+                    //creating new instance of validation algorithm
+                    AliValiAlg instance = new AliValiAlg(candidatetemplate, candidatetarget, referencetemplate, referencetarget);
+                    //getting validation criteria
+                    double sensi = instance.getSensi();
+                    double speci = instance.getSpeci();
+                    double cover = instance.getCover();
+                    double means = instance.getMeanS();
+                    double inver = instance.getInver();
+                    //creating tuple representing validation
+                    String header = alignmentpair.get(i).att1 + " " + alignmentpair.get(i).att2 + " " + round(sensi) + " " + round(speci) + " " + round(cover) + " " + round(means) + " " + round(inver);
+                    FTuple result = new FTuple(header, candidatetemplate, candidatetarget, referencetemplate, referencetarget);
+                    //safing result
+                    detailed.add(result);
+                    //safing validation criteria for summary file
+                    summary.addSensi(sensi);
+                    summary.addSpeci(speci);
+                    summary.addCover(cover);
+                    summary.addMeans(means);
+                    summary.addInver(inver);
+                }
             }
         }
     }
@@ -195,5 +217,16 @@ public class FactorizeValidation {
             return Double.valueOf(numberFormat.format(d));
         }
         return d;
+    }
+
+    public static String sequence(String gapseq) {
+        String temp = "";
+        //copy sequence without gaps
+        for (int i = 0, n = gapseq.length(); i < n; i++) {
+            if (gapseq.charAt(i) != '-') {
+                temp = temp + gapseq.charAt(i);
+            }
+        }
+        return temp;
     }
 }

@@ -21,7 +21,7 @@ $(function() {
 		source: function( request, response ) {
 		  $.getJSON( "matrix/name_autocomplete.cgi", {
 		    limit:10,
-		     prefix: request.term,
+		    prefix: request.term
 		  }, response);
 		},
 	      select: function( event, ui ) {
@@ -43,6 +43,7 @@ $(function() {
 	    }
 	});
 	$(".accordion").accordion();
+	renderSequences();
 });
 function showAddMatrixDialog() {
     $("#addMatrixDialog").dialog({autoOpen: false,modal: true,bgiframe: true,width:500,height:250});
@@ -58,4 +59,24 @@ function showAlignment() {
 }
 function showFixedPointAlignment() {
   
+}
+/**
+ * Add sequences from local storage
+ */
+function renderSequences() {
+  if($("#availableSequencesList").size() > 0) {
+    $("#availableSequencesList").empty();
+    var sequences = $.jStorage.get("sequences", []);
+    for(var i=0; i<sequences.length; i++ ) {
+      $("#availableSequencesList").append("<li class=\"sequence ui-state-default\" seqid=\"abc\">Sequence " + sequences[i] + "</li>");
+    }
+  } else {
+    console.log("Can't find available sequences list while trying to add sequence");
+  }
+}
+
+function addSequence(id) {
+  var sequences = $.jStorage.get("sequences", []);
+  sequences.push(id);
+  renderSequences();
 }
