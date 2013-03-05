@@ -17,6 +17,7 @@
 			#align-from {float:none; height: 100px;}
 			#align-to {float:none; height: 100px;}
 			#aligna-from-list, #aligna-to-list {height:100%; width:100%;}
+			.groupborder {border:thin;border-style: dashed; border-radius:3px;}
 			.resizable > h3 { text-align: center; margin: 0; }
 			.roundBorder{border-radius: 3px;}
 			.dropList { list-style-type: none; margin: 0; padding: 0 0 2.5em; float: left; margin-right: 10px; }
@@ -73,7 +74,7 @@
 				    <input type="radio" name="alignmentAlgorithm" value="Local">Needleman-Wunsch <!-- TODO Auto-deselect gap open -->
 				  <br/><br/>
 				  <b>Gap penalties</b>
-				  <div class="indent">
+				  <div class="indent groupborder" style="width:400px">
 				    <table>
 				      <tr><td>Gap open penalty:</td><td><input class="roundBorder" type="text" name="gapOpenPenalty" value="-12.0"/></td></tr>
 				      <tr><td>Gap extension penalty:</td><td><input class="roundBorder" type="text" name="gapExtendPenalty" value="-1.0"/></td><br/>

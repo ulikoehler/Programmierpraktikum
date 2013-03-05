@@ -6,11 +6,18 @@ $(function() {
 	$("#align-from").resizable({containment: "#body"});
 	$("#align-to").resizable({containment: "#body"});
 	//$('.nodrag').draggable( "disable" )
-	$(".sequence-drop").droppable({
+	$("#alignmentSequence1").droppable({
 	    accept: ".sequence",
 	    activeClass: "ui-state-highlight",
 	    drop: function( event, ui ) {
-	      deleteImage( ui.draggable );
+	      setAlignmentSequence1( ui.draggable );
+	    }
+	});
+	$("#alignmentSequence2").droppable({
+	    accept: ".sequence",
+	    activeClass: "ui-state-highlight",
+	    drop: function( event, ui ) {
+	      setAlignmentSequence2( ui.draggable );
 	    }
 	});
 	$(".uibtn").button();
@@ -42,11 +49,21 @@ $(function() {
 	$(".accordion").accordion();
 	renderSequences();
 });
+function setAlignmentSequence1(elem) {
+  $("#alignmentSeq1Id").val($(elem).attr("seqid"));
+  $(elem).addClass("ui-state-highlight");
+  $(elem).draggable("disable");
+}
+function setAlignmentSequence2(elem) {
+  $("#alignmentSeq2Id").val($(elem).attr("seqid"));
+  $(elem).addClass("ui-state-highlight");
+  $(elem).draggable("disable")
+}
 function refreshDragDrop() { 
-	 $(".sequence").draggable({
-	    revert: "invalid", // when not dropped, the item will revert back to its initial position
-	    containment: "document",
-	 });
+      $(".sequence").draggable({
+	revert: "invalid", // when not dropped, the item will revert back to its initial position
+	containment: "document",
+      });
 }
 function showAddMatrixDialog() {
     $("#addMatrixDialog").dialog({autoOpen: false,modal: true,bgiframe: true,width:500,height:250});
@@ -66,7 +83,7 @@ function renderSequences() {
     var sequences = $.jStorage.get("sequences", []);
     for(var i=0; i<sequences.length; i++ ) {
       var seqObj = sequences[i];
-      $("#availableSequencesList").append("<li class=\"sequence ui-state-default ui-widget-content ui-corner-tr\" seqid=\"seqObj.id\">Sequence " + seqObj.name + "(" + seqObj.type + ")" + "</li>");
+      $("#availableSequencesList").append("<li class=\"sequence ui-state-default ui-widget-content ui-corner-tr\" seqid=\""+ seqObj.id + "\">Sequence " + seqObj.name + "(" + seqObj.type + ")" + "</li>");
     }
     //Calculate the height of the container
     var height = sequences.length*35+60;
