@@ -113,7 +113,7 @@ public class FactorizeValidation {
                 String header = ">" + secondarypair.get(i).att1 + " " + round(Q3) + " " + round(SOV);
                 header += " " + round(QH) + " " + round(QE) + " " + round(QC);
                 header += " " + round(SOVH) + " " + round(SOVE) + " " + round(SOVC);
-                VTupeltxt result = new VTupeltxt (header, secondarypair.get(i).att2,prediction,reference);
+                VTupeltxt result = new VTupeltxt(header, secondarypair.get(i).att2, prediction, reference);
                 //safing result
                 detailed.add(result);
                 //safing validation criteria for summary
@@ -124,7 +124,7 @@ public class FactorizeValidation {
                 summary.addSOV(SOV);
                 summary.addSOVH(SOVH);
                 summary.addSOVE(SOVE);
-                summary.addSOVC(SOVC);                   
+                summary.addSOVC(SOVC);
             }
         }
     }
@@ -138,17 +138,21 @@ public class FactorizeValidation {
     }
 
     private static double round(double d) {
-        Double p = d;
-        if (!(p.isNaN())|| !(p.isInfinite())) {
-            DecimalFormat numberFormat = new DecimalFormat();
-            DecimalFormatSymbols dfs = new DecimalFormatSymbols();
-            dfs.setDecimalSeparator('.');
-            numberFormat.setGroupingUsed(false);
-            numberFormat.setMinimumFractionDigits(6);
-            numberFormat.setMaximumFractionDigits(3);
-            numberFormat.setDecimalSeparatorAlwaysShown(false);
-            numberFormat.setDecimalFormatSymbols(dfs);
-            return Double.valueOf(numberFormat.format(d));
+        try {
+            Double p = d;
+            if (!(p.isNaN()) || !(p.isInfinite())) {
+                DecimalFormat numberFormat = new DecimalFormat();
+                DecimalFormatSymbols dfs = new DecimalFormatSymbols();
+                dfs.setDecimalSeparator('.');
+                numberFormat.setGroupingUsed(false);
+                numberFormat.setMinimumFractionDigits(6);
+                numberFormat.setMaximumFractionDigits(3);
+                numberFormat.setDecimalSeparatorAlwaysShown(false);
+                numberFormat.setDecimalFormatSymbols(dfs);
+                return Double.valueOf(numberFormat.format(d));
+            }
+        } catch (NumberFormatException ex) {
+            return Double.NaN;
         }
         return d;
     }
