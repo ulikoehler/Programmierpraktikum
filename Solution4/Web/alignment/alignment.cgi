@@ -3,18 +3,20 @@
 use CGI qw(:standard);
 use CGI::Carp qw(fatalsToBrowser);
 use LWP::Simple;
+use File::Temp qw/ tempfile tempdir /;
 my $seq1ID = param("seq1Id");
 my $seq2ID = param("seq2Id");
 
-my $matixName = param("distanceMatrix");
-my $gapOpen = param("gapOpenPenalty");
-my $gapExtend = param("gapExtendPenalty");
+my $matixName = param("distanceMatrix") or die ("No distance matrix");
+my $gapOpen = param("gapOpenPenalty")or die ("No go");
+my $gapExtend = param("gapExtendPenalty")or die ("No ge");
 
-my $alignmentType = param("alignmentType");
-my $alignmentAlgo = param("alignmentAlgorithm");
+my $alignmentType = param("alignmentType")or die ("No alignment type");
+my $alignmentAlgo = param("alignmentAlgorithm")or die ("No alignment algorithm");
 
 my $calcSSAA = param("calculateSSAA");
-
+my $fixedPoint = param("fixedPoint");
+carp "Fixed point " . $fixedPoint;
 
 my $db = DBI->connect('DBI:mysql:bioprakt4;host=mysql2-ext.bio.ifi.lmu.de', 'bioprakt4', 'vGI5GCMg0x') || die "Could not connect to database: $DBI::errstr";
 
@@ -33,7 +35,7 @@ sub getMatrixFromDatabase {
 	my $quasar = $row->{QUASAR};
 	#Write it to a files
 	open (OUTFILE, ">$outputFile");
-	print (OUTFILE, $quasar);
+	print OUTFILE $quasar
 	close(OUTFILE);
 }
 
@@ -49,7 +51,7 @@ sub getSequenceById {
 		$seq = get("http://www.uniprot.org/uniprot/$id.fasta");
 	}
 	elsif($id =~ m/^mysql:(.+)$/){
-		my $query = $db->prepare("SELECT Seq.Seq FROM Seq WHERE Name = ?");
+		my $query = $db->prepare("SELECT Seq.Seq FROM Seq WHERE Seq.Name = ?");
 		$query->execute($id);
 		my $row = $query->fetchrow_hasref();
 		if(not defined $row) {die "Matrix with name $matrixName can't be found in database";}
@@ -59,8 +61,8 @@ sub getSequenceById {
 	return $seq;
 }
 
-my $outputPath = "/tmp/$seq1ID-$seq2ID";
-my $directory = `mkdir $outputPath`;
+my $outputPath = tempdir();
+carp "Temp output path is $outputPath";
 
 my $seq1 = getSequenceById($seq1ID);
 my $seq2 = getSequenceById($seq1ID);
@@ -73,8 +75,8 @@ print (OUTFILE, "$Seq1ID $Seq2ID");
 close(OUTFILE);
 
 my $matrix = getMatrixFromDatabase($db, $matrixName, "$outputPath/$matrixName");
-
-my $executeJar = `bash -c 'java -jar alignment.jar --go $gapOpen --ge $gapExtend --dpmatrices "$outputPath/$matrixName" --pairs "$outputFile/seqPair.pairs" --seqlib "$outputFile/sequences.seqlib" -m $matrixName --mode $alignmentType --format "html" > alignmentout.txt'`;
+my $jarPath = "/home/proj/biocluster/praktikum/bioprakt/progprakt4/Solution4/finaljars";
+my $executeJar = `bash -c 'java -jar $jarPath/alignment.jar --go $gapOpen --ge $gapExtend --dpmatrices "$outputPath/$matrixName" --pairs "$outputFile/seqPair.pairs" --seqlib "$outputFile/sequences.seqlib" -m $matrixName --mode $alignmentType --format "html" > alignmentout.txt'`;
 
 
 

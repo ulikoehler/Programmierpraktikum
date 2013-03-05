@@ -6,11 +6,18 @@ $(function() {
 	$("#align-from").resizable({containment: "#body"});
 	$("#align-to").resizable({containment: "#body"});
 	//$('.nodrag').draggable( "disable" )
-	$(".sequence-drop").droppable({
+	$("#alignmentSequence1").droppable({
 	    accept: ".sequence",
 	    activeClass: "ui-state-highlight",
 	    drop: function( event, ui ) {
-	      deleteImage( ui.draggable );
+	      setAlignmentSequence1( ui.draggable );
+	    }
+	});
+	$("#alignmentSequence2").droppable({
+	    accept: ".sequence",
+	    activeClass: "ui-state-highlight",
+	    drop: function( event, ui ) {
+	      setAlignmentSequence2( ui.draggable );
 	    }
 	});
 	$(".uibtn").button();
@@ -35,18 +42,32 @@ $(function() {
 		  }, response);
 		},
 	      select: function( event, ui ) {
-		   //"Selected: " + ui.item.value + " aka " + ui.item.id :
+		    //"Selected: " + ui.item.value + " aka " + ui.item.id :
 		  //"Nothing selected, input was " + this.value );
 	    }
 	});
 	$(".accordion").accordion();
 	renderSequences();
+	//Disable gap open when NW is selected
+	$("#nwRadio").change(function() {
+	  $("#gapOpenField").prop("disabled", $("#nwRadio").attr("checked") == false);
+	});
 });
+function setAlignmentSequence1(elem) {
+  $("#alignmentSeq1Id").val($(elem).attr("seqid"));
+  $(elem).addClass("ui-state-highlight");
+  $(elem).draggable("disable");
+}
+function setAlignmentSequence2(elem) {
+  $("#alignmentSeq2Id").val($(elem).attr("seqid"));
+  $(elem).addClass("ui-state-highlight");
+  $(elem).draggable("disable")
+}
 function refreshDragDrop() { 
-	 $(".sequence").draggable({
-	    revert: "invalid", // when not dropped, the item will revert back to its initial position
-	    containment: "document",
-	 });
+      $(".sequence").draggable({
+	revert: "invalid", // when not dropped, the item will revert back to its initial position
+	containment: "document",
+      });
 }
 function showAddMatrixDialog() {
     $("#addMatrixDialog").dialog({autoOpen: false,modal: true,bgiframe: true,width:500,height:250});
@@ -66,7 +87,7 @@ function renderSequences() {
     var sequences = $.jStorage.get("sequences", []);
     for(var i=0; i<sequences.length; i++ ) {
       var seqObj = sequences[i];
-      $("#availableSequencesList").append("<li class=\"sequence ui-state-default ui-widget-content ui-corner-tr\" seqid=\"seqObj.id\">Sequence " + seqObj.name + "(" + seqObj.type + ")" + "</li>");
+      $("#availableSequencesList").append("<li class=\"sequence ui-state-default ui-widget-content ui-corner-tr\" seqid=\""+ seqObj.id + "\">Sequence " + seqObj.name + "(" + seqObj.type + ")" + "</li>");
     }
     //Calculate the height of the container
     var height = sequences.length*35+60;
@@ -77,12 +98,40 @@ function renderSequences() {
   refreshDragDrop();
 }
 
-function showAlignment() {
-  
-}
-
-function showFixedPointAlignment() {
-  
+function showAlignment(fixedPoint) {
+  //Get all the field values
+  var alignmentSeq1Id = $("#alignmentSeq1Id").val();
+  var alignmentSeq2Id = $("#alignmentSeq2Id").val();
+  //
+  var alignmentMatrix = $("#alignmentMatrix").val();
+  var alignmentType = $("input[name=alignmentType]:checked").val();
+  var alignmentAlgorithm = $("input[name=alignmentAlgorithm]:checked").val();
+  var gapOpenPenalty = $("input[name=gapOpenPenalty]").val();
+  var gapExtensionPenalty = $("input[name=gapExtendPenalty]").val();
+  var calculateSSAA = ($("#calculateSSAA").attr("checked") == true);
+  //Show the progress bar & dialog
+  $("#alignmentResultDialog").empty();
+  $("#alignmentResultDialog").append("<div id=\"alignmentProgressBar\"></div>");
+  $("#alignmentProgressBar").progressbar({
+      value: false
+    });
+  $("#alignmentResultDialog").dialog({autoOpen: false,modal: true,bgiframe: true,width:500,height:250});
+  //
+  $.post("alignment/alignment.cgi", {
+    alignmentSeq1Id: alignmentSeq1Id,
+    alignmentSeq2Id: alignmentSeq2Id,
+    alignmentMatrix: alignmentMatrix,
+    alignmentType: alignmentType,
+    alignmentAlgorithm: alignmentAlgorithm,
+    gapOpenPenalty: gapOpenPenalty,
+    gapExtensionPenalty: gapExtensionPenalty,
+    calculateSSAA: calculateSSAA,
+    fixedPoint: fixedPoint
+  }, function(data, textStatus) {
+    //Replace the progress bar by the data
+    $("#alignmentResultDialog").empty();
+    $("#alignmentResultDialog").append(data);
+  });
 }
 
 function addSequenceFromDB() {
