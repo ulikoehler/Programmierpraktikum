@@ -2,7 +2,7 @@
 #Initialize CGI parser
 use CGI qw(:standard);
 use CGI::Carp qw(fatalsToBrowser);
-
+use LWP::Simple;
 my $seq1ID = param("seq1Id");
 my $seq2ID = param("seq2Id");
 
@@ -26,11 +26,11 @@ sub getMatrixFromDatabase {
 
 	my $query = $db->prepare("SELECT QUASAR FROM Matrices WHERE LCASE(Matrices.Name) = LCASE(?)");
 	$query->execute($matrixName);
-	my $row = $query->fetchrow_hashref()
+	my $row = $query->fetchrow_hashref();
 	if(not defined $row) {
 		die "Matrix with name $matrixName can't be found in database";
 	}
-	my $quasar = $row->{QUASAR}
+	my $quasar = $row->{QUASAR};
 	#Write it to a files
 	open (OUTFILE, ">$outputFile");
 	print (OUTFILE, $quasar);
@@ -40,14 +40,28 @@ sub getMatrixFromDatabase {
 sub getSequenceById {
 	my $db = $_[0];
 	my $id = $_[1];
-	#TODO
-	my $seq1 = get("http://www.pdb.org/pdb/files/fasta.txt?structureIdList=$seq1ID") if defined $seq1ID;
+	#
+	my $seq = "";
+	#Parse it
+	if($id =~ m/^pdb:(.+)$/) {
+		$seq = get("http://www.pdb.org/pdb/files/fasta.txt?structureIdList=$id");
+	} elsif($id =~ m/^uniprot:(.+)$/){
+		$seq = get("http://www.uniprot.org/uniprot/$id.fasta");
+	}
+	elsif($id =~ m/^mysql:(.+)$/){
+		my $query = $db->prepare("SELECT Seq.Seq FROM Seq WHERE Name = ?");
+		$query->execute($id);
+		my $row = $query->fetchrow_hasref();
+		if(not defined $row) {die "Matrix with name $matrixName can't be found in database";}
+		$seq = $row->{Name};
+	}
+	die "Seq not found" if $seq eq "";
+	return $seq;
 }
 
 my $outputPath = "/tmp/$seq1ID-$seq2ID";
 my $directory = `mkdir $outputPath`;
 
-use LWP::Simple;
 my $seq1 = getSequenceById($seq1ID);
 my $seq2 = getSequenceById($seq1ID);
 open (OUTFILE, ">$outputFile/sequences.seqlib");
