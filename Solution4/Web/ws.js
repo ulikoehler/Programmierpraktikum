@@ -109,6 +109,11 @@ function showAlignment(fixedPoint) {
   var gapOpenPenalty = $("input[name=gapOpenPenalty]").val();
   var gapExtensionPenalty = $("input[name=gapExtendPenalty]").val();
   var calculateSSAA = ($("#calculateSSAA").attr("checked") == true);
+  //Show the progress bar & dialog
+  $("#alignmentResultDialog").empty();
+  $("#alignmentResultDialog").append("<div id=\"alignmentProgressBar\"></div>");
+  $("#alignmentProgressBar").progressbar( "option", "value", false);
+  $("#alignmentResultDialog").dialog({autoOpen: false,modal: true,bgiframe: true,width:500,height:250});
   //
   $.post("alignment/align.cgi", {
     alignmentSeq1Id: alignmentSeq1Id,
@@ -119,8 +124,11 @@ function showAlignment(fixedPoint) {
     gapOpenPenalty: gapOpenPenalty,
     gapExtensionPenalty: gapExtensionPenalty,
     calculateSSAA: calculateSSAA,
+    fixedPoint: fixedPoint
   }, function(data, textStatus) {
-    
+    //Replace the progress bar by the data
+    $("#alignmentResultDialog").empty();
+    $("#alignmentResultDialog").append(data);
   });
 }
 
