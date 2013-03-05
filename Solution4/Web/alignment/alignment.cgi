@@ -47,10 +47,10 @@ sub getGORModel {
 	my $outputPath = $_[2];
 
 	my $query = $db->prepare("SELECT Data FROM GORModel WHERE LCASE(Name) = LCASE(?)");
-	$query->execute($matrixName);
+	$query->execute($gorName);
 	my $row = $query->fetchrow_hashref();
 	if(not defined $row) {
-		die "GOR Model with name $matrixName can't be found in database";
+		die "GOR Model with name $gorName can't be found in database";
 	}
 	my $quasar = $row->{Data};
 	#Write it to a files

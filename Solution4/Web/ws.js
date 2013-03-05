@@ -95,7 +95,7 @@ function setAlignmentSequence2(elem) {
   $(elem).draggable("disable")
 }
 function setSSPSequence(elem) {
-  $("sspSequenceField").val($(elem).attr("seqid"));
+  $("#sspSequenceField").val($(elem).attr("seqid"));
   $(elem).addClass("ui-state-highlight");
   $(elem).draggable("disable")
 }

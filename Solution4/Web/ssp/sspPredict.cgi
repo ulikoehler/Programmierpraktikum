@@ -4,11 +4,12 @@
 use CGI qw(:standard);
 use CGI::Carp qw(fatalsToBrowser);
 use LWP::Simple;
+use DBI;
 use File::Temp qw/ tempfile tempdir /;
 
 my $model = param("model");				# file
 my $gor5Alignment = param("gor5AlignmentField");
-my $seqId = param("seq");
+my $seqId = param("sspSequence");
 my $probabilities = param("probabilities") || 0;	# boolean
 my $avgPost = param("avgPost") || 0;			# boolean
 my $stdPost = param("stdpost") || 0;			# boolean
@@ -16,8 +17,8 @@ my $avgValue = param("avgValue") || 0;			# double for avgPost
 my $stdValue = param("stdValue") || 0;			# double for stdPost
 
 
-my $jarPath = "/home/proj/biocluster/praktikum/bioprakt/progprakt4/Solution4/jar";
-my $format = "html"
+my $jarPath = "/home/proj/biocluster/praktikum/bioprakt/progprakt4/jar";
+my $format = "html";
 
 my $db = DBI->connect('DBI:mysql:bioprakt4;host=mysql2-ext.bio.ifi.lmu.de', 'bioprakt4', 'vGI5GCMg0x') || die "Could not connect to database: $DBI::errstr";
 
@@ -26,11 +27,11 @@ sub getGORModel {
 	my $gorName = $_[1];
 	my $outputPath = $_[2];
 
-	my $query = $db->prepare("SELECT Data FROM GORModel WHERE LCASE(Name) = LCASE(?)");
-	$query->execute($matrixName);
+	my $query = $db->prepare("SELECT Data FROM GORModels WHERE Name = ?");
+	$query->execute($gorName);
 	my $row = $query->fetchrow_hashref();
 	if(not defined $row) {
-		die "GOR Model with name $matrixName can't be found in database";
+		die "GOR Model with name $gorName can't be found in database";
 	}
 	my $quasar = $row->{Data};
 	#Write it to a files
@@ -98,7 +99,11 @@ my $jarQuery = "--model $modelFile --format $format";
 
 # seq or maf
 if(defined $seq) {
-  $jarQuery = "$jarQuery --seq $seq";
+  my($fh, $seqFile) = tempfile();
+  open (OUTFILE, ">$seqFile");
+  print OUTFILE $seq;
+  close(OUTFILE);
+  $jarQuery = "$jarQuery --seq $seqFile";
 } elsif(defined $gor5Alignment) {
   $jarQuery = "$jarQuery --maf $gor5Alignment";
 } else {
@@ -109,22 +114,22 @@ if(defined $seq) {
 $jarQuery = "$jarQuery --probabilities" if $probabilities;
 
 # avgPost
-if $avgPost {
+if ($avgPost) {
   carp "Missing or invalid value for postprocessing!" if !isNumeric $avgValue;
   $jarQuery = "$jarQuery --avgPost $avgPost";
 }
 
 # stdPost
-if $stdPost {
+if ($stdPost) {
   carp "Missing or invalid value for postprocessing!" if !isNumeric $stdValue;
   $jarQuery = "$jarQuery --stdPost $stdPost";
 }
 
-my $jarOutput = `bash -c 'java -jar $jarPath/predict.jar $jarQuery`;
+carp "Executing bash -c '/usr/lib64/biojava/bin/java -jar $jarPath/predict.jar $jarQuery'\n";
+my $jarOutput = `bash -c '/usr/lib64/biojava/bin/java -jar $jarPath/predict.jar $jarQuery'`;
 
-my $q = new CGI;
-print $q->header;
-print $q->$jarOutput;
+print header();
+print $jarOutput . "\n";
     
 sub isNumeric {
   return 1 if ($_[0] =~ /^([+-]?)(?=\d&\.\d)\d*(\.\d*)?([Ee]([+-]?\d+))?$/);
