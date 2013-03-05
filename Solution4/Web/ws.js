@@ -68,15 +68,17 @@ function renderSequences() {
     $("#availableSequencesList").empty();
     var sequences = $.jStorage.get("sequences", []);
     for(var i=0; i<sequences.length; i++ ) {
-      $("#availableSequencesList").append("<li class=\"sequence ui-state-default\" seqid=\"abc\">Sequence " + sequences[i] + "</li>");
+      var seqObj = sequences[i];
+      $("#availableSequencesList").append("<li class=\"sequence ui-state-default\" seqid=\"seqObj.id\">Sequence " + seqObj.name + "(" + seqObj.type + ")" + "</li>");
     }
   } else {
     console.log("Can't find available sequences list while trying to add sequence");
   }
 }
 
-function addSequence(id) {
+function addSequence(id, name, type) {
   var sequences = $.jStorage.get("sequences", []);
-  sequences.push(id);
+  sequences.push({id: id, name: name, type: type});
+  var sequences = $.jStorage.set("sequences", sequences);
   renderSequences();
 }

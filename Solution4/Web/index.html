@@ -176,6 +176,7 @@
 			  <div>
 			  </div>
 			</div>
+			<div style="height:20px;"></div>
 			<div id="available-sequences" class="resizable ui-widget-content">
 				<h3 class="ui-widget-header">Available sequences</h3>
 				<ul id="availableSequencesList" class="dropList" style="margin-top:5px;min-height:80px;">
@@ -199,10 +200,12 @@
 					<input class="uibtn" type="submit" value="Add" />
 				</div>
 				<div id="upload-fastainput">
-					Query sequence (FASTA):<br />
 	 				<form action="sequences/insert_sequence_string.cgi" method="post" enctype="multipart/form-data">
+						Query sequence (FASTA):
+						<input type="radio" name="sequenceType" value="Nucleotide" checked>Nucleotide sequence
+						<input type="radio" name="sequenceType" value="Protein">Protein sequence<br/>
 						<b>Single</b> sequence as Plaintext or as FASTA
-						<textarea name="seq" cols="50" rows="20"></textarea><br/>
+						<textarea name="seq" style="width:100%" rows="20"></textarea><br/>
 						<input type="submit" value="Add sequence" class="button"/>
 					</form>
 				</div>
