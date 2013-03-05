@@ -112,10 +112,12 @@ function showAlignment(fixedPoint) {
   //Show the progress bar & dialog
   $("#alignmentResultDialog").empty();
   $("#alignmentResultDialog").append("<div id=\"alignmentProgressBar\"></div>");
-  $("#alignmentProgressBar").progressbar( "option", "value", false);
+  $("#alignmentProgressBar").progressbar({
+      value: false
+    });
   $("#alignmentResultDialog").dialog({autoOpen: false,modal: true,bgiframe: true,width:500,height:250});
   //
-  $.post("alignment/align.cgi", {
+  $.post("alignment/alignment.cgi", {
     alignmentSeq1Id: alignmentSeq1Id,
     alignmentSeq2Id: alignmentSeq2Id,
     alignmentMatrix: alignmentMatrix,

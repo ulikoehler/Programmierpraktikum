@@ -45,8 +45,8 @@
 			
 			<div class="accordion">
 			  <h3>Align sequences</h3>
-			  <div>
-			    <form action="alignment/align.cgi" method="post" enctype="multipart/form-data">
+			  <div style="height:600px">
+			    <form action="alignment/alignment.cgi" method="post" enctype="multipart/form-data">
 				  <div id="alignmentSequence1" class="sequence-drop ui-widget-content ui-state-default">
 				    <h4 class="ui-widget-header">Drop first sequence in this box</h4>
 				  </div><br/>
@@ -74,7 +74,7 @@
 				    <input id="nwRadio" type="radio" name="alignmentAlgorithm" value="Local">Needleman-Wunsch <!-- TODO Auto-deselect gap open -->
 				  <br/><br/>
 				  <b>Gap penalties</b>
-				  <div class="indent groupborder" style="width:400px">
+				  <div class="indent" style="width:400px">
 				    <table>
 				      <tr><td>Gap open penalty:</td><td><input id="gapOpenField" class="roundBorder" type="text" name="gapOpenPenalty" value="-12.0" disabled/></td></tr>
 				      <tr><td>Gap extension penalty:</td><td><input class="roundBorder" type="text" name="gapExtendPenalty" value="-1.0"/></td><br/>
