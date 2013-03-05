@@ -53,6 +53,18 @@ $(function() {
 		  //"Nothing selected, input was " + this.value );
 	    }
 	});
+	$( "#gorModelInput" ).autocomplete({
+		source: function( request, response ) {
+		  $.getJSON( "gormodels/name_autocomplete.cgi", {
+		    limit:10,
+		     prefix: request.term,
+		  }, response);
+		},
+	      select: function( event, ui ) {
+		    //"Selected: " + ui.item.value + " aka " + ui.item.id :
+		  //"Nothing selected, input was " + this.value );
+	    }
+	});
 	$(".accordion").accordion();
 	renderSequences();
 	//Disable gap open when NW is selected

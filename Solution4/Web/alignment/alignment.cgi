@@ -18,6 +18,7 @@ my $alignmentType = param("alignmentType") or die ("No alignment type");
 my $alignmentAlgo = param("alignmentAlgorithm") or die ("No alignment algorithm");
 
 my $calcSSAA = param("calculateSSAA");
+my $gorModelName = param("gormodel");
 
 my $db = DBI->connect('DBI:mysql:bioprakt4;host=mysql2-ext.bio.ifi.lmu.de', 'bioprakt4', 'vGI5GCMg0x') || die "Could not connect to database: $DBI::errstr";
 
@@ -34,6 +35,24 @@ sub getMatrixFromDatabase {
 		die "Matrix with name $matrixName can't be found in database";
 	}
 	my $quasar = $row->{QUASAR};
+	#Write it to a files
+	open (OUTFILE, ">$outputPath");
+	print OUTFILE $quasar;
+	close(OUTFILE);
+}
+
+sub getGORModel {
+	my $db = $_[0];
+	my $gorName = $_[1];
+	my $outputPath = $_[2];
+
+	my $query = $db->prepare("SELECT Data FROM GORModel WHERE LCASE(Name) = LCASE(?)");
+	$query->execute($matrixName);
+	my $row = $query->fetchrow_hashref();
+	if(not defined $row) {
+		die "GOR Model with name $matrixName can't be found in database";
+	}
+	my $quasar = $row->{Data};
 	#Write it to a files
 	open (OUTFILE, ">$outputPath");
 	print OUTFILE $quasar;
@@ -101,12 +120,13 @@ my $jarPath = "/home/proj/biocluster/praktikum/bioprakt/progprakt4/jar";
 
 #carp "/usr/lib64/biojava/bin/java -jar $jarPath/align.jar --go $gapOpen --ge $gapExtend --pairs $outputPath/seqPair.pairs --seqlib $outputPath/sequences.seqlib -m $outputPath/$matrixName --mode $alignmentType --fixedpointalignment $fpaDir --format html > alignmentout.txt";
 
-if() {
+if($gorModel) {
+  getGORModel($db, $gorName, "$outputPath/gormodel.txt");
   open (SEQOUT, ">$outputPath/sequences.fa");
   print SEQOUT ">$seq1ID\nAS $seq1\n";
   print SEQOUT ">$seq2ID\nAS $seq2\n";
   close(SEQOUT);
-  my $gorCLI = "/usr/lib64/biojava/bin/java -jar $jarPath/align.jar -m $modelFile -s $outputPath/sequences.fa"
+  my $gorCLI = "/usr/lib64/biojava/bin/java -jar $jarPath/align.jar -m $outputPath/gormodel.txt -s $outputPath/sequences.fa"
 }
 
 print header();
