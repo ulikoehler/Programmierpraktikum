@@ -43,6 +43,51 @@
 			<div style="height: 30px;">
 			</div>
 			
+			<h3>Upload sequence data</h3>
+			<div class="tabs">
+				<ul>
+					<li><a href="#upload-dbid">From database</a></li>
+					<li><a href="#upload-fastainput">FASTA input</a></li>
+					<li><a href="#upload-fileinput">Upload FASTA file</a></li>
+					<li><a href="#upload-gormodel">Upload GOR model</a></li>
+				</ul>
+				<div id="upload-dbid">
+					<select id="dbselect" name="db">
+						<option>PDB</option>
+						<option>UniProt</option>
+					</select>
+					<input id="dbid" />
+					<input class="uibtn" type="submit" value="Add" onclick="addSequenceFromDB()" />
+				</div>
+				<div id="upload-fastainput">
+	 				<form action="sequences/insert_sequence_string.cgi" method="post" enctype="multipart/form-data">
+						Query sequence (FASTA):
+						<input type="radio" name="sequenceType" value="Nucleotide" checked>Nucleotide sequence
+						<input type="radio" name="sequenceType" value="Protein">Protein sequence<br/>
+						<b>Single</b> sequence as Plaintext or as FASTA
+						<textarea name="seq" style="width:100%" rows="20"></textarea><br/>
+						<input type="submit" value="Add sequence" class="button"/>
+					</form>
+				</div>
+				<div id="upload-fileinput">
+	 				<form action="sequences/insert_sequence_file.cgi" method="post" enctype="multipart/form-data">
+						<b>Single</b> sequence in FASTA format (multiple sequences are concatenated together!):<br/>
+						<input type="radio" name="sequenceType" value="Nucleotide" checked>Nucleotide sequence
+						<input type="radio" name="sequenceType" value="Protein">Protein sequence<br/>
+						<input type="file" name="seqfile" /><br />
+						<input type="submit" value="Add sequence" class="button"/>
+					</form>
+				</div>
+				<div id="upload-gormodel">
+	 				<form action="gormodels/insert_model_file.cgi" method="post" enctype="multipart/form-data">
+						<b><br/>
+						Name: <input type="text" name="name"/><br/>
+						GOR Model file:<input type="file" name="gormodelfile" /><br />
+						<input type="submit" value="Upload model" class="button"/>
+					</form>
+				</div>
+			</div>
+			
 			<div class="accordion">
 			  <h3>Align sequences</h3>
 			  <div style="height:600px">
@@ -96,6 +141,7 @@
 					<div id="sspSequenceDropField" class="sequence-drop ui-widget-content ui-state-default">
 						<h4 class="ui-widget-header">Please drop the sequence or the alignment (GOR5) you want to predict in this box!</h4><!-- param --seq <if sequence> or --maf <if alignment> -->
 					</div>
+					Alignment for GOR V: <input id="gor5AlignmentField" type="file" name="gor5Alignment"></input>
 					<input id="sspSequenceField" type="hidden" name="sspSequence"></input>
 					<br>
 					Select the model you want to use: <input id="modelInput"  name="model" class="roundBorder" />
@@ -103,8 +149,8 @@
 					<br>
 					Options:<br>
 					<br>
-						<input id="probabilities" type="checkbox" name="option" value="probabilities" checked="checked"><label for="probabilities"> show probabilities in results</label><br><!-- param: --probabilities -->
-						<input id="avgPost" type="checkbox" name="option" value="avgPost" checked="checked"><label for="avgPost"> use avg postprocessing for positions with less than </label><input id="avgProb" type="text" value="50" style="text-align:right; border: none; width: 24px;" maxlength="3" onkeydown="javascript: this.style.width = ((this.value.length + 1) * 8) + 'px';" onclick="document.getElementById('avgPost').checked = true"><label for="avgPost">% probability</label></label><br><!-- --avgPost <double> -->
+						<input id="probabilities" type="checkbox" name="option" value="probabilities" checked="checked"><label for="probabilities"> Show probabilities in results</label><br><!-- param: --probabilities -->
+						<input id="avgPost" type="checkbox" name="option" value="avgPost" checked="checked"><label for="avgPost"> Use Average Postprocessing for positions with less than </label><input id="avgProb" type="text" value="50" style="text-align:right; border: none; width: 24px;" maxlength="3" onkeydown="javascript: this.style.width = ((this.value.length + 1) * 8) + 'px';" onclick="document.getElementById('avgPost').checked = true"><label for="avgPost">% probability</label></label><br><!-- --avgPost <double> -->
 						<input id="stdPost" type="checkbox" name="option" value="stdPost" checked="checked"><label for="stdPost"> use std postprocessing for positions with less than </label><input id="stdProb" type="text" value="50" style="text-align:right; border: none; width: 24px;" maxlength="3" onkeydown="javascript: this.style.width = ((this.value.length + 1) * 8) + 'px';" onclick="document.getElementById('stdPost').checked = true"><label for="avgPost">% probability</label><br><!-- --stdPost <double> -->
 				</form>
 				<br>
@@ -172,50 +218,7 @@
 					<li class="sequence ui-state-default">Test sequence</li>
 				</ul>
 			</div>
-			<h3>Upload sequence data</h3>
-			<div class="tabs">
-				<ul>
-					<li><a href="#upload-dbid">From database</a></li>
-					<li><a href="#upload-fastainput">FASTA input</a></li>
-					<li><a href="#upload-fileinput">Upload FASTA file</a></li>
-					<li><a href="#upload-gormodel">Upload GOR model</a></li>
-				</ul>
-				<div id="upload-dbid">
-					<select id="dbselect" name="db">
-						<option>PDB</option>
-						<option>UniProt</option>
-					</select>
-					<input id="dbid" />
-					<input class="uibtn" type="submit" value="Add" onclick="addSequenceFromDB()" />
-				</div>
-				<div id="upload-fastainput">
-	 				<form action="sequences/insert_sequence_string.cgi" method="post" enctype="multipart/form-data">
-						Query sequence (FASTA):
-						<input type="radio" name="sequenceType" value="Nucleotide" checked>Nucleotide sequence
-						<input type="radio" name="sequenceType" value="Protein">Protein sequence<br/>
-						<b>Single</b> sequence as Plaintext or as FASTA
-						<textarea name="seq" style="width:100%" rows="20"></textarea><br/>
-						<input type="submit" value="Add sequence" class="button"/>
-					</form>
-				</div>
-				<div id="upload-fileinput">
-	 				<form action="sequences/insert_sequence_file.cgi" method="post" enctype="multipart/form-data">
-						<b>Single</b> sequence in FASTA format (multiple sequences are concatenated together!):<br/>
-						<input type="radio" name="sequenceType" value="Nucleotide" checked>Nucleotide sequence
-						<input type="radio" name="sequenceType" value="Protein">Protein sequence<br/>
-						<input type="file" name="seqfile" /><br />
-						<input type="submit" value="Add sequence" class="button"/>
-					</form>
-				</div>
-				<div id="upload-gormodel">
-	 				<form action="gormodels/insert_model_file.cgi" method="post" enctype="multipart/form-data">
-						<b><br/>
-						Name: <input type="text" name="name"/><br/>
-						GOR Model file:<input type="file" name="gormodelfile" /><br />
-						<input type="submit" value="Upload model" class="button"/>
-					</form>
-				</div>
-			</div>
+			
 		</div>
 		<div id="addMatrixDialog" title="Upload substitution matrix" style="display: none;">
 		     <form action="matrix/insert_matrix.cgi" method="post" enctype="multipart/form-data">
