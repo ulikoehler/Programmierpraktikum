@@ -17,8 +17,6 @@ my $alignmentType = param("alignmentType") or die ("No alignment type");
 my $alignmentAlgo = param("alignmentAlgorithm") or die ("No alignment algorithm");
 
 my $calcSSAA = param("calculateSSAA");
-my $fixedPoint = param("fixedPoint");
-carp "Fixed point " . $fixedPoint;
 
 
 my $db = DBI->connect('DBI:mysql:bioprakt4;host=mysql2-ext.bio.ifi.lmu.de', 'bioprakt4', 'vGI5GCMg0x') || die "Could not connect to database: $DBI::errstr";
@@ -89,16 +87,16 @@ print SEQOUT "$seq2ID:$seq2\n";
 close(SEQOUT);
 
 open (OUTFILE, ">$outputPath/seqPair.pairs");
-print OUTFILE "$seq1ID $seq2ID";
+print OUTFILE "$seq1ID\t$seq2ID";
 close(OUTFILE);
 
 my $matrix = getMatrixFromDatabase($db, $matrixName, "$outputPath/$matrixName");
 my $jarPath = "/home/proj/biocluster/praktikum/bioprakt/progprakt4/jar";
 
-carp 'java -jar $jarPath/align.jar --go $gapOpen --ge $gapExtend --pairs "$outputPath/seqPair.pairs" --seqlib "$outputPath/sequences.seqlib" -m "$outputPath/$matrixName" --mode $alignmentType --format html > alignmentout.txt';
+carp "java -jar $jarPath/align.jar --go $gapOpen --ge $gapExtend --pairs $outputPath/seqPair.pairs --seqlib $outputPath/sequences.seqlib -m $outputPath/$matrixName --mode $alignmentType --format html > alignmentout.txt";
 
 print header();
-my $output = `bash -c 'java -jar $jarPath/align.jar --go $gapOpen --ge $gapExtend --pairs "$outputPath/seqPair.pairs" --seqlib "$outputPath/sequences.seqlib" -m "$outputPath/$matrixName" --mode $alignmentType --format html > alignmentout.txt'`;
+my $output = `bash -c 'java -jar $jarPath/align.jar --go $gapOpen --ge $gapExtend --pairs $outputPath/seqPair.pairs --seqlib "$outputPath/sequences.seqlib" -m $outputPath/$matrixName --mode $alignmentType --format html'`;
 #
 print "Alignment output:\n";
 print $output;
