@@ -5,7 +5,6 @@
 package de.bioinformatikmuenchen.pg4.alignmentvalidation;
 
 import com.google.common.base.CharMatcher;
-import com.google.common.base.Joiner;
 import com.google.common.base.Splitter;
 import com.google.common.collect.Lists;
 import java.io.File;

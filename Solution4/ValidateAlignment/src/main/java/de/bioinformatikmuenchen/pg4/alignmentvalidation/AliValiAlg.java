@@ -42,13 +42,13 @@ public class AliValiAlg {
             //count aligned residues in candidate
             if (aligned(cantemp, cantar, i)) {
                 aligned++;
-            }
-            //count correctly aligned residues in candidate 
-            if (correctlyAligned(i)) {
-                correct++;
+                //count correctly aligned residues in candidate 
+                if (correctlyAligned(i)) {
+                    correct++;
+                }
             }
         }
-        return (double) correct / aligned;
+        return (double) correct / (double) aligned;
     }
 
     public double getSensi() {
@@ -66,7 +66,7 @@ public class AliValiAlg {
                 aligned++;
             }
         }
-        return (double) correct / aligned;
+        return (double) correct / (double) aligned;
     }
 
     public double getCover() {
@@ -127,13 +127,13 @@ public class AliValiAlg {
                 h = -h;
             }
             //adding to shift sum
-            shift = shift + h;
+            shift += h;
             //increasing
             if (helpboolean) {
                 number++;
             }
         }
-        return (double) shift / number;
+        return (double) shift / (double)number;
     }
 
     public double getInver() {
