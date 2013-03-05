@@ -6,10 +6,6 @@ $(function() {
 	$("#align-from").resizable({containment: "#body"});
 	$("#align-to").resizable({containment: "#body"});
 	//$('.nodrag').draggable( "disable" )
-	 $(".sequence").draggable({
-	    revert: "invalid", // when not dropped, the item will revert back to its initial position
-	    containment: "document",
-	 });
 	$(".sequence-drop").droppable({
 	    accept: ".sequence",
 	    activeClass: "ui-state-highlight",
@@ -46,6 +42,12 @@ $(function() {
 	$(".accordion").accordion();
 	renderSequences();
 });
+function refreshDragDrop() { 
+	 $(".sequence").draggable({
+	    revert: "invalid", // when not dropped, the item will revert back to its initial position
+	    containment: "document",
+	 });
+}
 function showAddMatrixDialog() {
     $("#addMatrixDialog").dialog({autoOpen: false,modal: true,bgiframe: true,width:500,height:250});
     $('#addMatrixDialog').dialog('open');
@@ -54,12 +56,6 @@ function hideAddMatrixDialog() {
     if ($('#addMatrixDialog').dialog('isOpen')) {
 	$('#addMatrixDialog').dialog('close');
     }
-}
-function showAlignment() {
-  
-}
-function showFixedPointAlignment() {
-  
 }
 /**
  * Add sequences from local storage
@@ -73,12 +69,20 @@ function renderSequences() {
       $("#availableSequencesList").append("<li class=\"sequence ui-state-default ui-widget-content ui-corner-tr\" seqid=\"seqObj.id\">Sequence " + seqObj.name + "(" + seqObj.type + ")" + "</li>");
     }
     //Calculate the height of the container
-    var height = sequences.length*35+40;
-    alert(height);
-    $("#availableSequencesList").css("height",height+"px");
+    var height = sequences.length*35+60;
+    $("#available-sequences").css("height",height+"px");
   } else {
     console.log("Can't find available sequences list while trying to add sequence");
   }
+  refreshDragDrop();
+}
+
+function showAlignment() {
+  
+}
+
+function showFixedPointAlignment() {
+  
 }
 
 function addSequenceFromDB() {
@@ -95,7 +99,9 @@ function addSequenceFromDB() {
     alert("Can't find sequence type by database " + db);
   }
   //Add id (e.g. pdb:1ULI)
-  addSequence(toLowerCase(db) + ":" id, db + ":" + id, type)
+  var key = db.toLowerCase() + ":" + id;
+  var name = "[" + db + "] " + id;
+  addSequence(key, name, type)
 }
 
 function addSequence(id, name, type) {
