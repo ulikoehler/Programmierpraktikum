@@ -143,7 +143,7 @@
 			  </div>
 			  <h3>Predict secondary structure</h3>
 			  <div>
-				<form id="sspPredictForm"><input type="submit">
+				<form id="sspPredictForm">
 					<h4>Secondary Structure Prediction</h4>
 					<div id="sspSequenceDropField" class="sequence-drop ui-widget-content ui-state-default">
 						<h4 class="ui-widget-header">Please drop the sequence or the alignment (GOR5) you want to predict in this box!</h4><!-- param --seq <if sequence> or --maf <if alignment> -->
@@ -159,9 +159,11 @@
 						<input id="probabilities" type="checkbox" name="option" value="probabilities" checked="checked"><label for="probabilities"> Show probabilities in results</label><br><!-- param: --probabilities -->
 						<input id="avgPost" type="checkbox" name="option" value="avgPost" checked="checked"><label for="avgPost"> Use Average Postprocessing for positions with less than </label><input id="avgProb" type="text" value="50" style="text-align:right; border: none; width: 24px;" maxlength="3" onkeydown="javascript: this.style.width = ((this.value.length + 1) * 8) + 'px';" onclick="document.getElementById('avgPost').checked = true"><label for="avgPost">% probability</label></label><br><!-- --avgPost <double> -->
 						<input id="stdPost" type="checkbox" name="option" value="stdPost" checked="checked"><label for="stdPost"> use std postprocessing for positions with less than </label><input id="stdProb" type="text" value="50" style="text-align:right; border: none; width: 24px;" maxlength="3" onkeydown="javascript: this.style.width = ((this.value.length + 1) * 8) + 'px';" onclick="document.getElementById('stdPost').checked = true"><label for="avgPost">% probability</label><br><!-- --stdPost <double> -->
+						
+						<input class="button" type="submit" id="sspCalculateSequenceButton" value="Predict sequence &gt;&gt;"/><!-- TODO Use JQuery to load results -->
+				
 				</form>
 				<br>
-				<button id="sspCalculateSequenceButton">Predict sequence &gt;&gt;</button><!-- TODO Use JQuery to load results -->
 				<script type="text/javascript">
 				// <!--
 					$(function() {
