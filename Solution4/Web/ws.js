@@ -21,7 +21,7 @@ $(function() {
 		source: function( request, response ) {
 		  $.getJSON( "matrix/name_autocomplete.cgi", {
 		    limit:10,
-		     prefix: request.term,
+		    prefix: request.term
 		  }, response);
 		},
 	      select: function( event, ui ) {
@@ -58,4 +58,13 @@ function showAlignment() {
 }
 function showFixedPointAlignment() {
   
+}
+/**
+ * Add sequences from local storage
+ */
+function addSequences() {
+  var sequences = $.jStorage.get("sequences", []);
+  for(var i=0; i<sequences.length; i++ ) {
+     $("#availableSequencesList").append("<li seqid=\"abc\">Sequence " + sequences[i] + "</li>");
+  }
 }
