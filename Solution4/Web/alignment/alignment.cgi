@@ -17,8 +17,6 @@ my $alignmentType = param("alignmentType") or die ("No alignment type");
 my $alignmentAlgo = param("alignmentAlgorithm") or die ("No alignment algorithm");
 
 my $calcSSAA = param("calculateSSAA");
-my $fixedPoint = param("fixedPoint");
-carp "Fixed point " . $fixedPoint;
 
 
 my $db = DBI->connect('DBI:mysql:bioprakt4;host=mysql2-ext.bio.ifi.lmu.de', 'bioprakt4', 'vGI5GCMg0x') || die "Could not connect to database: $DBI::errstr";
@@ -66,7 +64,10 @@ sub getSequenceById {
 
 my $outputPath = tempdir();
 carp "Outputting to $outputPath";
-my $dpPath = `mkdir $outputPath/dp`;
+my $dpPath = "$outputPath/dp";
+`mkdir $dpPath`;
+my $fpaPath = "$outputPath/fpa";
+`mkdir $fpaPath`;
 carp "Temp output path is $outputPath";
 
 
@@ -89,18 +90,28 @@ print SEQOUT "$seq2ID:$seq2\n";
 close(SEQOUT);
 
 open (OUTFILE, ">$outputPath/seqPair.pairs");
-print OUTFILE "$seq1ID $seq2ID";
+print OUTFILE "$seq1ID\t$seq2ID";
 close(OUTFILE);
 
 my $matrix = getMatrixFromDatabase($db, $matrixName, "$outputPath/$matrixName");
 my $jarPath = "/home/proj/biocluster/praktikum/bioprakt/progprakt4/jar";
 
-carp 'java -jar $jarPath/align.jar --go $gapOpen --ge $gapExtend --pairs "$outputPath/seqPair.pairs" --seqlib "$outputPath/sequences.seqlib" -m "$outputPath/$matrixName" --mode $alignmentType --format html > alignmentout.txt';
+#carp "java -jar $jarPath/align.jar --go $gapOpen --ge $gapExtend --pairs $outputPath/seqPair.pairs --seqlib #$outputPath/sequences.seqlib -m $outputPath/$matrixName --mode $alignmentType --format html > alignmentout.txt";
 
 print header();
-my $output = `bash -c 'java -jar $jarPath/align.jar --go $gapOpen --ge $gapExtend --pairs "$outputPath/seqPair.pairs" --seqlib "$outputPath/sequences.seqlib" -m "$outputPath/$matrixName" --mode $alignmentType --format html > alignmentout.txt'`;
-#
-print "Alignment output:\n";
+my $output = `bash -c 'java -jar $jarPath/align.jar --go $gapOpen --ge $gapExtend --pairs $outputPath/seqPair.pairs --seqlib "$outputPath/sequences.seqlib" -m $outputPath/$matrixName --mode $alignmentType -a $fpaDir --format html'`;
+#Prin the alignment
 print $output;
+#Copy the FPA graphic & display it
+opendir my($dh), $dirname or die "Couldn't open dir '$dirname': $!";
+my @files = readdir $dh;
+closedir $dh;
+foreach my $file (@files) {
+
+  copy($fpaDir/$file, "./fpa/");
+  print "<img src=\"fpa/$file"
+}
+`bash -c 'mv $fpaDir/* ./fpa/'`
+
 $db->disconnect();
 

@@ -20,7 +20,7 @@ $(function() {
 	      setAlignmentSequence2( ui.draggable );
 	    }
 	});
-	$("sspSequenceDropField").droppable({
+	$("#sspSequenceDropField").droppable({
 	    accept: ".sequence",
 	    activeClass: "ui-state-highlight",
 	    drop: function( event, ui ) {
@@ -122,6 +122,7 @@ function showAlignment(fixedPoint) {
   var distanceMatrix = $("#alignmentMatrix").val();
   if(!distanceMatrix) {
     alert("Please specify a distance matrix, e.g. BLOSUM45");
+    return;
   }
   var alignmentType = $("input[name=alignmentType]:checked").val();
   var alignmentAlgorithm = $("input[name=alignmentAlgorithm]:checked").val();
@@ -134,7 +135,8 @@ function showAlignment(fixedPoint) {
   $("#alignmentProgressBar").progressbar({
       value: false
     });
-  $("#alignmentResultDialog").dialog({autoOpen: false,modal: true,bgiframe: true,width:500,height:250});
+  $("#alignmentResultDialog").dialog({autoOpen: false,modal: false,bgiframe: true,width:1000,height:750});
+  $('#alignmentResultDialog').dialog('open');
   //
   $.post("alignment/alignment.cgi", {
     alignmentSeq1Id: alignmentSeq1Id,
