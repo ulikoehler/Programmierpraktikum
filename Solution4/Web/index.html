@@ -137,7 +137,11 @@
 								$(function() {
 									$.ajax({
 										url: "test.html",
-										context: document.body
+										success: function(msg)  {
+											var frame = $('<iframe>');
+											$("#sspResultDialog").append(frame);
+											frame.append(msg);
+										}
 									}).done(function() {
 										$(this).addClass("done");
 									});
