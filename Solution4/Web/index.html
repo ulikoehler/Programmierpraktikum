@@ -83,11 +83,11 @@
 				  <br/>
 				  Options<br/>
 				  <div class="indent">
-				    <input type="checkbox" name="calculateSSAA"> Predict secondary structure and execute SSAA</input>
+				    <input id="calculateSSAA" type="checkbox" name="calculateSSAA"> Predict secondary structure and execute SSAA</input>
 				  </div>
 				  <br/>
-				    <div class="button" onclick="showAlignment()">Show alignment</div>
-				    <div class="button" onclick="showFixedPointAlignment()">Show fixed-point alignment</div>
+				    <div class="button" onclick="showAlignment(false)">Show alignment</div>
+				    <div class="button" onclick="showAlignment(true)">Show fixed-point alignment</div>
 			    </form>
 			  </div>
 			  <h3>Predict secondary structure</h3>

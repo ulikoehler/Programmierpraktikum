@@ -94,12 +94,30 @@ function renderSequences() {
   refreshDragDrop();
 }
 
-function showAlignment() {
-  
-}
-
-function showFixedPointAlignment() {
-  
+function showAlignment(fixedPoint) {
+  //Get all the field values
+  var alignmentSeq1Id = $("#alignmentSeq1Id").val();
+  var alignmentSeq2Id = $("#alignmentSeq2Id").val();
+  //
+  var alignmentMatrix = $("#alignmentMatrix").val();
+  var alignmentType = $("input[name=alignmentType]:checked").val();
+  var alignmentAlgorithm = $("input[name=alignmentAlgorithm]:checked").val();
+  var gapOpenPenalty = $("input[name=gapOpenPenalty]").val();
+  var gapExtensionPenalty = $("input[name=gapExtendPenalty]").val();
+  var calculateSSAA = ($("#calculateSSAA").attr("checked") == true);
+  //
+  $.post("alignment/align.cgi", {
+    alignmentSeq1Id: alignmentSeq1Id,
+    alignmentSeq2Id: alignmentSeq2Id,
+    alignmentMatrix: alignmentMatrix,
+    alignmentType: alignmentType,
+    alignmentAlgorithm: alignmentAlgorithm,
+    gapOpenPenalty: gapOpenPenalty,
+    gapExtensionPenalty: gapExtensionPenalty,
+    calculateSSAA: calculateSSAA,
+  }, function(data, textStatus) {
+    
+  });
 }
 
 function addSequenceFromDB() {
