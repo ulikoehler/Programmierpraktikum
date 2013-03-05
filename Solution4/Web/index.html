@@ -13,7 +13,7 @@
 			span.tt { font-family: monospace; }
 			span.bold { font-weight: bold; }
 			.ui-autocomplete-loading {background: white url('css/ui-lightness/images/ui-anim_basic_16x16.gif') right center no-repeat;}
-			#available-sequences { width: 99%; height: 150px; padding: 0.5em; }
+			#available-sequences { width: 99%; min-height: 150px; padding: 0.5em; }
 			#align-from {float:none; height: 100px;}
 			#align-to {float:none; height: 100px;}
 			#aligna-from-list, #aligna-to-list {height:100%; width:100%;}
@@ -193,10 +193,9 @@
 				<div id="upload-dbid">
 					<select id="dbselect" name="db">
 						<option>PDB</option>
-						<option>SwissProt</option>
-						<option>RefSeq</option>
+						<option>UniProt</option>
 					</select>
-					<input id="proteinId" />
+					<input id="dbid" />
 					<input class="uibtn" type="submit" value="Add" />
 				</div>
 				<div id="upload-fastainput">
@@ -221,7 +220,7 @@
 			</div>
 		</div>
 		<div id="addMatrixDialog" title="Upload substitution matrix" style="display: none;">
-		    <form action="matrix/insert_matrix.cgi" method="post" enctype="multipart/form-data">
+		     <form action="matrix/insert_matrix.cgi" method="post" enctype="multipart/form-data">
 			  Matrix name: <input type="text" name="name" cols="50" rows="20"></input><br/>
 			  Matrix data in QUASAR format:<br/> <input type="file" name="quasar" style="width:100%;"><br/><br/>
 			  <input type="submit" value="Submit"/>
