@@ -92,10 +92,15 @@ open (OUTFILE, ">$outputPath/seqPair.pairs");
 print OUTFILE "$seq1ID $seq2ID";
 close(OUTFILE);
 
-print header();
 my $matrix = getMatrixFromDatabase($db, $matrixName, "$outputPath/$matrixName");
-my $jarPath = "/home/proj/biocluster/praktikum/bioprakt/progprakt4/Solution4/finaljars";
+my $jarPath = "/home/proj/biocluster/praktikum/bioprakt/progprakt4/jar";
+
+carp 'Command: bash -c 'java -jar $jarPath/align.jar --go $gapOpen --ge $gapExtend --pairs "$outputPath/seqPair.pairs" --seqlib "$outputPath/sequences.seqlib" -m "$outputPath/$matrixName" --mode $alignmentType --format html > alignmentout.txt'';
+
+print header();
 my $output = `bash -c 'java -jar $jarPath/align.jar --go $gapOpen --ge $gapExtend --pairs "$outputPath/seqPair.pairs" --seqlib "$outputPath/sequences.seqlib" -m "$outputPath/$matrixName" --mode $alignmentType --format html > alignmentout.txt'`;
 #
+print "Alignment output:\n";
 print $output;
+$db->disconnect();
 

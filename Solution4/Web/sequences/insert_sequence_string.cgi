@@ -27,9 +27,8 @@ my $processedData = "";
 #Remove
 for (split /^/, $seqData) {
 	chomp $_;
-	$_ = trim($_);
-	$processedData = $processedData.$_ if $_ !~ m/^>/;
-	$processedData = trim($processedData);
+	$processedData = $processedData.trim($_) if $_ !~ m/^>/;
+	chomp $processedData;
 }
 #Write it to the DB
 $insertStmt->execute($name, $processedData, $seqType);
