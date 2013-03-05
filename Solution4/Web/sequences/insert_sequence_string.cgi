@@ -34,11 +34,12 @@ print <<"EOHTML"
     <script type="text/javascript" src="../js/jquery-ui.js"></script>
     <script type="text/javascript">
 	addSequence(\"mysql:$name\", \"$name\", \"$originalSeqType\");
-	alert("X");
 	window.history.back(-1);
     </script>
 </head>
-<body></body>
+<body>
+<h2>
+</body>
 </html>
 EOHTML
 ;
