@@ -59,6 +59,28 @@ sub getGORModel {
 	close(OUTFILE);
 }
 
+sub getFirstFASTASequence {
+  my $data = $_[0];
+  my $seq = "";
+  my $alreadyReadHeader = 0;
+  for (split /^/, $data) {
+	  my $line = $_;
+	  if($line =~ m/^>/) {
+	    if($alreadyReadHeader) {
+	      last;
+	    } else {
+	      $alreadyReadHeader = 1;
+	      next;
+	     }
+	  } else {
+	    chomp $line;
+	    $seq = $seq.$line;
+	    chomp $seq;
+	  }
+  }
+  return $seq;
+}
+
 sub getSequenceById {
 	my $db = $_[0];
 	my $id = $_[1];
@@ -68,9 +90,11 @@ sub getSequenceById {
 	use LWP::Simple;
 	if($id =~ m/^pdb:(.+)$/) {
 		$seq = get("http://www.pdb.org/pdb/files/fasta.txt?structureIdList=".$1);
-		die "http://www.pdb.org/pdb/files/fasta.txt?structureIdList=".$1;
+		$seq = getFirstFASTASequence($seq);
+		#die "http://www.pdb.org/pdb/files/fasta.txt?structureIdList=".$1;
 	} elsif($id =~ m/^uniprot:(.+)$/){
-		$seq = get("http://www.uniprot.org/uniprot/$id.fasta");
+		$seq = get("http://www.uniprot.org/uniprot/" . $1 . ".fasta");
+		$seq = getFirstFASTASequence($seq);
 	} elsif($id =~ m/^mysql:(.+)$/){
 		my $query = $db->prepare("SELECT Seq.Seq FROM Seq WHERE Seq.Name = ?");
 		$query->execute($1);
