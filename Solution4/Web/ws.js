@@ -42,7 +42,7 @@ $(function() {
 		  }, response);
 		},
 	      select: function( event, ui ) {
-		   //"Selected: " + ui.item.value + " aka " + ui.item.id :
+		    //"Selected: " + ui.item.value + " aka " + ui.item.id :
 		  //"Nothing selected, input was " + this.value );
 	    }
 	});
