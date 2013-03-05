@@ -20,8 +20,8 @@ import java.util.logging.Logger;
  *
  * @author harrert
  */
-public class FixedPoint extends AlignmentProcessor{
-    
+public class FixedPoint extends AlignmentProcessor {
+
     private double[][] matrixA;
     private double[][] matrixInA;
     private double[][] matrixDelA;
@@ -35,7 +35,7 @@ public class FixedPoint extends AlignmentProcessor{
     private String querySequenceId;
     private String targetSequenceId;
     private double[][] fixedPointMatrix;
-    
+
     public FixedPoint(AlignmentMode mode, AlignmentAlgorithm algorithm, IDistanceMatrix distanceMatrix, IGapCost gapCost) {
         super(mode, algorithm, distanceMatrix, gapCost);
         //assert gapCost instanceof ConstantGapCost;
@@ -46,8 +46,8 @@ public class FixedPoint extends AlignmentProcessor{
     public AlignmentResult align(Sequence seq1, Sequence seq2) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
-    
-    public void makePlot(Sequence seq1, Sequence seq2, boolean minAsThreshold, String path){
+
+    public void makePlot(Sequence seq1, Sequence seq2, boolean minAsThreshold, String path) {
         //initialize some of the the declared global variables:
         this.xSize = seq1.getSequence().length();
         this.ySize = seq2.getSequence().length();
@@ -56,13 +56,11 @@ public class FixedPoint extends AlignmentProcessor{
         this.querySequenceId = seq1.getId();
         this.targetSequenceId = seq2.getId();
         //initialize and fill the matrices A and B, depending on Gotoh or NW:
-        if(algorithm == AlignmentAlgorithm.NEEDLEMAN_WUNSCH){
+        if (algorithm == AlignmentAlgorithm.NEEDLEMAN_WUNSCH) {
             initAndFillNeedlemanWunsch();
-        }
-        else if(algorithm == AlignmentAlgorithm.GOTOH){
+        } else if (algorithm == AlignmentAlgorithm.GOTOH) {
             initAndFillGotoh();
-        }
-        else{
+        } else {
             throw new UnsupportedOperationException("Fixed point alignments are implemented for global scoring matrices only");
         }
         //do the fixed point alignment:
@@ -72,46 +70,46 @@ public class FixedPoint extends AlignmentProcessor{
         double[] minMax = getMinMaxAverage();
         //make sure path!=null:
         //put matrix to file as inout for gnuplot:
-        path = (path==null ? "" : path);
+        path = (path == null ? "" : path);
         //Remove trailing / if any
-        if(path.endsWith("/")) {
-            path = path.substring(0,path.length()-1);
+        if (path.endsWith("/")) {
+            path = path.substring(0, path.length() - 1);
         }
         //put matrix to file as inout for gnuplot:
         putToFile(matrixToString(), "./matrix");
-        String gnuPlot = "set terminal png\n" +
-        "set output \""+(!path.equals("") ? path+"/" : "")+"fpa_"+seq1.getId()+"_"+seq2.getId()+".png\"\n" +
-        "set size ratio 0.5\n" +
-        "set title \"Fixed Point Alignment "+seq1.getId()+" vs. "+seq2.getId()+"\"\n" +
-        "\n" +
-        "set xlabel \""+seq1.getId()+"\"\n" +
-        "set ylabel \""+seq2.getId()+"\"\n" +
-        "\n" +
-        "set tic scale 0\n" +
-        "\n" +
-        "set palette rgbformulae 22,13,10\n" +
-        "set palette negative\n" +
-        "\n" +
-        "set cbrange ["+(minAsThreshold ? minMax[0] : minMax[2])+":"+minMax[1]+"]\n" +//decides the minimum threshold for the plot (min or average value of fpaMatrix)
-        "#unset cbtics\n" +
-        "\n" +
-        "set xrange [0:"+ySize+"]\n" +
-        "set yrange [0:"+xSize+"]\n" +
-        "\n" +
-        "set view map\n" +
-        "\n" +
-        "splot 'matrix' matrix with image";
+        String gnuPlot = "set terminal png\n"
+                + "set output \"" + (!path.equals("") ? path + "/" : "") + "fpa_" + seq1.getId() + "_" + seq2.getId() + ".png\"\n"
+                + "set size ratio 0.5\n"
+                + "set title \"Fixed Point Alignment " + seq1.getId() + " vs. " + seq2.getId() + "\"\n"
+                + "\n"
+                + "set xlabel \"" + seq1.getId() + "\"\n"
+                + "set ylabel \"" + seq2.getId() + "\"\n"
+                + "\n"
+                + "set tic scale 0\n"
+                + "\n"
+                + "set palette rgbformulae 22,13,10\n"
+                + "set palette negative\n"
+                + "\n"
+                + "set cbrange [" + (minAsThreshold ? minMax[0] : minMax[2]) + ":" + minMax[1] + "]\n" +//decides the minimum threshold for the plot (min or average value of fpaMatrix)
+                "#unset cbtics\n"
+                + "\n"
+                + "set xrange [0:" + ySize + "]\n"
+                + "set yrange [0:" + xSize + "]\n"
+                + "\n"
+                + "set view map\n"
+                + "\n"
+                + "splot 'matrix' matrix with image";
         putToFile(gnuPlot, "./plot.gp");
         Runtime rt = Runtime.getRuntime();
         try {
-            rt.exec(new String[]{"mkdir",path});
-            rt.exec(new String[]{"gnuplot","plot.gp"});
+            rt.exec(new String[]{"mkdir", path});
+            rt.exec(new String[]{"gnuplot", "plot.gp"});
         } catch (IOException ex) {
             Logger.getLogger(FixedPoint.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
-    
-    public void initAndFillNeedlemanWunsch(){
+
+    public void initAndFillNeedlemanWunsch() {
         //initialize:
         matrixA = new double[xSize][ySize];
         matrixB = new double[xSize][ySize];
@@ -128,20 +126,20 @@ public class FixedPoint extends AlignmentProcessor{
         String targetReverse = new StringBuilder(targetSequence).reverse().toString();
         for (int x = 1; x < xSize; x++) {
             for (int y = 1; y < ySize; y++) {
-                char A_fwd = querySequence.charAt(x-1);
-                char B_fwd = targetSequence.charAt(x-1);
-                char A_rev = queryReverse.charAt(x-1);
-                char B_rev = targetReverse.charAt(x-1);
-                matrixA[x][y] = Math.max(matrixA[x-1][y-1] + distanceMatrix.distance(A_fwd, B_fwd), Math.max(matrixA[x-1][y]+gapCost.getGapCost(1), matrixA[x][y-1]+gapCost.getGapCost(1)));
-                matrixB[x][y] = Math.max(matrixB[x-1][y-1] + distanceMatrix.distance(A_rev, B_rev), Math.max(matrixB[x-1][y]+gapCost.getGapCost(1), matrixB[x][y-1]+gapCost.getGapCost(1)));
+                char A_fwd = querySequence.charAt(x - 1);
+                char B_fwd = targetSequence.charAt(x - 1);
+                char A_rev = queryReverse.charAt(x - 1);
+                char B_rev = targetReverse.charAt(x - 1);
+                matrixA[x][y] = Math.max(matrixA[x - 1][y - 1] + distanceMatrix.distance(A_fwd, B_fwd), Math.max(matrixA[x - 1][y] + gapCost.getGapCost(1), matrixA[x][y - 1] + gapCost.getGapCost(1)));
+                matrixB[x][y] = Math.max(matrixB[x - 1][y - 1] + distanceMatrix.distance(A_rev, B_rev), Math.max(matrixB[x - 1][y] + gapCost.getGapCost(1), matrixB[x][y - 1] + gapCost.getGapCost(1)));
             }
         }
     }
-    
-    public void initAndFillGotoh(){
+
+    public void initAndFillGotoh() {
         //init:
-        int x = xSize+1;
-        int y = ySize+1;
+        int x = xSize + 1;
+        int y = ySize + 1;
         //Create the matrices
         matrixA = new double[x][y];
         matrixInA = new double[x][y];
@@ -187,24 +185,24 @@ public class FixedPoint extends AlignmentProcessor{
             }
         }
     }
-    
-    public void fixedPointAlignment(){
-        double [][] fixedPointMatrixTemp = new double[xSize+1][ySize+1];
+
+    public void fixedPointAlignment() {
+        double[][] fixedPointMatrixTemp = new double[xSize + 1][ySize + 1];
         for (int i = 1; i <= xSize; i++) {
             for (int j = 1; j <= ySize; j++) {
-                fixedPointMatrixTemp[i][j] = (matrixA[i-1][j-1] + distanceMatrix.distance(querySequence.charAt(i-1), targetSequence.charAt(j-1))+ matrixB[xSize-i][ySize-j]);
+                fixedPointMatrixTemp[i][j] = (matrixA[i - 1][j - 1] + distanceMatrix.distance(querySequence.charAt(i - 1), targetSequence.charAt(j - 1)) + matrixB[xSize - i][ySize - j]);
             }
         }
         fixedPointMatrix = new double[xSize][ySize];
         //put values to fixedPointMatrix, since fPMTemp contains 0s in first line and column
         for (int i = 0; i < xSize; i++) {
             for (int j = 0; j < ySize; j++) {
-                fixedPointMatrix[i][j] = fixedPointMatrixTemp[i+1][j+1];
+                fixedPointMatrix[i][j] = fixedPointMatrixTemp[i + 1][j + 1];
             }
         }
     }
-    
-    public double[] getMinMaxAverage(){
+
+    public double[] getMinMaxAverage() {
         double min = Double.POSITIVE_INFINITY;
         double max = Double.NEGATIVE_INFINITY;
         double average = 0;
@@ -215,11 +213,11 @@ public class FixedPoint extends AlignmentProcessor{
                 max = (fixedPointMatrix[i][j] > max ? fixedPointMatrix[i][j] : max);
             }
         }
-        assert min<Double.POSITIVE_INFINITY && max>Double.NEGATIVE_INFINITY;
-        return new double[]{min, max, average/((double)xSize*ySize)};
+        assert min < Double.POSITIVE_INFINITY && max > Double.NEGATIVE_INFINITY;
+        return new double[]{min, max, average / ((double) xSize * ySize)};
     }
-    
-    public String matrixToString(){
+
+    public String matrixToString() {
         StringBuilder out = new StringBuilder();
         for (int i = 0; i < xSize; i++) {
             for (int j = 0; j < ySize; j++) {
@@ -229,29 +227,28 @@ public class FixedPoint extends AlignmentProcessor{
         }
         return out.toString();
     }
-    
-    public void putToFile(String input,String path){
-		byte[] bytes = input.getBytes();
-		InputStream is = new ByteArrayInputStream(bytes);
-		try {
-			DataInputStream dInStream = new DataInputStream(new BufferedInputStream(is));
-			BufferedWriter bw = new BufferedWriter(new FileWriter(path));
-			while((input = dInStream.readLine())!=null){
-				bw.append(input);
-				bw.newLine();
-			}
-			bw.close();
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-		finally{
-			try {
-				is.close();
-			} catch (IOException e2) {
-				e2.printStackTrace();
-			}
-		}
-	}
+
+    public void putToFile(String input, String path) {
+        byte[] bytes = input.getBytes();
+        InputStream is = new ByteArrayInputStream(bytes);
+        try {
+            DataInputStream dInStream = new DataInputStream(new BufferedInputStream(is));
+            BufferedWriter bw = new BufferedWriter(new FileWriter(path));
+            while ((input = dInStream.readLine()) != null) {
+                bw.append(input);
+                bw.newLine();
+            }
+            bw.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                is.close();
+            } catch (IOException e2) {
+                e2.printStackTrace();
+            }
+        }
+    }
 
     @Override
     public void writeMatrices(IDPMatrixExporter exporter) {

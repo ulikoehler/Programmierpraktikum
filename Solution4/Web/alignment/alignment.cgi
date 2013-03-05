@@ -5,6 +5,7 @@ use CGI qw(:standard);
 use CGI::Carp qw(fatalsToBrowser);
 use LWP::Simple;
 use DBI;
+use File::Copy;
 use File::Temp qw/ tempfile tempdir /;
 my $seq1ID = param("alignmentSeq1Id") or die ("No sequence 1 ID");
 my $seq2ID = param("alignmentSeq2Id") or die ("No sequence 2 ID");
@@ -62,12 +63,15 @@ sub getSequenceById {
 	return $seq;
 }
 
-my $outputPath = tempdir();
+my $curtime = time();
+my $outputPath = "/home/k/koehleru/public_html/propra/aligntmp/" . $curtime;
+my $urlPath = "aligntmp/".$curtime;
+`mkdir -p $outputPath`;
 carp "Outputting to $outputPath";
 my $dpPath = "$outputPath/dp";
 `mkdir $dpPath`;
-my $fpaPath = "$outputPath/fpa";
-`mkdir $fpaPath`;
+my $fpaDir = "$outputPath/fpa";
+`mkdir $fpaDir`;
 carp "Temp output path is $outputPath";
 
 
@@ -96,22 +100,26 @@ close(OUTFILE);
 my $matrix = getMatrixFromDatabase($db, $matrixName, "$outputPath/$matrixName");
 my $jarPath = "/home/proj/biocluster/praktikum/bioprakt/progprakt4/jar";
 
-#carp "java -jar $jarPath/align.jar --go $gapOpen --ge $gapExtend --pairs $outputPath/seqPair.pairs --seqlib #$outputPath/sequences.seqlib -m $outputPath/$matrixName --mode $alignmentType --format html > alignmentout.txt";
+#carp "/usr/lib64/biojava/bin/java -jar $jarPath/align.jar --go $gapOpen --ge $gapExtend --pairs $outputPath/seqPair.pairs --seqlib $outputPath/sequences.seqlib -m $outputPath/$matrixName --mode $alignmentType --fixedpointalignment $fpaDir --format html > alignmentout.txt";
 
 print header();
-my $output = `bash -c 'java -jar $jarPath/align.jar --go $gapOpen --ge $gapExtend --pairs $outputPath/seqPair.pairs --seqlib "$outputPath/sequences.seqlib" -m $outputPath/$matrixName --mode $alignmentType -a $fpaDir --format html'`;
+my $output = `bash -c '/usr/lib64/biojava/bin/java -jar $jarPath/align.jar --go $gapOpen --ge $gapExtend --pairs $outputPath/seqPair.pairs --seqlib "$outputPath/sequences.seqlib" -m $outputPath/$matrixName --mode $alignmentType --fixedpointalignment $fpaDir --format html'`;
 #Prin the alignment
 print $output;
 #Copy the FPA graphic & display it
-opendir my($dh), $dirname or die "Couldn't open dir '$dirname': $!";
+opendir my($dh), $fpaDir or die "Couldn't open dir '$fpaDir': $!";
 my @files = readdir $dh;
 closedir $dh;
 foreach my $file (@files) {
-
-  copy($fpaDir/$file, "./fpa/");
-  print "<img src=\"fpa/$file"
+  if($file eq ".." or $file eq ".") {
+    next;
+  }
+  #carp "cp -f $fpaDir/$file /home/k/koehleru/public_html/propra/fpa/$file";
+  #copy("$fpaDir/$file", "/home/k/koehleru/public_html/propra/fpa/$file");
+#   `cp -f "$fpaDir/$file" "/home/k/koehleru/public_html/propra/fpa/"`;
+  #copy("$fpaDir/$file", "/home/k/koehleru/public_html/propra/fpa/");
+  print "<br/><a href=\"$urlPath/fpa/$file\">Fixed point alignment plot (You need to wait ~10 s for technical reasons)</a><br/>"
 }
-`bash -c 'mv $fpaDir/* ./fpa/'`
 
 $db->disconnect();
 
