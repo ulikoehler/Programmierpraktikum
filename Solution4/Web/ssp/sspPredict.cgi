@@ -4,6 +4,7 @@
 use CGI qw(:standard);
 use CGI::Carp qw(fatalsToBrowser);
 use LWP::Simple;
+use File::Temp qw/ tempfile tempdir /;
 
 my $model = param("model");				# file
 my $seq = param("seq");					# file
@@ -14,12 +15,37 @@ my $stdPost = param("stdpost") || 0;			# boolean
 my $avgValue = param("avgValue") || 0;			# double for avgPost
 my $stdValue = param("stdValue") || 0;			# double for stdPost
 
+
 my $jarPath = "/home/proj/biocluster/praktikum/bioprakt/progprakt4/Solution4/jar";
 my $format = "html"
 
+my $db = DBI->connect('DBI:mysql:bioprakt4;host=mysql2-ext.bio.ifi.lmu.de', 'bioprakt4', 'vGI5GCMg0x') || die "Could not connect to database: $DBI::errstr";
+
+sub getGORModel {
+	my $db = $_[0];
+	my $gorName = $_[1];
+	my $outputPath = $_[2];
+
+	my $query = $db->prepare("SELECT Data FROM GORModel WHERE LCASE(Name) = LCASE(?)");
+	$query->execute($matrixName);
+	my $row = $query->fetchrow_hashref();
+	if(not defined $row) {
+		die "GOR Model with name $matrixName can't be found in database";
+	}
+	my $quasar = $row->{Data};
+	#Write it to a files
+	open (OUTFILE, ">$outputPath");
+	print OUTFILE $quasar;
+	close(OUTFILE);
+}
+
+my($fh, $modelFile) = tempfile();
+getGORModel($db, $model, $modelFile);
+
+
 # building java query
 carp "Missing model file!" if !defined $model;
-my $jarQuery = "--model $model --format $format";
+my $jarQuery = "--model $modelFile --format $format";
 
 # seq or maf
 if(defined $seq) {
