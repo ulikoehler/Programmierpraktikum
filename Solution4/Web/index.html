@@ -109,8 +109,6 @@
 				</form>
 				<br>
 				<button id="sspCalculateSequenceButton">Predict sequence &gt;&gt;</button><!-- TODO Use JQuery to load results -->
-				<br>
-				<br>
 				<script type="text/javascript">
 				// <!--
 					$(function() {
@@ -148,28 +146,6 @@
 							</script>
 						</div>
 				</div>
-				<div id="available-models" class="resizable ui-widget-content">
-					<h3 class="ui-widget-header">Available model files</h3>
-					<ul class="dropList" style="margin-top:5px; min-height:80px;">
-						<!--
-							<li class="model ui-state-default">test.db (GOR I)</li><li class="model ui-state-default">test.db (GOR III)</li>
-							<li class="model ui-state-default">test.db (GOR IV)</li><li class="model ui-state-default">CB513.db (GOR I)</li>
-							<li class="model ui-state-default">CB513.db (GOR III)</li><li class="model ui-state-default">CB513.db (GOR IV)</li>
-						-->
-					</ul>
-				</div>
-				<br>
-				<h3 style="width: 100%">GOR Method Training</h3>
-				<form id="sspTrainForm">
-					<input id="database" type="file"><br><br>
-					Training method:<br>
-					<br>
-					<input id="GORI" type="radio" name="gorMethod" value="GORI" checked="checked"><label for="GORI"> GOR I</label><br>
-					<input id="GORIII" type="radio" name="gorMethod" value="GORIII"><label for="GORIII"> GOR III</label><br>
-					<input id="GORIV" type="radio" name="gorMethod" value="GORIV"><label for="GORIV"> GOR IV</label><br>
-					<br>
-					<button>train &gt;&gt;</button>
-				</form>
 			  </div>
 			  <h3>Validation</h3>
 			  <div>
