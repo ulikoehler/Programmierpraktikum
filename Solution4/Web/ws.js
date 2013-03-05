@@ -179,6 +179,45 @@ function showAlignment(fixedPoint) {
   });
 }
 
+
+
+function showSSP(fixedPoint) {
+  //Get all the field values
+  var seqId = $("#sspSequenceField").val();
+  var gor5Alignment = $("#gor5AlignmentField").val();
+  var model = $("#modelInput").val();
+  
+  var probabilities = ($("input[name=probabilities]:checked").attr("checked") ? 1 : 0);
+  var avgPost = ($("input[name=avgPost]:checked").attr("checked") ? 1 : 0);
+  var stdPost = ($("input[name=stdPost]:checked").attr("checked") ? 1 : 0);
+  
+  var avgProb = $("#avgProb").val();
+  var stdProb = $("#stdProb").val();
+  //Show the progress bar & dialog
+  $("#sspDialog").empty();
+  $("#sspDialog").append("<div id=\"alignmentProgressBar\"></div>");
+  $("#sspDialog").progressbar({
+      value: false
+    });
+  $("#sspDialog").dialog({autoOpen: false,modal: false,bgiframe: true,width:1500,height:750});
+  $("#sspDialog").dialog("open");
+  //
+  $.post("ssp/sspPredict.cgi", {
+    model: model,
+    gor5AlignmentField: gor5Alignment,
+    sspSequence: seqId,
+    probabilities: probabilities,
+    avgPost : avgPost,
+    stdpost: stdPost,
+    avgValue: avgProb,
+    stdValue: stdProb
+  }, function(data, textStatus) {
+    //Replace the progress bar by the data
+    $("#sspDialog").empty();
+    $("#sspDialog").append(data);
+  });
+}
+
 function addSequenceFromDB() {
   var db = $("#dbselect").find("option:selected").text();
   var id = $("#dbid").val();

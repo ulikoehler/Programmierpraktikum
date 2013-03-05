@@ -120,13 +120,13 @@ $jarQuery = "$jarQuery --probabilities" if $probabilities;
 
 # avgPost
 if ($avgPost) {
-  carp "Missing or invalid value for postprocessing!" if !isNumeric $avgValue;
+  carp "Missing or invalid value for postprocessing!" if not 	isNumeric($avgValue);
   $jarQuery = "$jarQuery --avgPost $avgPost";
 }
 
 # stdPost
 if ($stdPost) {
-  carp "Missing or invalid value for postprocessing!" if !isNumeric $stdValue;
+  carp "Missing or invalid value for postprocessing!" if not isNumeric($stdValue);
   $jarQuery = "$jarQuery --stdPost $stdPost";
 }
 
