@@ -5,11 +5,12 @@ $(function() {
 	$("#available-sequences").resizable({containment: "#body"});
 	$("#align-from").resizable({containment: "#body"});
 	$("#align-to").resizable({containment: "#body"});
-	$( "#align-from-list, #align-to-list, #available-sequences" ).sortable({
-	      connectWith: ".dropList"
-	}).disableSelection();
 	//$('.nodrag').draggable( "disable" )
-	 $(".sequence-drop").droppable({
+	 $(".sequence").draggable({
+	    revert: "invalid", // when not dropped, the item will revert back to its initial position
+	    containment: "document",
+	 });
+	$(".sequence-drop").droppable({
 	    accept: ".sequence",
 	    activeClass: "ui-state-highlight",
 	    drop: function( event, ui ) {
@@ -29,7 +30,7 @@ $(function() {
 		  //"Nothing selected, input was " + this.value );
 	    }
 	});
-	$( "#proteinId" ).autocomplete({
+	$( "#dbid" ).autocomplete({
 		source: function( request, response ) {
 		  $.getJSON( "get_autocomplete_ids.cgi", {
 		    limit:10,
@@ -69,11 +70,32 @@ function renderSequences() {
     var sequences = $.jStorage.get("sequences", []);
     for(var i=0; i<sequences.length; i++ ) {
       var seqObj = sequences[i];
-      $("#availableSequencesList").append("<li class=\"sequence ui-state-default\" seqid=\"seqObj.id\">Sequence " + seqObj.name + "(" + seqObj.type + ")" + "</li>");
+      $("#availableSequencesList").append("<li class=\"sequence ui-state-default ui-widget-content ui-corner-tr\" seqid=\"seqObj.id\">Sequence " + seqObj.name + "(" + seqObj.type + ")" + "</li>");
     }
+    //Calculate the height of the container
+    var height = sequences.length*35+40;
+    alert(height);
+    $("#availableSequencesList").css("height",height+"px");
   } else {
     console.log("Can't find available sequences list while trying to add sequence");
   }
+}
+
+function addSequenceFromDB() {
+  var db = $("#dbselect").find("option:selected").text();
+  var id = $("#dbid").val();
+  var type = "";
+  if(db == "PDB") {
+    type = "Protein";
+  } else if(db == "SwissProt") {
+    type = "Protein";
+  } else if(db == "RefSeq") {
+    type = "Nucleotide";
+  } else {
+    alert("Can't find sequence type by database " + db);
+  }
+  //Add id (e.g. pdb:1ULI)
+  addSequence(toLowerCase(db) + ":" id, db + ":" + id, type)
 }
 
 function addSequence(id, name, type) {

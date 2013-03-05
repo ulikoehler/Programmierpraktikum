@@ -23,10 +23,11 @@ while(read $datafile,$inputdata,1024) {
 }
 #Remove
 for (split /^/, $data) {
+	chomp $_;
 	$processedData = $processedData.$_ if $_ !~ m/^>/;
 }
 #Write it to the DB
-$insertStmt->execute($name, $seqType, $processedData);
+$insertStmt->execute($name, $processedData, $seqType,);
 carp "Inserted user sequence $name into database, ID  $insertStmt->{mysql_insertid}\n";
 #Write header
 #print "{\"success\":true,\"name\":$name}";
