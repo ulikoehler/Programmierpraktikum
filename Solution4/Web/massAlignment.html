@@ -35,22 +35,22 @@
 	<body>
 		<h2>Mass Alignment</h2>
 		<div>
-			<form action="alignment/align.cgi" method="post" enctype="multipart/form-data">
+			<form action="alignment/alignMass.cgi" method="post" enctype="multipart/form-data">
 			  <div id="upload-seq-library">
-	 				<form action="sequences/uploadLib.cgi" method="post" enctype="multipart/form-data">
+	 				<!-- <form action="sequences/uploadLib.cgi" method="post" enctype="multipart/form-data"> -->
 						Upload a sequence library:<br/>
-						<input type="file" name="seqfile" /><br />
-					</form>
+						<input type="file" name="libFile" /><br />
+					<!-- </form> -->
 				</div>
 
 				<div id="upload-pairs-file">
-	 				<form action="sequences/uploadPair.cgi" method="post" enctype="multipart/form-data">
+	 				<!-- <form action="sequences/uploadPair.cgi" method="post" enctype="multipart/form-data"> -->
 						Upload a pairs file:<br/>
-						<input type="file" name="seqfile" /><br />
-					</form>
+						<input type="file" name="pairFile" /><br />
+					<!-- </form> -->
 				</div>
 			  Alignment matrix:
-				<form action="alignment/matrixSelect.cgi" method="post" enctype="multipart/form-data">
+				<!-- <form action="alignment/matrixSelect.cgi" method="post" enctype="multipart/form-data"> -->
 					<div id="select-matrix">
 						<select id="matrixSelect" name="matrix">
 							<option>BLOSUM45</option>

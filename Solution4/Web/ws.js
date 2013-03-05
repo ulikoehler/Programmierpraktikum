@@ -102,8 +102,15 @@ function showAlignment(fixedPoint) {
   //Get all the field values
   var alignmentSeq1Id = $("#alignmentSeq1Id").val();
   var alignmentSeq2Id = $("#alignmentSeq2Id").val();
+  if(!alignmentSeq1Id || !alignmentSeq2Id) {
+    alert("Please drag sequences into both sequence boxes");
+    return;
+  }
   //
-  var alignmentMatrix = $("#alignmentMatrix").val();
+  var distanceMatrix = $("#alignmentMatrix").val();
+  if(!distanceMatrix) {
+    alert("Please specify a distance matrix, e.g. BLOSUM45");
+  }
   var alignmentType = $("input[name=alignmentType]:checked").val();
   var alignmentAlgorithm = $("input[name=alignmentAlgorithm]:checked").val();
   var gapOpenPenalty = $("input[name=gapOpenPenalty]").val();
@@ -120,11 +127,11 @@ function showAlignment(fixedPoint) {
   $.post("alignment/alignment.cgi", {
     alignmentSeq1Id: alignmentSeq1Id,
     alignmentSeq2Id: alignmentSeq2Id,
-    alignmentMatrix: alignmentMatrix,
+    distanceMatrix: distanceMatrix,
     alignmentType: alignmentType,
     alignmentAlgorithm: alignmentAlgorithm,
     gapOpenPenalty: gapOpenPenalty,
-    gapExtensionPenalty: gapExtensionPenalty,
+    gapExtendPenalty: gapExtensionPenalty,
     calculateSSAA: calculateSSAA,
     fixedPoint: fixedPoint
   }, function(data, textStatus) {

@@ -4,6 +4,14 @@
 use CGI qw(:standard);
 use CGI::Carp qw(fatalsToBrowser);
 use DBI;
+
+
+sub trim {		# trim a string
+  my $string = $_[0];
+  $string =~ s/^\s+//;
+  $string =~ s/\s+$//;
+  return $string;
+}
 #print header("application/json");
 my $datafile = param("seqfile");
 my $seqType = param("sequenceType");
@@ -24,7 +32,8 @@ while(read $datafile,$inputdata,1024) {
 #Remove
 for (split /^/, $data) {
 	chomp $_;
-	$processedData = $processedData.$_ if $_ !~ m/^>/;
+	$processedData = $processedData.trim($_) if $_ !~ m/^>/;
+	chomp $processedData;
 }
 #Write it to the DB
 $insertStmt->execute($name, $processedData, $seqType,);
