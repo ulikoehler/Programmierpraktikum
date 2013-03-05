@@ -8,12 +8,12 @@ use DBI;
 my $seqData = param("seq");
 my $seqType = param("sequenceType");
 my $db = DBI->connect('DBI:mysql:bioprakt4;host=mysql2-ext.bio.ifi.lmu.de', 'bioprakt4', 'vGI5GCMg0x') || die "Could not connect to database: $DBI::errstr";
-my $insertStmt = $db->prepare("INSERT INTO Seq (`Name`, `Seq`, `Type`, `OrganismId`) SELECT ?,?,?,Id from Organism WHERE Name = 'Unknown'");
+my $insertStmt = $db->prepare("INSERT INTO Seq (`Name`, `Seq`, `Type`, `OrganismId`) SELECT ?,?,?,Id from Organism WHERE Organism.Name = 'Unknown'");
 #Even if the real type is RNA, we currently use DNA
 my $originalSeqType = $seqType;
 $seqType = "DNA" if $seqType eq "Nucleotide";
 #Create the name of the sequence (unique)
-my $name = "user-" + time();
+my $name = "user-" . time();
 #Read the data
 my $processedData = "";
 #Remove
@@ -22,7 +22,8 @@ for (split /^/, $seqData) {
 }
 #Write it to the DB
 $insertStmt->execute($name, $processedData, $seqType);
-carp "Inserted user sequence $name into database\n";
+my $id = $insertStmt->{mysql_insertid};
+carp "Inserted user sequence $name into database, ID $id\n";
 #Write header
 print header();
 print <<"EOHTML"
