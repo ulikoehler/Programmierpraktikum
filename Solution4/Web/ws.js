@@ -48,6 +48,10 @@ $(function() {
 	});
 	$(".accordion").accordion();
 	renderSequences();
+	//Disable gap open when NW is selected
+	$("#nwRadio").change(function() {
+	  $("#gapOpenField").prop("disabled", $("#nwRadio").attr("checked") == false);
+	});
 });
 function setAlignmentSequence1(elem) {
   $("#alignmentSeq1Id").val($(elem).attr("seqid"));

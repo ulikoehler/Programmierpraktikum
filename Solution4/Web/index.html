@@ -70,13 +70,13 @@
 				  <br/><br/>
 				  <!-- Alignment algorithm -->
 				  Alignment algorithm:
-				    <input type="radio" name="alignmentAlgorithm" value="Global" checked>Gotoh
-				    <input type="radio" name="alignmentAlgorithm" value="Local">Needleman-Wunsch <!-- TODO Auto-deselect gap open -->
+				    <input id="gotohRadio" type="radio" name="alignmentAlgorithm" value="Global" checked>Gotoh
+				    <input id="nwRadio" type="radio" name="alignmentAlgorithm" value="Local">Needleman-Wunsch <!-- TODO Auto-deselect gap open -->
 				  <br/><br/>
 				  <b>Gap penalties</b>
 				  <div class="indent groupborder" style="width:400px">
 				    <table>
-				      <tr><td>Gap open penalty:</td><td><input class="roundBorder" type="text" name="gapOpenPenalty" value="-12.0"/></td></tr>
+				      <tr><td>Gap open penalty:</td><td><input id="gapOpenField" class="roundBorder" type="text" name="gapOpenPenalty" value="-12.0" disabled/></td></tr>
 				      <tr><td>Gap extension penalty:</td><td><input class="roundBorder" type="text" name="gapExtendPenalty" value="-1.0"/></td><br/>
 				    </table>
 				  </div>
