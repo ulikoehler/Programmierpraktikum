@@ -7,8 +7,8 @@ use LWP::Simple;
 use File::Temp qw/ tempfile tempdir /;
 
 my $model = param("model");				# file
-my $seq = param("seq");					# file
-my $maf = param("maf");					# file
+my $gor5Alignment = param("gor5AlignmentField");
+my $seqId = param("seq");
 my $probabilities = param("probabilities") || 0;	# boolean
 my $avgPost = param("avgPost") || 0;			# boolean
 my $stdPost = param("stdpost") || 0;			# boolean
@@ -39,9 +39,58 @@ sub getGORModel {
 	close(OUTFILE);
 }
 
+
+sub getFirstFASTASequence {
+  my $data = $_[0];
+  my $seq = "";
+  my $alreadyReadHeader = 0;
+  for (split /^/, $data) {
+	  my $line = $_;
+	  if($line =~ m/^>/) {
+	    if($alreadyReadHeader) {
+	      last;
+	    } else {
+	      $alreadyReadHeader = 1;
+	      next;
+	     }
+	  } else {
+	    chomp $line;
+	    $seq = $seq.$line;
+	    chomp $seq;
+	  }
+  }
+  return $seq;
+}
+
+sub getSequenceById {
+	my $db = $_[0];
+	my $id = $_[1];
+	#
+	my $seq = "";
+	#Parse it
+	use LWP::Simple;
+	if($id =~ m/^pdb:(.+)$/) {
+		$seq = get("http://www.pdb.org/pdb/files/fasta.txt?structureIdList=".$1);
+		$seq = getFirstFASTASequence($seq);
+		#die "http://www.pdb.org/pdb/files/fasta.txt?structureIdList=".$1;
+	} elsif($id =~ m/^uniprot:(.+)$/){
+		$seq = get("http://www.uniprot.org/uniprot/" . $1 . ".fasta");
+		$seq = getFirstFASTASequence($seq);
+	} elsif($id =~ m/^mysql:(.+)$/){
+		my $query = $db->prepare("SELECT Seq.Seq FROM Seq WHERE Seq.Name = ?");
+		$query->execute($1);
+		my $row = $query->fetchrow_hashref();
+		if(not defined $row) {die "Sequence with ID $id can't be found in database";}
+		$seq = $row->{Seq};
+	}
+	die "Seq $id not found" unless $seq;
+	return $seq;
+}
+
+my $seq = getSequenceById($db, $seqId);
+
 my($fh, $modelFile) = tempfile();
 getGORModel($db, $model, $modelFile);
-
 
 # building java query
 carp "Missing model file!" if !defined $model;
@@ -50,8 +99,8 @@ my $jarQuery = "--model $modelFile --format $format";
 # seq or maf
 if(defined $seq) {
   $jarQuery = "$jarQuery --seq $seq";
-} elsif(defined $maf) {
-  $jarQuery = "$jarQuery --maf $maf";
+} elsif(defined $gor5Alignment) {
+  $jarQuery = "$jarQuery --maf $gor5Alignment";
 } else {
   carp "Missing sequence or aligment!";
 }
