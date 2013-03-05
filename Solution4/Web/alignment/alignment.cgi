@@ -64,7 +64,10 @@ sub getSequenceById {
 
 my $outputPath = tempdir();
 carp "Outputting to $outputPath";
-my $dpPath = `mkdir $outputPath/dp`;
+my $dpPath = "$outputPath/dp";
+`mkdir $dpPath`;
+my $fpaPath = "$outputPath/fpa";
+`mkdir $fpaPath`;
 carp "Temp output path is $outputPath";
 
 
@@ -93,10 +96,10 @@ close(OUTFILE);
 my $matrix = getMatrixFromDatabase($db, $matrixName, "$outputPath/$matrixName");
 my $jarPath = "/home/proj/biocluster/praktikum/bioprakt/progprakt4/jar";
 
-carp "java -jar $jarPath/align.jar --go $gapOpen --ge $gapExtend --pairs $outputPath/seqPair.pairs --seqlib $outputPath/sequences.seqlib -m $outputPath/$matrixName --mode $alignmentType --format html > alignmentout.txt";
+#carp "java -jar $jarPath/align.jar --go $gapOpen --ge $gapExtend --pairs $outputPath/seqPair.pairs --seqlib #$outputPath/sequences.seqlib -m $outputPath/$matrixName --mode $alignmentType --format html > alignmentout.txt";
 
 print header();
-my $output = `bash -c 'java -jar $jarPath/align.jar --go $gapOpen --ge $gapExtend --pairs $outputPath/seqPair.pairs --seqlib "$outputPath/sequences.seqlib" -m $outputPath/$matrixName --mode $alignmentType --format html'`;
+my $output = `bash -c 'java -jar $jarPath/align.jar --go $gapOpen --ge $gapExtend --pairs $outputPath/seqPair.pairs --seqlib "$outputPath/sequences.seqlib" -m $outputPath/$matrixName --mode $alignmentType -a $fpaDir --format html'`;
 #
 print "Alignment output:\n";
 print $output;
