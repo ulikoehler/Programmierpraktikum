@@ -100,8 +100,18 @@ my $jarPath = "/home/proj/biocluster/praktikum/bioprakt/progprakt4/jar";
 
 print header();
 my $output = `bash -c 'java -jar $jarPath/align.jar --go $gapOpen --ge $gapExtend --pairs $outputPath/seqPair.pairs --seqlib "$outputPath/sequences.seqlib" -m $outputPath/$matrixName --mode $alignmentType -a $fpaDir --format html'`;
-#
-print "Alignment output:\n";
+#Prin the alignment
 print $output;
+#Copy the FPA graphic & display it
+opendir my($dh), $dirname or die "Couldn't open dir '$dirname': $!";
+my @files = readdir $dh;
+closedir $dh;
+foreach my $file (@files) {
+
+  copy($fpaDir/$file, "./fpa/");
+  print "<img src=\"fpa/$file"
+}
+`bash -c 'mv $fpaDir/* ./fpa/'`
+
 $db->disconnect();
 
