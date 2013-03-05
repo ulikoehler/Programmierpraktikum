@@ -136,11 +136,9 @@
 							// <!--
 								$(function() {
 									$.ajax({
-										url: "test.html",
+										url: "ssp/sspPredict",
 										success: function(msg)  {
-											var frame = $('<iframe>');
-											$("#sspResultDialog").append(frame);
-											frame.append(msg);
+											$("#sspResultDialog").append(msg);
 										}
 									}).done(function() {
 										$(this).addClass("done");
