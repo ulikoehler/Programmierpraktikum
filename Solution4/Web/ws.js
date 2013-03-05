@@ -87,7 +87,7 @@ function addSequenceFromDB() {
   var type = "";
   if(db == "PDB") {
     type = "Protein";
-  } else if(db == "SwissProt") {
+  } else if(db == "UniProt") {
     type = "Protein";
   } else if(db == "RefSeq") {
     type = "Nucleotide";
