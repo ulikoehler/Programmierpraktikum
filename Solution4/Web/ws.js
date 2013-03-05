@@ -20,6 +20,13 @@ $(function() {
 	      setAlignmentSequence2( ui.draggable );
 	    }
 	});
+	$("sspSequenceDropField").droppable({
+	    accept: ".sequence",
+	    activeClass: "ui-state-highlight",
+	    drop: function( event, ui ) {
+	      setSSPSequence( ui.draggable );
+	    }
+	});
 	$(".uibtn").button();
 	$( "#alignmentMatrix" ).autocomplete({
 		source: function( request, response ) {
@@ -60,6 +67,11 @@ function setAlignmentSequence1(elem) {
 }
 function setAlignmentSequence2(elem) {
   $("#alignmentSeq2Id").val($(elem).attr("seqid"));
+  $(elem).addClass("ui-state-highlight");
+  $(elem).draggable("disable")
+}
+function setSSPSequence(elem) {
+  $("sspSequenceField").val($(elem).attr("seqid"));
   $(elem).addClass("ui-state-highlight");
   $(elem).draggable("disable")
 }
