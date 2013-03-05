@@ -38,7 +38,6 @@
 			<h1>Sequence tools (Gr. 4)</h1>
 		</div>
 		<div id="body">
-			<div class="button" onclick="showAddMatrixDialog()">Upload substitution matrix</div>
 			<h3>Select protein ID</h3>
 			<div style="height: 30px;">
 			</div>
@@ -59,7 +58,8 @@
 				  <input id="alignmentSeq2Id" type="hidden" name="seq2Id"/>
 				  <br/>
 				  Alignment matrix:
-				    <input id="alignmentMatrix"  class="roundBorder" />
+				    <input id="alignmentMatrix"  name="distanceMatrix" class="roundBorder" />
+				    <div class="button" onclick="showAddMatrixDialog()">Upload substitution matrix</div>
 				  <br/><br/>
 				  <!-- Alignment type -->
 				  Alignment type:
@@ -104,12 +104,14 @@
 					<br>
 					Options:<br>
 					<br>
-						<input type="checkbox" name="option" value="probabilities" checked="checked">show probabilities in results<br><!-- param: --probabilities -->
-						<input type="checkbox" name="option" value="avgPost" checked="checked">use avg postprocessing for positions with less than <input id="avgProb" type="text" value="50" style="text-align:right; border: none; width: 24px;" maxlength="3" onkeydown="javascript: this.style.width = ((this.value.length + 1) * 8) + 'px';">% probability<br><!-- --avgPost <double> -->
-						<input type="checkbox" name="option" value="stdPost" checked="checked">use std postprocessing for positions with less than <input id="stdProb" type="text" value="50" style="text-align:right; border: none; width: 24px;" maxlength="3" onkeydown="javascript: this.style.width = ((this.value.length + 1) * 8) + 'px';">% probability<br><!-- --stdPost <double> -->
-					<br>
-					<button id="sspCalculateSequenceButton">Predict sequence &gt;&gt;</button><!-- TODO Use JQuery to load results -->
+						<input id="probabilities" type="checkbox" name="option" value="probabilities" checked="checked"><label for="probabilities"> show probabilities in results</label><br><!-- param: --probabilities -->
+						<input id="avgPost" type="checkbox" name="option" value="avgPost" checked="checked"><label for="avgPost"> use avg postprocessing for positions with less than </label><input id="avgProb" type="text" value="50" style="text-align:right; border: none; width: 24px;" maxlength="3" onkeydown="javascript: this.style.width = ((this.value.length + 1) * 8) + 'px';" onclick="document.getElementById('avgPost').checked = true"><label for="avgPost">% probability</label></label><br><!-- --avgPost <double> -->
+						<input id="stdPost" type="checkbox" name="option" value="stdPost" checked="checked"><label for="stdPost"> use std postprocessing for positions with less than </label><input id="stdProb" type="text" value="50" style="text-align:right; border: none; width: 24px;" maxlength="3" onkeydown="javascript: this.style.width = ((this.value.length + 1) * 8) + 'px';" onclick="document.getElementById('stdPost').checked = true"><label for="avgPost">% probability</label><br><!-- --stdPost <double> -->
 				</form>
+				<br>
+				<button id="sspCalculateSequenceButton">Predict sequence &gt;&gt;</button><!-- TODO Use JQuery to load results -->
+				<br>
+				<br>
 				<script type="text/javascript">
 				// <!--
 					$(function() {
@@ -132,16 +134,53 @@
 				</script>
 				<div id="sspResultDialog" title="Input a sequence for prediction">
 					<h3>Prediction Results:</h3>
+						<div id="sspResultDiv">
+							<script type="text/javascript">
+							// <!--
+								$(function() {
+									$.ajax({
+										url: "test.html",
+										context: document.body
+									}).done(function() {
+										$(this).addClass("done");
+									});
+								});
+							// -->
+							</script>
+						</div>
 				</div>
+				<div id="available-models" class="resizable ui-widget-content">
+					<h3 class="ui-widget-header">Available model files</h3>
+					<ul class="dropList" style="margin-top:5px; min-height:80px;">
+						<!--
+							<li class="model ui-state-default">test.db (GOR I)</li><li class="model ui-state-default">test.db (GOR III)</li>
+							<li class="model ui-state-default">test.db (GOR IV)</li><li class="model ui-state-default">CB513.db (GOR I)</li>
+							<li class="model ui-state-default">CB513.db (GOR III)</li><li class="model ui-state-default">CB513.db (GOR IV)</li>
+						-->
+					</ul>
+				</div>
+				<br>
+				<h3 style="width: 100%">GOR Method Training</h3>
+				<form id="sspTrainForm">
+					<input id="database" type="file"><br><br>
+					Training method:<br>
+					<br>
+					<input id="GORI" type="radio" name="gorMethod" value="GORI" checked="checked"><label for="GORI"> GOR I</label><br>
+					<input id="GORIII" type="radio" name="gorMethod" value="GORIII"><label for="GORIII"> GOR III</label><br>
+					<input id="GORIV" type="radio" name="gorMethod" value="GORIV"><label for="GORIV"> GOR IV</label><br>
+					<br>
+					<button>train &gt;&gt;</button>
+				</form>
 			  </div>
 			  <h3>Validation</h3>
 			  <div>
 			  </div>
 			</div>
+			<div style="height:20px;"></div>
 			<div id="available-sequences" class="resizable ui-widget-content">
 				<h3 class="ui-widget-header">Available sequences</h3>
-				<ul class="dropList" style="margin-top:5px;min-height:80px;">
-					<li class="sequence ui-state-default">Item 1</li>
+				<ul id="availableSequencesList" class="dropList" style="margin-top:5px;min-height:80px;">
+					<li class="sequence ui-state-default">Test sequence</li>
 				</ul>
 			</div>
 			<h3>Upload sequence data</h3>
@@ -161,16 +200,20 @@
 					<input class="uibtn" type="submit" value="Add" />
 				</div>
 				<div id="upload-fastainput">
-					Query sequence (FASTA):<br />
 	 				<form action="sequences/insert_sequence_string.cgi" method="post" enctype="multipart/form-data">
+						Query sequence (FASTA):
+						<input type="radio" name="sequenceType" value="Nucleotide" checked>Nucleotide sequence
+						<input type="radio" name="sequenceType" value="Protein">Protein sequence<br/>
 						<b>Single</b> sequence as Plaintext or as FASTA
-						<textarea name="seq" cols="50" rows="20"></textarea><br/>
+						<textarea name="seq" style="width:100%" rows="20"></textarea><br/>
 						<input type="submit" value="Add sequence" class="button"/>
 					</form>
 				</div>
 				<div id="upload-fileinput">
 	 				<form action="sequences/insert_sequence_file.cgi" method="post" enctype="multipart/form-data">
-						<b>Single</b> sequence in FASTA format (multiple sequences are concatenated together!):
+						<b>Single</b> sequence in FASTA format (multiple sequences are concatenated together!):<br/>
+						<input type="radio" name="sequenceType" value="Nucleotide" checked>Nucleotide sequence
+						<input type="radio" name="sequenceType" value="Protein">Protein sequence<br/>
 						<input type="file" name="seqfile" /><br />
 						<input type="submit" value="Add sequence" class="button"/>
 					</form>
@@ -178,11 +221,11 @@
 			</div>
 		</div>
 		<div id="addMatrixDialog" title="Upload substitution matrix" style="display: none;">
-		  <form action="matrix/insert_matrix.cgi" method="post" enctype="multipart/form-data">
-			Matrix name: <input type="text" name="name" cols="50" rows="20"></input><br/>
-			Matrix data in QUASAR format:<br/> <input type="file" name="quasar" style="width:100%;"><br/><br/>
-			<input type="submit" value="Submit"/>
-		  </form>
+		    <form action="matrix/insert_matrix.cgi" method="post" enctype="multipart/form-data">
+			  Matrix name: <input type="text" name="name" cols="50" rows="20"></input><br/>
+			  Matrix data in QUASAR format:<br/> <input type="file" name="quasar" style="width:100%;"><br/><br/>
+			  <input type="submit" value="Submit"/>
+		    </form>
 		</div>
 	</body>
 </html>
