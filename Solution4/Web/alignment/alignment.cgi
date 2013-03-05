@@ -6,10 +6,15 @@ use CGI::Carp qw(fatalsToBrowser);
 my $seq1ID = param("seq1Id");
 my $seq2ID = param("seq2Id");
 
+my distanceMatix = param("distanceMatrix");
+my $gapOpen = param("gapOpenPenalty");
+my $gapExtend = param("gapExtendPenalty");
+
 my $alignmentType = param("alignmentType");
 my $alignmentAlgo = param("alignmentAlgorithm");
 
 my $calcSSAA = param("calculateSSAA");
+
 
 my $db = DBI->connect('DBI:mysql:bioprakt4;host=mysql2-ext.bio.ifi.lmu.de', 'bioprakt4', 'vGI5GCMg0x') || die "Could not connect to database: $DBI::errstr";
 
