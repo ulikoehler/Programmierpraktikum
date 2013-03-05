@@ -18,6 +18,7 @@ public class HTMLAlignmentOutputFormatter extends AbstractAlignmentOutputFormatt
         DecimalFormatSymbols dfs = new DecimalFormatSymbols();
         dfs.setDecimalSeparator('.');
         ret.setDecimalFormatSymbols(dfs);
+        ret.setGroupingUsed(false);
         ret.setMinimumFractionDigits(2);
         ret.setMaximumFractionDigits(2);
         return ret;
