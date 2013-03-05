@@ -101,11 +101,16 @@ my $jarQuery = "--model $modelFile --format $format";
 if(defined $seq) {
   my($fh, $seqFile) = tempfile();
   open (OUTFILE, ">$seqFile");
+  print OUTFILE ">$seqId\n";
   print OUTFILE $seq;
   close(OUTFILE);
   $jarQuery = "$jarQuery --seq $seqFile";
 } elsif(defined $gor5Alignment) {
-  $jarQuery = "$jarQuery --maf $gor5Alignment";
+  my($fh, $gor5AlignmentFile) = tempfile();
+  open (OUTFILE, ">$gor5AlignmentFile");
+  print OUTFILE $gor5AlignmentF;
+  close(OUTFILE);
+  $jarQuery = "$jarQuery --maf $gor5AlignmentFile";
 } else {
   carp "Missing sequence or aligment!";
 }
