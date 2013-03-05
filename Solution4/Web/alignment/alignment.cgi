@@ -65,12 +65,13 @@ sub getSequenceById {
 	#
 	my $seq = "";
 	#Parse it
+	use LWP::Simple;
 	if($id =~ m/^pdb:(.+)$/) {
-		$seq = get("http://www.pdb.org/pdb/files/fasta.txt?structureIdList=$id");
+		$seq = get("http://www.pdb.org/pdb/files/fasta.txt?structureIdList=".$1);
+		die "http://www.pdb.org/pdb/files/fasta.txt?structureIdList=".$1;
 	} elsif($id =~ m/^uniprot:(.+)$/){
 		$seq = get("http://www.uniprot.org/uniprot/$id.fasta");
-	}
-	elsif($id =~ m/^mysql:(.+)$/){
+	} elsif($id =~ m/^mysql:(.+)$/){
 		my $query = $db->prepare("SELECT Seq.Seq FROM Seq WHERE Seq.Name = ?");
 		$query->execute($1);
 		my $row = $query->fetchrow_hashref();
