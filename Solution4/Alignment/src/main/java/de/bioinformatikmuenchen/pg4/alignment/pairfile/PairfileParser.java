@@ -4,6 +4,9 @@
  */
 package de.bioinformatikmuenchen.pg4.alignment.pairfile;
 
+import com.google.common.base.CharMatcher;
+import com.google.common.base.Joiner;
+import com.google.common.base.Splitter;
 import com.google.common.collect.Lists;
 import java.io.BufferedReader;
 import java.io.FileReader;
@@ -30,9 +33,13 @@ public class PairfileParser {
             if (line.trim().isEmpty()) {
                 continue;
             }
-            String first = line.substring(0, line.indexOf(' '));
-            String second = line.substring(line.indexOf(' ') + 1, line.indexOf(' ', line.indexOf(' ') + 1));
-            String annotations = line.substring(line.indexOf(' ', line.indexOf(' ') + 1) + 1);
+            ArrayList<String> list = Lists.newArrayList(Splitter.on(CharMatcher.WHITESPACE).omitEmptyStrings().trimResults().split(line));
+            String first = list.get(0);
+            String second = list.get(1);
+            list.remove(first);
+            list.remove(second);
+            String annotations = Joiner.on(" ").join(list);
+            //String annotations = line.substring(line.indexOf(' ', line.indexOf(' ') + 1) + 1);
             ret.add(new PairfileEntry(first, second, annotations));
         }
         reader.close();
