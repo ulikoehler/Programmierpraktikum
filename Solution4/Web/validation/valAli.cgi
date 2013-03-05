@@ -9,10 +9,11 @@ use CGI; # Modul fuer CGI-Programme
 my $cgi = new CGI; # neues Objekt erstellen
 
 # Content-type fuer die Ausgabe
-print $cgi->header(-type => 'text/html');
+print $cgi->header();
 
 # die datei-daten holen
 my $file = $cgi->param("alignments");
+carp "XXXXXXXXXXXXXXXXXXXXXXXXXXXXX " . $file;
 my $reference = $cgi->param("reference");
 
 # dateinamen erstellen und die datei auf dem server speichern

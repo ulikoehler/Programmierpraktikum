@@ -168,18 +168,27 @@
 			  </div>
 			  <h3>Validation</h3>
 			  <div>
-				<form action="validation/valAli.cgi" method="POST" enctype="multipart/form-data">
-					<p> path to your alignemnts <input name="alignments" type="file"></p>
-					<p> file containing paths to HOMSTRAD <input name="reference" type="file"></p>
-					<p><input type="submit" name="Submit" value="Submit Form" /></p>
-					
-				</form>
-
-				<form action="validation/valGor.cgi" method="POST" enctype="multipart/form-data">
-					<p> path to your prediction file <input name="predict" type="file" size="40" maxlength="100"></p>
-					<p> path to DSSP file <input name="dssp" type="file" size="40" maxlength="100"></p>
-					<p><input type="submit" name="Submit" value="Submit Form" /></p>
-				</form>
+				<b>Alignment validation:</b><br/>
+				<div class="indent">
+				    <form action="validation/valAli.cgi" method="post" enctype="multipart/form-data">
+				      <table>
+					<tr><td>Aligment</td><td><input name="alignments" type="file"></td></tr>
+					<tr><td>Reference</td><td><input name="reference" type="file"></td></tr>
+				      </table>
+				      <input type="submit" value="Validate" /></br>
+				    </form>
+				</div>
+				<br/>
+				<b>Alignment secondary structure prediction:</b><br/>
+				<div class="indent">
+				  <form action="validation/valGor.cgi" method="POST" enctype="multipart/form-data">
+					  <table>
+					    <tr><td>Prediction</td><td><input name="predict" type="file"></td></tr>
+					    <tr><td>DSSP</td><td><input name="dssp" type="file"></td></tr>
+					  </table>
+					  <input type="submit" name="Submit" value="Submit Form" />
+				  </form>
+				</div>
 			  </div>
 			<br/>
 			<div style="height:20px;"></div>
