@@ -104,12 +104,14 @@
 					<br>
 					Options:<br>
 					<br>
-						<input type="checkbox" name="option" value="probabilities" checked="checked">show probabilities in results<br><!-- param: --probabilities -->
-						<input type="checkbox" name="option" value="avgPost" checked="checked">use avg postprocessing for positions with less than <input id="avgProb" type="text" value="50" style="text-align:right; border: none; width: 24px;" maxlength="3" onkeydown="javascript: this.style.width = ((this.value.length + 1) * 8) + 'px';">% probability<br><!-- --avgPost <double> -->
-						<input type="checkbox" name="option" value="stdPost" checked="checked">use std postprocessing for positions with less than <input id="stdProb" type="text" value="50" style="text-align:right; border: none; width: 24px;" maxlength="3" onkeydown="javascript: this.style.width = ((this.value.length + 1) * 8) + 'px';">% probability<br><!-- --stdPost <double> -->
-					<br>
-					<button id="sspCalculateSequenceButton">Predict sequence &gt;&gt;</button><!-- TODO Use JQuery to load results -->
+						<input id="probabilities" type="checkbox" name="option" value="probabilities" checked="checked"><label for="probabilities"> show probabilities in results</label><br><!-- param: --probabilities -->
+						<input id="avgPost" type="checkbox" name="option" value="avgPost" checked="checked"><label for="avgPost"> use avg postprocessing for positions with less than </label><input id="avgProb" type="text" value="50" style="text-align:right; border: none; width: 24px;" maxlength="3" onkeydown="javascript: this.style.width = ((this.value.length + 1) * 8) + 'px';" onclick="document.getElementById('avgPost').checked = true"><label for="avgPost">% probability</label></label><br><!-- --avgPost <double> -->
+						<input id="stdPost" type="checkbox" name="option" value="stdPost" checked="checked"><label for="stdPost"> use std postprocessing for positions with less than </label><input id="stdProb" type="text" value="50" style="text-align:right; border: none; width: 24px;" maxlength="3" onkeydown="javascript: this.style.width = ((this.value.length + 1) * 8) + 'px';" onclick="document.getElementById('stdPost').checked = true"><label for="avgPost">% probability</label><br><!-- --stdPost <double> -->
 				</form>
+				<br>
+				<button id="sspCalculateSequenceButton">Predict sequence &gt;&gt;</button><!-- TODO Use JQuery to load results -->
+				<br>
+				<br>
 				<script type="text/javascript">
 				// <!--
 					$(function() {
@@ -132,7 +134,43 @@
 				</script>
 				<div id="sspResultDialog" title="Input a sequence for prediction">
 					<h3>Prediction Results:</h3>
+						<div id="sspResultDiv">
+							<script type="text/javascript">
+							// <!--
+								$(function() {
+									$.ajax({
+										url: "test.html",
+										context: document.body
+									}).done(function() {
+										$(this).addClass("done");
+									});
+								});
+							// -->
+							</script>
+						</div>
 				</div>
+				<div id="available-models" class="resizable ui-widget-content">
+					<h3 class="ui-widget-header">Available model files</h3>
+					<ul class="dropList" style="margin-top:5px; min-height:80px;">
+						<!--
+							<li class="model ui-state-default">test.db (GOR I)</li><li class="model ui-state-default">test.db (GOR III)</li>
+							<li class="model ui-state-default">test.db (GOR IV)</li><li class="model ui-state-default">CB513.db (GOR I)</li>
+							<li class="model ui-state-default">CB513.db (GOR III)</li><li class="model ui-state-default">CB513.db (GOR IV)</li>
+						-->
+					</ul>
+				</div>
+				<br>
+				<h3 style="width: 100%">GOR Method Training</h3>
+				<form id="sspTrainForm">
+					<input id="database" type="file"><br><br>
+					Training method:<br>
+					<br>
+					<input id="GORI" type="radio" name="gorMethod" value="GORI" checked="checked"><label for="GORI"> GOR I</label><br>
+					<input id="GORIII" type="radio" name="gorMethod" value="GORIII"><label for="GORIII"> GOR III</label><br>
+					<input id="GORIV" type="radio" name="gorMethod" value="GORIV"><label for="GORIV"> GOR IV</label><br>
+					<br>
+					<button>train &gt;&gt;</button>
+				</form>
 			  </div>
 			  <h3>Validation</h3>
 			  <div>
