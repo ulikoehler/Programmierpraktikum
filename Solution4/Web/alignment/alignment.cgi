@@ -5,6 +5,7 @@ use CGI qw(:standard);
 use CGI::Carp qw(fatalsToBrowser);
 use LWP::Simple;
 use DBI;
+use File::Copy;
 use File::Temp qw/ tempfile tempdir /;
 my $seq1ID = param("alignmentSeq1Id") or die ("No sequence 1 ID");
 my $seq2ID = param("alignmentSeq2Id") or die ("No sequence 2 ID");
@@ -17,7 +18,7 @@ my $alignmentType = param("alignmentType") or die ("No alignment type");
 my $alignmentAlgo = param("alignmentAlgorithm") or die ("No alignment algorithm");
 
 my $calcSSAA = param("calculateSSAA");
-
+my $gorModelName = param("gormodel");
 
 my $db = DBI->connect('DBI:mysql:bioprakt4;host=mysql2-ext.bio.ifi.lmu.de', 'bioprakt4', 'vGI5GCMg0x') || die "Could not connect to database: $DBI::errstr";
 
@@ -34,6 +35,24 @@ sub getMatrixFromDatabase {
 		die "Matrix with name $matrixName can't be found in database";
 	}
 	my $quasar = $row->{QUASAR};
+	#Write it to a files
+	open (OUTFILE, ">$outputPath");
+	print OUTFILE $quasar;
+	close(OUTFILE);
+}
+
+sub getGORModel {
+	my $db = $_[0];
+	my $gorName = $_[1];
+	my $outputPath = $_[2];
+
+	my $query = $db->prepare("SELECT Data FROM GORModel WHERE LCASE(Name) = LCASE(?)");
+	$query->execute($matrixName);
+	my $row = $query->fetchrow_hashref();
+	if(not defined $row) {
+		die "GOR Model with name $matrixName can't be found in database";
+	}
+	my $quasar = $row->{Data};
 	#Write it to a files
 	open (OUTFILE, ">$outputPath");
 	print OUTFILE $quasar;
@@ -62,12 +81,15 @@ sub getSequenceById {
 	return $seq;
 }
 
-my $outputPath = tempdir();
+my $curtime = time();
+my $outputPath = "/home/k/koehleru/public_html/propra/aligntmp/" . $curtime;
+my $urlPath = "aligntmp/".$curtime;
+`mkdir -p $outputPath`;
 carp "Outputting to $outputPath";
 my $dpPath = "$outputPath/dp";
 `mkdir $dpPath`;
-my $fpaPath = "$outputPath/fpa";
-`mkdir $fpaPath`;
+my $fpaDir = "$outputPath/fpa";
+`mkdir $fpaDir`;
 carp "Temp output path is $outputPath";
 
 
@@ -96,22 +118,39 @@ close(OUTFILE);
 my $matrix = getMatrixFromDatabase($db, $matrixName, "$outputPath/$matrixName");
 my $jarPath = "/home/proj/biocluster/praktikum/bioprakt/progprakt4/jar";
 
-#carp "java -jar $jarPath/align.jar --go $gapOpen --ge $gapExtend --pairs $outputPath/seqPair.pairs --seqlib #$outputPath/sequences.seqlib -m $outputPath/$matrixName --mode $alignmentType --format html > alignmentout.txt";
+#carp "/usr/lib64/biojava/bin/java -jar $jarPath/align.jar --go $gapOpen --ge $gapExtend --pairs $outputPath/seqPair.pairs --seqlib $outputPath/sequences.seqlib -m $outputPath/$matrixName --mode $alignmentType --fixedpointalignment $fpaDir --format html > alignmentout.txt";
+
+my $ssaaOpt = "";
+if($gorModelName) {
+  carp "Using GOR prediction on model $gorModelName";
+  getGORModel($db, $gorModelName, "$outputPath/gormodel.txt");
+  open (SEQOUT, ">$outputPath/sequences.fa");
+  print SEQOUT ">$seq1ID\nAS $seq1\n";
+  print SEQOUT ">$seq2ID\nAS $seq2\n";
+  close(SEQOUT);
+  `/usr/lib64/biojava/bin/java -jar $jarPath/align.jar -m $outputPath/gormodel.txt -s $outputPath/sequences.fa > $outputPath/gorpred.txt`;
+  $ssaaOpt = "-q $outputPath/gorpred.txt";  
+}
 
 print header();
-my $output = `bash -c 'java -jar $jarPath/align.jar --go $gapOpen --ge $gapExtend --pairs $outputPath/seqPair.pairs --seqlib "$outputPath/sequences.seqlib" -m $outputPath/$matrixName --mode $alignmentType -a $fpaDir --format html'`;
+my $cli = "/usr/lib64/biojava/bin/java -jar $jarPath/align.jar --go $gapOpen --ge $gapExtend --pairs $outputPath/seqPair.pairs --seqlib $outputPath/sequences.seqlib -m $outputPath/$matrixName --mode $alignmentType --fixedpointalignment $fpaDir --format html $ssaaOpt";
+my $output = `bash -c '$cli'`;
 #Prin the alignment
 print $output;
 #Copy the FPA graphic & display it
-opendir my($dh), $dirname or die "Couldn't open dir '$dirname': $!";
+opendir my($dh), $fpaDir or die "Couldn't open dir '$fpaDir': $!";
 my @files = readdir $dh;
 closedir $dh;
 foreach my $file (@files) {
-
-  copy($fpaDir/$file, "./fpa/");
-  print "<img src=\"fpa/$file"
+  if($file eq ".." or $file eq ".") {
+    next;
+  }
+  #carp "cp -f $fpaDir/$file /home/k/koehleru/public_html/propra/fpa/$file";
+  #copy("$fpaDir/$file", "/home/k/koehleru/public_html/propra/fpa/$file");
+#   `cp -f "$fpaDir/$file" "/home/k/koehleru/public_html/propra/fpa/"`;
+  #copy("$fpaDir/$file", "/home/k/koehleru/public_html/propra/fpa/");
+  print "<br/><a href=\"$urlPath/fpa/$file\">Fixed point alignment plot (You need to wait ~10 s for technical reasons)</a><br/>"
 }
-`bash -c 'mv $fpaDir/* ./fpa/'`
 
 $db->disconnect();
 

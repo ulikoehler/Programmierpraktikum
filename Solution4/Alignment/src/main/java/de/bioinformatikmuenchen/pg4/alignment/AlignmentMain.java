@@ -55,7 +55,7 @@ public class AlignmentMain {
                 .addOption("r", "mode", true, "Set the mode (global|local|freeshift)")
                 .addOption("q", "secstructdb", true, "Enable SSAA with the specified <")
                 .addOption("u", "nw", false, "Use Needleman-Wunsch, with gap-open being ignored")
-                .addOption("a", "fixedpointali gnment", true, "Output FPA to directory")
+                .addOption("a", "fixedpointalignment", true, "Output FPA to directory")
                 .addOption("t", "min-as-threshold", true, "In FPA, set the minimum of the matrix as heatmap minimum")
                 .addOption("b", "benchmark", false, "Benchmark the selected algorithm versus the recursive Needleman-Wunsch")
                 .addOption("v", "verbose", false, "Print verbose status reports (on stderr)")

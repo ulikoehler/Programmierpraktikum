@@ -81,9 +81,9 @@
 				    </table>
 				  </div>
 				  <br/>
-				  Options<br/>
+				  Optional: Secondary-Structure aided Alignment<br/>
 				  <div class="indent">
-				    <input id="calculateSSAA" type="checkbox" name="calculateSSAA"> Predict secondary structure and execute SSAA</input>
+				    Optional GOR Model for SSAA: <input id="gorModelInput"  name="gormodel" class="roundBorder" />
 				  </div>
 				  <br/>
 				    <div class="button" onclick="showAlignment(false)">Show alignment (+ Fixed-point graph)</div>
@@ -129,15 +129,17 @@
 					});
 				// -->
 				</script>
-				<div id="sspResultDialog" title="Input a sequence for prediction">
+				<div id="sspResultDialog" title="Prediction results">
 					<h3>Prediction Results:</h3>
 						<div id="sspResultDiv">
 							<script type="text/javascript">
 							// <!--
 								$(function() {
 									$.ajax({
-										url: "test.html",
-										context: document.body
+										url: "ssp/sspPredict",
+										success: function(msg)  {
+											$("#sspResultDialog").append(msg);
+										}
 									}).done(function() {
 										$(this).addClass("done");
 									});
@@ -163,7 +165,8 @@
 				<ul>
 					<li><a href="#upload-dbid">From database</a></li>
 					<li><a href="#upload-fastainput">FASTA input</a></li>
-					<li><a href="#upload-fileinput">File upload</a></li>
+					<li><a href="#upload-fileinput">Upload FASTA file</a></li>
+					<li><a href="#upload-gormodel">Upload GOR model</a></li>
 				</ul>
 				<div id="upload-dbid">
 					<select id="dbselect" name="db">
@@ -190,6 +193,14 @@
 						<input type="radio" name="sequenceType" value="Protein">Protein sequence<br/>
 						<input type="file" name="seqfile" /><br />
 						<input type="submit" value="Add sequence" class="button"/>
+					</form>
+				</div>
+				<div id="upload-gormodel">
+	 				<form action="gormodels/insert_model_file.cgi" method="post" enctype="multipart/form-data">
+						<b><br/>
+						Name: <input type="text" name="name"/><br/>
+						GOR Model file:<input type="file" name="gormodelfile" /><br />
+						<input type="submit" value="Upload model" class="button"/>
 					</form>
 				</div>
 			</div>
