@@ -120,24 +120,27 @@ my $jarPath = "/home/proj/biocluster/praktikum/bioprakt/progprakt4/jar";
 
 #carp "/usr/lib64/biojava/bin/java -jar $jarPath/align.jar --go $gapOpen --ge $gapExtend --pairs $outputPath/seqPair.pairs --seqlib $outputPath/sequences.seqlib -m $outputPath/$matrixName --mode $alignmentType --fixedpointalignment $fpaDir --format html > alignmentout.txt";
 
-if($gorModel) {
-  getGORModel($db, $gorName, "$outputPath/gormodel.txt");
+my $ssaaOpt = "";
+if($gorModelName) {
+  carp "Using GOR prediction on model $gorModelName";
+  getGORModel($db, $gorModelName, "$outputPath/gormodel.txt");
   open (SEQOUT, ">$outputPath/sequences.fa");
   print SEQOUT ">$seq1ID\nAS $seq1\n";
   print SEQOUT ">$seq2ID\nAS $seq2\n";
   close(SEQOUT);
-  my $gorCLI = "/usr/lib64/biojava/bin/java -jar $jarPath/align.jar -m $outputPath/gormodel.txt -s $outputPath/sequences.fa"
+  `/usr/lib64/biojava/bin/java -jar $jarPath/align.jar -m $outputPath/gormodel.txt -s $outputPath/sequences.fa > $outputPath/gorpred.txt`;
+  $ssaaOpt = "-q $outputPath/gorpred.txt";  
 }
 
 print header();
-my $cli = "/usr/lib64/biojava/bin/java -jar $jarPath/align.jar --go $gapOpen --ge $gapExtend --pairs $outputPath/seqPair.pairs --seqlib "$outputPath/sequences.seqlib" -m $outputPath/$matrixName --mode $alignmentType --fixedpointalignment $fpaDir --format html
+my $cli = "/usr/lib64/biojava/bin/java -jar $jarPath/align.jar --go $gapOpen --ge $gapExtend --pairs $outputPath/seqPair.pairs --seqlib $outputPath/sequences.seqlib -m $outputPath/$matrixName --mode $alignmentType --fixedpointalignment $fpaDir --format html $ssaaOpt";
 my $output = `bash -c '$cli'`;
 #Prin the alignment
 print $output;
 #Copy the FPA graphic & display it
 opendir my($dh), $fpaDir or die "Couldn't open dir '$fpaDir': $!";
 my @files = readdir $dh;
-closedir $dh;p
+closedir $dh;
 foreach my $file (@files) {
   if($file eq ".." or $file eq ".") {
     next;
