@@ -114,12 +114,12 @@ public class FixedPoint extends AlignmentProcessor {
         matrixA = new double[xSize][ySize];
         matrixB = new double[xSize][ySize];
         for (int i = 1; i < xSize; i++) {
-            matrixA[i][0] = gapCost.getGapCost(i);
-            matrixB[i][0] = gapCost.getGapCost(i);
+            matrixA[i][0] = (mode == AlignmentMode.LOCAL ? 0 : gapCost.getGapCost(i));
+            matrixB[i][0] = (mode == AlignmentMode.LOCAL ? 0 : gapCost.getGapCost(i));
         }
         for (int i = 0; i < ySize; i++) {
-            matrixA[0][i] = gapCost.getGapCost(i);
-            matrixB[0][i] = gapCost.getGapCost(i);
+            matrixA[0][i] = (mode == AlignmentMode.LOCAL ? 0 : gapCost.getGapCost(i));
+            matrixB[0][i] = (mode == AlignmentMode.LOCAL ? 0 : gapCost.getGapCost(i));
         }
         //fill:
         String queryReverse = new StringBuilder(querySequence).reverse().toString();
@@ -154,8 +154,8 @@ public class FixedPoint extends AlignmentProcessor {
         matrixInA[0][0] = Double.NEGATIVE_INFINITY;
         matrixInB[0][0] = Double.NEGATIVE_INFINITY;
         for (int i = 1; i < x; i++) {
-            matrixA[i][0] = gapCost.getGapCost(i);
-            matrixB[i][0] = gapCost.getGapCost(i);
+            matrixA[i][0] = (mode == AlignmentMode.LOCAL ? 0 : gapCost.getGapCost(i));
+            matrixB[i][0] = (mode == AlignmentMode.LOCAL ? 0 : gapCost.getGapCost(i));
         }
         for (int i = 1; i < y; i++) {
             matrixA[0][i] = gapCost.getGapCost(i);
