@@ -180,6 +180,29 @@ function showAlignment(fixedPoint) {
 }
 
 
+function validateAli(alignment, reference) {
+  //Get all the field values
+  var alignment = $("#valAliAlignmentsField").val();
+  var reference = $("#valAliRefField").val();
+  //Show the progress bar & dialog
+  $("#validateDialog").empty();
+  $("#validateDialog").append("<div id=\"alignmentProgressBar\"></div>");
+  $("#validateDialog").progressbar({
+      value: false
+    });
+  $("#validateDialog").dialog({autoOpen: false,modal: false,bgiframe: true,width:1000,height:750});
+  $('#validateDialog').dialog('open');
+  //
+  $.get("validation/validateAli.cgi", {
+    alignment: alignment,
+    reference: reference
+  }, function(data, textStatus) {
+    //Replace the progress bar by the data
+    $("#validateDialog").empty();
+    $("#validateDialog").append(data);
+  });
+}
+
 
 function showSSP(fixedPoint) {
   //Get all the field values

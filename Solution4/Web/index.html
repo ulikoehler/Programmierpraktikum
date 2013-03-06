@@ -171,22 +171,33 @@
 				<b>Alignment validation:</b><br/>
 				<div class="indent">
 				    <form action="validation/valAli.cgi" method="post" enctype="multipart/form-data">
-				      <table>
+				      <!--<table>
 					<tr><td>Aligment</td><td><input name="alignments" type="file"></td></tr>
 					<tr><td>Reference</td><td><input name="reference" type="file"></td></tr>
-				      </table>
-				      <input type="submit" value="Validate" /></br>
+				      </table>-->
+				      
+				      <b>Alignment</b><br/>
+				      <textarea id="valAliAlignmentsField" name="alignments" style="width:100%" rows="12"></textarea><br/>
+				      <b>Reference</b><br/>
+				      <textarea id="valAliRefField" name="reference" style="width:100%" rows="12"></textarea><br/>
+				      <div class="button" onclick="validateAli()">Validate alignment</div>
+				      <!--<input type="submit" value="Validate" /></br>-->
 				    </form>
 				</div>
 				<br/>
 				<b>Alignment secondary structure prediction:</b><br/>
 				<div class="indent">
 				  <form action="validation/valGor.cgi" method="POST" enctype="multipart/form-data">
-					  <table>
+					  <!--<table>
 					    <tr><td>Prediction</td><td><input name="predict" type="file"></td></tr>
 					    <tr><td>DSSP</td><td><input name="dssp" type="file"></td></tr>
 					  </table>
-					  <input type="submit" name="Submit" value="Submit Form" />
+					  <input type="submit" name="Submit" value="Submit Form" />-->
+					  
+					  <textarea id="valGorAlignmentsField" name="alignments" style="width:100%" rows="12"></textarea><br/>
+					  <b>DSSP</b><br/>
+					  <textarea id="valGorDSSPField" name="reference" style="width:100%" rows="12"></textarea><br/>
+					  <div class="button">Validate SSP</div>
 				  </form>
 				</div>
 			  </div>
@@ -205,6 +216,8 @@
 		<div id="sspDialog" title="Secondary structure prediction" style="display: none;">
 		</div>
 		<div id="alignmentResultDialog" title="Alignment result" style="display: none;"> 
+		</div>
+		<div id="validateDialog" title="Validation result" style="display: none;"> 
 		</div>
 	</body>
 </html>
