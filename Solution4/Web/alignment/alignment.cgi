@@ -174,7 +174,8 @@ foreach my $file (@files) {
   #copy("$fpaDir/$file", "/home/k/koehleru/public_html/propra/fpa/$file");
 #   `cp -f "$fpaDir/$file" "/home/k/koehleru/public_html/propra/fpa/"`;
   #copy("$fpaDir/$file", "/home/k/koehleru/public_html/propra/fpa/");
-  print "<br/><a href=\"$urlPath/fpa/$file\">Fixed point alignment plot (You need to wait ~10 s for technical reasons)</a><br/>"
+  #print "<br/><a href=\"$urlPath/fpa/$file\">Fixed point alignment plot (You need to wait ~10 s for technical reasons)</a><br/>"
+  print "<br/><img src=\"$urlPath/fpa/$file\"></img><br/>"
 }
 
 $db->disconnect();

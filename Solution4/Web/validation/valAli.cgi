@@ -4,11 +4,11 @@ use CGI::Carp qw(fatalsToBrowser);
 use File::Temp qw/ tempfile tempdir /;
 use CGI qw(:standard);
 
-my $alignment = param("alignment");
+my $alignment = param("alignments");
 my $reference = param("reference");
-print header();
 
 carp "ALI: $alignment\n";
+print header();
 
 my $tempdir = tempdir();
 my $alignPath = $tempdir."/align.txt";
