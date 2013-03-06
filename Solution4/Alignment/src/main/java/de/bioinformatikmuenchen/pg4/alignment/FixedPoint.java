@@ -130,8 +130,10 @@ public class FixedPoint extends AlignmentProcessor {
                 char B_fwd = targetSequence.charAt(x - 1);
                 char A_rev = queryReverse.charAt(x - 1);
                 char B_rev = targetReverse.charAt(x - 1);
-                matrixA[x][y] = Math.max(matrixA[x - 1][y - 1] + distanceMatrix.distance(A_fwd, B_fwd), Math.max(matrixA[x - 1][y] + gapCost.getGapCost(1), matrixA[x][y - 1] + gapCost.getGapCost(1)));
-                matrixB[x][y] = Math.max(matrixB[x - 1][y - 1] + distanceMatrix.distance(A_rev, B_rev), Math.max(matrixB[x - 1][y] + gapCost.getGapCost(1), matrixB[x][y - 1] + gapCost.getGapCost(1)));
+                double maxA = Math.max(matrixA[x - 1][y - 1] + distanceMatrix.distance(A_fwd, B_fwd), Math.max(matrixA[x - 1][y] + gapCost.getGapCost(1), matrixA[x][y - 1] + gapCost.getGapCost(1)));
+                double maxB = Math.max(matrixB[x - 1][y - 1] + distanceMatrix.distance(A_rev, B_rev), Math.max(matrixB[x - 1][y] + gapCost.getGapCost(1), matrixB[x][y - 1] + gapCost.getGapCost(1)));
+                matrixA[x][y] = (mode == AlignmentMode.LOCAL ? Math.max(0, maxA) : maxA);
+                matrixB[x][y] = (mode == AlignmentMode.LOCAL ? Math.max(0, maxB) : maxB);
             }
         }
     }
@@ -180,8 +182,10 @@ public class FixedPoint extends AlignmentProcessor {
                 matrixInB[x][y] = Math.max(matrixB[x - 1][y] + gapCost.getGapCost(1), matrixInB[x - 1][y] + gapCost.getGapExtensionPenalty(0, 1));
                 matrixDelA[x][y] = Math.max(matrixA[x][y - 1] + gapCost.getGapCost(1), matrixDelA[x][y - 1] + gapCost.getGapExtensionPenalty(0, 1));
                 matrixDelB[x][y] = Math.max(matrixB[x][y - 1] + gapCost.getGapCost(1), matrixDelB[x][y - 1] + gapCost.getGapExtensionPenalty(0, 1));
-                matrixA[x][y] = Math.max(Math.max(matrixInA[x][y], matrixDelA[x][y]), matrixA[x - 1][y - 1] + distanceMatrix.distance(querySequence.charAt(x - 1), targetSequence.charAt(y - 1)));
-                matrixB[x][y] = Math.max(Math.max(matrixInB[x][y], matrixDelB[x][y]), matrixB[x - 1][y - 1] + distanceMatrix.distance(queryReverse.charAt(x - 1), targetReverse.charAt(y - 1)));
+                double maxA = Math.max(Math.max(matrixInA[x][y], matrixDelA[x][y]), matrixA[x - 1][y - 1] + distanceMatrix.distance(querySequence.charAt(x - 1), targetSequence.charAt(y - 1)));
+                double maxB = Math.max(Math.max(matrixInB[x][y], matrixDelB[x][y]), matrixB[x - 1][y - 1] + distanceMatrix.distance(queryReverse.charAt(x - 1), targetReverse.charAt(y - 1)));
+                matrixA[x][y] = (mode == AlignmentMode.LOCAL ? Math.max(0, maxA) : maxA);
+                matrixB[x][y] = (mode == AlignmentMode.LOCAL ? Math.max(0, maxB) : maxB);
             }
         }
     }
