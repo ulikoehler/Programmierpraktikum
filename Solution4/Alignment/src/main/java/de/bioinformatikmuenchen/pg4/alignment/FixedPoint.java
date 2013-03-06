@@ -109,7 +109,7 @@ public class FixedPoint extends AlignmentProcessor {
         }
     }
 
-    public void initAndFillNeedlemanWunsch() {
+    public void initAndFillNeedlemanWunsch() { //////////// add local alignment for A and B matrices
         //initialize:
         matrixA = new double[xSize][ySize];
         matrixB = new double[xSize][ySize];
