@@ -76,10 +76,10 @@ public class FixedPoint extends AlignmentProcessor {
             path = path.substring(0, path.length() - 1);
         }
         //put matrix to file as inout for gnuplot:
-        putToFile(matrixToString(), "./"+ "fpa_" + seq1.getId() + "_" + seq2.getId());
+        putToFile(matrixToString(), "./matrix");//"+ "fpa_" + seq1.getId() + "_" + seq2.getId()
         String gnuPlot = "set terminal png\n"
                 + "set output \"" + (!path.equals("") ? path + "/" : "") + "fpa_" + seq1.getId() + "_" + seq2.getId() + ".png\"\n"
-                + "set size ratio 1.0\n"
+                + "set size ratio 0.5\n"
                 + "set title \"Fixed Point Alignment " + seq1.getId() + " vs. " + seq2.getId() + "\"\n"
                 + "\n"
                 + "set xlabel \"" + seq1.getId() + "\"\n"
@@ -94,11 +94,11 @@ public class FixedPoint extends AlignmentProcessor {
                 "#unset cbtics\n"
                 + "\n"
                 + "set xrange [0:" + ySize + "]\n"
-                + "set yrange [" + xSize + ":0]\n"
+                + "set yrange [0:" + xSize + "]\n"
                 + "\n"
                 + "set view map\n"
                 + "\n"
-                + "splot '"+ "fpa_" + seq1.getId() + "_" + seq2.getId() + "' matrix with image";
+                + "splot 'matrix' matrix with image";
         putToFile(gnuPlot, "./plot.gp");
         Runtime rt = Runtime.getRuntime();
         try {
@@ -223,7 +223,7 @@ public class FixedPoint extends AlignmentProcessor {
 
     public String matrixToString() {
         StringBuilder out = new StringBuilder();
-        for (int i = 2; i >= 0; i++) {
+        for (int i = 0; i < xSize; i++) {
             for (int j = 0; j < ySize; j++) {
                 out.append(fixedPointMatrix[i][j]).append("\t");
             }
