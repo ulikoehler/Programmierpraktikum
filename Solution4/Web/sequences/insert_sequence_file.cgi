@@ -5,7 +5,6 @@ use CGI qw(:standard);
 use CGI::Carp qw(fatalsToBrowser);
 use DBI;
 
-
 sub trim {		# trim a string
   my $string = $_[0];
   $string =~ s/^\s+//;
@@ -30,10 +29,18 @@ while(read $datafile,$inputdata,1024) {
   $data = $data.$inputdata;
 }
 #Remove
+my $fastaHeader = "";
 for (split /^/, $data) {
 	chomp $_;
-	$processedData = $processedData.trim($_) if $_ !~ m/^>/;
+	if($_ !~ m/^>/) {
+	    $processedData = $processedData.trim($_);
+	} else {
+	    $fastaHeader = substr($_, 1, length($_)-1);
+	}
 	chomp $processedData;
+}
+if(length($fastaHeader) > 40) {
+  $fastaHeader = substr($fastaHeader, 0, 40) . "...";
 }
 #Write it to the DB
 $insertStmt->execute($name, $processedData, $seqType,);
@@ -41,6 +48,7 @@ carp "Inserted user sequence $name into database, ID  $insertStmt->{mysql_insert
 #Write header
 #print "{\"success\":true,\"name\":$name}";
 #Write header
+my $sequenceName = trim("[FASTA Upload] $fastaHeader");
 print header();
 print <<"EOHTML"
 <html>
@@ -50,7 +58,7 @@ print <<"EOHTML"
     <script type="text/javascript" src="../ws.js"></script>
     <script type="text/javascript" src="../js/jquery-ui.js"></script>
     <script type="text/javascript">
-	addSequence(\"mysql:$name\", \"$name\", \"$originalSeqType\");
+	addSequence(\"mysql:$name\", \"$sequenceName\", \"$originalSeqType\");
 	window.history.back(-1);
     </script>
 </head>

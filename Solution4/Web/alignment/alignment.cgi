@@ -115,6 +115,8 @@ my $dpPath = "$outputPath/dp";
 `mkdir $dpPath`;
 my $fpaDir = "$outputPath/fpa";
 `mkdir $fpaDir`;
+my $dpMatricesDir = "$outputPath/dp";
+`mkdir $dpMatricesDir`;
 carp "Temp output path is $outputPath";
 
 
@@ -128,7 +130,6 @@ if($seq1ID =~ m/:(.+)$/){
 if($seq2ID =~ m/:(.+)$/){
   $seq2ID = $1;
 }
-carp "S1 S2 $seq1ID $seq2ID";
 
 #Write the data files
 open (SEQOUT, ">$outputPath/sequences.seqlib");
@@ -144,9 +145,11 @@ my $matrix = getMatrixFromDatabase($db, $matrixName, "$outputPath/$matrixName");
 my $jarPath = "/home/proj/biocluster/praktikum/bioprakt/progprakt4/jar";
 
 #carp "/usr/lib64/biojava/bin/java -jar $jarPath/align.jar --go $gapOpen --ge $gapExtend --pairs $outputPath/seqPair.pairs --seqlib $outputPath/sequences.seqlib -m $outputPath/$matrixName --mode $alignmentType --fixedpointalignment $fpaDir --format html > alignmentout.txt";
+print header();
 
 my $ssaaOpt = "";
 if($gorModelName) {
+  print "<i>Secondary structure predicted using GOR Model $gorModelName</i><br/>";
   carp "Using GOR prediction on model $gorModelName";
   getGORModel($db, $gorModelName, "$outputPath/gormodel.txt");
   open (SEQOUT, ">$outputPath/sequences.fa");
@@ -156,17 +159,29 @@ if($gorModelName) {
   `/usr/lib64/biojava/bin/java -jar $jarPath/align.jar -m $outputPath/gormodel.txt -s $outputPath/sequences.fa > $outputPath/gorpred.txt`;
   $ssaaOpt = "-q $outputPath/gorpred.txt";  
 }
-
-print header();
-my $cli = "/usr/lib64/biojava/bin/java -jar $jarPath/align.jar --go $gapOpen --ge $gapExtend --pairs $outputPath/seqPair.pairs --seqlib $outputPath/sequences.seqlib -m $outputPath/$matrixName --mode $alignmentType --fixedpointalignment $fpaDir --format html $ssaaOpt";
+#Option
+my $algoOpt = "";
+$algoOpt = "--nw" if $alignmentAlgo eq "NeedlemanWunsch";
+#Calculate the HTML alignment
+my $cli = "/usr/lib64/biojava/bin/java -jar $jarPath/align.jar $algoOpt --go $gapOpen --ge $gapExtend --pairs $outputPath/seqPair.pairs --seqlib $outputPath/sequences.seqlib -m $outputPath/$matrixName --mode $alignmentType --fixedpointalignment $fpaDir --format html $ssaaOpt --dpmatrices $dpMatricesDir";
 my $output = `bash -c '$cli'`;
+#Do the same for ALI output (for validation) without any extra stuff
+$cli = "/usr/lib64/biojava/bin/java $algoOpt -jar $jarPath/align.jar --go $gapOpen --ge $gapExtend --pairs $outputPath/seqPair.pairs --seqlib $outputPath/sequences.seqlib -m $outputPath/$matrixName --mode $alignmentType --format ali";
+#Write the ALI output to a file
+my $aliOutput = `bash -c '$cli' 2>&1`;
+my $aliFile = "$outputPath/alignment.ali";
+open (ALIOUT, ">$aliFile");
+print ALIOUT "$aliOutput";
+close(ALIOUT);
 #Prin the alignment
 print $output;
-#Copy the FPA graphic & display it
-opendir my($dh), $fpaDir or die "Couldn't open dir '$fpaDir': $!";
-my @files = readdir $dh;
-closedir $dh;
-foreach my $file (@files) {
+#
+#Display the fixed-point alignment
+#
+opendir my($fpaDh), $fpaDir or die "Couldn't open dir '$fpaDir': $!";
+my @fpaFiles = readdir $fpaDh;
+closedir $fpaDh;
+foreach my $file (@fpaFiles) {
   if($file eq ".." or $file eq ".") {
     next;
   }
@@ -177,6 +192,33 @@ foreach my $file (@files) {
   #print "<br/><a href=\"$urlPath/fpa/$file\">Fixed point alignment plot (You need to wait ~10 s for technical reasons)</a><br/>"
   print "<br/><img src=\"$urlPath/fpa/$file\"></img><br/>"
 }
-
+#
+#Display the DP matrices
+#
+opendir my($dpFh), $dpMatricesDir or die "Couldn't open dir '$dpMatricesDir': $!";
+my @dpFiles = readdir $dpFh;
+closedir $dpFh;
+print "<b>Dynamic programming matrices:</b><br/>\n";
+foreach my $dpFile (@dpFiles) {
+  if($dpFile eq ".." or $dpFile eq ".") {
+    next;
+  }
+  if($dpFile =~ m/\.html/) {
+    print "<br/><a href=\"$urlPath/dp/$dpFile\" target=\"_blank\">$dpFile</a><br/>"
+  }
+}
+#
+# Display options to validate the alignment
+#
+print <<"EOHTML"
+<h3>Validate this alignment</h3><br/>
+<form action="validation/validate_ali.cgi" method="post" enctype="multipart/form-data">
+  <b>Reference alignment:</b><br/>
+  <textarea id="reference" name="reference" style="width:100%" rows="12"></textarea><br/>
+  <input type="hidden" name="aliFile" value="$aliFile"/>
+  <input type="submit" class="button"/>
+</form>
+EOHTML
+;
 $db->disconnect();
 

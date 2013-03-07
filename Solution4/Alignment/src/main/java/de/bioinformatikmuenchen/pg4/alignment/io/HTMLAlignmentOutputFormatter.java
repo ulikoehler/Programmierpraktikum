@@ -29,21 +29,23 @@ public class HTMLAlignmentOutputFormatter extends AbstractAlignmentOutputFormatt
         StringBuilder builder = new StringBuilder();
         builder.append("<div>");
         for (SequencePairAlignment align : result.getAlignments()) {
-            builder.append("<h3>Aligment of ").append(result.getQuerySequenceId()).append(" of ").append(result.getTargetSequenceId()).append("</h3>");
+            builder.append("<h3>Aligment of ").append(result.getQuerySequenceId()).append(" and ").append(result.getTargetSequenceId()).append("</h3>");
             builder.append("<h4>Score: ").append(numberFormat.format(result.getScore())).append("</h4>");
-            //First line
-            builder.append("<pre>");
-            builder.append(align.queryAlignment);
-            builder.append("</pre>");
-            //Second line in red
-            builder.append("<pre style=\"color: red;\">");
             align.calculateMatchLine();
-            builder.append(align.matchLine);
-            builder.append("</pre>");
-            //Third line
-            builder.append("<pre>");
-            builder.append(align.targetAlignment);
-            builder.append("</pre>");
+            for (int i = 0; i < align.queryAlignment.length(); i += 100) {
+                //First line
+                builder.append("<pre>");
+                builder.append(align.queryAlignment.substring(i, Math.min(align.queryAlignment.length(), 100+i)));
+                builder.append("</pre>");
+                //Second line in red
+                builder.append("<pre style=\"color: red;\">");
+                builder.append(align.matchLine.substring(i, Math.min(align.matchLine.length(), 100+i)));
+                builder.append("</pre>");
+                //Third line
+                builder.append("<pre>");
+                builder.append(align.targetAlignment.substring(i, Math.min(align.targetAlignment.length(), 100+i)));
+                builder.append("</pre><br/>");
+            }
 
             builder.append("</div>");
         }

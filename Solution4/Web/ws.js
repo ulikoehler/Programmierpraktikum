@@ -2,9 +2,8 @@ $(function() {
 	$( ".accordion" ).accordion();
 	$( ".tabs" ).tabs();
 	$(".button").button();
-	$("#available-sequences").resizable({containment: "#body"});
-	$("#align-from").resizable({containment: "#body"});
-	$("#align-to").resizable({containment: "#body"});
+	$("#available-sequences").resizable({containment: "#available-sequences-container"});
+	$("#available-sequences").css("width" , "1200px");
 	//$('.nodrag').draggable( "disable" )
 	$("#alignmentSequence1").droppable({
 	    accept: ".sequence",
@@ -25,6 +24,20 @@ $(function() {
 	    activeClass: "ui-state-highlight",
 	    drop: function( event, ui ) {
 	      setSSPSequence( ui.draggable );
+	    }
+	});
+	$("#deleteSequenceDrop").droppable({
+	    accept: ".sequence",
+	    activeClass: "ui-state-highlight",
+	    drop: function( event, ui ) {
+	      deleteSequence( ui.draggable );
+	    }
+	});
+	$("#showSequenceDrop").droppable({
+	    accept: ".sequence",
+	    activeClass: "ui-state-highlight",
+	    drop: function( event, ui ) {
+	      showSequence( ui.draggable );
 	    }
 	});
 	$(".uibtn").button();
@@ -77,27 +90,69 @@ $(function() {
 		  //"Nothing selected, input was " + this.value );
 	    }
 	});
-	$(".accordion").accordion();
+	//$(".accordion").accordion();
 	renderSequences();
 	//Disable gap open when NW is selected
 	$("#nwRadio").change(function() {
-	  $("#gapOpenField").prop("disabled", $("#nwRadio").attr("checked") == false);
+	  if($("#nwRadio").attr("checked")) {
+	    $("#gapOpenField").prop("disabled", "disabled");
+	  } else { //Gotoh
+	    $("#gapOpenField").removeAttr("disabled");
+	  }
 	});
 });
 function setAlignmentSequence1(elem) {
   $("#alignmentSeq1Id").val($(elem).attr("seqid"));
   $(elem).addClass("ui-state-highlight");
-  $(elem).draggable("disable");
+  $("#alignmentSeq1Name").text($(elem).attr("name"));
+  //$(elem).draggable("disable");
 }
 function setAlignmentSequence2(elem) {
   $("#alignmentSeq2Id").val($(elem).attr("seqid"));
   $(elem).addClass("ui-state-highlight");
-  $(elem).draggable("disable")
+  $("#alignmentSeq2Name").text($(elem).attr("name"));
+  //$(elem).draggable("disable")
+}
+function deleteSequence(elem) {
+  var idToDelete = $(elem).attr("seqid");
+  //Remove the sequence from the array
+  var sequences = $.jStorage.get("sequences", []);
+  var newSequences = [];
+  for(var i=0; i<sequences.length; i++ ) {
+      var seqObj = sequences[i];
+      if(seqObj.id != idToDelete) {
+	  newSequences.push(seqObj);
+      }
+  }
+  $.jStorage.set("sequences", newSequences);
+  renderSequences();
 }
 function setSSPSequence(elem) {
   $("#sspSequenceField").val($(elem).attr("seqid"));
   $(elem).addClass("ui-state-highlight");
-  $(elem).draggable("disable")
+  //$(elem).draggable("disable")
+}
+function showSequence(elem) {
+  function closure(elem){
+    $.get("sequences/get_sequence.cgi", {id: $(elem).attr("seqid")},
+	  function(data) {
+	      var id = "seq-" + $(elem).attr("seqid");
+	      id = id.replace(":","-");
+	      $("#" + id).remove();
+	      $("#dialogsContainer").append('<div id="' + id + '" style="display: none;"></div>')
+	      var dialog = $("#" + id);
+	      dialog.attr("title","Sequence of " + $(elem).attr("name"));
+	      dialog.dialog({autoOpen: false,modal: false,bgiframe: true,width:500,height:250});
+	      dialog.empty();
+	      dialog.append("<div style=\"word-wrap:break-word;\">" + data + "</div>");
+	      dialog.dialog("open");
+	  }
+    );
+  }
+  //Call the closure
+  closure(elem);
+  $(elem).draggable({revert: true});
+  //$(elem).draggable("disable")
 }
 function refreshDragDrop() { 
       $(".sequence").draggable({
@@ -123,7 +178,7 @@ function renderSequences() {
     var sequences = $.jStorage.get("sequences", []);
     for(var i=0; i<sequences.length; i++ ) {
       var seqObj = sequences[i];
-      $("#availableSequencesList").append("<li class=\"sequence ui-state-default ui-widget-content ui-corner-tr\" seqid=\""+ seqObj.id + "\">Sequence " + seqObj.name + "(" + seqObj.type + ")" + "</li>");
+      $("#availableSequencesList").append("<li class=\"sequence ui-state-default ui-widget-content ui-corner-tr\" name=\"" + seqObj.name + "\" seqid=\""+ seqObj.id + "\">Sequence " + seqObj.name + "(" + seqObj.type + ")" + "</li>");
     }
     //Calculate the height of the container
     var height = sequences.length*35+60;
@@ -134,52 +189,62 @@ function renderSequences() {
   refreshDragDrop();
 }
 
-function showAlignment(fixedPoint) {
-  //Get all the field values
-  var alignmentSeq1Id = $("#alignmentSeq1Id").val();
-  var alignmentSeq2Id = $("#alignmentSeq2Id").val();
-  if(!alignmentSeq1Id || !alignmentSeq2Id) {
-    alert("Please drag sequences into both sequence boxes");
-    return;
-  }
-  //
-  var distanceMatrix = $("#alignmentMatrix").val();
-  if(!distanceMatrix) {
-    alert("Please specify a distance matrix, e.g. BLOSUM45");
-    return;
-  }
-  var alignmentType = $("input[name=alignmentType]:checked").val();
-  var alignmentAlgorithm = $("input[name=alignmentAlgorithm]:checked").val();
-  var gapOpenPenalty = $("input[name=gapOpenPenalty]").val();
-  var gapExtensionPenalty = $("input[name=gapExtendPenalty]").val();
-  var calculateSSAA = ($("#calculateSSAA").attr("checked") == true);
-  //Show the progress bar & dialog
-  $("#alignmentResultDialog").empty();
-  $("#alignmentResultDialog").append("<div id=\"alignmentProgressBar\"></div>");
-  $("#alignmentProgressBar").progressbar({
-      value: false
+function showAlignment() {
+    //Get all the field values
+    var alignmentSeq1Id = $("#alignmentSeq1Id").val();
+    var alignmentSeq2Id = $("#alignmentSeq2Id").val();
+    var seq1Name = $("#alignmentSeq1Name").text();
+    var seq2Name = $("#alignmentSeq2Name").text();
+    //Initialize the dialog
+    var id = "alig-" + alignmentSeq1Id + "-" + alignmentSeq2Id;
+    id = id.replace(/:/g,"-");
+    $("#" + id).remove();
+    $("#dialogsContainer").append('<div id="' + id + '" style="display: none;"></div>')
+    var dialog = $("#" + id);
+    dialog.attr("title","Alignment of " + seq1Name + " and " + seq2Name);
+    dialog.dialog({autoOpen: false,modal: false,bgiframe: true,width:1200,height:500});
+    
+    if(!alignmentSeq1Id || !alignmentSeq2Id) {
+      alert("Please drag sequences into both sequence boxes");
+      return;
+    }
+    //
+    var distanceMatrix = $("#alignmentMatrix").val();
+    if(!distanceMatrix) {
+      alert("Please specify a distance matrix, e.g. BLOSUM45");
+      return;
+    }
+    var alignmentType = $("input[name=alignmentType]:checked").val();
+    var alignmentAlgorithm = $("input[name=alignmentAlgorithm]:checked").val();
+    var gapOpenPenalty = $("input[name=gapOpenPenalty]").val();
+    var gapExtensionPenalty = $("input[name=gapExtendPenalty]").val();
+    var calculateSSAA = ($("#calculateSSAA").attr("checked") == true);
+    var gorName = $("#gorModelInput").val();
+    //Show the progress bar & dialog
+    dialog.empty();
+    dialog.append("<div id=\"alignmentProgressBar\"></div>");
+    $("#alignmentProgressBar").progressbar({
+	value: false
+      });
+    dialog.dialog("open");
+    //Request
+    $.post("alignment/alignment.cgi", {
+      alignmentSeq1Id: alignmentSeq1Id,
+      alignmentSeq2Id: alignmentSeq2Id,
+      distanceMatrix: distanceMatrix,
+      alignmentType: alignmentType,
+      alignmentAlgorithm: alignmentAlgorithm,
+      gapOpenPenalty: gapOpenPenalty,
+      gapExtendPenalty: gapExtensionPenalty,
+      calculateSSAA: calculateSSAA
+    }, function(data, textStatus) {
+      //Replace the progress bar by the data
+      dialog.empty();
+      dialog.append(data);
     });
-  $("#alignmentResultDialog").dialog({autoOpen: false,modal: false,bgiframe: true,width:1000,height:750});
-  $('#alignmentResultDialog').dialog('open');
-  //
-  $.post("alignment/alignment.cgi", {
-    alignmentSeq1Id: alignmentSeq1Id,
-    alignmentSeq2Id: alignmentSeq2Id,
-    distanceMatrix: distanceMatrix,
-    alignmentType: alignmentType,
-    alignmentAlgorithm: alignmentAlgorithm,
-    gapOpenPenalty: gapOpenPenalty,
-    gapExtendPenalty: gapExtensionPenalty,
-    calculateSSAA: calculateSSAA,
-    fixedPoint: fixedPoint
-  }, function(data, textStatus) {
-    //Replace the progress bar by the data
-    $("#alignmentResultDialog").empty();
-    $("#alignmentResultDialog").append(data);
-  });
 }
 
-
+//Currently unused
 function validateAli(alignment, reference) {
   //Get all the field values
   var alignment = $("#valAliAlignmentsField").val();
