@@ -22,7 +22,7 @@
 			.roundBorder{border-radius: 3px;}
 			.dropList { list-style-type: none; margin: 0; padding: 0 0 2.5em; float: left; margin-right: 10px; }
 			.dropList li { margin: 0 5px 5px 5px; padding: 5px; font-size: 1.2em;}
-			.sequence {min-width: 150px;}
+			.sequence {min-width: 150px;z-index: 1;}
 			.sequence-drop {min-height: 60px;}
 			.sequence-drop h4 { line-height: 16px; margin: 0 0 0.4em; }
 			.indent {margin-left: 10px;}
@@ -83,22 +83,32 @@
 					</form>
 				</div>
 			</div>
-			
-			<div id="available-sequences" class="resizable ui-widget-content">
-				<h3 class="ui-widget-header">Available sequences</h3>
-				<ul id="availableSequencesList" class="dropList" style="margin-top:5px;min-height:80px;">
-					<li class="sequence ui-state-default">Test sequence</li>
-				</ul>
+			<!-- General & simple sequence tools -->
+			<div style="width:100%; display: table;">
+			  <div id="available-sequences-container" style="width: 50%;display:table-cell;">
+			    <div id="available-sequences" class="resizable ui-widget-content">
+				    <h3 class="ui-widget-header">Available sequences</h3>
+				    <ul id="availableSequencesList" class="dropList" style="margin-top:5px;min-height:80px;">
+					    <li class="sequence ui-state-default">Test sequence</li>
+				    </ul>
+			    </div>
+			  </div>
+			  <div style="width: 40%;display:table-cell;">
+			      <div id="deleteSequenceDrop" class="sequence-drop ui-widget-content ui-state-default">
+				    <h4 class="ui-widget-header">Drop sequence here to delete it</h4>
+			      </div><br/>
+			      <div id="showSequenceDrop" class="sequence-drop ui-widget-content ui-state-default">
+				    <h4 class="ui-widget-header">Drop sequence here to show sequence data</h4>
+			      </div><br/>
+			  </div>
 			</div>
-			<div id="deleteSequenceDrop" class="sequence-drop ui-widget-content ui-state-default">
-			      <h4 class="ui-widget-header">Drop sequence here to delete it</h4>
-			</div><br/>
-			<div id="showSequenceDrop" class="sequence-drop ui-widget-content ui-state-default">
-			      <h4 class="ui-widget-header">Drop sequence here to show sequence data</h4>
-			</div><br/>
-			<div class="accordion">
-			  <h3>Align sequences</h3>
-			  <div style="height:600px">
+			<div class="tabs">
+			  <ul>
+				  <li><a href="#alignSequencesTab">Align sequences</a></li>
+				  <li><a href="#sspTab">Secondary structure predication</a></li>
+				  <!--<li><a href="#validateTab">Validation</a></li>-->
+			  </ul>
+			  <div id="alignSequencesTab" style="height:600px">
 			    <form action="alignment/alignment.cgi" method="post" enctype="multipart/form-data">
 				  <div id="alignmentSequence1" class="sequence-drop ui-widget-content ui-state-default">
 				    <h4 class="ui-widget-header">Drop first sequence in this box</h4>
@@ -144,8 +154,7 @@
 				    <div class="button" onclick="showAlignment(false)">Show alignment (+ Fixed-point graph)</div>
 			    </form>
 			  </div>
-			  <h3>Predict secondary structure</h3>
-			  <div>
+			  <div id="sspTab">
 				<form action="ssp/sspPredict.cgi" method="post" enctype="multipart/form-data" id="sspPredictForm">
 					<h4>Secondary Structure Prediction</h4>
 					<div id="sspSequenceDropField" class="sequence-drop ui-widget-content ui-state-default">

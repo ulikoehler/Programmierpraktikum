@@ -2,9 +2,8 @@ $(function() {
 	$( ".accordion" ).accordion();
 	$( ".tabs" ).tabs();
 	$(".button").button();
-	$("#available-sequences").resizable({containment: "#body"});
-	$("#align-from").resizable({containment: "#body"});
-	$("#align-to").resizable({containment: "#body"});
+	$("#available-sequences").resizable({containment: "#available-sequences-container"});
+	$("#available-sequences").css("width" , "1200px");
 	//$('.nodrag').draggable( "disable" )
 	$("#alignmentSequence1").droppable({
 	    accept: ".sequence",
@@ -198,8 +197,8 @@ function showAlignment() {
     $("#" + id).remove();
     $("#dialogsContainer").append('<div id="' + id + '" style="display: none;"></div>')
     var dialog = $("#" + id);
-    dialog.dialog({autoOpen: false,modal: false,bgiframe: true,width:500,height:250});
     dialog.attr("title","Alignment of " + seq1Name + " and " + seq2Name);
+    dialog.dialog({autoOpen: false,modal: false,bgiframe: true,width:500,height:250});
     
     if(!alignmentSeq1Id || !alignmentSeq2Id) {
       alert("Please drag sequences into both sequence boxes");
