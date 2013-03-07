@@ -90,11 +90,15 @@ $(function() {
 		  //"Nothing selected, input was " + this.value );
 	    }
 	});
-	$(".accordion").accordion();
+	//$(".accordion").accordion();
 	renderSequences();
 	//Disable gap open when NW is selected
 	$("#nwRadio").change(function() {
-	  $("#gapOpenField").prop("disabled", $("#nwRadio").attr("checked") == false);
+	  if($("#nwRadio").attr("checked")) {
+	    $("#gapOpenField").prop("disabled", "disabled");
+	  } else { //Gotoh
+	    $("#gapOpenField").removeAttr("disabled");
+	  }
 	});
 });
 function setAlignmentSequence1(elem) {
@@ -198,7 +202,7 @@ function showAlignment() {
     $("#dialogsContainer").append('<div id="' + id + '" style="display: none;"></div>')
     var dialog = $("#" + id);
     dialog.attr("title","Alignment of " + seq1Name + " and " + seq2Name);
-    dialog.dialog({autoOpen: false,modal: false,bgiframe: true,width:500,height:250});
+    dialog.dialog({autoOpen: false,modal: false,bgiframe: true,width:1200,height:500});
     
     if(!alignmentSeq1Id || !alignmentSeq2Id) {
       alert("Please drag sequences into both sequence boxes");
@@ -215,6 +219,7 @@ function showAlignment() {
     var gapOpenPenalty = $("input[name=gapOpenPenalty]").val();
     var gapExtensionPenalty = $("input[name=gapExtendPenalty]").val();
     var calculateSSAA = ($("#calculateSSAA").attr("checked") == true);
+    var gorName = $("#gorModelInput").val();
     //Show the progress bar & dialog
     dialog.empty();
     dialog.append("<div id=\"alignmentProgressBar\"></div>");
@@ -239,7 +244,7 @@ function showAlignment() {
     });
 }
 
-
+//Currently unused
 function validateAli(alignment, reference) {
   //Get all the field values
   var alignment = $("#valAliAlignmentsField").val();
