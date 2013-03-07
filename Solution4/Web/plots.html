@@ -1,0 +1,106 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+		<title>Propra G4</title>
+		<link rel="stylesheet" href="css/start/jquery-ui-1.10.1.custom.min.css" type="text/css" media="screen" />
+		<style type="text/css" media="screen">
+			body { background: #e7e7e7; font-family: Verdana, sans-serif; font-size: 11pt; }
+			#page { background: #ffffff; margin: 50px; border: 2px solid #c0c0c0; padding: 10px; }
+			#header { background: #4b6983; border: 2px solid #7590ae; text-align: center; padding: 10px; color: #ffffff; }
+			#header h1 { color: #ffffff; }
+			#body { padding: 10px; }
+			span.tt { font-family: monospace; }
+			span.bold { font-weight: bold; }
+			.ui-autocomplete-loading {background: white url('css/ui-lightness/images/ui-anim_basic_16x16.gif') right center no-repeat;}
+			#available-sequences { width: 99%; min-height: 150px; padding: 0.5em; }
+			#align-from {float:none; height: 100px;}
+			#align-to {float:none; height: 100px;}
+			#aligna-from-list, #aligna-to-list {height:100%; width:100%;}
+			.groupborder {border:thin;border-style: dashed; border-radius:3px;}
+			.resizable > h3 { text-align: center; margin: 0; }
+			.roundBorder{border-radius: 3px;}
+			.dropList { list-style-type: none; margin: 0; padding: 0 0 2.5em; float: left; margin-right: 10px; }
+			.dropList li { margin: 0 5px 5px 5px; padding: 5px; font-size: 1.2em;}
+			.sequence {min-width: 150px;}
+			.sequence-drop {min-height: 60px;}
+			.sequence-drop h4 { line-height: 16px; margin: 0 0 0.4em; }
+			.indent {margin-left: 10px;}
+		</style>
+		<!-- JS -->
+		<script type="text/javascript" src="js/jquery.js"></script>
+		<script type="text/javascript" src="js/jstorage.js"></script>
+		<script type="text/javascript" src="js/jquery-ui.js"></script>
+		<script type="text/javascript" src="ws.js"></script>
+ 		<script>
+			$(function() {
+				$( "#plotAccordion" ).accordion({
+				  collapsible: false, active:false, header: "h3", autoHeight: false, clearStyle: true, heightStyle: "fill"
+				});
+				$( "#gor1Eval" ).accordion({
+					collapsible: false, active:false, header: "h4", autoHeight: false, clearStyle: true, heightStyle: "fill"
+				});
+				$( "#gor3Eval" ).accordion({
+					collapsible: false, active:false, header: "h4", autoHeight: false, clearStyle: true, heightStyle: "fill"
+				});
+				$( "#gor4Eval" ).accordion({
+					collapsible: false, active:false, header: "h4", autoHeight: false, clearStyle: true, heightStyle: "fill"
+				});
+			});
+		</script>
+	</head>
+	<body>
+		<h1>Plots for secundary structure prediction (CB513)</h1>
+		<div id="plotAccordion">
+
+			<h3>GOR 1 evaluation</h3>
+			<div>
+				<div id="gor1Eval">
+					<h4>windowsize 17</h4>
+					<div>
+						<img src="plots/gor1CB5130x17">
+					</div>
+					<h4>compare Q3 for windowsize 5-20</h4>
+					<div>
+						<img src="plots/gor1Window.png">
+					</div>
+				</div>
+			</div>
+
+			<h3>GOR 3 evaluation</h3>
+			<div>
+				<div id="gor3Eval">
+					<h4>windowsize 17</h4>
+					<div>
+						<img src="plots/gor3CB5130x17">
+					</div>
+					<h4>compare Q3 for windowsize 5-20</h4>
+					<div>
+						<img src="plots/gor3Window.png">
+					</div>
+				</div>
+			</div>
+
+			<h3>GOR 4 evaluation</h3>
+			<div>
+				<div id="gor4Eval">
+					<h4>windowsize 17</h4>
+					<div>
+						<img src="plots/gor4CB5130x17">
+					</div>
+					<h4>compare Q3 for windowsize 5-20</h4>
+					<div>
+						<img src="plots/gor4Window.png">
+					</div>
+				</div>
+			</div>
+
+			<h3>compare Postprocess (compare Q3 for windowsize 5-20)</h3>
+			<div>
+				<img src="plots/postCmp.png">
+			</div>
+
+		</div>
+	</body>
+</html>
+
