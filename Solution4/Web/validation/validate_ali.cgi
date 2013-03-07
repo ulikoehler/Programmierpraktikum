@@ -17,7 +17,7 @@ close(REFOUT);
 #Write the reference filelist file
 my ($refFh, $referenceListFile) = tempfile();
 open (REFOUT, ">$referenceListFile");
-print REFOUT "$referenceFile";
+print REFOUT "$referenceFile\n";
 close(REFOUT);
 #Call it
 my $jarPath = "/home/proj/biocluster/praktikum/bioprakt/progprakt4/jar";
