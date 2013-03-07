@@ -36,8 +36,8 @@ public class CreateTestSet {
          */
         Splitter whitespaceSplitter = Splitter.on(CharMatcher.WHITESPACE).omitEmptyStrings().trimResults();
         ArrayList<TTuple> possibleset = new ArrayList<TTuple>();
-
-        String filename = "CandidateSet.txt"; //TODO
+        System.out.println("Parsing candidate");
+        String filename = "little.txt";
         BufferedReader reader1 = new BufferedReader(new FileReader(filename));
         String line;
         String id;
@@ -46,7 +46,7 @@ public class CreateTestSet {
             if (!line.isEmpty()) {
                 if (line.charAt(0) == '>') {
                     ArrayList<String> split = Lists.newArrayList(whitespaceSplitter.split(line));
-                    id = split.get(0);
+                    id = split.get(1);
                     line = reader1.readLine();
                     split = Lists.newArrayList(whitespaceSplitter.split(line));
                     sequence = split.get(1);
@@ -58,14 +58,15 @@ public class CreateTestSet {
         /**
          * finish sequence library
          */
-        String training = "CB513.txt"; //TODO
+        System.out.println("training");
+        String training = "CBmod";
         ArrayList<String> cb513seq = new ArrayList<String>();
         BufferedReader reader = new BufferedReader(new FileReader(training));
 
         while ((line = reader.readLine()) != null) {
             if (!line.isEmpty()) {
                 if (line.charAt(0) == '>') {
-                    line = reader1.readLine();
+                    line = reader.readLine();
                     ArrayList<String> split = Lists.newArrayList(whitespaceSplitter.split(line));
                     sequence = split.get(1);
                     cb513seq.add(sequence);
@@ -73,7 +74,7 @@ public class CreateTestSet {
             }
         }
         reader.close();
-
+        System.out.println("finished parsing");
         /**
          * assign scores for each candidate sequence based on pairswise
          * alignments with trainingset
@@ -83,7 +84,7 @@ public class CreateTestSet {
 
         double number = possibleset.size();
         for (int i = 0; i < possibleset.size(); i++) {
-            String sequence2 = possibleset.get(i).att1;
+            String sequence2 = possibleset.get(i).att2;
             double weigthedscore = 0;
             for (int j = 0; j < cb513seq.size(); j++) {
                 String sequence1 = cb513seq.get(j);
@@ -95,15 +96,15 @@ public class CreateTestSet {
                 weigthedscore += Math.pow(score, 3);
             }
             weigthedscore = Math.pow((weigthedscore / number), 1.0 / 3.0);
-            System.out.println(weigthedscore);
             possibleset.get(i).set3(weigthedscore);
         }
 
         /**
          * writing ne list for candidate sequences that pass thresholds
          */
-        double minscore = 150;
-        double maxscore = 300;
+        System.out.println("Creating output list");
+        double minscore = 100;
+        double maxscore = 130;
 
         ArrayList<ZTuple> testsetlist = new ArrayList<ZTuple>();
 
@@ -115,14 +116,15 @@ public class CreateTestSet {
         /**
          * writing ne testsetfile
          */
+        System.out.println("Writing output");
         StringBuilder builder = new StringBuilder();
         for (int i = 0; i < testsetlist.size(); i++) {
-            builder.append(">").append(testsetlist.get(i).att1).append("\n").append("AS ").append(testsetlist.get(i).att2);
+            builder.append(">").append(testsetlist.get(i).att1).append("\n").append("AS ").append(testsetlist.get(i).att2).append("\n\n");
         }
-
+        String pew = builder.toString();
         FileWriter out = new FileWriter("testset.txt");
         BufferedWriter output = new BufferedWriter(out);
-        output.write(builder.toString());
-
+        output.write(pew);
+        output.close();
     }
 }

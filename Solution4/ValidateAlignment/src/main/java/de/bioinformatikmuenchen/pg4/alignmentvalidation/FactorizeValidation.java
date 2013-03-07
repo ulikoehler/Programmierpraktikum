@@ -94,8 +94,8 @@ public class FactorizeValidation {
                             //these hash tags are still not unique and might be overwritten
                             //but there isnt more information form the input alignment
                             //that could identify the correct reference alignment
-                            hash.put(id1 + id2 + sequence(seq1) + sequence(seq2), seq1);
-                            hash.put(id2 + id1 + sequence(seq2) + sequence(seq1), seq2);
+                            hash.put(sequence(seq1) + sequence(seq2), seq1);
+                            hash.put(sequence(seq2) + sequence(seq1), seq2);
                         }
                     }
 
@@ -163,8 +163,8 @@ public class FactorizeValidation {
             String candidatetarget = alignmentpair.get(i).att4;
             String seqid1 = alignmentpair.get(i).att1.substring(1);
             String seqid2 = alignmentpair.get(i).att2;
-            String referencetemplate = hash.get(seqid1 + seqid2 + sequence(candidatetemplate) + sequence(candidatetarget));
-            String referencetarget = hash.get(seqid2 + seqid1 + sequence(candidatetarget) + sequence(candidatetemplate));
+            String referencetemplate = hash.get(sequence(candidatetemplate) + sequence(candidatetarget));
+            String referencetarget = hash.get(sequence(candidatetarget) + sequence(candidatetemplate));
             //checking if reference alignment exists
             if (referencetemplate == null || referencetarget == null) {
                 System.err.println("Reference pair doesnt exist");
