@@ -13,15 +13,16 @@
 			span.tt { font-family: monospace; }
 			span.bold { font-weight: bold; }
 			.ui-autocomplete-loading {background: white url('css/ui-lightness/images/ui-anim_basic_16x16.gif') right center no-repeat;}
-			#available-sequences { width: 99%; height: 150px; padding: 0.5em; }
+			#available-sequences { width: 99%; min-height: 150px; padding: 0.5em; }
 			#align-from {float:none; height: 100px;}
 			#align-to {float:none; height: 100px;}
 			#aligna-from-list, #aligna-to-list {height:100%; width:100%;}
+			.groupborder {border:thin;border-style: dashed; border-radius:3px;}
 			.resizable > h3 { text-align: center; margin: 0; }
 			.roundBorder{border-radius: 3px;}
 			.dropList { list-style-type: none; margin: 0; padding: 0 0 2.5em; float: left; margin-right: 10px; }
 			.dropList li { margin: 0 5px 5px 5px; padding: 5px; font-size: 1.2em;}
-			.sequence {min-width: 150px;}
+			.sequence {min-width: 150px;z-index: 1;}
 			.sequence-drop {min-height: 60px;}
 			.sequence-drop h4 { line-height: 16px; margin: 0 0 0.4em; }
 			.indent {margin-left: 10px;}
@@ -38,166 +39,22 @@
 			<h1>Sequence tools (Gr. 4)</h1>
 		</div>
 		<div id="body">
-			<h3>Select protein ID</h3>
-			<div style="height: 30px;">
-			</div>
-			
-			<div class="accordion">
-			  <h3>Align sequences</h3>
-			  <div>
-			    <form action="alignment/align.cgi" method="post" enctype="multipart/form-data">
-				  <div id="alignmentSequence1" class="sequence-drop ui-widget-content ui-state-default">
-				    <h4 class="ui-widget-header">Drop first sequence in this box</h4>
-				  </div><br/>
-				  <div id="alignmentSequence2" class="sequence-drop ui-widget-content ui-state-default">
-				    <h4 class="ui-widget-header">Drop second sequence in this box</h4>
-				  </div>
-				  <!-- Hidden inputs -->
-				  <!-- These hold the sequence IDs to be aligned -->
-				  <input id="alignmentSeq1Id" type="hidden" name="seq1Id"/>
-				  <input id="alignmentSeq2Id" type="hidden" name="seq2Id"/>
-				  <br/>
-				  Alignment matrix:
-				    <input id="alignmentMatrix"  name="distanceMatrix" class="roundBorder" />
-				    <div class="button" onclick="showAddMatrixDialog()">Upload substitution matrix</div>
-				  <br/><br/>
-				  <!-- Alignment type -->
-				  Alignment type:
-				    <input type="radio" name="alignmentType" value="Global" checked>Global
-				    <input type="radio" name="alignmentType" value="Local">Local
-				    <input type="radio" name="alignmentType" value="Freeshift">Freeshift
-				  <br/><br/>
-				  <!-- Alignment algorithm -->
-				  Alignment algorithm:
-				    <input type="radio" name="alignmentAlgorithm" value="Global" checked>Gotoh
-				    <input type="radio" name="alignmentAlgorithm" value="Local">Needleman-Wunsch <!-- TODO Auto-deselect gap open -->
-				  <br/><br/>
-				  <b>Gap penalties</b>
-				  <div class="indent">
-				    <table>
-				      <tr><td>Gap open penalty:</td><td><input class="roundBorder" type="text" name="gapOpenPenalty" value="-12.0"/></td></tr>
-				      <tr><td>Gap extension penalty:</td><td><input class="roundBorder" type="text" name="gapExtendPenalty" value="-1.0"/></td><br/>
-				    </table>
-				  </div>
-				  <br/>
-				  Options<br/>
-				  <div class="indent">
-				    <input type="checkbox" name="calculateSSAA"> Predict secondary structure and execute SSAA</input>
-				  </div>
-				  <br/>
-				    <div class="button" onclick="showAlignment()">Show alignment</div>
-				    <div class="button" onclick="showFixedPointAlignment()">Show fixed-point alignment</div>
-			    </form>
-			  </div>
-			  <h3>Predict secondary structure</h3>
-			  <div>
-				<form id="sspPredictForm">
-					<h4>Secondary Structure Prediction</h4>
-					<div id="sspSequenceDropField" class="sequence-drop ui-widget-content ui-state-default">
-						<h4 class="ui-widget-header">Please drop the sequence or the alignment (GOR5) you want to predict in this box!</h4><!-- param --seq <if sequence> or --maf <if alignment> -->
-					</div>
-					<br>
-					<div id="sspSequenceDropField" class="sequence-drop ui-widget-content ui-state-default">
-						<h4 class="ui-widget-header">Please drop the model file you want to use in this box!</h4><!-- param --model <model file> -->
-					</div>
-					<!-- param: --format <txt|html> -->
-					<br>
-					Options:<br>
-					<br>
-						<input id="probabilities" type="checkbox" name="option" value="probabilities" checked="checked"><label for="probabilities"> show probabilities in results</label><br><!-- param: --probabilities -->
-						<input id="avgPost" type="checkbox" name="option" value="avgPost" checked="checked"><label for="avgPost"> use avg postprocessing for positions with less than </label><input id="avgProb" type="text" value="50" style="text-align:right; border: none; width: 24px;" maxlength="3" onkeydown="javascript: this.style.width = ((this.value.length + 1) * 8) + 'px';" onclick="document.getElementById('avgPost').checked = true"><label for="avgPost">% probability</label></label><br><!-- --avgPost <double> -->
-						<input id="stdPost" type="checkbox" name="option" value="stdPost" checked="checked"><label for="stdPost"> use std postprocessing for positions with less than </label><input id="stdProb" type="text" value="50" style="text-align:right; border: none; width: 24px;" maxlength="3" onkeydown="javascript: this.style.width = ((this.value.length + 1) * 8) + 'px';" onclick="document.getElementById('stdPost').checked = true"><label for="avgPost">% probability</label><br><!-- --stdPost <double> -->
-				</form>
-				<br>
-				<button id="sspCalculateSequenceButton">Predict sequence &gt;&gt;</button><!-- TODO Use JQuery to load results -->
-				<br>
-				<br>
-				<script type="text/javascript">
-				// <!--
-					$(function() {
-						$( "#sspResultDialog" ).dialog({
-								autoOpen: false,
-								show: {
-								effect: "blind",
-								duration: 1000
-							},
-							hide: {
-								effect: "explode",
-								duration: 1000
-							}
-						});
-						$( "#sspCalculateSequenceButton" ).click(function() {
-							$( "#sspResultDialog" ).dialog( "open" );
-						});
-					});
-				// -->
-				</script>
-				<div id="sspResultDialog" title="Input a sequence for prediction">
-					<h3>Prediction Results:</h3>
-						<div id="sspResultDiv">
-							<script type="text/javascript">
-							// <!--
-								$(function() {
-									$.ajax({
-										url: "test.html",
-										context: document.body
-									}).done(function() {
-										$(this).addClass("done");
-									});
-								});
-							// -->
-							</script>
-						</div>
-				</div>
-				<div id="available-models" class="resizable ui-widget-content">
-					<h3 class="ui-widget-header">Available model files</h3>
-					<ul class="dropList" style="margin-top:5px; min-height:80px;">
-						<!--
-							<li class="model ui-state-default">test.db (GOR I)</li><li class="model ui-state-default">test.db (GOR III)</li>
-							<li class="model ui-state-default">test.db (GOR IV)</li><li class="model ui-state-default">CB513.db (GOR I)</li>
-							<li class="model ui-state-default">CB513.db (GOR III)</li><li class="model ui-state-default">CB513.db (GOR IV)</li>
-						-->
-					</ul>
-				</div>
-				<br>
-				<h3 style="width: 100%">GOR Method Training</h3>
-				<form id="sspTrainForm">
-					<input id="database" type="file"><br><br>
-					Training method:<br>
-					<br>
-					<input id="GORI" type="radio" name="gorMethod" value="GORI" checked="checked"><label for="GORI"> GOR I</label><br>
-					<input id="GORIII" type="radio" name="gorMethod" value="GORIII"><label for="GORIII"> GOR III</label><br>
-					<input id="GORIV" type="radio" name="gorMethod" value="GORIV"><label for="GORIV"> GOR IV</label><br>
-					<br>
-					<button>train &gt;&gt;</button>
-				</form>
-			  </div>
-			  <h3>Validation</h3>
-			  <div>
-			  </div>
-			</div>
-			<div style="height:20px;"></div>
-			<div id="available-sequences" class="resizable ui-widget-content">
-				<h3 class="ui-widget-header">Available sequences</h3>
-				<ul id="availableSequencesList" class="dropList" style="margin-top:5px;min-height:80px;">
-					<li class="sequence ui-state-default">Test sequence</li>
-				</ul>
-			</div>
-			<h3>Upload sequence data</h3>
+			<h3>Upload data:</h3>
 			<div class="tabs">
 				<ul>
 					<li><a href="#upload-dbid">From database</a></li>
 					<li><a href="#upload-fastainput">FASTA input</a></li>
-					<li><a href="#upload-fileinput">File upload</a></li>
+					<li><a href="#upload-fileinput">Upload FASTA file</a></li>
+					<li><a href="#upload-gormodel">Upload GOR model</a></li>
 				</ul>
 				<div id="upload-dbid">
 					<select id="dbselect" name="db">
 						<option>PDB</option>
-						<option>SwissProt</option>
-						<option>RefSeq</option>
+						<option>UniProt</option>
 					</select>
-					<input id="proteinId" />
-					<input class="uibtn" type="submit" value="Add" />
+					<input id="dbid" />
+					<input class="uibtn" type="submit" value="Add" onclick="addSequenceFromDB()" />
+					<!-- Homolog: 1bhg, 1bgl from HOMSTRAD family ghf2 -->
 				</div>
 				<div id="upload-fastainput">
 	 				<form action="sequences/insert_sequence_string.cgi" method="post" enctype="multipart/form-data">
@@ -218,14 +75,167 @@
 						<input type="submit" value="Add sequence" class="button"/>
 					</form>
 				</div>
+				<div id="upload-gormodel">
+	 				<form action="gormodels/insert_model_file.cgi" method="post" enctype="multipart/form-data">
+						<b><br/>
+						Name: <input type="text" name="name"/><br/>
+						GOR Model file:<input type="file" name="gormodelfile" /><br />
+						<input type="submit" value="Upload model" class="button"/>
+					</form>
+				</div>
 			</div>
+			<!-- General & simple sequence tools -->
+			<div style="width:100%; display: table;">
+			  <div id="available-sequences-container" style="width: 50%;display:table-cell;">
+			    <div id="available-sequences" class="resizable ui-widget-content">
+				    <h3 class="ui-widget-header">Available sequences</h3>
+				    <ul id="availableSequencesList" class="dropList" style="margin-top:5px;min-height:80px;">
+					    <li class="sequence ui-state-default">Test sequence</li>
+				    </ul>
+			    </div>
+			  </div>
+			  <div style="width: 40%;display:table-cell;">
+			      <div id="deleteSequenceDrop" class="sequence-drop ui-widget-content ui-state-default">
+				    <h4 class="ui-widget-header">Drop sequence here to delete it</h4>
+			      </div><br/>
+			      <div id="showSequenceDrop" class="sequence-drop ui-widget-content ui-state-default">
+				    <h4 class="ui-widget-header">Drop sequence here to show sequence data</h4>
+			      </div><br/>
+			  </div>
+			</div>
+			<div class="tabs">
+			  <ul>
+				  <li><a href="#alignSequencesTab">Align sequences</a></li>
+				  <li><a href="#sspTab">Secondary structure predication</a></li>
+				  <!--<li><a href="#validateTab">Validation</a></li>-->
+			  </ul>
+			  <div id="alignSequencesTab" style="height:600px">
+			    <form action="alignment/alignment.cgi" method="post" enctype="multipart/form-data">
+				  <div id="alignmentSequence1" class="sequence-drop ui-widget-content ui-state-default">
+				    <h4 class="ui-widget-header">Drop first sequence in this box</h4>
+				  </div><br/>
+				  <div id="alignmentSequence2" class="sequence-drop ui-widget-content ui-state-default">
+				    <h4 class="ui-widget-header">Drop second sequence in this box</h4>
+				  </div>
+				  <!-- Hidden inputs -->
+				  <!-- These hold the sequence IDs to be aligned -->
+				  <input id="alignmentSeq1Id" type="hidden" name="seq1Id"/>
+				  <input id="alignmentSeq2Id" type="hidden" name="seq2Id"/>
+				  <div id="alignmentSeq1Name" style="display:none;" ></div>
+				  <div id="alignmentSeq2Name" style="display:none;" ></div>
+				  <br/>
+				  Alignment matrix:
+				    <input id="alignmentMatrix"  name="distanceMatrix" class="roundBorder" />
+				    <div class="button" onclick="showAddMatrixDialog()">Upload substitution matrix</div>
+				  <br/><br/>
+				  <!-- Alignment type -->
+				  Alignment type:
+				    <input type="radio" name="alignmentType" value="Global" checked>Global
+				    <input type="radio" name="alignmentType" value="Local">Local
+				    <input type="radio" name="alignmentType" value="Freeshift">Freeshift
+				  <br/><br/>
+				  <!-- Alignment algorithm -->
+				  Alignment algorithm:
+				    <input id="gotohRadio" type="radio" name="alignmentAlgorithm" value="Gotoh" checked>Gotoh
+				    <input id="nwRadio" type="radio" name="alignmentAlgorithm" value="NeedlemanWunsch">Needleman-Wunsch <!-- TODO Auto-deselect gap open -->
+				  <br/><br/>
+				  <b>Gap penalties</b>
+				  <div class="indent" style="width:400px">
+				    <table>
+				      <tr><td>Gap open penalty:</td><td><input id="gapOpenField" class="roundBorder" type="text" name="gapOpenPenalty" value="-12.0" /></td></tr>
+				      <tr><td>Gap extension penalty:</td><td><input class="roundBorder" type="text" name="gapExtendPenalty" value="-1.0"/></td><br/>
+				    </table>
+				  </div>
+				  <br/>
+				  Optional: Secondary-Structure aided Alignment<br/>
+				  <div class="indent">
+				    Optional GOR Model for SSAA: <input id="gorModelInput"  name="gormodel" class="roundBorder" />
+				  </div>
+				  <br/>
+				    <div class="button" onclick="showAlignment(false)">Show alignment (+ Fixed-point graph)</div>
+			    </form>
+			  </div>
+			  <div id="sspTab">
+				<form action="ssp/sspPredict.cgi" method="post" enctype="multipart/form-data" id="sspPredictForm">
+					<h4>Secondary Structure Prediction</h4>
+					<div id="sspSequenceDropField" class="sequence-drop ui-widget-content ui-state-default">
+						<h4 class="ui-widget-header">Please drop the sequence or the alignment (GOR5) you want to predict in this box!</h4><!-- param --seq <if sequence> or --maf <if alignment> -->
+					</div>
+					Alignment for GOR V: <br/>
+					<textarea id="gor5AlignmentField" name="gor5Alignment" style="width:100%" rows="12"></textarea><br/>
+					<input id="sspSequenceField" type="hidden" name="sspSequence"></input>
+					<br>
+					Select the model you want to use: <input id="modelInput"  name="model" class="roundBorder" />
+					<!-- param: --format <txt|html> -->
+					<br/><br/>
+					Options:<br>
+					<br>
+						<input id="probabilities" type="checkbox" name="probabilities" value="probabilities" checked="checked"><label for="probabilities"> Show probabilities in results</label><br><!-- param: --probabilities -->
+						<input id="avgPost" type="checkbox" name="avgPost" value="avgPost" checked="checked"><label for="avgPost"> Use Average Postprocessing for positions with less than </label><input id="avgProb" type="text" value="50" style="text-align:right; border: none; width: 24px;" maxlength="3" onkeydown="javascript: this.style.width = ((this.value.length + 1) * 8) + 'px';" onclick="document.getElementById('avgPost').checked = true"><label for="avgPost">% probability</label></label><br><!-- --avgPost <double> -->
+						<input id="stdPost" type="checkbox" name="stdPost" value="stdPost" checked="checked"><label for="stdPost"> Use Standard postprocessing for positions with less than </label><input id="stdProb" type="text" value="50" style="text-align:right; border: none; width: 24px;" maxlength="3" onkeydown="javascript: this.style.width = ((this.value.length + 1) * 8) + 'px';" onclick="document.getElementById('stdPost').checked = true"><label for="avgPost">% probability</label><br><!-- --stdPost <double> -->
+						
+						<div class="button"  id="sspCalculateSequenceButton" onclick="showSSP()" >Predict sequence &gt;&gt;</div>
+				
+				</form>
+				<br>
+				secondary structure prediction plots are available <a href="plots.html">here</a>!
+			  </div>
+			  <h3>Validation</h3>
+			  <div>
+				<b>Alignment validation:</b><br/>
+				<div class="indent">
+				    <form action="validation/valAli.cgi" method="post" enctype="multipart/form-data">
+				      <!--<table>
+					<tr><td>Aligment</td><td><input name="alignments" type="file"></td></tr>
+					<tr><td>Reference</td><td><input name="reference" type="file"></td></tr>
+				      </table>-->
+				      
+				      <b>Alignment</b><br/>
+				      <textarea id="valAliAlignmentsField" name="alignments" style="width:100%" rows="12"></textarea><br/>
+				      <b>Reference</b><br/>
+				      <textarea id="valAliRefField" name="reference" style="width:100%" rows="12"></textarea><br/>
+				      <div class="button" onclick="validateAli()">Validate alignment</div>
+				      <!--<input type="submit" value="Validate" /></br>-->
+				    </form>
+				</div>
+				<br/>
+				<b>Alignment secondary structure prediction:</b><br/>
+				<div class="indent">
+				  <form action="validation/valGor.cgi" method="POST" enctype="multipart/form-data">
+					  <!--<table>
+					    <tr><td>Prediction</td><td><input name="predict" type="file"></td></tr>
+					    <tr><td>DSSP</td><td><input name="dssp" type="file"></td></tr>
+					  </table>
+					  <input type="submit" name="Submit" value="Submit Form" />-->
+					  
+					  <textarea id="valGorAlignmentsField" name="alignments" style="width:100%" rows="12"></textarea><br/>
+					  <b>DSSP</b><br/>
+					  <textarea id="valGorDSSPField" name="reference" style="width:100%" rows="12"></textarea><br/>
+					  <div class="button">Validate SSP</div>
+				  </form>
+				</div>
+			  </div>
+			<br/>
+			<div style="height:20px;"></div>
+
+			
 		</div>
 		<div id="addMatrixDialog" title="Upload substitution matrix" style="display: none;">
-		    <form action="matrix/insert_matrix.cgi" method="post" enctype="multipart/form-data">
+		     <form action="matrix/insert_matrix.cgi" method="post" enctype="multipart/form-data">
 			  Matrix name: <input type="text" name="name" cols="50" rows="20"></input><br/>
 			  Matrix data in QUASAR format:<br/> <input type="file" name="quasar" style="width:100%;"><br/><br/>
 			  <input type="submit" value="Submit"/>
 		    </form>
+		</div>
+		<div id="dialogsContainer">
+		</div>
+		<div id="sspDialog" title="Secondary structure prediction" style="display: none;">
+		</div>
+		<div id="alignmentResultDialog" title="Alignment result" style="display: none;"> 
+		</div>
+		<div id="validateDialog" title="Validation result" style="display: none;"> 
+		</div>
+		<div id="sequenceDialog" style="display: none;"> 
 		</div>
 	</body>
 </html>

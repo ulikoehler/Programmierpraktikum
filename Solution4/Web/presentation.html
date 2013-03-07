@@ -1,0 +1,81 @@
+<!Doctype html public>
+<html>
+ <head>
+  <title>&quot;Programmierpraktikum&quot; presentation - with the reveal-js framework</title>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <link rel="stylesheet" href="reveal-js/reveal.css">
+ </head>
+ <body>
+  <div class="reveal">
+   <div class="slides">
+    <section>	<!-- first sheet of presentation -->
+     <p>
+      <h1>Programmierpraktikum</h1><br><br><br>
+      <h2>WS 2012/13</h2>
+     </p>
+     <p><br>
+      by Rene Schoeffel, Uli K&ouml;hler, Yann Sp&ouml;ri and Tobias Harrer
+     </p>
+    </section>
+    <section>	<!-- first sheet of alignment -->
+     <h2>Alignments</h2>
+    </section>
+    <section>
+     <img src="">
+    </section>
+    <section>	<!-- first sheet of secondary structure prediction -->
+     <h2>Secundary Structure Prediction</h2>
+    </section>
+    <section>	<!-- first sheet of validation -->
+     <h2>Validation</h2>
+    </section>
+    <section>	<!-- first sheet of website -->
+     <h2>Website</h2>
+    </section>
+   </div>
+  
+<!--
+  <aside>
+   <a href="#">&#x25C4;</a>
+   <a href="#">&#x25BA;</a>
+   <a href="#">&#x25B2;</a>
+   <a href="#">&#x25BC;</a>
+  </aside>
+-->
+  
+  <div><span></span></div>
+  </div>
+
+<script src="reveal-js/head.min.js"></script>
+<script src="reveal-js/reveal.js"></script>
+
+<script>
+
+// Full list of configuration options available here:
+// https://github.com/hakimel/reveal.js#configuration
+Reveal.initialize({
+controls: true,
+progress: true,
+history: true,
+center: true,
+
+theme: Reveal.getQueryHash().theme, // available themes are in /css/theme
+transition: Reveal.getQueryHash().transition || 'default', // default/cube/page/concave/zoom/linear/fade/none
+
+// Optional libraries used to extend on reveal.js
+dependencies: [
+{ src: 'lib/js/classList.js', condition: function() { return !document.body.classList; } },
+{ src: 'plugin/markdown/showdown.js', condition: function() { return !!document.querySelector( '[data-markdown]' ); } },
+{ src: 'plugin/markdown/markdown.js', condition: function() { return !!document.querySelector( '[data-markdown]' ); } },
+{ src: 'plugin/highlight/highlight.js', async: true, callback: function() { hljs.initHighlightingOnLoad(); } },
+{ src: 'plugin/zoom-js/zoom.js', async: true, condition: function() { return !!document.body.classList; } },
+{ src: 'plugin/notes/notes.js', async: true, condition: function() { return !!document.body.classList; } }
+// { src: 'plugin/remotes/remotes.js', async: true, condition: function() { return !!document.body.classList; } }
+]
+});
+
+</script>
+
+</body>
+</html>

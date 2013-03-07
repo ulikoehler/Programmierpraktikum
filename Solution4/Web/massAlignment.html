@@ -1,0 +1,93 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+		<title>Propra G4</title>
+		<link rel="stylesheet" href="css/start/jquery-ui-1.10.1.custom.min.css" type="text/css" media="screen" />
+		<style type="text/css" media="screen">
+			body { background: #e7e7e7; font-family: Verdana, sans-serif; font-size: 11pt; }
+			#page { background: #ffffff; margin: 50px; border: 2px solid #c0c0c0; padding: 10px; }
+			#header { background: #4b6983; border: 2px solid #7590ae; text-align: center; padding: 10px; color: #ffffff; }
+			#header h1 { color: #ffffff; }
+			#body { padding: 10px; }
+			span.tt { font-family: monospace; }
+			span.bold { font-weight: bold; }
+			.ui-autocomplete-loading {background: white url('css/ui-lightness/images/ui-anim_basic_16x16.gif') right center no-repeat;}
+			#available-sequences { width: 99%; min-height: 150px; padding: 0.5em; }
+			#align-from {float:none; height: 100px;}
+			#align-to {float:none; height: 100px;}
+			#aligna-from-list, #aligna-to-list {height:100%; width:100%;}
+			.resizable > h3 { text-align: center; margin: 0; }
+			.roundBorder{border-radius: 3px;}
+			.dropList { list-style-type: none; margin: 0; padding: 0 0 2.5em; float: left; margin-right: 10px; }
+			.dropList li { margin: 0 5px 5px 5px; padding: 5px; font-size: 1.2em;}
+			.sequence {min-width: 150px;}
+			.sequence-drop {min-height: 60px;}
+			.sequence-drop h4 { line-height: 16px; margin: 0 0 0.4em; }
+			.indent {margin-left: 10px;}
+		</style>
+		<!-- JS -->
+		<script type="text/javascript" src="js/jquery.js"></script>
+		<script type="text/javascript" src="js/jstorage.js"></script>
+		<script type="text/javascript" src="js/jquery-ui.js"></script>
+		<script type="text/javascript" src="ws.js"></script>
+	</head>
+	<body>
+		<h2>Mass Alignment</h2>
+		<div>
+			<form action="alignment/alignMass.cgi" method="post" enctype="multipart/form-data">
+			  <div id="upload-seq-library">
+	 				<!-- <form action="sequences/uploadLib.cgi" method="post" enctype="multipart/form-data"> -->
+						Upload a sequence library:<br/>
+						<input type="file" name="libFile" /><br />
+					<!-- </form> -->
+				</div>
+
+				<div id="upload-pairs-file">
+	 				<!-- <form action="sequences/uploadPair.cgi" method="post" enctype="multipart/form-data"> -->
+						Upload a pairs file:<br/>
+						<input type="file" name="pairFile" /><br />
+					<!-- </form> -->
+				</div>
+			  Alignment matrix:
+				<!-- <form action="alignment/matrixSelect.cgi" method="post" enctype="multipart/form-data"> -->
+					<div id="select-matrix">
+						<select id="matrixSelect" name="matrix">
+							<option>BLOSUM45</option>
+							<option>BLOSUM50</option>
+							<option>BLOSUM62</option>
+							<option>PAM120</option>
+							<option>PAM250</option>
+						</select>
+					</div>
+			  <br/><br/>
+			  <!-- Alignment type -->
+			  Alignment type:
+			    <input type="radio" name="alignmentType" value="Global" checked>Global
+			    <input type="radio" name="alignmentType" value="Local">Local
+			    <input type="radio" name="alignmentType" value="Freeshift">Freeshift
+			  <br/><br/>
+			  <!-- Alignment algorithm -->
+			  Alignment algorithm:
+			    <input type="radio" name="alignmentAlgorithm" value="Global" checked>Gotoh
+			    <input type="radio" name="alignmentAlgorithm" value="Local">Needleman-Wunsch <!-- TODO Auto-deselect gap open -->
+			  <br/><br/>
+			  <b>Gap penalties</b>
+			  <div class="indent">
+			    <table>
+			      <tr><td>Gap open penalty:</td><td><input class="roundBorder" type="text" name="gapOpenPenalty" value="-12.0"/></td></tr>
+			      <tr><td>Gap extension penalty:</td><td><input class="roundBorder" type="text" name="gapExtendPenalty" value="-1.0"/></td><br/>
+			    </table>
+			  </div>
+			  <br/>
+			  Options<br/>
+			  <div class="indent">
+			    <input type="checkbox" name="calculateSSAA"> Predict secondary structure and execute SSAA</input>
+			  </div>
+			  <br/>
+			    <div class="button" onclick="showAlignment()">Show alignment</div>
+			    <div class="button" onclick="showFixedPointAlignment()">Show fixed-point alignment</div>
+			</form>
+		</div>
+	</body>
+</html>
