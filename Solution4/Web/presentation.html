@@ -3,40 +3,156 @@
  <head>
   <title>&quot;Programmierpraktikum&quot; presentation - with the reveal-js framework</title>
   <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-  <script type="text/javascript" src="reveal-js/jquery-1.4.4.min.js"></script>
-  <script type="text/javascript" src="reveal-js/jquery.reveal.js"></script>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
   <link rel="stylesheet" href="reveal-js/reveal.css">
  </head>
  <body>
   <div class="reveal">
    <div class="slides">
+    <section>	<!-- first sheet of presentation -->
+     <p>
+      <h1>Programmierpraktikum</h1><br><br><br>
+      <h2>WS 2012/13</h2>
+     </p>
+     <p><br>
+      by Rene Schoeffel, Uli K&ouml;hler, Yann Sp&ouml;ri and Tobias Harrer
+     </p>
+    </section>
+    <section>	<!-- first sheet of alignment -->
+     <h2>Alignments</h2>
+    </section>
     <section>
-     <section>	<!-- first sheet of presentation -->
-      <h1>Programmierpraktikum WS 2012/13</h1>
-      Rene Schoeffel, Uli K&ouml;hler, Yann Sp&ouml;ri, Tobias Harrer
-     </section>
-     <section>	<!-- first sheet of alignment -->
-      <h2>Alignments</h2>
-     </section>
-     <section>	<!-- first sheet of secondary structure prediction -->
-      <h2>Secundary Structure Prediction</h2>
-     </section>
-     <section>	<!-- first sheet of validation -->
-      <h2>Validation</h2>
-     </section>
-     <section>	<!-- first sheet of website -->
-      <h2>Website</h2>
-     </section>
+     <img src="">
+    </section>
+    <section>	<!-- first sheet of secondary structure prediction -->
+     <h2>Secundary Structure Prediction</h2>
+    </section>
+    <section>
+     <p>
+      <span style="font-size: 27px">GOR I validation (windowsize: 17; no postprocessing)</span>
+     </p>
+     <p>
+      <img src="plots/gor1CB5130x17">
+     </p>
+    </section>
+    <section>
+     <p><span style="font-size: 27px">GOR I comparisation of diffrent windowsizes</span>
+     </p>
+     <p>
+      <img src="plots/gor1Window.png">
+     </p>
+    </section>
+    <section>
+     <p><span style="font-size: 27px">GOR I postprocessing validation</span>
+     </p>
+     <p>
+      <img src="plots/gor1Post.png">
+     </p>
+    </section>
+    <section>
+     <p><span style="font-size: 27px">GOR III validation (windowsize: 17; no postprocessing)</span>
+     </p>
+     <p>
+      <img src="plots/gor3CB5130x17">
+     </p>
+    </section>
+    <section>
+     <p><span style="font-size: 27px">GOR III comparisation of diffrent windowsizes</span>
+     </p>
+     <p>
+      <img src="plots/gor3Window.png">
+     </p>
+    </section>
+    <section>
+     <p><span style="font-size: 27px">GOR III postprocessing validation</span>
+     </p>
+     <p>
+      <img src="plots/gor3Post.png">
+     </p>
+    </section>
+    <section>
+     <p><span style="font-size: 27px">GOR IV validation (windowsize: 17; no postprocessing)</span>
+     </p>
+     <p>
+      <img src="plots/gor4CB5130x17">
+     </p>
+    </section>
+    <section>
+     <p><span style="font-size: 27px">GOR IV comparisation of diffrent windowsizes</span>
+     </p>
+     <p>
+      <img src="plots/gor4Window.png">
+     </p>
+    </section>
+    <section>
+     <p><span style="font-size: 27px">GOR IV postprocessing validation</span>
+     </p>
+     <p>
+      <img src="plots/gor4Post.png">
+     </p>
+    </section>
+    <section>	<!-- first sheet of validation -->
+     <h2>Validation</h2>
+    </section>
+    <section>	<!-- first sheet of website -->
+     <h2>Website</h2>
+    </section>
+    <section>
+     <p>
+      <h1>Used technologies</h1>
+     </p>
+     <p>
+      <ul style="list-style-image:url(presentation/list.jpg); padding: 15px; margin: 5px;">
+       <li style="padding: 15px; margin: 5px;"><span style="font-size: x-large">JQuery and JQuery UI<br>(UI Proof of Concept)</span></li>
+       <li style="adding: 15px; margin: 5px;"><span style="font-size: x-large">Ajax Technologie<br>(incl. asynchronous system architecture)</span></li>
+       <li style="padding: 15px; margin: 5px;"><span style="font-size: x-large">Reveal JS</span></li>
+       <li style="padding: 15px; margin: 5px;"><span style="font-size: x-large">Persistent data handling</span></li>
+      </ul>
+     </p>
     </section>
    </div>
-  </div>
-  <!-- Control panel elements
+  
+<!--
   <aside>
-   <a href=”#”>&#x25C4;</a>
-   <a href=”#”>&#x25BA;</a>
-   <a href=”#”>&#x25B2;</a>
-   <a href=”#”>&#x25BC;</a>
+   <a href="#">&#x25C4;</a>
+   <a href="#">&#x25BA;</a>
+   <a href="#">&#x25B2;</a>
+   <a href="#">&#x25BC;</a>
   </aside>
-  -->
- </body>
+-->
+  
+  <div><span></span></div>
+  </div>
+
+<script src="reveal-js/head.min.js"></script>
+<script src="reveal-js/reveal.js"></script>
+
+<script>
+
+// Full list of configuration options available here:
+// https://github.com/hakimel/reveal.js#configuration
+Reveal.initialize({
+controls: true,
+progress: true,
+history: true,
+center: true,
+
+theme: Reveal.getQueryHash().theme, // available themes are in /css/theme
+transition: Reveal.getQueryHash().transition || 'default', // default/cube/page/concave/zoom/linear/fade/none
+
+// Optional libraries used to extend on reveal.js
+ dependencies: [
+ { src: 'lib/js/classList.js', condition: function() { return !document.body.classList; } },
+ { src: 'plugin/markdown/showdown.js', condition: function() { return !!document.querySelector( '[data-markdown]' ); } },
+ { src: 'plugin/markdown/markdown.js', condition: function() { return !!document.querySelector( '[data-markdown]' ); } },
+ { src: 'plugin/highlight/highlight.js', async: true, callback: function() { hljs.initHighlightingOnLoad(); } },
+ { src: 'plugin/zoom-js/zoom.js', async: true, condition: function() { return !!document.body.classList; } },
+ { src: 'plugin/notes/notes.js', async: true, condition: function() { return !!document.body.classList; } },
+ { src: 'plugin/remotes/remotes.js', async: true, condition: function() { return !!document.body.classList; } }
+ ]
+ });
+
+</script>
+
+</body>
 </html>
