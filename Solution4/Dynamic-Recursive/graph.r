@@ -35,7 +35,7 @@ close(con)
 #df1 <- transform(df1, Algorithm = reorder(Algorithm, Index))
 library(ggplot2)
 
-png(file="rec.png",height=500,width=700)
+png(file="rec.png",height=300,width=500)
 
 
   print(ggplot(data=df1, aes(x=Größe, y=Laufzeit, group=Algorithmus, colour=Algorithmus)) +
