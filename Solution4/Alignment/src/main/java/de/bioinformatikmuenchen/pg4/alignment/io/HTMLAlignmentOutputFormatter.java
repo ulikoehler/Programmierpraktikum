@@ -35,15 +35,15 @@ public class HTMLAlignmentOutputFormatter extends AbstractAlignmentOutputFormatt
             for (int i = 0; i < align.queryAlignment.length(); i += 100) {
                 //First line
                 builder.append("<pre>");
-                builder.append(align.queryAlignment.substring(i, Math.min(align.queryAlignment.length() - i, 100)));
+                builder.append(align.queryAlignment.substring(i, Math.min(align.queryAlignment.length() - i, 100+i)));
                 builder.append("</pre>");
                 //Second line in red
                 builder.append("<pre style=\"color: red;\">");
-                builder.append(align.matchLine.substring(i, Math.min(align.matchLine.length() - i, 100)));
+                builder.append(align.matchLine.substring(i, Math.min(align.matchLine.length() - i, 100+i)));
                 builder.append("</pre>");
                 //Third line
                 builder.append("<pre>");
-                builder.append(align.targetAlignment.substring(i, Math.min(align.targetAlignment.length() - i, 100)));
+                builder.append(align.targetAlignment.substring(i, Math.min(align.targetAlignment.length() - i, 100+i)));
                 builder.append("</pre><br/>");
             }
 

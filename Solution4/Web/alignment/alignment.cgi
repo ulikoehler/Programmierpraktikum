@@ -146,9 +146,11 @@ my $matrix = getMatrixFromDatabase($db, $matrixName, "$outputPath/$matrixName");
 my $jarPath = "/home/proj/biocluster/praktikum/bioprakt/progprakt4/jar";
 
 #carp "/usr/lib64/biojava/bin/java -jar $jarPath/align.jar --go $gapOpen --ge $gapExtend --pairs $outputPath/seqPair.pairs --seqlib $outputPath/sequences.seqlib -m $outputPath/$matrixName --mode $alignmentType --fixedpointalignment $fpaDir --format html > alignmentout.txt";
+print header();
 
 my $ssaaOpt = "";
 if($gorModelName) {
+  print "<i>Secondary structure predicted using GOR Model $gorModelName</i><br/>";
   carp "Using GOR prediction on model $gorModelName";
   getGORModel($db, $gorModelName, "$outputPath/gormodel.txt");
   open (SEQOUT, ">$outputPath/sequences.fa");
@@ -158,15 +160,13 @@ if($gorModelName) {
   `/usr/lib64/biojava/bin/java -jar $jarPath/align.jar -m $outputPath/gormodel.txt -s $outputPath/sequences.fa > $outputPath/gorpred.txt`;
   $ssaaOpt = "-q $outputPath/gorpred.txt";  
 }
-
-print header();
 #Calculate the HTML alignment
 my $cli = "/usr/lib64/biojava/bin/java -jar $jarPath/align.jar --go $gapOpen --ge $gapExtend --pairs $outputPath/seqPair.pairs --seqlib $outputPath/sequences.seqlib -m $outputPath/$matrixName --mode $alignmentType --fixedpointalignment $fpaDir --format html $ssaaOpt --dpmatrices $dpMatricesDir";
 my $output = `bash -c '$cli'`;
 #Do the same for ALI output (for validation) without any extra stuff
 $cli = "/usr/lib64/biojava/bin/java -jar $jarPath/align.jar --go $gapOpen --ge $gapExtend --pairs $outputPath/seqPair.pairs --seqlib $outputPath/sequences.seqlib -m $outputPath/$matrixName --mode $alignmentType --format ali";
 #Write the ALI output to a file
-my $aliOutput = `bash -c '$cli'`;
+my $aliOutput = `bash -c '$cli' 2>&1`;
 my $aliFile = "$outputPath/alignment.ali";
 open (ALIOUT, ">$aliFile");
 print ALIOUT "$aliOutput";
