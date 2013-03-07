@@ -131,11 +131,12 @@ function showSequence(elem) {
   $.get("sequences/get_sequence.cgi", {id: $(elem).attr("seqid")},
 	function(data) {
 	    $("#sequenceDialog").attr("title","Sequence of " + $(elem).attr("name"));
-	    $("#sequenceDialog").dialog({autoOpen: false,modal: true,bgiframe: true,width:500,height:250});
+	    $("#sequenceDialog").dialog({autoOpen: false,modal: false,bgiframe: true,width:500,height:250});
 	    $("#sequenceDialog").empty();
-	    $("#sequenceDialog").append("<div>" + data + "</div>");
+	    $("#sequenceDialog").append("<div style=\"word-wrap:break-word;\">" + data + "</div>");
 	    $("#sequenceDialog").dialog("open");
-	});
+	}
+  );
   $(elem).draggable({revert: true});
   //$(elem).draggable("disable")
 }
