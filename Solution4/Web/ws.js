@@ -236,7 +236,8 @@ function showAlignment() {
       alignmentAlgorithm: alignmentAlgorithm,
       gapOpenPenalty: gapOpenPenalty,
       gapExtendPenalty: gapExtensionPenalty,
-      calculateSSAA: calculateSSAA
+      calculateSSAA: calculateSSAA,
+      gorname: gorName
     }, function(data, textStatus) {
       //Replace the progress bar by the data
       dialog.empty();
