@@ -50,15 +50,15 @@ public class SequencePairAlignment {
         calculateMatchLine();
         return queryAlignment + "\n" + matchLine + "\n" + targetAlignment;
     }
-    
+
     public double getMismatchPercentage() {
         calculateMatchLine();
         int mismatchCount = 0;
         for (int i = 0; i < matchLine.length(); i++) {
-            if(matchLine.charAt(i) != '|') {
+            if (matchLine.charAt(i) != '|') {
                 mismatchCount++;
             }
         }
-        return mismatchCount / (double)matchLine.length();
+        return mismatchCount * 100.0 / (double) matchLine.length();
     }
 }

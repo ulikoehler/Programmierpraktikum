@@ -219,7 +219,7 @@ function showAlignment() {
     var gapOpenPenalty = $("input[name=gapOpenPenalty]").val();
     var gapExtensionPenalty = $("input[name=gapExtendPenalty]").val();
     var calculateSSAA = ($("#calculateSSAA").attr("checked") == true);
-    var gorName = $("#gorModelInput").val();
+    var gorModel = $("#gorModelInput").val();
     //Show the progress bar & dialog
     dialog.empty();
     dialog.append("<div id=\"alignmentProgressBar\"></div>");
@@ -237,7 +237,7 @@ function showAlignment() {
       gapOpenPenalty: gapOpenPenalty,
       gapExtendPenalty: gapExtensionPenalty,
       calculateSSAA: calculateSSAA,
-      gorname: gorName
+      gormodel: gorModel
     }, function(data, textStatus) {
       //Replace the progress bar by the data
       dialog.empty();
@@ -275,7 +275,15 @@ function showSSP(fixedPoint) {
   var seqId = $("#sspSequenceField").val();
   var gor5Alignment = $("#gor5AlignmentField").val();
   var model = $("#modelInput").val();
-  
+  if(!model) {
+    alert("Please select a GOR model!");
+    return;
+  }
+
+  if(!id) {
+    alert("Please drag the sequence you want to predict into the sequence box");
+    return;
+  }
   var probabilities = ($("input[name=probabilities]:checked").attr("checked") ? 1 : 0);
   var avgPost = ($("input[name=avgPost]:checked").attr("checked") ? 1 : 0);
   var stdPost = ($("input[name=stdPost]:checked").attr("checked") ? 1 : 0);

@@ -46,7 +46,7 @@ sub getGORModel {
 	my $gorName = $_[1];
 	my $outputPath = $_[2];
 
-	my $query = $db->prepare("SELECT Data FROM GORModel WHERE LCASE(Name) = LCASE(?)");
+	my $query = $db->prepare("SELECT Data FROM GORModels WHERE LCASE(Name) = LCASE(?)");
 	$query->execute($gorName);
 	my $row = $query->fetchrow_hashref();
 	if(not defined $row) {
