@@ -1,0 +1,12 @@
+arg: Matrices/nucleotide.mat
+NAME Matrices/nucleotide.mat
+SCORE similarity
+NUMROW 4
+NUMCOL 4
+ROWINDEX ATGC
+COLINDEX ATGC
+
+MATRIX  1	-2	-1	-2
+MATRIX  -2	1	-2	-1
+MATRIX  -1	-2	1	-2
+MATRIX  -2	-1	-2	1

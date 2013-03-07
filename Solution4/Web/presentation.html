@@ -22,16 +22,102 @@
      <h2>Alignments</h2>
     </section>
     <section>
-     <img src="">
+     <p><span style="font-size: 27px">Dynamic vs Recursive algorithm</span>
+     </p>
+      <img src="presentation/rec.png">
+     </p>
+    </section>
+    <section>
+     <p><span style="font-size: 27px">Fixpoint alignment</span>
+     </p>
+      <img src="presentation/fixedPointAlignment.png">
+     </p>
     </section>
     <section>	<!-- first sheet of secondary structure prediction -->
      <h2>Secundary Structure Prediction</h2>
+    </section>
+    <section>
+     <p>
+      <span style="font-size: 27px">GOR I validation (windowsize: 17; no postprocessing)</span>
+     </p>
+     <p>
+      <img src="plots/gor1CB5130x17">
+     </p>
+    </section>
+    <section>
+     <p><span style="font-size: 27px">GOR I comparisation of diffrent windowsizes</span>
+     </p>
+     <p>
+      <img src="plots/gor1Window.png">
+     </p>
+    </section>
+    <section>
+     <p><span style="font-size: 27px">GOR I postprocessing validation</span>
+     </p>
+     <p>
+      <img src="plots/gor1Post.png">
+     </p>
+    </section>
+    <section>
+     <p><span style="font-size: 27px">GOR III validation (windowsize: 17; no postprocessing)</span>
+     </p>
+     <p>
+      <img src="plots/gor3CB5130x17">
+     </p>
+    </section>
+    <section>
+     <p><span style="font-size: 27px">GOR III compapresentation/risation of diffrent windowsizes</span>
+     </p>
+     <p>
+      <img src="plots/gor3Window.png">
+     </p>
+    </section>
+    <section>
+     <p><span style="font-size: 27px">GOR III postprocessing validation</span>
+     </p>
+     <p>
+      <img src="plots/gor3Post.png">
+     </p>
+    </section>
+    <section>
+     <p><span style="font-size: 27px">GOR IV validation (windowsize: 17; no postprocessing)</span>
+     </p>
+     <p>
+      <img src="plots/gor4CB5130x17">
+     </p>
+    </section>
+    <section>
+     <p><span style="font-size: 27px">GOR IV comparisation of diffrent windowsizes</span>
+     </p>
+     <p>
+      <img src="plots/gor4Window.png">
+     </p>
+    </section>
+    <section>
+     <p><span style="font-size: 27px">GOR IV postprocessing validation</span>
+     </p>
+     <p>
+      <img src="plots/gor4Post.png">
+     </p>
     </section>
     <section>	<!-- first sheet of validation -->
      <h2>Validation</h2>
     </section>
     <section>	<!-- first sheet of website -->
      <h2>Website</h2>
+    </section>
+    <section>
+     <p>
+      <h1>Used technologies</h1>
+     </p>
+     <p>
+      <ul style="list-style-image:url(presentation/list.jpg); padding: 15px; margin: 5px;">
+       <li style="padding: 15px; margin: 5px;"><span style="font-size: x-large">JQuery and JQuery UI<br>(UI Proof of Concept)</span></li>
+       <li style="adding: 15px; margin: 5px;"><span style="font-size: x-large">Ajax Technologie<br>(incl. asynchronous system architecture)</span></li>
+       <li style="padding: 15px; margin: 5px;"><span style="font-size: x-large">Reveal JS</span></li>
+       <li style="padding: 15px; margin: 5px;"><span style="font-size: x-large">Persistent data handling</span></li>
+      </ul>
+     </p>
     </section>
    </div>
   
@@ -64,16 +150,16 @@ theme: Reveal.getQueryHash().theme, // available themes are in /css/theme
 transition: Reveal.getQueryHash().transition || 'default', // default/cube/page/concave/zoom/linear/fade/none
 
 // Optional libraries used to extend on reveal.js
-dependencies: [
-{ src: 'lib/js/classList.js', condition: function() { return !document.body.classList; } },
-{ src: 'plugin/markdown/showdown.js', condition: function() { return !!document.querySelector( '[data-markdown]' ); } },
-{ src: 'plugin/markdown/markdown.js', condition: function() { return !!document.querySelector( '[data-markdown]' ); } },
-{ src: 'plugin/highlight/highlight.js', async: true, callback: function() { hljs.initHighlightingOnLoad(); } },
-{ src: 'plugin/zoom-js/zoom.js', async: true, condition: function() { return !!document.body.classList; } },
-{ src: 'plugin/notes/notes.js', async: true, condition: function() { return !!document.body.classList; } }
-// { src: 'plugin/remotes/remotes.js', async: true, condition: function() { return !!document.body.classList; } }
-]
-});
+ dependencies: [
+ { src: 'lib/js/classList.js', condition: function() { return !document.body.classList; } },
+ { src: 'plugin/markdown/showdown.js', condition: function() { return !!document.querySelector( '[data-markdown]' ); } },
+ { src: 'plugin/markdown/markdown.js', condition: function() { return !!document.querySelector( '[data-markdown]' ); } },
+ { src: 'plugin/highlight/highlight.js', async: true, callback: function() { hljs.initHighlightingOnLoad(); } },
+ { src: 'plugin/zoom-js/zoom.js', async: true, condition: function() { return !!document.body.classList; } },
+ { src: 'plugin/notes/notes.js', async: true, condition: function() { return !!document.body.classList; } },
+ { src: 'plugin/remotes/remotes.js', async: true, condition: function() { return !!document.body.classList; } }
+ ]
+ });
 
 </script>
 
