@@ -21,11 +21,12 @@ import java.util.regex.Pattern;
  * @author schoeffel
  */
 public class FactorizeValidation {
+    private static Splitter colonWhitespaceSplitter = Splitter.on(Pattern.compile(":\\s")).omitEmptyStrings().trimResults();
+    private static Splitter whitespaceSplitter = Splitter.on(CharMatcher.WHITESPACE).omitEmptyStrings().trimResults();
     //hashmap for reference sequences from HOMSTRAD
-
     private HashMap<String, String> hash = new HashMap();
     //arraylist for candidate alignments that are to validated
-    private ArrayList<VTuple> alignmentpair = new ArrayList();
+    private ArrayList<FTuple> alignmentpair = new ArrayList();
     //safing validation algorihtm output
     private Summary summary;
     private Detailed detailed;
@@ -93,8 +94,8 @@ public class FactorizeValidation {
                             //these hash tags are still not unique and might be overwritten
                             //but there isnt more information form the input alignment
                             //that could identify the correct reference alignment
-                            hash.put(id1 + id2 + sequence(seq1) + sequence(seq2), seq1);
-                            hash.put(id2 + id1 + sequence(seq2) + sequence(seq1), seq2);
+                            hash.put(sequence(seq1) + sequence(seq2), seq1);
+                            hash.put(sequence(seq2) + sequence(seq1), seq2);
                         }
                     }
 
@@ -117,6 +118,7 @@ public class FactorizeValidation {
 
             String homstradname1;
             String homstradname2;
+            String score;
             String candidatetemplate = "";
             String candidatetarget = "";
             //temp string for reading each line
@@ -125,13 +127,12 @@ public class FactorizeValidation {
             line = reader.readLine();
             while (line != null) {
                 //finding alignment entry
-                Splitter colonWhitespaceSplitter = Splitter.on(Pattern.compile(":\\s")).omitEmptyStrings().trimResults();
-                Splitter whitespaceSplitter = Splitter.on(CharMatcher.WHITESPACE).omitEmptyStrings().trimResults();
-                if (!line.equals("")) {
+                if (!line.isEmpty()) {
                     if (line.charAt(0) == '>') {
                         ArrayList<String> split = Lists.newArrayList(whitespaceSplitter.split(line));
                         homstradname1 = split.get(0);
                         homstradname2 = split.get(1);
+                        score = split.get(2);
                         line = reader.readLine();
                         //getting sequence 1
                         split = Lists.newArrayList(colonWhitespaceSplitter.split(line));
@@ -139,9 +140,9 @@ public class FactorizeValidation {
                         line = reader.readLine();
                         //getting sequence 2
                         split = Lists.newArrayList(colonWhitespaceSplitter.split(line));
-                        candidatetarget = split.get(1); //line.substring(9);
+                        candidatetarget = split.get(1);
                         //safing alignment and reference pair in Arraylist
-                        alignmentpair.add(new VTuple(homstradname1, homstradname2, candidatetemplate, candidatetarget));
+                        alignmentpair.add(new FTuple(homstradname1, homstradname2, candidatetemplate, candidatetarget,score));
                     }
                 }
                 line = reader.readLine();
@@ -162,8 +163,8 @@ public class FactorizeValidation {
             String candidatetarget = alignmentpair.get(i).att4;
             String seqid1 = alignmentpair.get(i).att1.substring(1);
             String seqid2 = alignmentpair.get(i).att2;
-            String referencetemplate = hash.get(seqid1 + seqid2 + sequence(candidatetemplate) + sequence(candidatetarget));
-            String referencetarget = hash.get(seqid2 + seqid1 + sequence(candidatetarget) + sequence(candidatetemplate));
+            String referencetemplate = hash.get(sequence(candidatetemplate) + sequence(candidatetarget));
+            String referencetarget = hash.get(sequence(candidatetarget) + sequence(candidatetemplate));
             //checking if reference alignment exists
             if (referencetemplate == null || referencetarget == null) {
                 System.err.println("Reference pair doesnt exist");
@@ -180,7 +181,7 @@ public class FactorizeValidation {
                     double means = instance.getMeanS();
                     double inver = instance.getInver();
                     //creating tuple representing validation
-                    String header = alignmentpair.get(i).att1 + " " + alignmentpair.get(i).att2 + " " + round(sensi) + " " + round(speci) + " " + round(cover) + " " + round(means) + " " + round(inver);
+                    String header = alignmentpair.get(i).att1 + " " + alignmentpair.get(i).att2+ " "+ alignmentpair.get(i).att5 + " " + round(sensi) + " " + round(speci) + " " + round(cover) + " " + round(means) + " " + round(inver);
                     FTuple result = new FTuple(header, candidatetemplate, candidatetarget, referencetemplate, referencetarget);
                     //safing result
                     detailed.add(result);

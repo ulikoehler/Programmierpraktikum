@@ -46,7 +46,7 @@ sub getGORModel {
 	my $gorName = $_[1];
 	my $outputPath = $_[2];
 
-	my $query = $db->prepare("SELECT Data FROM GORModel WHERE LCASE(Name) = LCASE(?)");
+	my $query = $db->prepare("SELECT Data FROM GORModels WHERE LCASE(Name) = LCASE(?)");
 	$query->execute($gorName);
 	my $row = $query->fetchrow_hashref();
 	if(not defined $row) {
@@ -166,7 +166,7 @@ $algoOpt = "--nw" if $alignmentAlgo eq "NeedlemanWunsch";
 my $cli = "/usr/lib64/biojava/bin/java -jar $jarPath/align.jar $algoOpt --go $gapOpen --ge $gapExtend --pairs $outputPath/seqPair.pairs --seqlib $outputPath/sequences.seqlib -m $outputPath/$matrixName --mode $alignmentType --fixedpointalignment $fpaDir --format html $ssaaOpt --dpmatrices $dpMatricesDir";
 my $output = `bash -c '$cli'`;
 #Do the same for ALI output (for validation) without any extra stuff
-$cli = "/usr/lib64/biojava/bin/java $algoOpt -jar $jarPath/align.jar --go $gapOpen --ge $gapExtend --pairs $outputPath/seqPair.pairs --seqlib $outputPath/sequences.seqlib -m $outputPath/$matrixName --mode $alignmentType --format ali";
+$cli = "/usr/lib64/biojava/bin/java $algoOpt -jar $jarPath/align.jar --go $gapOpen --ge $gapExtend --pairs $outputPath/seqPair.pairs --seqlib $outputPath/sequences.seqlib -m \"$outputPath/$matrixName\" --mode $alignmentType --format ali";
 #Write the ALI output to a file
 my $aliOutput = `bash -c '$cli' 2>&1`;
 my $aliFile = "$outputPath/alignment.ali";

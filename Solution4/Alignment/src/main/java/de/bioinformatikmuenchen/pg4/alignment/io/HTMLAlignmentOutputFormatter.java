@@ -31,6 +31,7 @@ public class HTMLAlignmentOutputFormatter extends AbstractAlignmentOutputFormatt
         for (SequencePairAlignment align : result.getAlignments()) {
             builder.append("<h3>Aligment of ").append(result.getQuerySequenceId()).append(" and ").append(result.getTargetSequenceId()).append("</h3>");
             builder.append("<h4>Score: ").append(numberFormat.format(result.getScore())).append("</h4>");
+            builder.append("<h4>Mismatches: ").append(numberFormat.format(result.getFirstAlignment().getMismatchPercentage())).append(" %</h4>");
             align.calculateMatchLine();
             for (int i = 0; i < align.queryAlignment.length(); i += 100) {
                 //First line
@@ -44,7 +45,7 @@ public class HTMLAlignmentOutputFormatter extends AbstractAlignmentOutputFormatt
                 //Third line
                 builder.append("<pre>");
                 builder.append(align.targetAlignment.substring(i, Math.min(align.targetAlignment.length(), 100+i)));
-                builder.append("</pre><br/>");
+                builder.append("</pre><br/><br/>");
             }
 
             builder.append("</div>");
