@@ -1,6 +1,6 @@
 set terminal png
 set output "fpa_id xy_id2 test_zyx2.png"
-set size ratio 0.5
+set size ratio 1.0
 set title "Fixed Point Alignment id xy vs. id2 test_zyx2"
 
 set xlabel "id xy"
@@ -15,8 +15,8 @@ set cbrange [-236.60196617853506:-15.399999999999977]
 #unset cbtics
 
 set xrange [0:498]
-set yrange [0:427]
+set yrange [427:0]
 
 set view map
 
-splot 'matrix' matrix with image
+splot 'fpa_id xy_id2 test_zyx2' matrix with image
