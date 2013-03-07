@@ -29,7 +29,7 @@ public class HTMLAlignmentOutputFormatter extends AbstractAlignmentOutputFormatt
         StringBuilder builder = new StringBuilder();
         builder.append("<div>");
         for (SequencePairAlignment align : result.getAlignments()) {
-            builder.append("<h3>Aligment of ").append(result.getQuerySequenceId()).append(" of ").append(result.getTargetSequenceId()).append("</h3>");
+            builder.append("<h3>Aligment of ").append(result.getQuerySequenceId()).append(" and ").append(result.getTargetSequenceId()).append("</h3>");
             builder.append("<h4>Score: ").append(numberFormat.format(result.getScore())).append("</h4>");
             align.calculateMatchLine();
             for (int i = 0; i < align.queryAlignment.length(); i += 100) {
