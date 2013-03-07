@@ -1,0 +1,12 @@
+arg: Matrices/nuclId.mat
+NAME Matrices/nuclId.mat
+SCORE similarity
+NUMROW 4
+NUMCOL 4
+ROWINDEX ATGC
+COLINDEX ATGC
+
+MATRIX  1	0	0	0
+MATRIX  0	1	0	0
+MATRIX  0	0	1	0
+MATRIX  0	0	0	1
