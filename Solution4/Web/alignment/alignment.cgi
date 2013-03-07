@@ -130,7 +130,6 @@ if($seq1ID =~ m/:(.+)$/){
 if($seq2ID =~ m/:(.+)$/){
   $seq2ID = $1;
 }
-carp "S1 S2 $seq1ID $seq2ID";
 
 #Write the data files
 open (SEQOUT, ">$outputPath/sequences.seqlib");
@@ -160,11 +159,14 @@ if($gorModelName) {
   `/usr/lib64/biojava/bin/java -jar $jarPath/align.jar -m $outputPath/gormodel.txt -s $outputPath/sequences.fa > $outputPath/gorpred.txt`;
   $ssaaOpt = "-q $outputPath/gorpred.txt";  
 }
+#Option
+my $algoOpt = "";
+$algoOpt = "--nw" if $alignmentAlgo eq "NeedlemanWunsch";
 #Calculate the HTML alignment
-my $cli = "/usr/lib64/biojava/bin/java -jar $jarPath/align.jar --go $gapOpen --ge $gapExtend --pairs $outputPath/seqPair.pairs --seqlib $outputPath/sequences.seqlib -m $outputPath/$matrixName --mode $alignmentType --fixedpointalignment $fpaDir --format html $ssaaOpt --dpmatrices $dpMatricesDir";
+my $cli = "/usr/lib64/biojava/bin/java -jar $jarPath/align.jar $algoOpt --go $gapOpen --ge $gapExtend --pairs $outputPath/seqPair.pairs --seqlib $outputPath/sequences.seqlib -m $outputPath/$matrixName --mode $alignmentType --fixedpointalignment $fpaDir --format html $ssaaOpt --dpmatrices $dpMatricesDir";
 my $output = `bash -c '$cli'`;
 #Do the same for ALI output (for validation) without any extra stuff
-$cli = "/usr/lib64/biojava/bin/java -jar $jarPath/align.jar --go $gapOpen --ge $gapExtend --pairs $outputPath/seqPair.pairs --seqlib $outputPath/sequences.seqlib -m $outputPath/$matrixName --mode $alignmentType --format ali";
+$cli = "/usr/lib64/biojava/bin/java $algoOpt -jar $jarPath/align.jar --go $gapOpen --ge $gapExtend --pairs $outputPath/seqPair.pairs --seqlib $outputPath/sequences.seqlib -m $outputPath/$matrixName --mode $alignmentType --format ali";
 #Write the ALI output to a file
 my $aliOutput = `bash -c '$cli' 2>&1`;
 my $aliFile = "$outputPath/alignment.ali";
