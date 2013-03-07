@@ -36,7 +36,9 @@ for (split /^/, $seqData) {
 	}
 	chomp $processedData;
 }
-
+if(length($fastaHeader) > 40) {
+  $fastaHeader = substr($fastaHeader, 0, 40) . "...";
+}
 my $sequenceName = trim("[FASTA Input] $fastaHeader");
 #Write it to the DB
 $insertStmt->execute($dbId, $processedData, $seqType);
