@@ -18,7 +18,8 @@ close(REFOUT);
 my $jarPath = "/home/proj/biocluster/praktikum/bioprakt/progprakt4/jar";
 my ($sumFh, $summaryFile) = tempfile();
 my ($sumFh, $detailsFile) = tempfile();
-my $cli = "java -jar validateAli.jar -a $aliFile -r $referenceFile -s $summaryFile -d $detailsFile --format txt";
+my $cli = "java -jar $jarPath/validateAli.jar -a $aliFile -r $referenceFile -s $summaryFile -d $detailsFile --format txt";
+carp "Validation command line call: $cli";
 my $output = `bash -c '$cli'`;
 #Write the details
 print header();
