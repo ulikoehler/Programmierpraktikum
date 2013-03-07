@@ -27,6 +27,13 @@ $(function() {
 	      setSSPSequence( ui.draggable );
 	    }
 	});
+	$("#deleteSequenceDrop").droppable({
+	    accept: ".sequence",
+	    activeClass: "ui-state-highlight",
+	    drop: function( event, ui ) {
+	      deleteSequence( ui.draggable );
+	    }
+	});
 	$(".uibtn").button();
 	$( "#alignmentMatrix" ).autocomplete({
 		source: function( request, response ) {
@@ -87,17 +94,31 @@ $(function() {
 function setAlignmentSequence1(elem) {
   $("#alignmentSeq1Id").val($(elem).attr("seqid"));
   $(elem).addClass("ui-state-highlight");
-  $(elem).draggable("disable");
+  //$(elem).draggable("disable");
 }
 function setAlignmentSequence2(elem) {
   $("#alignmentSeq2Id").val($(elem).attr("seqid"));
   $(elem).addClass("ui-state-highlight");
-  $(elem).draggable("disable")
+  //$(elem).draggable("disable")
+}
+function deleteSequence(elem) {
+  var idToDelete = $(elem).attr("seqid");
+  //Remove the sequence from the array
+  var sequences = $.jStorage.get("sequences", []);
+  var newSequences = [];
+  for(var i=0; i<sequences.length; i++ ) {
+      var seqObj = sequences[i];
+      if(seqObj.id != idToDelete) {
+	  newSequences.push(seqObj);
+      }
+  }
+  $.jStorage.set("sequences", newSequences);
+  renderSequences();
 }
 function setSSPSequence(elem) {
   $("#sspSequenceField").val($(elem).attr("seqid"));
   $(elem).addClass("ui-state-highlight");
-  $(elem).draggable("disable")
+  //$(elem).draggable("disable")
 }
 function refreshDragDrop() { 
       $(".sequence").draggable({

@@ -4,7 +4,8 @@
 use CGI qw(:standard);
 use CGI::Carp qw(fatalsToBrowser);
 use DBI;
-
+#Write header
+print header();
 
 sub trim {		# trim a string
   my $string = $_[0];
@@ -21,21 +22,26 @@ my $insertStmt = $db->prepare("INSERT INTO Seq (`Name`, `Seq`, `Type`, `Organism
 my $originalSeqType = $seqType;
 $seqType = "DNA" if $seqType eq "Nucleotide";
 #Create the name of the sequence (unique)
-my $name = "user-" . time();
+my $dbId = "user-" . time();
 #Read the data
 my $processedData = "";
 #Remove
+my $fastaHeader = "";
 for (split /^/, $seqData) {
 	chomp $_;
-	$processedData = $processedData.trim($_) if $_ !~ m/^>/;
+	if($_ !~ m/^>/) {
+	    $processedData = $processedData.trim($_);
+	} else {
+	    $fastaHeader = substr($_, 1, length($_)-1);
+	}
 	chomp $processedData;
 }
+
+my $sequenceName = trim("[FASTA Input] $fastaHeader");
 #Write it to the DB
-$insertStmt->execute($name, $processedData, $seqType);
+$insertStmt->execute($dbId, $processedData, $seqType);
 my $id = $insertStmt->{mysql_insertid};
-carp "Inserted user sequence $name into database, ID $id\n";
-#Write header
-print header();
+carp "Inserted user sequence $dbId into database, ID $id\n";
 print <<"EOHTML"
 <html>
 <head>
@@ -44,7 +50,7 @@ print <<"EOHTML"
     <script type="text/javascript" src="../ws.js"></script>
     <script type="text/javascript" src="../js/jquery-ui.js"></script>
     <script type="text/javascript">
-	addSequence(\"mysql:$name\", \"$name\", \"$originalSeqType\");
+	addSequence(\"mysql:$dbId\", '$sequenceName', \"$originalSeqType\");
 	window.history.back(-1);
     </script>
 </head>
