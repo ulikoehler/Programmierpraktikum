@@ -14,11 +14,16 @@ my ($refFh, $referenceFile) = tempfile();
 open (REFOUT, ">$referenceFile");
 print REFOUT "$reference";
 close(REFOUT);
+#Write the reference filelist file
+my ($refFh, $referenceListFile) = tempfile();
+open (REFOUT, ">$referenceListFile");
+print REFOUT "$referenceFile";
+close(REFOUT);
 #Call it
 my $jarPath = "/home/proj/biocluster/praktikum/bioprakt/progprakt4/jar";
 my ($sumFh, $summaryFile) = tempfile();
-my ($sumFh, $detailsFile) = tempfile();
-my $cli = "java -jar $jarPath/validateAli.jar -a $aliFile -r $referenceFile -s $summaryFile -d $detailsFile --format txt";
+my ($detailsFh, $detailsFile) = tempfile();
+my $cli = "java -jar $jarPath/validateAli.jar -a $aliFile -r $referenceListFile -s $summaryFile -d $detailsFile --format txt";
 carp "Validation command line call: $cli";
 my $output = `bash -c '$cli'`;
 #Write the details
