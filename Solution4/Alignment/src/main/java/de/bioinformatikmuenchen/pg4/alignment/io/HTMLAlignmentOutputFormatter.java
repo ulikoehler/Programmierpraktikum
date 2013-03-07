@@ -44,7 +44,7 @@ public class HTMLAlignmentOutputFormatter extends AbstractAlignmentOutputFormatt
                 //Third line
                 builder.append("<pre>");
                 builder.append(align.targetAlignment.substring(i, Math.min(align.targetAlignment.length(), 100+i)));
-                builder.append("</pre><br/>");
+                builder.append("</pre><br/><br/>");
             }
 
             builder.append("</div>");
