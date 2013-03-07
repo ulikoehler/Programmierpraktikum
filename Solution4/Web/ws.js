@@ -130,11 +130,12 @@ function setSSPSequence(elem) {
 function showSequence(elem) {
   $.get("sequences/get_sequence.cgi", {id: $(elem).attr("seqid")},
 	function(data) {
-	    $("#sequenceDialog").attr("title","Sequence of " + $(elem).attr("name"));
-	    $("#sequenceDialog").dialog({autoOpen: false,modal: false,bgiframe: true,width:500,height:250});
-	    $("#sequenceDialog").empty();
-	    $("#sequenceDialog").append("<div style=\"word-wrap:break-word;\">" + data + "</div>");
-	    $("#sequenceDialog").dialog("open");
+	    var dialog = $("#dialogsContainer").append('<div style="display: none;"></div>')
+	    $(dialog).attr("title","Sequence of " + $(elem).attr("name"));
+	    $(dialog).dialog({autoOpen: false,modal: false,bgiframe: true,width:500,height:250});
+	    $(dialog).empty();
+	    $(dialog).append("<div style=\"word-wrap:break-word;\">" + data + "</div>");
+	    $(dialog).dialog("open");
 	}
   );
   $(elem).draggable({revert: true});
