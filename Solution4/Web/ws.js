@@ -340,3 +340,8 @@ function addSequence(id, name, type) {
   var sequences = $.jStorage.set("sequences", sequences);
   renderSequences();
 }
+
+
+function clearSequences() {
+  renderSequences();
+}
