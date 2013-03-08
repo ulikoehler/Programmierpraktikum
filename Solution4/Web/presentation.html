@@ -20,7 +20,6 @@
       <h4 style="color: #999999">Programmierpraktikum WS12/13</h4>
       <h4 style="color: #999999">Gruppe 4</h4>
       <br><h2 style="color: #000000">Abschlusspräsentation</h2><br>
-      <h4 style="color: #999999">WS 2012/13</h4>
      </p>
      <h6 style="color: #999999">
       by Rene Schoeffel, Uli K&ouml;hler, Yann Sp&ouml;ri<br>and<br>Tobias Harrer
@@ -54,13 +53,15 @@
 	      <li class="fragment">Auto-completable text inputs</li>
 	      <li class="fragment">Upload sequences once (or add from database)...</li>
 	      <li class="fragment">...and drag them into Alignment or SSP tools</li>
-	      <li class="fragment">Sequence list is saved locally</li>
+	      <li class="fragment">Persistent sequence list</li><br/>
 	</ul>
+	<p class="fragment">&rarr; No IT/Bioinformatics background neccessary to use the workbench</p>
     </section>
     
     <section>	<!-- first sheet of alignment -->
      <h2>Alignment</h2>
     </section>
+    
     <section style="margin-top:-100px">
      <h3>Dynamic vs Recursive algorithm</h3>
       <img src="presentation/rec.png">
@@ -173,24 +174,22 @@
      <h2>Website</h2>
     </section>
     
-    
-
-    
-    
+        
+    <section style="margin-top:-80px;">	<!-- first sheet of presentation -->
+     <p>
+      <h2>User interface concept (3)</h2><br/>
+	  <ul>
+	      <li class="fragment">Only proof of concept, not a finished product</li>
+	      <li class="fragment">Backend not optimized for load-intensive / realtime applications<br>&rarr; CGI &amp; Perl suboptimal in terms of performance</li><br/>
+	      <li class="fragment">But: <strong>High reusability</strong> of backend &amp; frontend</li>
+	      <li class="fragment">Concepts can be reused for other projects</li>
+	  </ul>
+    </section>
     
     <section>
-     <p>
-      <h1>Used technologies</h1>
-     </p>
-     <p>
-      <ul style="list-style-image:url(presentation/list.jpg); padding: 15px; margin: 5px;">
-       <li style="padding: 15px; margin: 5px;"><span style="font-size: x-large">JQuery and JQuery UI<br>(UI Proof of Concept)</span></li>
-       <li style="adding: 15px; margin: 5px;"><span style="font-size: x-large">Ajax Technologie<br>(incl. asynchronous system architecture)</span></li>
-       <li style="padding: 15px; margin: 5px;"><span style="font-size: x-large">Reveal JS</span></li>
-       <li style="padding: 15px; margin: 5px;"><span style="font-size: x-large">Persistent data handling</span></li>
-      </ul>
-     </p>
+      <section>Thank you for your patience</section>
     </section>
+    
    </div>
   
 <!--
@@ -218,7 +217,7 @@ progress: true,
 history: true,
 center: true,
 
-width: 900,
+width: 1000,
 height: 300,
 
 theme: Reveal.getQueryHash().theme, // available themes are in /css/theme
