@@ -28,4 +28,8 @@ carp "Validation command line call: $cli";
 my $output = `bash -c '$cli'`;
 #Write the details
 print header();
+print "<h3>Summary<h3><pre>";
+print `cat $summaryFile`;
+print "<br/><br/><h3>Details<h3><pre>";
 print `cat $detailsFile`;
+print "</pre>";

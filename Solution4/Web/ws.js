@@ -173,6 +173,14 @@ function hideAddMatrixDialog() {
  * Add sequences from local storage
  */
 function renderSequences() {
+  //Clear the fields
+  $("#sspSequenceField").val("");
+  $("#alignmentSeq1Id").val("");
+  $("#alignmentSeq2Id").val("");
+  $("#alignmentSeq1Name").val("");
+  $("#alignmentSeq2Name").val("");
+
+  
   if($("#availableSequencesList").size() > 0) {
     $("#availableSequencesList").empty();
     var sequences = $.jStorage.get("sequences", []);
@@ -196,7 +204,7 @@ function showAlignment() {
     var seq1Name = $("#alignmentSeq1Name").text();
     var seq2Name = $("#alignmentSeq2Name").text();
     //Initialize the dialog
-    var id = "alig-" + alignmentSeq1Id + "-" + alignmentSeq2Id;
+    var id = "alig-" + alignmentSeq1Id + "-" + alignmentSeq2Id + "-" + new Date().getTime(); //Allow same alignment (e.g. with different params) multiple times
     id = id.replace(/:/g,"-");
     $("#" + id).remove();
     $("#dialogsContainer").append('<div id="' + id + '" style="display: none;"></div>')
@@ -279,9 +287,9 @@ function showSSP(fixedPoint) {
     alert("Please select a GOR model!");
     return;
   }
-
-  if(!id) {
-    alert("Please drag the sequence you want to predict into the sequence box");
+  
+  if(!seqId && !gor5Alignment) {
+    alert("Either a sequence or a GOR5 alignment needs to be filled!");
     return;
   }
   var probabilities = ($("input[name=probabilities]:checked").attr("checked") ? 1 : 0);
@@ -290,14 +298,22 @@ function showSSP(fixedPoint) {
   
   var avgProb = $("#avgProb").val();
   var stdProb = $("#stdProb").val();
+  
+  var id = "ssp-" + new Date().getTime(); //Allow same alignment (e.g. with different params) multiple times
+  id = id.replace(/:/g,"-");
+  $("#" + id).remove();
+  $("#dialogsContainer").append('<div id="' + id + '" style="display: none;"></div>')
+  var dialog = $("#" + id);
+  dialog.attr("title","GOR Secondary Structure Prediction");
+  dialog.dialog({autoOpen: false,modal: false,bgiframe: true,width:1200,height:500});
   //Show the progress bar & dialog
-  $("#sspDialog").empty();
-  $("#sspDialog").append("<div id=\"alignmentProgressBar\"></div>");
-  $("#sspDialog").progressbar({
+  dialog.empty();
+  dialog.append("<div id=\"alignmentProgressBar\"></div>");
+  dialog.progressbar({
       value: false
     });
-  $("#sspDialog").dialog({autoOpen: false,modal: false,bgiframe: true,width:1500,height:750});
-  $("#sspDialog").dialog("open");
+  dialog.dialog({autoOpen: false,modal: false,bgiframe: true,width:1500,height:750});
+  dialog.dialog("open");
   //
   $.post("ssp/sspPredict.cgi", {
     model: model,
@@ -310,8 +326,8 @@ function showSSP(fixedPoint) {
     stdValue: stdProb
   }, function(data, textStatus) {
     //Replace the progress bar by the data
-    $("#sspDialog").empty();
-    $("#sspDialog").append(data);
+    dialog.empty();
+    dialog.append(data);
   });
 }
 

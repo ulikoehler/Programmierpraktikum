@@ -190,7 +190,7 @@ foreach my $file (@fpaFiles) {
 #   `cp -f "$fpaDir/$file" "/home/k/koehleru/public_html/propra/fpa/"`;
   #copy("$fpaDir/$file", "/home/k/koehleru/public_html/propra/fpa/");
   #print "<br/><a href=\"$urlPath/fpa/$file\">Fixed point alignment plot (You need to wait ~10 s for technical reasons)</a><br/>"
-  print "<br/><img src=\"$urlPath/fpa/$file\"></img><br/>"
+  print "<br/><a href=\"$urlPath/fpa/$file\"><img src=\"$urlPath/fpa/$file\"></img></a><br/>"
 }
 #
 #Display the DP matrices
@@ -207,6 +207,8 @@ foreach my $dpFile (@dpFiles) {
     print "<br/><a href=\"$urlPath/dp/$dpFile\" target=\"_blank\">$dpFile</a><br/>"
   }
 }
+#Display link to alignment files
+print "<br/><a href=\"$urlPath/alignment.ali\">Alignment in ALI format</a><br/>\n";
 #
 # Display options to validate the alignment
 #
