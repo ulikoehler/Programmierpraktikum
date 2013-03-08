@@ -329,7 +329,7 @@ function showSSP(fixedPoint) {
     //Replace the progress bar by the data
     dialog.empty();
     dialog.append(data);
-    dialog.append('<div class="button" onclick="showValiSSP(\'test\')">Validate</div>');
+    dialog.append('<div class="button" onclick="showValiSSP(\'test\')">Validate model</div>');
 	$(".button").button();
   });
 }
@@ -382,6 +382,7 @@ function showValiSSP(id) {
   //var reference = $("reference-" + id).val();
   //var alignment = $("aliFile-" + id).val();
   //Show the progress bar & dialog
+  var model = $("input#modelInput").val();
   $("#validateDialog").empty();
   $("#validateDialog").append("<div id=\"alignmentProgressBar\"></div>");
   $("#validateDialog").progressbar({
@@ -390,13 +391,16 @@ function showValiSSP(id) {
   $("#validateDialog").dialog({autoOpen: false,modal: false,bgiframe: true,width:1000,height:750});
   $('#validateDialog').dialog('open');
   //
-  $.post("validation/validate_ali.cgi", {
+  $.get("ssp/sspValidate.cgi", {
+    model: model
     //alignment: alignment,
     //reference: reference
   }, function(data, textStatus) {
     //Replace the progress bar by the data
     $("#validateDialog").empty();
-    $("#validateDialog").append("<a href=\"ssp/out.png\"><img src=\"ssp/out.png\"></img></a>");
+    //$("#validateDialog").append("<a href=\"ssp/out.png\" target=\"_blank\">Click here for model " + model + " validation result</a>");
+    $("#validateDialog").append("<a href=\"ssp/out.png\" target=\"_blank\"><img src=\"ssp/out.png\"></img></a>");
+    setTimeout(function() {$(".valissp").attr("src", "ssp/out.png");},1000);
   });
 }
 

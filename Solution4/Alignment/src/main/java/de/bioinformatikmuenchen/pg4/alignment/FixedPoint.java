@@ -60,8 +60,10 @@ public class FixedPoint extends AlignmentProcessor {
             initAndFillNeedlemanWunsch();
         } else if (algorithm == AlignmentAlgorithm.GOTOH) {
             initAndFillGotoh();
-        } else {
-            throw new UnsupportedOperationException("Fixed point alignments are implemented for global scoring matrices only");
+        } else if(algorithm == AlignmentAlgorithm.SMITH_WATERMAN) {
+            algorithm = AlignmentAlgorithm.NEEDLEMAN_WUNSCH;
+            mode = AlignmentMode.LOCAL;
+            initAndFillNeedlemanWunsch();
         }
         //do the fixed point alignment:
         fixedPointAlignment();

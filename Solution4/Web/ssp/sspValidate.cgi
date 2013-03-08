@@ -51,6 +51,6 @@ carp "Executing bash -c 'cp to/summary ./data";
 my $cp = `cp to/summary ./data`;
 carp "Executing bash -c 'plot data";
 my $plot = `gnuplot < gPlotProgSingle`;
-
-
-
+`sleep 1`;
+print header();
+print "";
