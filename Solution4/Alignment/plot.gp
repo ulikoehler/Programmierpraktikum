@@ -19,4 +19,4 @@ set yrange [0:427]
 
 set view map
 
-splot 'matrix' matrix with image
+splot 'id xy_id2 test_zyx2' matrix with image

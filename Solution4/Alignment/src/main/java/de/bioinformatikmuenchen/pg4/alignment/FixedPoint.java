@@ -75,8 +75,9 @@ public class FixedPoint extends AlignmentProcessor {
         if (path.endsWith("/")) {
             path = path.substring(0, path.length() - 1);
         }
+        String fileName = seq1.getId() + "_" + seq2.getId();
         //put matrix to file as inout for gnuplot:
-        putToFile(matrixToString(), "./matrix");//"+ "fpa_" + seq1.getId() + "_" + seq2.getId()
+        putToFile(matrixToString(), "./"+fileName);//"+ "fpa_" + seq1.getId() + "_" + seq2.getId()
         String gnuPlot = "set terminal png\n"
                 + "set output \"" + (!path.equals("") ? path + "/" : "") + "fpa_" + seq1.getId() + "_" + seq2.getId() + ".png\"\n"
                 + "set size ratio 0.5\n"
@@ -98,7 +99,7 @@ public class FixedPoint extends AlignmentProcessor {
                 + "\n"
                 + "set view map\n"
                 + "\n"
-                + "splot 'matrix' matrix with image";
+                + "splot '"+fileName+"' matrix with image";
         putToFile(gnuPlot, "./plot.gp");
         Runtime rt = Runtime.getRuntime();
         try {
