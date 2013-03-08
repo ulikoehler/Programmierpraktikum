@@ -212,13 +212,14 @@ print "<br/><a href=\"$urlPath/alignment.ali\">Alignment in ALI format</a><br/>\
 #
 # Display options to validate the alignment
 #
+my $tim = time();
 print <<"EOHTML"
 <h3>Validate this alignment</h3><br/>
 <form action="validation/validate_ali.cgi" method="post" enctype="multipart/form-data">
   <b>Reference alignment:</b><br/>
-  <textarea id="reference" name="reference" style="width:100%" rows="12"></textarea><br/>
-  <input type="hidden" name="aliFile" value="$aliFile"/>
-  <input type="submit" class="button"/>
+  <textarea id="reference-$tim" name="reference" style="width:100%" rows="12"></textarea><br/>
+  <input id="aliFile-$tim" type="hidden" name="aliFile" value="$aliFile"/>
+  <div class="button"></div>
 </form>
 EOHTML
 ;
