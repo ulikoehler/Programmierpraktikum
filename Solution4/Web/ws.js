@@ -329,6 +329,8 @@ function showSSP(fixedPoint) {
     //Replace the progress bar by the data
     dialog.empty();
     dialog.append(data);
+    dialog.append('<div class="button" onclick="showValiSSP(\'test\')">Validate</div>');
+	$(".button").button();
   });
 }
 
@@ -373,6 +375,31 @@ function showValiAli(id) {
     $("#validateDialog").append(data);
   });
 }
+
+
+function showValiSSP(id) {
+    //Get all the field values
+  //var reference = $("reference-" + id).val();
+  //var alignment = $("aliFile-" + id).val();
+  //Show the progress bar & dialog
+  $("#validateDialog").empty();
+  $("#validateDialog").append("<div id=\"alignmentProgressBar\"></div>");
+  $("#validateDialog").progressbar({
+      value: false
+    });
+  $("#validateDialog").dialog({autoOpen: false,modal: false,bgiframe: true,width:1000,height:750});
+  $('#validateDialog').dialog('open');
+  //
+  $.post("validation/validate_ali.cgi", {
+    //alignment: alignment,
+    //reference: reference
+  }, function(data, textStatus) {
+    //Replace the progress bar by the data
+    $("#validateDialog").empty();
+    $("#validateDialog").append("<img src=\"ssp/out.png\"></img>");
+  });
+}
+
 
 function addSequence(id, name, type) {
   var sequences = $.jStorage.get("sequences", []);
