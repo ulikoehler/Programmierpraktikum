@@ -11,6 +11,8 @@ my $model = param("model");				# file
 
 my $jarPath = "/home/proj/biocluster/praktikum/bioprakt/progprakt4/Solution4/finaljars";
 
+my $db = DBI->connect('DBI:mysql:bioprakt4;host=mysql2-ext.bio.ifi.lmu.de', 'bioprakt4', 'vGI5GCMg0x') || die "Could not connect to database: $DBI::errstr";
+
 sub getGORModel {
 	my $db = $_[0];
 	my $gorName = $_[1];
