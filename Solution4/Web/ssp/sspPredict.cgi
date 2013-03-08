@@ -16,8 +16,10 @@ my $stdPost = param("stdpost") || 0;			# boolean
 my $avgValue = param("avgValue") || 0;			# double for avgPost
 my $stdValue = param("stdValue") || 0;			# double for stdPost
 
+$avgValue = $avgValue/100.0;
+$stdValue = $stdValue/100.0;
 
-my $jarPath = "/home/proj/biocluster/praktikum/bioprakt/progprakt4/jar";
+my $jarPath = "/home/proj/biocluster/praktikum/bioprakt/progprakt4/Solution4/finaljars";
 my $format = "html";
 
 my $db = DBI->connect('DBI:mysql:bioprakt4;host=mysql2-ext.bio.ifi.lmu.de', 'bioprakt4', 'vGI5GCMg0x') || die "Could not connect to database: $DBI::errstr";
@@ -108,9 +110,9 @@ if(defined $seq) {
   $jarQuery = "$jarQuery --seq $seqFile";
 } elsif(defined $gor5Alignment) {
   my($fh, $gor5AlignmentFile) = tempfile();
-  open (OUTFILE, ">$gor5AlignmentFile");
-  print OUTFILE $gor5AlignmentF;
-  close(OUTFILE);
+  open (GOR5OUT, ">$gor5AlignmentFile");
+  print GOR5OUT $gor5Alignment;
+  close(GOR5OUT);
   $jarQuery = "$jarQuery --maf $gor5AlignmentFile";
 } else {
   carp "Missing sequence or aligment!";
