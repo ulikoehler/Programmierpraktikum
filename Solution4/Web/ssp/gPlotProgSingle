@@ -1,0 +1,16 @@
+reset
+set term png
+set output "out.png"
+set title "test results"
+set ylabel "probability in %"
+set yrange [0:100]
+set xtics ("Q3" 0, "SOV" 1, "QH" 2, "QE" 3, "QC" 4, "SOVH" 5, "SOVE" 6, "SOVC" 7)
+plot "data" using 1:2 title 'Mean' with lines linecolor rgb "red", \
+     "data" using 1:2:3 notitle with errorbars linecolor rgb "red", \
+     "data" using 1:4 title 'Min' with lines, \
+     "data" using 1:5 title 'Max' with lines, \
+     "data" using 1:6 title 'Quan 50' with lines, \
+     "data" using 1:7 title 'Quan 5' with lines, \
+     "data" using 1:8 title 'Quan 95' with lines;
+quit
+
