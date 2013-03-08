@@ -34,6 +34,8 @@ sub getGORModel {
 my($fh, $modelFile) = tempfile();
 getGORModel($db, $model, $modelFile);
 
+my $createFolder = `bash -c 'mkdir from; mkdir to'`;
+
 carp "Executing bash -c '/usr/lib64/biojava/bin/java -jar $jarPath/predict.jar --model $modelFile --seq CB513.DB > data'\n";
 my $jarPredict = `bash -c '/usr/lib64/biojava/bin/java -jar $jarPath/predict.jar --model $modelFile --seq CB513.DB > data'`;
 
