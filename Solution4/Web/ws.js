@@ -396,7 +396,7 @@ function showValiSSP(id) {
   }, function(data, textStatus) {
     //Replace the progress bar by the data
     $("#validateDialog").empty();
-    $("#validateDialog").append("<img src=\"ssp/out.png\"></img>");
+    $("#validateDialog").append("<a href=\"ssp/out.png\"><img src=\"ssp/out.png\"></img></a>");
   });
 }
 
