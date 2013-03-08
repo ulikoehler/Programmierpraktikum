@@ -112,11 +112,11 @@ my $urlPath = "aligntmp/".$curtime;
 `mkdir -p $outputPath`;
 carp "Outputting to $outputPath";
 my $dpPath = "$outputPath/dp";
-`mkdir $dpPath`;
+`mkdir -p $dpPath`;
 my $fpaDir = "$outputPath/fpa";
-`mkdir $fpaDir`;
+`mkdir -p $fpaDir`;
 my $dpMatricesDir = "$outputPath/dp";
-`mkdir $dpMatricesDir`;
+`mkdir -p  $dpMatricesDir`;
 carp "Temp output path is $outputPath";
 
 
@@ -156,7 +156,7 @@ if($gorModelName) {
   print SEQOUT ">$seq1ID\nAS $seq1\n";
   print SEQOUT ">$seq2ID\nAS $seq2\n";
   close(SEQOUT);
-  `/usr/lib64/biojava/bin/java -jar $jarPath/align.jar -m $outputPath/gormodel.txt -s $outputPath/sequences.fa > $outputPath/gorpred.txt`;
+  `/usr/lib64/biojava/bin/java -jar $jarPath/predict.jar -m $outputPath/gormodel.txt -s $outputPath/sequences.fa > $outputPath/gorpred.txt`;
   $ssaaOpt = "-q $outputPath/gorpred.txt";  
 }
 #Option
