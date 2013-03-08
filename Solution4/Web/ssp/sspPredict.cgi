@@ -88,7 +88,7 @@ sub getSequenceById {
 	return $seq;
 }
 
-my $seq = getSequenceById($db, $seqId);
+my $seq = getSequenceById($db, $seqId) if(defined $seqId);
 
 my($fh, $modelFile) = tempfile();
 getGORModel($db, $model, $modelFile);
