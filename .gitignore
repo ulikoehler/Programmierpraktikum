@@ -6,3 +6,4 @@
 *.ear
 ./Solution4/SSP/target/
 ./Solution4/Validation/target/
+/ConvDir/target/
