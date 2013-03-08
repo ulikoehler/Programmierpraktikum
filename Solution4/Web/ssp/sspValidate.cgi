@@ -45,7 +45,9 @@ carp "Executing bash -c '/usr/lib64/biojava/bin/java -jar $jarPath/validateGor.j
 carp "Executing bash -c '/usr/lib64/biojava/bin/java -jar conv.jar from/ to/";
 my $jarValidate = `bash -c '/usr/lib64/biojava/bin/java -jar conv.jar from/ to/'`;
 
+carp "Executing bash -c 'cp to/summary ./data";
 my $cp = `cp to/summary ./data`;
+carp "Executing bash -c 'plot data";
 my $plot = `gnuplot < gPlotProgSingle`;
 
 
