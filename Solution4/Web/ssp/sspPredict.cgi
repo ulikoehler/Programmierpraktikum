@@ -89,8 +89,9 @@ sub getSequenceById {
 	die "Seq $id not found" unless $seq;
 	return $seq;
 }
+my $seq = "";
 if($seqId){
-  my $seq = getSequenceById($db, $seqId) ;
+  $seq = getSequenceById($db, $seqId) ;
 }
 
 my($fh, $modelFile) = tempfile();
@@ -101,7 +102,7 @@ carp "Missing model file!" if !defined $model;
 my $jarQuery = "--model $modelFile --format $format";
 
 # seq or maf
-if(defined $seq) {
+if($seq) {
   my($fh, $seqFile) = tempfile();
   open (OUTFILE, ">$seqFile");
   print OUTFILE ">$seqId\n";
