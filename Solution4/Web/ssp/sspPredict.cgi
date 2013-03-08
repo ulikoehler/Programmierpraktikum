@@ -87,8 +87,9 @@ sub getSequenceById {
 	die "Seq $id not found" unless $seq;
 	return $seq;
 }
-
-my $seq = getSequenceById($db, $seqId) if(defined $seqId);
+if($seqId){
+  my $seq = getSequenceById($db, $seqId) ;
+}
 
 my($fh, $modelFile) = tempfile();
 getGORModel($db, $model, $modelFile);
@@ -121,13 +122,13 @@ $jarQuery = "$jarQuery --probabilities" if $probabilities;
 # avgPost
 if ($avgPost) {
   carp "Missing or invalid value for postprocessing!" if not 	isNumeric($avgValue);
-  $jarQuery = "$jarQuery --avgPost $avgPost";
+  $jarQuery = "$jarQuery --avgPost $stdValue";
 }
 
 # stdPost
 if ($stdPost) {
   carp "Missing or invalid value for postprocessing!" if not isNumeric($stdValue);
-  $jarQuery = "$jarQuery --stdPost $stdPost";
+  $jarQuery = "$jarQuery --stdPost $avgValue";
 }
 
 carp "Executing bash -c '/usr/lib64/biojava/bin/java -jar $jarPath/predict.jar $jarQuery'\n";
