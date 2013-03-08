@@ -250,6 +250,7 @@ function showAlignment() {
       //Replace the progress bar by the data
       dialog.empty();
       dialog.append(data);
+	$(".button").button();
     });
 }
 
@@ -348,6 +349,29 @@ function addSequenceFromDB() {
   var key = db.toLowerCase() + ":" + id;
   var name = "[" + db + "] " + id;
   addSequence(key, name, type)
+}
+
+function showValiAli(id) {
+    //Get all the field values
+  var reference = $("reference-" + id).val();
+  var alignment = $("aliFile-" + id).val();
+  //Show the progress bar & dialog
+  $("#validateDialog").empty();
+  $("#validateDialog").append("<div id=\"alignmentProgressBar\"></div>");
+  $("#validateDialog").progressbar({
+      value: false
+    });
+  $("#validateDialog").dialog({autoOpen: false,modal: false,bgiframe: true,width:1000,height:750});
+  $('#validateDialog').dialog('open');
+  //
+  $.post("validation/validate_ali.cgi", {
+    alignment: alignment,
+    reference: reference
+  }, function(data, textStatus) {
+    //Replace the progress bar by the data
+    $("#validateDialog").empty();
+    $("#validateDialog").append(data);
+  });
 }
 
 function addSequence(id, name, type) {

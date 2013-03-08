@@ -219,7 +219,7 @@ print <<"EOHTML"
   <b>Reference alignment:</b><br/>
   <textarea id="reference-$tim" name="reference" style="width:100%" rows="12"></textarea><br/>
   <input id="aliFile-$tim" type="hidden" name="aliFile" value="$aliFile"/>
-  <div class="button"></div>
+  <div class="button" onclick="showValiAli('$tim')">Validate</div>
 </form>
 EOHTML
 ;
