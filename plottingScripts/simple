@@ -1,0 +1,127 @@
+java -jar predict.jar --model results/models/gor1test.db0x17 --seq results/testfiles/test.db0 --format txt > results/predictions/gor1test.db0x17
+java -jar predict.jar --model results/models/gor1test.db1x17 --seq results/testfiles/test.db1 --format txt > results/predictions/gor1test.db1x17
+java -jar predict.jar --model results/models/gor1test.db2x17 --seq results/testfiles/test.db2 --format txt > results/predictions/gor1test.db2x17
+java -jar predict.jar --model results/models/gor1test.db3x17 --seq results/testfiles/test.db3 --format txt > results/predictions/gor1test.db3x17
+java -jar predict.jar --model results/models/gor1test.db4x17 --seq results/testfiles/test.db4 --format txt > results/predictions/gor1test.db4x17
+java -jar predict.jar --model results/models/gor1test.db5x17 --seq results/testfiles/test.db5 --format txt > results/predictions/gor1test.db5x17
+java -jar predict.jar --model results/models/gor1test.db6x17 --seq results/testfiles/test.db6 --format txt > results/predictions/gor1test.db6x17
+java -jar predict.jar --model results/models/gor1test.db7x17 --seq results/testfiles/test.db7 --format txt > results/predictions/gor1test.db7x17
+java -jar predict.jar --model results/models/gor1test.db8x17 --seq results/testfiles/test.db8 --format txt > results/predictions/gor1test.db8x17
+java -jar predict.jar --model results/models/gor1test.db9x17 --seq results/testfiles/test.db8 --format txt > results/predictions/gor1test.db9x17
+
+exit
+# test db
+java -jar predict.jar --model results/models/gor1test.db0x17 --seq results/testfiles/test.db0 --format txt > results/predictions/gor1test.db0x17
+java -jar predict.jar --model results/models/gor1test.db1x17 --seq results/testfiles/test.db1 --format txt > results/predictions/gor1test.db1x17
+java -jar predict.jar --model results/models/gor1test.db2x17 --seq results/testfiles/test.db2 --format txt > results/predictions/gor1test.db2x17
+java -jar predict.jar --model results/models/gor1test.db3x17 --seq results/testfiles/test.db3 --format txt > results/predictions/gor1test.db3x17
+java -jar predict.jar --model results/models/gor1test.db4x17 --seq results/testfiles/test.db4 --format txt > results/predictions/gor1test.db4x17
+java -jar predict.jar --model results/models/gor1test.db5x17 --seq results/testfiles/test.db5 --format txt > results/predictions/gor1test.db5x17
+java -jar predict.jar --model results/models/gor1test.db6x17 --seq results/testfiles/test.db6 --format txt > results/predictions/gor1test.db6x17
+java -jar predict.jar --model results/models/gor1test.db7x17 --seq results/testfiles/test.db7 --format txt > results/predictions/gor1test.db7x17
+java -jar predict.jar --model results/models/gor1test.db8x17 --seq results/testfiles/test.db8 --format txt > results/predictions/gor1test.db8x17
+java -jar predict.jar --model results/models/gor1test.db9x17 --seq results/testfiles/test.db8 --format txt > results/predictions/gor1test.db9x17
+
+java -jar predict.jar --model results/models/gor3test.db0x17 --seq results/testfiles/test.db0 --format txt > results/predictions/gor3test.db0x17
+java -jar predict.jar --model results/models/gor3test.db1x17 --seq results/testfiles/test.db1 --format txt > results/predictions/gor3test.db1x17
+java -jar predict.jar --model results/models/gor3test.db2x17 --seq results/testfiles/test.db2 --format txt > results/predictions/gor3test.db2x17
+java -jar predict.jar --model results/models/gor3test.db3x17 --seq results/testfiles/test.db3 --format txt > results/predictions/gor3test.db3x17
+java -jar predict.jar --model results/models/gor3test.db4x17 --seq results/testfiles/test.db4 --format txt > results/predictions/gor3test.db4x17
+java -jar predict.jar --model results/models/gor3test.db5x17 --seq results/testfiles/test.db5 --format txt > results/predictions/gor3test.db5x17
+java -jar predict.jar --model results/models/gor3test.db6x17 --seq results/testfiles/test.db6 --format txt > results/predictions/gor3test.db6x17
+java -jar predict.jar --model results/models/gor3test.db7x17 --seq results/testfiles/test.db7 --format txt > results/predictions/gor3test.db7x17
+java -jar predict.jar --model results/models/gor3test.db8x17 --seq results/testfiles/test.db8 --format txt > results/predictions/gor3test.db8x17
+java -jar predict.jar --model results/models/gor3test.db9x17 --seq results/testfiles/test.db8 --format txt > results/predictions/gor3test.db9x17
+
+java -jar predict.jar --model results/models/gor4test.db0x17 --seq results/testfiles/test.db0 --format txt > results/predictions/gor4test.db0x17
+java -jar predict.jar --model results/models/gor4test.db1x17 --seq results/testfiles/test.db1 --format txt > results/predictions/gor4test.db1x17
+java -jar predict.jar --model results/models/gor4test.db2x17 --seq results/testfiles/test.db2 --format txt > results/predictions/gor4test.db2x17
+java -jar predict.jar --model results/models/gor4test.db3x17 --seq results/testfiles/test.db3 --format txt > results/predictions/gor4test.db3x17
+java -jar predict.jar --model results/models/gor4test.db4x17 --seq results/testfiles/test.db4 --format txt > results/predictions/gor4test.db4x17
+java -jar predict.jar --model results/models/gor4test.db5x17 --seq results/testfiles/test.db5 --format txt > results/predictions/gor4test.db5x17
+java -jar predict.jar --model results/models/gor4test.db6x17 --seq results/testfiles/test.db6 --format txt > results/predictions/gor4test.db6x17
+java -jar predict.jar --model results/models/gor4test.db7x17 --seq results/testfiles/test.db7 --format txt > results/predictions/gor4test.db7x17
+java -jar predict.jar --model results/models/gor4test.db8x17 --seq results/testfiles/test.db8 --format txt > results/predictions/gor4test.db8x17
+java -jar predict.jar --model results/models/gor4test.db9x17 --seq results/testfiles/test.db8 --format txt > results/predictions/gor4test.db9x17
+
+# cb513
+java -jar predict.jar --model results/models/gor1CB513DSSP.db0x17 --seq results/testfiles/CB513DSSP.db0 --format txt > results/predictions/gor1CB513DSSP.db0x17
+java -jar predict.jar --model results/models/gor1CB513DSSP.db1x17 --seq results/testfiles/CB513DSSP.db1 --format txt > results/predictions/gor1CB513DSSP.db1x17
+java -jar predict.jar --model results/models/gor1CB513DSSP.db2x17 --seq results/testfiles/CB513DSSP.db2 --format txt > results/predictions/gor1CB513DSSP.db2x17
+java -jar predict.jar --model results/models/gor1CB513DSSP.db3x17 --seq results/testfiles/CB513DSSP.db3 --format txt > results/predictions/gor1CB513DSSP.db3x17
+java -jar predict.jar --model results/models/gor1CB513DSSP.db4x17 --seq results/testfiles/CB513DSSP.db4 --format txt > results/predictions/gor1CB513DSSP.db4x17
+java -jar predict.jar --model results/models/gor1CB513DSSP.db5x17 --seq results/testfiles/CB513DSSP.db5 --format txt > results/predictions/gor1CB513DSSP.db5x17
+java -jar predict.jar --model results/models/gor1CB513DSSP.db6x17 --seq results/testfiles/CB513DSSP.db6 --format txt > results/predictions/gor1CB513DSSP.db6x17
+java -jar predict.jar --model results/models/gor1CB513DSSP.db7x17 --seq results/testfiles/CB513DSSP.db7 --format txt > results/predictions/gor1CB513DSSP.db7x17
+java -jar predict.jar --model results/models/gor1CB513DSSP.db8x17 --seq results/testfiles/CB513DSSP.db8 --format txt > results/predictions/gor1CB513DSSP.db8x17
+java -jar predict.jar --model results/models/gor1CB513DSSP.db9x17 --seq results/testfiles/CB513DSSP.db8 --format txt > results/predictions/gor1CB513DSSP.db9x17
+
+java -jar predict.jar --model results/models/gor3CB513DSSP.db0x17 --seq results/testfiles/CB513DSSP.db0 --format txt > results/predictions/gor3CB513DSSP.db0x17
+java -jar predict.jar --model results/models/gor3CB513DSSP.db1x17 --seq results/testfiles/CB513DSSP.db1 --format txt > results/predictions/gor3CB513DSSP.db1x17
+java -jar predict.jar --model results/models/gor3CB513DSSP.db2x17 --seq results/testfiles/CB513DSSP.db2 --format txt > results/predictions/gor3CB513DSSP.db2x17
+java -jar predict.jar --model results/models/gor3CB513DSSP.db3x17 --seq results/testfiles/CB513DSSP.db3 --format txt > results/predictions/gor3CB513DSSP.db3x17
+java -jar predict.jar --model results/models/gor3CB513DSSP.db4x17 --seq results/testfiles/CB513DSSP.db4 --format txt > results/predictions/gor3CB513DSSP.db4x17
+java -jar predict.jar --model results/models/gor3CB513DSSP.db5x17 --seq results/testfiles/CB513DSSP.db5 --format txt > results/predictions/gor3CB513DSSP.db5x17
+java -jar predict.jar --model results/models/gor3CB513DSSP.db6x17 --seq results/testfiles/CB513DSSP.db6 --format txt > results/predictions/gor3CB513DSSP.db6x17
+java -jar predict.jar --model results/models/gor3CB513DSSP.db7x17 --seq results/testfiles/CB513DSSP.db7 --format txt > results/predictions/gor3CB513DSSP.db7x17
+java -jar predict.jar --model results/models/gor3CB513DSSP.db8x17 --seq results/testfiles/CB513DSSP.db8 --format txt > results/predictions/gor3CB513DSSP.db8x17
+java -jar predict.jar --model results/models/gor3CB513DSSP.db9x17 --seq results/testfiles/CB513DSSP.db8 --format txt > results/predictions/gor3CB513DSSP.db9x17
+
+java -jar predict.jar --model results/models/gor4CB513DSSP.db0x17 --seq results/testfiles/CB513DSSP.db0 --format txt > results/predictions/gor4CB513DSSP.db0x17
+java -jar predict.jar --model results/models/gor4CB513DSSP.db1x17 --seq results/testfiles/CB513DSSP.db1 --format txt > results/predictions/gor4CB513DSSP.db1x17
+java -jar predict.jar --model results/models/gor4CB513DSSP.db2x17 --seq results/testfiles/CB513DSSP.db2 --format txt > results/predictions/gor4CB513DSSP.db2x17
+java -jar predict.jar --model results/models/gor4CB513DSSP.db3x17 --seq results/testfiles/CB513DSSP.db3 --format txt > results/predictions/gor4CB513DSSP.db3x17
+java -jar predict.jar --model results/models/gor4CB513DSSP.db4x17 --seq results/testfiles/CB513DSSP.db4 --format txt > results/predictions/gor4CB513DSSP.db4x17
+java -jar predict.jar --model results/models/gor4CB513DSSP.db5x17 --seq results/testfiles/CB513DSSP.db5 --format txt > results/predictions/gor4CB513DSSP.db5x17
+java -jar predict.jar --model results/models/gor4CB513DSSP.db6x17 --seq results/testfiles/CB513DSSP.db6 --format txt > results/predictions/gor4CB513DSSP.db6x17
+java -jar predict.jar --model results/models/gor4CB513DSSP.db7x17 --seq results/testfiles/CB513DSSP.db7 --format txt > results/predictions/gor4CB513DSSP.db7x17
+java -jar predict.jar --model results/models/gor4CB513DSSP.db8x17 --seq results/testfiles/CB513DSSP.db8 --format txt > results/predictions/gor4CB513DSSP.db8x17
+java -jar predict.jar --model results/models/gor4CB513DSSP.db9x17 --seq results/testfiles/CB513DSSP.db8 --format txt > results/predictions/gor4CB513DSSP.db9x17
+
+# post avg
+java -jar predict.jar --model results/models/gor3test.db0x17 --seq results/testfiles/test.db0 --format txt --avgPost 0.7 > results/predictions/gor3test.db0x17avg
+java -jar predict.jar --model results/models/gor3test.db1x17 --seq results/testfiles/test.db1 --format txt --avgPost 0.7 > results/predictions/gor3test.db1x17avg
+java -jar predict.jar --model results/models/gor3test.db2x17 --seq results/testfiles/test.db2 --format txt --avgPost 0.7 > results/predictions/gor3test.db2x17avg
+java -jar predict.jar --model results/models/gor3test.db3x17 --seq results/testfiles/test.db3 --format txt --avgPost 0.7 > results/predictions/gor3test.db3x17avg
+java -jar predict.jar --model results/models/gor3test.db4x17 --seq results/testfiles/test.db4 --format txt --avgPost 0.7 > results/predictions/gor3test.db4x17avg
+java -jar predict.jar --model results/models/gor3test.db5x17 --seq results/testfiles/test.db5 --format txt --avgPost 0.7 > results/predictions/gor3test.db5x17avg
+java -jar predict.jar --model results/models/gor3test.db6x17 --seq results/testfiles/test.db6 --format txt --avgPost 0.7 > results/predictions/gor3test.db6x17avg
+java -jar predict.jar --model results/models/gor3test.db7x17 --seq results/testfiles/test.db7 --format txt --avgPost 0.7 > results/predictions/gor3test.db7x17avg
+java -jar predict.jar --model results/models/gor3test.db8x17 --seq results/testfiles/test.db8 --format txt --avgPost 0.7 > results/predictions/gor3test.db8x17avg
+java -jar predict.jar --model results/models/gor3test.db9x17 --seq results/testfiles/test.db8 --format txt --avgPost 0.7 > results/predictions/gor3test.db9x17avg
+
+# post std
+java -jar predict.jar --model results/models/gor3test.db0x17 --seq results/testfiles/test.db0 --format txt --stdPost 0.7 > results/predictions/gor3test.db0x17std
+java -jar predict.jar --model results/models/gor3test.db1x17 --seq results/testfiles/test.db1 --format txt --stdPost 0.7 > results/predictions/gor3test.db1x17std
+java -jar predict.jar --model results/models/gor3test.db2x17 --seq results/testfiles/test.db2 --format txt --stdPost 0.7 > results/predictions/gor3test.db2x17std
+java -jar predict.jar --model results/models/gor3test.db3x17 --seq results/testfiles/test.db3 --format txt --stdPost 0.7 > results/predictions/gor3test.db3x17std
+java -jar predict.jar --model results/models/gor3test.db4x17 --seq results/testfiles/test.db4 --format txt --stdPost 0.7 > results/predictions/gor3test.db4x17std
+java -jar predict.jar --model results/models/gor3test.db5x17 --seq results/testfiles/test.db5 --format txt --stdPost 0.7 > results/predictions/gor3test.db5x17std
+java -jar predict.jar --model results/models/gor3test.db6x17 --seq results/testfiles/test.db6 --format txt --stdPost 0.7 > results/predictions/gor3test.db6x17std
+java -jar predict.jar --model results/models/gor3test.db7x17 --seq results/testfiles/test.db7 --format txt --stdPost 0.7 > results/predictions/gor3test.db7x17std
+java -jar predict.jar --model results/models/gor3test.db8x17 --seq results/testfiles/test.db8 --format txt --stdPost 0.7 > results/predictions/gor3test.db8x17std
+java -jar predict.jar --model results/models/gor3test.db9x17 --seq results/testfiles/test.db8 --format txt --stdPost 0.7 > results/predictions/gor3test.db9x17std
+
+# value
+java -jar predict.jar --model results/models/gor3test.db0x17 --seq results/testfiles/test.db0 --format txt --stdPost 0.1 > results/predictions/gor3test.db0x17std1
+java -jar predict.jar --model results/models/gor3test.db1x17 --seq results/testfiles/test.db1 --format txt --stdPost 0.2 > results/predictions/gor3test.db1x17std2
+java -jar predict.jar --model results/models/gor3test.db2x17 --seq results/testfiles/test.db2 --format txt --stdPost 0.3 > results/predictions/gor3test.db2x17std3
+java -jar predict.jar --model results/models/gor3test.db3x17 --seq results/testfiles/test.db3 --format txt --stdPost 0.4 > results/predictions/gor3test.db3x17std4
+java -jar predict.jar --model results/models/gor3test.db4x17 --seq results/testfiles/test.db4 --format txt --stdPost 0.5 > results/predictions/gor3test.db4x17std5
+java -jar predict.jar --model results/models/gor3test.db5x17 --seq results/testfiles/test.db5 --format txt --stdPost 0.6 > results/predictions/gor3test.db5x17std6
+java -jar predict.jar --model results/models/gor3test.db6x17 --seq results/testfiles/test.db6 --format txt --stdPost 0.7 > results/predictions/gor3test.db6x17std7
+java -jar predict.jar --model results/models/gor3test.db7x17 --seq results/testfiles/test.db7 --format txt --stdPost 0.8 > results/predictions/gor3test.db7x17std8
+java -jar predict.jar --model results/models/gor3test.db8x17 --seq results/testfiles/test.db8 --format txt --stdPost 0.9 > results/predictions/gor3test.db8x17std9
+java -jar predict.jar --model results/models/gor3test.db9x17 --seq results/testfiles/test.db8 --format txt --stdPost 1.0 > results/predictions/gor3test.db9x17std10
+
+java -jar predict.jar --model results/models/gor3test.db0x17 --seq results/testfiles/test.db0 --format txt --avgPost 0.1 > results/predictions/gor3test.db0x17avg1
+java -jar predict.jar --model results/models/gor3test.db1x17 --seq results/testfiles/test.db1 --format txt --avgPost 0.2 > results/predictions/gor3test.db1x17avg2
+java -jar predict.jar --model results/models/gor3test.db2x17 --seq results/testfiles/test.db2 --format txt --avgPost 0.3 > results/predictions/gor3test.db2x17avg3
+java -jar predict.jar --model results/models/gor3test.db3x17 --seq results/testfiles/test.db3 --format txt --avgPost 0.4 > results/predictions/gor3test.db3x17avg4
+java -jar predict.jar --model results/models/gor3test.db4x17 --seq results/testfiles/test.db4 --format txt --avgPost 0.5 > results/predictions/gor3test.db4x17avg5
+java -jar predict.jar --model results/models/gor3test.db5x17 --seq results/testfiles/test.db5 --format txt --avgPost 0.6 > results/predictions/gor3test.db5x17avg6
+java -jar predict.jar --model results/models/gor3test.db6x17 --seq results/testfiles/test.db6 --format txt --avgPost 0.7 > results/predictions/gor3test.db6x17avg7
+java -jar predict.jar --model results/models/gor3test.db7x17 --seq results/testfiles/test.db7 --format txt --avgPost 0.8 > results/predictions/gor3test.db7x17avg8
+java -jar predict.jar --model results/models/gor3test.db8x17 --seq results/testfiles/test.db8 --format txt --avgPost 0.9 > results/predictions/gor3test.db8x17avg9
+java -jar predict.jar --model results/models/gor3test.db9x17 --seq results/testfiles/test.db8 --format txt --avgPost 1.0 > results/predictions/gor3test.db9x17avg10
+

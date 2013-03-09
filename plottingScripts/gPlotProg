@@ -1,0 +1,11 @@
+reset
+set term png
+set output "out.png"
+set title "probability for test"
+set ylabel "probability in %"
+set yrange [0:100]
+set xtics ("Q3" 0, "SOV" 1, "QH" 2, "QE" 3, "QC" 4, "SOVH" 5, "SOVE" 6, "SOVC" 7)
+plot "data" using 2:xtic(1) title columnheader(2), \
+for [i=0:11] '' using i title columnheader(i)
+quit
+

@@ -1,0 +1,22 @@
+Copy predict.jar, train.jar and validateGor.jar to this folder!
+
+-m	--model		path to the model file
+-s	--seq		path to the fasta file to predict
+-a	--maf		path to .aln file
+-f	--format	html/txt
+-p	--probabilities	include probabilities to the output
+-d	--debug		output debug informations
+-t	--avgPost	avgPostprediction
+-x	--stdPost	stdPostprediction
+
+testfiles/trainfiles:
+db cutpos
+
+models:
+gor db cutpos {x} windowsize
+
+predictions:
+no post.:  gor db cutpos {x} windowsize
+std post.: gor db cutpos {x} windowsize {std} p
+avg post.: gor db cutpos {x} windowsize {avg} p
+both post.: gor db cutpos {x} windowsize {x} p[std] {both} p[avg]

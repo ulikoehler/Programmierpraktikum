@@ -1,0 +1,20 @@
+#! /bin/bash
+
+outputPath=results/plots/
+
+for f in results/summary/*
+do
+  if [ -f $f ]
+  then
+    
+    b=$(basename $f)  # get basename
+    
+    cat $f > data     # write file to data for plot
+    
+    # plot file
+    cat gPlotProg | gnuplot
+    
+    cp out.png $outputPath$b
+    
+  fi
+done
